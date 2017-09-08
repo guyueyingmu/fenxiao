@@ -10,25 +10,54 @@ import style from './assets/css/style.less'
 
 
 import {
-    Radio,
-    Checkbox,
-    Input,
-    Form,
-    FormItem,
-    Select,
-    Option,
-    Button,
-    Table,
-    TableColumn,
-    Dialog,
-    Loading,
-    MessageBox,
-    Message,
-    Popover,
+  Radio,
+  RadioGroup,
+  RadioButton,
+  Checkbox,
+  CheckboxGroup,
+  Input,
+  Form,
+  FormItem,
+  Select,
+  Option,
+  OptionGroup,
+  Button,
+  ButtonGroup,
+  Switch,
+  Table,
+  TableColumn,
+  Dialog,
+  Loading,
+  MessageBox,
+  Message,
+  Popover,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  Row,
+  Col,
+  Icon,
 } from 'element-ui'
 
 Vue.use(Radio)
 Vue.use(Checkbox)
+Vue.use(Switch)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
+
+Vue.use(CheckboxGroup)
+Vue.use(OptionGroup)
+Vue.use(ButtonGroup)
+Vue.use(DatePicker)
+Vue.use(TimeSelect)
+Vue.use(TimePicker)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Icon)
+
+
+
+
 Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
@@ -58,5 +87,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

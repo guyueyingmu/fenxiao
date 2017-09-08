@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+
+const Home = () => import(/* webpackChunkName: "Home" */ '@/components/Home')
+const Table = () => import(/* webpackChunkName: "Table" */ '@/components/Table')
+const Form = () => import(/* webpackChunkName: "Form" */ '@/components/Form')
 
 Vue.use(Router)
 
@@ -8,8 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
-    }
+      name: 'Home',
+      component: Home
+    },
+    {
+        path: '/Table',
+        name: 'Table',
+        component: Table
+      },
+      {
+        path: '/Form',
+        name: 'Form',
+        component: Form
+      }
   ]
 })
