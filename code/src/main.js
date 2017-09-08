@@ -37,6 +37,11 @@ import {
   Row,
   Col,
   Icon,
+  Menu,
+  Submenu,
+  MenuItem,
+  Breadcrumb,
+  BreadcrumbItem 
 } from 'element-ui'
 
 Vue.use(Radio)
@@ -44,6 +49,14 @@ Vue.use(Checkbox)
 Vue.use(Switch)
 Vue.use(RadioButton)
 Vue.use(RadioGroup)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
+
+
+Vue.use(Menu)
+Vue.use(Submenu)
+Vue.use(MenuItem)
+
 
 Vue.use(CheckboxGroup)
 Vue.use(OptionGroup)
