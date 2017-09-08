@@ -54,7 +54,6 @@ var webpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       title:'首页',
       inject: true,
-      chunks:['vendor','manifest','app'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,

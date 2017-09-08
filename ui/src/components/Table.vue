@@ -67,7 +67,16 @@
 </template>
 
 <script>
+import {
+    Table,
+    TableColumn,
+} from 'element-ui'
+
 export default {
+    components: {
+        'ElTable': Table,
+        'ElTableColumn': TableColumn,
+    },
     data() {
         return {
             tableData: [{
