@@ -1,0 +1,272 @@
+<template>
+    <div style="width:800px;padding:4em">
+
+        <el-form :model="form"  ref="form" label-width="100px">
+            <el-form-item label="商品小图" prop="good_img">
+                <el-upload class="avatar-uploader" action="12" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <img v-if="form.good_img" :src="form.good_img" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+            </el-form-item>
+
+            <el-form-item label="商品轮播图">
+                <el-upload  action="12" list-type="picture-card" :show-file-list="false" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+                <el-dialog v-model="dialogVisible" size="tiny">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                </el-dialog>
+            </el-form-item>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="品牌" prop="brand">
+                        <el-input v-model="form.brand" placeholder="品牌" :maxlength="12"></el-input>
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="12">
+                    <el-form-item label="商品编号" prop="good_num">
+                        <el-input v-model="form.good_num" placeholder="商品编号" :maxlength="12"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="商品名称" prop="good_name">
+                        <el-input v-model="form.good_name" placeholder="商品名称" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="商品分类">
+                        <el-select placeholder="商品分类" v-model="form.cat_id">
+                            <el-option label="区域一" value="shanghai"></el-option>
+                            <el-option label="区域二" value="beijing"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="供应商">
+                        <el-input v-model="form.supplier" placeholder="供应商" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="商品颜色">
+                        <el-input v-model="form.color" placeholder="商品颜色" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="商品规格">
+                        <el-input v-model="form.specification" placeholder="商品规格" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="商品分类">
+                        <el-select placeholder="商品分类" v-model="form.good_type">
+                            <el-option label="实物类商品（微信支付 需要快递）" value="1"></el-option>
+                            <el-option label="拟类商品（微信支付 无需快递）" value="2"></el-option>
+                            <el-option label="预约类商品（线下支付 无需快递）" value="3"></el-option>
+                            <el-option label="积分实物类商品（积分兑换 需要快递）" value="4"></el-option>
+                            <el-option label="积分虚拟类商品（积分兑换 无需快递））" value="5"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="销售价格">
+                        <el-input v-model="form.price" placeholder="销售价格" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="参与分销">
+                        <el-radio-group v-model="form.distribution" placeholder="参与分销">
+                            <el-radio :label="1">参与</el-radio>
+                            <el-radio :label="2">不参与</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="积分兑换">
+                        <el-input v-model="form.credits" placeholder="积分兑换" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="是否上架">
+                        <el-radio-group v-model="form.status" placeholder="是否上架">
+                            <el-radio :label="1">上架</el-radio>
+                            <el-radio :label="2">下架</el-radio>
+                        </el-radio-group>
+
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+
+                    <el-form-item label="可用库存">
+                        <el-input v-model="form.inventory" placeholder="可用库存" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="赠送积分">
+                        <el-input v-model="form.presenter_credits" placeholder="赠送积分" :maxlength="10"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="排序">
+                        <el-input v-model="form.sort" placeholder="排序 0 - 999" :maxlength="3"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+
+                </el-col>
+            </el-row>
+            <el-form-item label="商品标题">
+                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="10"></el-input>
+            </el-form-item>
+            <el-form-item label="商品详情">
+                <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input>
+            </el-form-item>
+
+            <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+            <el-button @click="resetForm('form')">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script>
+import Bus from '../../assets/js/bus'
+import http from '../../assets/js/http'
+import { Upload } from 'element-ui'
+export default {
+    mixins: [http],
+    components: {
+        "el-upload": Upload
+    },
+    data() {
+        return {
+            dialogVisible:false,
+            dialogImageUrl:'',
+            form: {
+                good_img:'',
+                banner_img:'',
+                brand:'',
+                good_num:'',
+                good_name:'',
+                cat_id:'',
+                supplier:'',
+                color:'',
+                specification:'',
+                good_type:'',
+                price:'',
+                distribution:1,
+                credits:'',
+                status:'',
+                inventory:'',
+                presenter_credits:'',
+                sort:1,
+                good_title:'',
+                detail:''
+              
+            },
+            rules: {
+                name: [
+                    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                region: [
+                    { required: true, message: '请选择活动区域', trigger: 'change' }
+                ],
+                date1: [
+                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                ],
+                date2: [
+                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                ],
+                type: [
+                    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                ],
+                resource: [
+                    { required: true, message: '请选择活动资源', trigger: 'change' }
+                ],
+                desc: [
+                    { required: true, message: '请填写活动形式', trigger: 'blur' }
+                ]
+            }
+        };
+    },
+    methods: {
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
+        handleAvatarSuccess(res, file) {
+            this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
+        submitForm(formName) {
+            let url = '',
+            data = this.form,
+            vm = this;
+            this.apiPost(url,data).then(function(res){
+                console.log(res)
+
+            })
+
+
+
+            // this.$refs[formName].validate((valid) => {
+            //     if (valid) {
+            //         alert('submit!');
+            //     } else {
+            //         console.log('error submit!!');
+            //         return false;
+            //     }
+            // });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        }
+    },
+
+    created() {
+        window.Global.setTitle('商品列表')
+        Bus.$emit('breadcrumb', {
+            l1: "商品",
+            l2: '添加商品'
+        });
+
+    }
+
+}
+</script>
