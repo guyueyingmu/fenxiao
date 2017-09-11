@@ -15,15 +15,6 @@ class Login extends Controller
         return view();
     }
     
-    /**
-     * 获取验证码
-     * @return string
-     */
-    public function get_verify(){        
-        $captcha = new Captcha();
-        return $captcha->entry();
-    }
-    
     public function log_in()
     {
         $data = [
@@ -81,7 +72,7 @@ class Login extends Controller
         if($role_info['menu_auth'] != 'all'){
             $where .= " AND id IN ({$role_info['menu_auth']})";
         }        
-        $menu_list = AdminMenu::where($where)->select();
+        $menu_list = AdminMenu::where($where)->order("sort DESC,id ASC")->select();
         
         $tree = new \tree\Tree();
         $menu_list = $tree->toTree(json_decode( json_encode( $menu_list),true), 'id', 'pid', '_child');        
@@ -93,11 +84,30 @@ class Login extends Controller
         $session_arr['nickname'] = $user_info['nickname'];
         $session_arr['role_id'] = $user_info['role_id'];
         $session_arr['role_name'] = $role_info['role_name'];
+        $session_arr['menu_auth'] = $role_info['menu_auth'];
         $session_arr['menu'] = $menu_list;
 //        print_r($session_arr);exit('1');
         
         session("admin",$session_arr);
         
-        $this->success("登录成功");
+        $this->success("登录成功",$menu_list[0]['_child'][0]['menu_link']);
+    }
+    
+    /**
+     * 获取菜单
+     */
+    public function get_menu(){
+        $where = "status = 1";
+        
+        if(session("admin.menu_auth") && session("admin.menu_auth") != 'all'){
+            $where .= " AND id IN (".session("admin.menu_auth").")"; 
+        }
+            
+        $menu_list = AdminMenu::where($where)->order("sort DESC,id ASC")->select();
+        
+        $tree = new \tree\Tree();
+        $menu_list = $tree->toTree(json_decode( json_encode( $menu_list),true), 'id', 'pid', 'child');  
+        
+        return json_encode($menu_list);
     }
 }
