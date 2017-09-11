@@ -11,6 +11,10 @@ use app\admin\model\AdminMenu;
 
 class Login extends Controller
 {
+    public function index(){
+        return view();
+    }
+    
     /**
      * 获取验证码
      * @return string
