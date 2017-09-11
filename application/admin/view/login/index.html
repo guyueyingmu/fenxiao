@@ -5,11 +5,17 @@
     <meta charset="UTF-8">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <style>
+         [v-cloak]{
+             display: none;
+         }
+    
+    </style>
     <title>登录</title>
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" v-cloak="">
         <div class="login">
             <el-row type="flex">
                 <el-col :span="10" style="padding: 20% 0 0;margin: auto">
@@ -20,6 +26,10 @@
                         <el-form-item label="密码">
                             <el-input type="password" v-model="form.pass" auto-complete="off"></el-input>
                         </el-form-item>
+                        <el-form-item label="验证码">
+                               <el-input  style=" vertical-align: middle;width: 120px" type="text" v-model="form.code" auto-complete="off"></el-input>
+                               <img src="" width="80" height="36" alt="" style=" vertical-align: middle;"> 
+                            </el-form-item>
 
 
                         <el-form-item>
