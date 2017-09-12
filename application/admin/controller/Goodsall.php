@@ -169,15 +169,24 @@ class Goodsall extends Base
         if(!$good_id){
             $this->error('参数错误');
         }
-        $list = GoodsBanner::all(['good_id' => $good_id]);
         
-        if($list){
-            foreach($list as $k=>$v){
-                $list[$k]['is_show'] = 1;
+        $good_info = Goods::get($good_id);
+        
+        if(!$good_info){
+            $this->error("数据不存在");
+        }
+        
+        $banner_list = GoodsBanner::all(['good_id' => $good_id]);
+        
+        if($banner_list){
+            foreach($banner_list as $k=>$v){
+                $banner_list[$k]['is_show'] = 1;
             }
         }
         
-        $this->success('成功', '', $list);
+        $good_info['banner_img'] = $banner_list;
+        exit(json_encode($good_info));
+        $this->success('成功', '', $good_info);
     }
     
     /**
