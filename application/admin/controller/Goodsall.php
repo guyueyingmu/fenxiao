@@ -57,10 +57,13 @@ class Goodsall extends Base
             $good_banner = new GoodsBanner;
             foreach($banner_img as $v){
                 if($v['img_url']){
-                    $list[] = ['good_id'=>$good->id,'img_url'=>$v['img_url']];
+                    $list[] = ['good_id' => $good->id, 'img_url' => $v['img_url'], 'add_time' => time()];
                 }
             }
-            $good_banner->saveAll($list);
+            $banner_res = $good_banner->saveAll($list);
+            
+            //写日志
+            $this->add_log(['添加商品', 'good' => $good, 'banner_img' => $banner_res]);
             
             // 提交事务
             Db::commit();  

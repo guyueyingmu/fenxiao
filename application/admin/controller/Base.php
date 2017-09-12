@@ -6,6 +6,9 @@ use think\Controller;
 class Base extends Controller
 {
     public function _initialize(){
+//        session("admin.uid",1);
+//        session("admin.current_menu",3);
+        
         if(!session("admin.uid")){
             $url = "/admin/login";
             if(\think\Request::instance()->isAjax()){
