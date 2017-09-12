@@ -1,12 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Home = () =>
-  import ( /* webpackChunkName: "Home" */ '@/components/Home')
-const Table = () =>
-  import ( /* webpackChunkName: "Table" */ '@/components/Table')
-const Form = () =>
-  import ( /* webpackChunkName: "Form" */ '@/components/Form')
+
 
 const Goods = () =>
   import ( /* webpackChunkName: "Goods" */ '@/components/goods/goods')
@@ -16,11 +11,7 @@ const Goods_add = () =>
 Vue.use(Router)
 
 export default new Router({
-  routes: [{
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
+  routes: [
     {
       path: '/goods',
       name: 'Goods',
@@ -32,14 +23,10 @@ export default new Router({
       component: Goods_add
     },
     {
-      path: '/Table',
-      name: 'Table',
-      component: Table
-    },
-    {
-      path: '/Form',
-      name: 'Form',
-      component: Form
-    }
+        path: '/goods_edit/id/:id',
+        name: 'goods_edit',
+        component: Goods_add
+      },
+   
   ]
 })
