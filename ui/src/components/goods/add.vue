@@ -1,16 +1,20 @@
+
+
 <template>
     <div style="width:800px;padding:4em">
 
-        <el-form :model="form"  ref="form" label-width="100px">
+        <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="商品小图" prop="good_img">
-                <el-upload class="avatar-uploader" action="12" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <div class="red">尺寸为 320 * 320 正方形</div>
+                <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/*" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.good_img" :src="form.good_img" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
 
             <el-form-item label="商品轮播图">
-                <el-upload  action="12" list-type="picture-card" :show-file-list="false" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <div class="red">尺寸为 640 * 320 长方形</div>
+                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/*" :file-list="banner_imgFileList" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
@@ -40,9 +44,9 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="商品分类">
-                        <el-select placeholder="商品分类" v-model="form.cat_id">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                        <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
+                            <el-option label="区域一" value="1"></el-option>
+                            <el-option label="区域二" value="2"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -68,54 +72,41 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="商品分类">
-                        <el-select placeholder="商品分类" v-model="form.good_type">
-                            <el-option label="实物类商品（微信支付 需要快递）" value="1"></el-option>
-                            <el-option label="拟类商品（微信支付 无需快递）" value="2"></el-option>
-                            <el-option label="预约类商品（线下支付 无需快递）" value="3"></el-option>
-                            <el-option label="积分实物类商品（积分兑换 需要快递）" value="4"></el-option>
-                            <el-option label="积分虚拟类商品（积分兑换 无需快递））" value="5"></el-option>
-                        </el-select>
+                    <el-form-item label="销售价格">
+                        <el-input v-model="form.price" placeholder="销售价格" :maxlength="10"></el-input>
                     </el-form-item>
+
                 </el-col>
             </el-row>
 
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="销售价格">
-                        <el-input v-model="form.price" placeholder="销售价格" :maxlength="10"></el-input>
+                    <el-form-item label="商品类型">
+                        <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
+                            <el-option label="实物类商品（微信支付 需要快递）" :value="1"></el-option>
+                            <el-option label="拟类商品（微信支付 无需快递）" :value="2"></el-option>
+                            <el-option label="预约类商品（线下支付 无需快递）" :value="3"></el-option>
+                            <el-option label="积分实物类商品（积分兑换 需要快递）" :value="4"></el-option>
+                            <el-option label="积分虚拟类商品（积分兑换 无需快递））" :value="5"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="参与分销">
+
+                    <el-form-item label="参与分销" v-if="form.good_type < 4">
                         <el-radio-group v-model="form.distribution" placeholder="参与分销">
                             <el-radio :label="1">参与</el-radio>
                             <el-radio :label="2">不参与</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="积分兑换">
+                    <el-form-item label="积分兑换" v-if="form.good_type >= 4">
                         <el-input v-model="form.credits" placeholder="积分兑换" :maxlength="10"></el-input>
                     </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="是否上架">
-                        <el-radio-group v-model="form.status" placeholder="是否上架">
-                            <el-radio :label="1">上架</el-radio>
-                            <el-radio :label="2">下架</el-radio>
-                        </el-radio-group>
 
-                    </el-form-item>
                 </el-col>
             </el-row>
-
             <el-row>
                 <el-col :span="12">
-
                     <el-form-item label="可用库存">
                         <el-input v-model="form.inventory" placeholder="可用库存" :maxlength="10"></el-input>
                     </el-form-item>
@@ -128,13 +119,19 @@
             </el-row>
 
             <el-row>
+
                 <el-col :span="12">
                     <el-form-item label="排序">
                         <el-input v-model="form.sort" placeholder="排序 0 - 999" :maxlength="3"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-
+                    <el-form-item label="是否上架">
+                        <el-radio-group v-model="form.status" placeholder="是否上架">
+                            <el-radio :label="1">上架</el-radio>
+                            <el-radio :label="2">下架</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
                 </el-col>
             </el-row>
             <el-form-item label="商品标题">
@@ -143,15 +140,16 @@
             <el-form-item label="商品详情">
                 <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input>
             </el-form-item>
-
-            <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
-            <el-button @click="resetForm('form')">重置</el-button>
+            <div style="height:40px;"></div>
+            <el-form-item label-width="40%">
+                <el-button type="primary" @click="submitForm('form')">立即创建</el-button>
+                <el-button @click="resetForm('form')">重置</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 <script>
-import Bus from '../../assets/js/bus'
+import { mapActions } from "vuex";
 import http from '../../assets/js/http'
 import { Upload } from 'element-ui'
 export default {
@@ -161,29 +159,30 @@ export default {
     },
     data() {
         return {
-            dialogVisible:false,
-            dialogImageUrl:'',
+            dialogVisible: false,
+            dialogImageUrl: '',
+            banner_imgFileList: [],
             form: {
-                good_img:'',
-                banner_img:'',
-                brand:'',
-                good_num:'',
-                good_name:'',
-                cat_id:'',
-                supplier:'',
-                color:'',
-                specification:'',
-                good_type:'',
-                price:'',
-                distribution:1,
-                credits:'',
-                status:'',
-                inventory:'',
-                presenter_credits:'',
-                sort:1,
-                good_title:'',
-                detail:''
-              
+                good_img: '',
+                banner_img: [],
+                brand: '',
+                good_num: '',
+                good_name: '',
+                cat_id: '',
+                supplier: '',
+                color: '',
+                specification: '',
+                good_type: '',
+                price: '',
+                distribution: 1,
+                credits: '',
+                status: 1,
+                inventory: '',
+                presenter_credits: '',
+                sort: 1,
+                good_title: '',
+                detail: ''
+
             },
             rules: {
                 name: [
@@ -212,33 +211,51 @@ export default {
         };
     },
     methods: {
+        ...mapActions({
+            setB: 'setBreadcrumb'
+        }),
+
         handleRemove(file, fileList) {
             console.log(file, fileList);
+        },
+        handlePictureSuccess(res, fileList) {
+            if (res.code == 1) {
+                let _d = { url: res.data.img_path,id:'',img_url: res.data.img_path, is_show: 1 }
+                this.banner_imgFileList.push(_d)
+                this.form.banner_img.push(_d)
+            }
+
+
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
+
         },
+
         handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
+            if (res.code) {
+                this.form.good_img = res.data.img_path
+            }
         },
         beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
 
-            if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
-            return isJPG && isLt2M;
+            return isLt2M;
         },
         submitForm(formName) {
-            let url = '',
-            data = this.form,
-            vm = this;
-            this.apiPost(url,data).then(function(res){
+            let url = '/admin/goodsall/add',
+                data = this.form,
+                vm = this;
+            this.apiPost(url, data).then(function(res) {
+                if (res.codo) {
+
+                } else {
+                    vm.handleError(res)
+                }
                 console.log(res)
 
             })
@@ -260,11 +277,9 @@ export default {
     },
 
     created() {
-        window.Global.setTitle('商品列表')
-        Bus.$emit('breadcrumb', {
-            l1: "商品",
-            l2: '添加商品'
-        });
+
+        this.setB(['商品', '增加商品'])
+
 
     }
 

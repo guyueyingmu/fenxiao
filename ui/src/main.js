@@ -3,12 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
 import vueResource from 'vue-resource'
 import Global from './assets/js/common'
 
+import store from './vuex'
+
+
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
+Vue.config.devtools = true
 
 // import Element from 'element-ui'
 // Vue.use(Element)
@@ -49,6 +52,7 @@ import {
   BreadcrumbItem,
   Table,
   TableColumn,
+  Alert
 } from 'element-ui'
 
 Vue.use(Radio)
@@ -97,17 +101,16 @@ Vue.use(Loading.directive)
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$confirm = MessageBox.confirm
-// Vue.prototype.$prompt = MessageBox.prompt
-// Vue.prototype.$notify = Notification
+Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$message = Message
-
 Vue.config.productionTip = false
 Vue.config.devtools = true;
 
 /* eslint-disable no-new */
-new Vue({
+const Vm = new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: {
     App

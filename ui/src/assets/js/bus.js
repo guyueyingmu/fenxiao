@@ -1,3 +1,4 @@
 import Vue from 'Vue'
-var Bus = new Vue()
+const Bus = new Vue()
 export default Bus;
+window.$bus = Bus;

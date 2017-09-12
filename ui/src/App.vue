@@ -24,9 +24,8 @@
                 </div>
                 <div class="layout-breadcrumb">
                     <el-breadcrumb separator="/">
-                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                        <el-breadcrumb-item>{{breadcrumb.l1}}</el-breadcrumb-item>
-                        <el-breadcrumb-item>{{breadcrumb.l2}}</el-breadcrumb-item>
+                        <el-breadcrumb-item :to="{ path: '/' }">首页{{$store.state.count}}</el-breadcrumb-item>
+                        <el-breadcrumb-item v-for="item in $store.state.breadcrumb" :key="item">{{item}}</el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
                 <div class="layout-content">
@@ -42,7 +41,6 @@
 
 <script>
 import http from './assets/js/http'
-import Bus from './assets/js/bus'
 export default {
     name: 'app',
     mixins: [http],
@@ -53,8 +51,8 @@ export default {
             breadcrumb:{
                 l1:"",
                 l2:''
-            
             },
+           
          
         }
     },
@@ -95,9 +93,6 @@ export default {
                 vm.mnue_default = '0-0'
             }
 
-        })
-        Bus.$on('breadcrumb',function(breadcrumb){
-            vm.breadcrumb = breadcrumb;
         })
     }
 
