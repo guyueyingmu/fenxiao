@@ -1,17 +1,17 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
+
 use think\Paginator;
 
-use app\admin\model\AdminUser;
-use app\admin\model\AdminUserLogin;
-use app\admin\model\AdminUserRole;
-use app\admin\model\AdminMenu;
 
-class Role extends Controller
+class Role extends Base
 {
-    public function index(){
+	public function index(){ 
+		return view();
+	}
+	
+    public function getlist(){
 		$page = input("page",1,"intval");
 		$limit = config('paginate.list_rows');
 		$map = [];
@@ -24,21 +24,22 @@ class Role extends Controller
 		$list=db('admin_user_role')						
 			->where($map)
 			->order('id desc')
-			->paginate($limit,$count);
-		$data = $list->all();
-		foreach($data as $key=>$row){
+			->page($page,$limit)
+			->select();
+		
+		foreach($list as $key=>$row){
 				$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
 				$list[$key]=$row;
 		}	
-	
-		$show = $list->render();// 分页显示输出
 		
+		print_r($count);
 		print_r($list);exit;
 		
-		
-		$this->assign('Page',$show);	
-        $this->assign('list',$list);
-        return view();
+		$result['list'] = $list;
+        $result['total'] = $count;
+        $result['limit'] = $limit;
+        
+        $this->success("成功","",$result);
     }
 	
 	
@@ -47,21 +48,22 @@ class Role extends Controller
 		
 		$role_id = input("role_id","","trim");	
 		$role = db('admin_user_role')->where('id ='.$role_id)->find();
-		$role['menu_auth'] = explode($role['menu_auth']);
+		$role['menu_auth'] = explode(',',$role['menu_auth']);
 		
 		
 		$menu = db('admin_menu')->where('pid=0 and status = 1')->order('sort,id desc')->select();		
 		foreach($menu as &$row){ 
 			$row['child_list']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort,id desc')->select();	
 		}
-		print_r($menu);exit;
+		print_r($menu);
+		print_r($role);exit;
+		
+		$result['role'] = $role;
+        $result['menu'] = $menu;
+    
+        $this->success("成功","",$result);
 		
 		
-		$this->assign('role',$role);
-		$this->assign('menu',$menu);
-		return view();
-	
-
 	}
 	
 	// 保存/新增角色
@@ -83,7 +85,7 @@ class Role extends Controller
 			$data['edit_time'] = time();
 			$new_role = db('admin_user_role')->where('id='.$role_id)->update($data);
 			//写入日志表
-		
+			$this->add_log(['更新角色', 'admin_user_role.id' => $role_id]);
 		
 			//=============================
 			$this->success("修改成功");
@@ -97,9 +99,9 @@ class Role extends Controller
 			
 		}else{
 			$data['add_time'] = time();			
-			$new_role =  db('admin_user_role')->insert($data);	
+			$new_role =  db('admin_user_role')->insertGetId($data);	
 			//写入日志表
-		
+			$this->add_log(['新增角色', 'admin_user_role.id' => $new_role]);
 		
 			//=============================
 			$this->success("新增成功");
@@ -120,7 +122,7 @@ class Role extends Controller
 		}
 		$del = db('admin_user_role')->where('id='.$role_id)->delete();
 		//写入日志表
-		
+		$this->add_log(['删除角色', 'admin_user_role.id' => $role_id]);
 		
 		//=============================
 		

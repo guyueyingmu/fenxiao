@@ -1,17 +1,16 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
 use think\Paginator;
 
-use app\admin\model\AdminUser;
-use app\admin\model\AdminUserLogin;
-use app\admin\model\AdminUserRole;
-use app\admin\model\AdminMenu;
 
-class Manager extends Controller
+class Manager extends Base
 {
-    public function index(){
+    public function index(){ 
+		return view();
+	}
+	
+    public function getlist(){
 		$page = input("page",1,"intval");
 		$limit = config('paginate.list_rows');
 		$map = [];
@@ -25,21 +24,22 @@ class Manager extends Controller
 		$list=db('admin_user')						
 			->where($map)
 			->order('id desc')
-			->paginate($limit,$count);
-		$data = $list->all();
-		foreach($data as $key=>$row){
+			->page($page,$limit)
+			->select();
+		
+		foreach($list as $key=>$row){
 				$row['role_name']=db('admin_user_role')->where("id=".$row['role_id'])->value('role_name');	
 				$list[$key]=$row;
 		}	
 	
-		$show = $list->render();// 分页显示输出
-		
+		print_r($count);
 		print_r($list);exit;
 		
-		
-		$this->assign('Page',$show);	
-        $this->assign('list',$list);
-        return view();
+		$result['list'] = $list;
+        $result['total'] = $count;
+        $result['limit'] = $limit;
+        
+        $this->success("成功","",$result);
     }
 	
 	
@@ -50,15 +50,16 @@ class Manager extends Controller
 		$user = db('admin_user')->where('id ='.$user_id)->find();
 		
 		$role = db('admin_user_role')->where("role_name !='超级管理员'")->order('sort,id desc')->select();		
-
-		$this->assign('user',$user);
-		$this->assign('role',$role);
-		return view();
+		
+		
+		$result['user'] = $user;
+        $result['role'] = $role;
+    
+        $this->success("成功","",$result);
 	
-
 	}
 	
-	// 保存/新增角色
+	// 保存/新增管理员
 	public function save_role(){ 
 		$user_id = input("user_id","","trim");	
 		
@@ -86,12 +87,10 @@ class Manager extends Controller
 		if($user_id){
 			$data['edit_time'] = time();
 			$new_user = db('admin_user')->where('id='.$user_id)->update($data);
-			//写入日志表
-		
-		
+			//写入日志表			
+            $this->add_log(['更新管理员', 'admin_user.id' => $user_id]);
 			//=============================
-			
-			
+
 			$this->success("修改成功");
 			/*
 			$return['code'] = 40000;
@@ -103,9 +102,9 @@ class Manager extends Controller
 			
 		}else{
 			$data['add_time'] = time();			
-			$new_user =  db('admin_user')->insert($data);	
+			$new_user =  db('admin_user')->insertGetId($data);	
 			//写入日志表
-		
+			 $this->add_log(['新增管理员', 'admin_user.id' => $new_user]);
 		
 			//=============================	
 			$this->success("新增成功");
@@ -118,7 +117,7 @@ class Manager extends Controller
 
 	}
 	
-	//   启动/禁用管理员
+	//   启用/禁用管理员
 	public function modify_user(){ 
 		$user_id = input("user_id","","trim");
 		$status = input("status","","trim");	
@@ -126,17 +125,18 @@ class Manager extends Controller
 			$this->error("用户不存在！");
 		}
 		if($status == 1){ 
-			$data['is_show'] = 2;
+			$data['status'] = 2;
+			$val = '禁用管理员';
 		}elseif($status == 2){ 
-			$data['is_show'] = 1;
+			$data['status'] = 1;
+			$val = '启用管理员';
 		}else{ 
 			$this->error("数据错误！！");
 		}
 		$data['edit_time'] = time();
-		$del = db('admin_user')->where('id='.$user_id)->update($data);
+		$update = db('admin_user')->where('id='.$user_id)->update($data);
 		//写入日志表
-		
-		
+		$this->add_log([$val, 'admin_user.id' => $user_id]);
 		//=============================
 		
 		$return['code'] = 40000;
@@ -155,10 +155,8 @@ class Manager extends Controller
 		$data['edit_time'] = time();
 		$del = db('admin_user')->where('id='.$user_id)->update($data);
 		//写入日志表
-		
-		
-		//=============================
-		
+		$this->add_log(['删除管理员', 'admin_user.id' => $user_id]);		
+		//=============================		
 		$return['code'] = 40000;
 		$return['msg']="删除成功";
 		exit(json_encode($return));
