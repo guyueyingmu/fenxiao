@@ -10,7 +10,7 @@ class Goods extends Validate
 {
     protected $rule = [
             'good_img'  => 'require',//商品小图
-            'banner_img' => 'require',//商品轮播图
+            'banner_img' => 'require|array',//商品轮播图
             'brand' => 'max:50',//品牌
             'good_num' => 'max:50',//商品编号
             'good_name' => 'require|max:50',//商品名
@@ -33,6 +33,7 @@ class Goods extends Validate
     protected $message = [
             'good_img.require' => '请上传商品小图',
             'banner_img.require' => '请上传商品轮播图',
+            'banner_img.array' => '商品轮播图数据格式不正确',
             'brand.max' => '品牌长度不能超过50',
             'good_num.max' => '商品编号长度不能超过50',
             'good_name.require' => '请输入商品名',

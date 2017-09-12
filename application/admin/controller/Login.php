@@ -90,6 +90,8 @@ class Login extends Controller
         $menu_list = json_decode($menu_list,TRUE);
 //        print_r($menu_list);exit;
         
+        session("admin.current_menu",$menu_list[0]['child'][0]['id']);
+        
         $this->success("登录成功",$menu_list[0]['child'][0]['menu_link']);
     }
     

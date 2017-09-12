@@ -84,8 +84,6 @@ class Goodsall extends Base
         $banner_img = $data['banner_img'];
         unset($data['banner_img']);
         
-        $banner_img = json_decode($banner_img,true);
-        
         Db::startTrans();
         try{
             //保存商品表
@@ -207,8 +205,6 @@ class Goodsall extends Base
         
         $banner_img = $data['banner_img'];
         unset($data['banner_img']);
-        
-        $banner_img = json_decode($banner_img,true);
         
         Db::startTrans();
         try{
