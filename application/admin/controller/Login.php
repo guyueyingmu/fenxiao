@@ -12,16 +12,13 @@ use app\admin\model\AdminMenu;
 class Login extends Controller
 {
     public function index(){
+        if(session("admin.uid")){
+            $menu_list = $this->get_menu();  
+            $menu_list = json_decode($menu_list,TRUE);
+            $url = $menu_list[0]['child'][0]['menu_link'];
+            $this->redirect($url);
+        }
         return view();
-    }
-    
-    /**
-     * 获取验证码
-     * @return string
-     */
-    public function get_verify(){        
-        $captcha = new Captcha();
-        return $captcha->entry();
     }
     
     public function log_in()
@@ -76,28 +73,41 @@ class Login extends Controller
             AdminUserLogin::add_log($data['user_name'], 2);
             $this->error("用户信息有误");
         }
-        
-        $where = "status = 1";
-        if($role_info['menu_auth'] != 'all'){
-            $where .= " AND id IN ({$role_info['menu_auth']})";
-        }        
-        $menu_list = AdminMenu::where($where)->select();
-        
-        $tree = new \tree\Tree();
-        $menu_list = $tree->toTree(json_decode( json_encode( $menu_list),true), 'id', 'pid', '_child');        
-//        echo "<pre>";print_r($menu_list);exit;
-        
+                
         //保存session
-        $session_arr['id'] = $user_info['id'];
+        $session_arr['uid'] = $user_info['id'];
         $session_arr['user_name'] = $user_info['user_name'];
         $session_arr['nickname'] = $user_info['nickname'];
         $session_arr['role_id'] = $user_info['role_id'];
         $session_arr['role_name'] = $role_info['role_name'];
-        $session_arr['menu'] = $menu_list;
+        $session_arr['menu_auth'] = $role_info['menu_auth'];
+//        $session_arr['menu'] = $menu_list;
 //        print_r($session_arr);exit('1');
         
         session("admin",$session_arr);
         
-        $this->success("登录成功");
+        $menu_list = $this->get_menu();  
+        $menu_list = json_decode($menu_list,TRUE);
+//        print_r($menu_list);exit;
+        
+        $this->success("登录成功",$menu_list[0]['child'][0]['menu_link']);
+    }
+    
+    /**
+     * 获取菜单
+     */
+    public function get_menu(){
+        $where = "status = 1";
+        
+        if(session("admin.menu_auth") && session("admin.menu_auth") != 'all'){
+            $where .= " AND id IN (".session("admin.menu_auth").")"; 
+        }
+            
+        $menu_list = AdminMenu::where($where)->order("sort DESC,id ASC")->select();
+        
+        $tree = new \tree\Tree();
+        $menu_list = $tree->toTree(json_decode( json_encode( $menu_list),true), 'id', 'pid', 'child');  
+        
+        return json_encode($menu_list);
     }
 }

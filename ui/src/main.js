@@ -3,6 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+
+import vueResource from 'vue-resource'
+import Global from './assets/js/common'
+
+Vue.use(vueResource);
+Vue.http.options.emulateJSON = true;
+
 // import Element from 'element-ui'
 // Vue.use(Element)
 
@@ -39,7 +46,9 @@ import {
   Submenu,
   MenuItem,
   Breadcrumb,
-  BreadcrumbItem 
+  BreadcrumbItem,
+  Table,
+  TableColumn,
 } from 'element-ui'
 
 Vue.use(Radio)
@@ -54,6 +63,9 @@ Vue.use(BreadcrumbItem)
 Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)
+
+Vue.use(Table)
+Vue.use(TableColumn)
 
 
 Vue.use(CheckboxGroup)
