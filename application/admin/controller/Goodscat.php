@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Goods;
-use app\admin\model\GoodsCategory;
+//use app\admin\model\GoodsCategory;
 use think\Db;
 
 /**
@@ -17,8 +17,6 @@ class Goodscat extends Base
      * @return string
      */
     public function get_list(){
-        //保存当前菜单id
-        $this->save_current_menu(4);
         
         $page = input("param.page", 1, 'intval');
         $limit = db("Config")->where('c_name','admin_page_limit')->where('c_type','0')->value('c_value');
@@ -123,6 +121,7 @@ class Goodscat extends Base
         $data['edit_admin_user'] = session("admin.uid");
         $data['edit_time'] = time();
         GoodsCategory::update($data);
+        
         
         //写日志
         $this->add_log(self::$menu_id,['title' => '编辑商品分类', 'data' => $data]);

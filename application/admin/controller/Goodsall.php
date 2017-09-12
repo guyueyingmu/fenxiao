@@ -38,7 +38,7 @@ class Goodsall extends Base
         $list = $goods->alias("g")
                 ->join("__GOODS_CATEGORY__ gc", "gc.id=g.cat_id", "LEFT")
                 ->where($where)
-                ->field("g.*, gc.cat_name")
+                ->field("g.id, g.good_name, g.specification, g.brand, g.price, g.credits, g.presenter_credits, g.good_type, g.distribution, g.status, g.sort, g.add_time, gc.cat_name")
                 ->page($page,$limit)
                 ->order('g.id DESC')
                 ->select();
@@ -70,11 +70,6 @@ class Goodsall extends Base
      */
     public function add(){
         $data = input('post.');
-//        $banner_img = [
-//                ['id'=>'1','img_url'=>'baidu.com', 'is_show' => 1],
-//                ['id'=>'2','img_url'=>'baidu.com', 'is_show' => 2],//删除
-//            ];
-//        exit(json_encode($banner_img));
         $validate_res = $this->validate($data, "Goods");
         if(true !== $validate_res){
             // 验证失败 输出错误信息
@@ -95,7 +90,7 @@ class Goodsall extends Base
             //保存轮播图
             $good_banner = new GoodsBanner;
             foreach($banner_img as $v){
-                if($v['img_url']){
+                if($v['img_url'] && $v['is_show'] == 1){
                     $list[] = ['good_id' => $good->id, 'img_url' => $v['img_url'], 'add_time' => time()];
                 }
             }
@@ -166,10 +161,10 @@ class Goodsall extends Base
     }
     
     /**
-     * 获取商品banner图
+     * 获取单个商品信息
      * @param int $good_id 商品id
      */
-    public function get_good_banners(){
+    public function get_good_info(){
         $good_id = input("param.good_id", "", "intval");
         if(!$good_id){
             $this->error('参数错误');
@@ -220,7 +215,7 @@ class Goodsall extends Base
                 if($v['id'] && $v['is_show'] == 2){
                     $delete_banners[] = $v['id'];
                     $delete_list[] = $v;
-                }elseif(!$v['id'] && $v['img_url']){
+                }elseif(!$v['id'] && $v['img_url'] && $v['is_show'] == 1){
                     $list[] = ['good_id' => $data['id'], 'img_url' => $v['img_url'], 'add_time' => time()];
                 }
             }
