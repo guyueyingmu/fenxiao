@@ -104,7 +104,7 @@ class Goodsall extends Base
             $banner_res = $good_banner->saveAll($list);
             
             //写日志
-            $this->add_log(['添加商品', 'good' => $good, 'banner_img' => $banner_res]);
+            $this->add_log(['title' => '添加商品', 'good' => $good, 'banner_img' => $banner_res]);
             
             // 提交事务
             Db::commit();  
@@ -257,8 +257,17 @@ class Goodsall extends Base
         if(!$good_id){
             $this->error("参数错误");
         }
-        $res = Goods::destroy($good_id);
+        
+        $good = Goods::get($good_id);
+        if(!$good){
+            $this->error("数据不存在");
+        }
+        $res = $good->delete();
         if($res){
+            
+            //写日志
+            $this->add_log(['title' => '删除商品', 'data' => $good]);
+            
             $this->success('删除成功');
         }else{
             $this->error('删除失败');
