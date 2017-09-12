@@ -20,26 +20,18 @@ class Base extends Controller
     }
     
     /**
-     * 存储当前菜单id
-     * @param int $menu_id 菜单id
-     */
-    public function save_current_menu($menu_id){        
-        //当前菜单id存入session，写入日志时使用
-        session("admin.current_menu",$menu_id);
-    }
-    
-    /**
      * 写入操作日志
+     * @param int $menu_id 菜单id
      * @param array $content 日志内容
      */
-    public function add_log($content){
-        if(!$content){
-            return ['code' => 1, 'msg' => '日志内容不能为空'];
+    public function add_log($menu_id, $content){
+        if(!$content || !$menu_id){
+            return ['code' => 1, 'msg' => '参数不完整'];
         }
         $res = db('AdminLog')->insert([
             'admin_user_id' => session("admin.uid"),
             'log_time' => time(),
-            'menu_id' => session("admin.current_menu"),
+            'menu_id' => $menu_id,
             'content' => json_encode($content),
         ]);
         if($res){

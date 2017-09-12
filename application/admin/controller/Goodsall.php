@@ -11,14 +11,14 @@ use think\Db;
  */
 class Goodsall extends Base
 {
+    //定义当前菜单id
+    private static $menu_id = 3;
     /**
      * 获取列表
      * @param string $keyword 商品编号/商品名
      * @return string
      */
     public function get_list(){
-        //保存当前菜单id
-        $this->save_current_menu(3);
         
         $page = input("param.page", 1, 'intval');
         $limit = db("Config")->where('c_name','admin_page_limit')->where('c_type','0')->value('c_value');
@@ -102,7 +102,7 @@ class Goodsall extends Base
             $banner_res = $good_banner->saveAll($list);
             
             //写日志
-            $this->add_log(['title' => '添加商品', 'good' => $good, 'banner_img' => $banner_res]);
+            $this->add_log(self::$menu_id,['title' => '添加商品', 'good' => $good, 'banner_img' => $banner_res]);
             
             // 提交事务
             Db::commit();  
@@ -232,7 +232,7 @@ class Goodsall extends Base
             }
             
             //写日志
-            $this->add_log(['title' => '编辑商品', 'good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]);
+            $this->add_log(self::$menu_id,['title' => '编辑商品', 'good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]);
             
             // 提交事务
             Db::commit();  
@@ -262,7 +262,7 @@ class Goodsall extends Base
         if($res){
             
             //写日志
-            $this->add_log(['title' => '删除商品', 'data' => $good]);
+            $this->add_log(self::$menu_id,['title' => '删除商品', 'data' => $good]);
             
             $this->success('删除成功');
         }else{
