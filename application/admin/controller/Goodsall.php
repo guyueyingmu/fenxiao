@@ -17,6 +17,7 @@ class Goodsall extends Base
      * @return string
      */
     public function get_list(){
+        $this->save_current_menu(3);
         
 //        $list = 
     }
@@ -74,11 +75,7 @@ class Goodsall extends Base
     /**
      * 上传文件
      */
-    public function upload(){ 
-//        $img = '20160820/42a79759f284b767dfcb2a0197904287.jpg';
-//        $a = getThumbUrl($img);
-//        echo $a;exit;
-        
+    public function upload(){         
         
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('image');
