@@ -17,7 +17,7 @@ const apiMethods = {
                     // load.close();
                 }, (response) => {
                     reject(response);
-                    this.serverError(load,response);
+                    this.serverError(response);
                     // load.close();
                 });
             });
@@ -33,7 +33,7 @@ const apiMethods = {
                         // load.close();
                     }, (response) => {
                         reject(response);
-                        this.serverError(load,response);
+                        this.serverError(response);
                         // load.close();
                     });
             });

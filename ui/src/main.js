@@ -40,8 +40,6 @@ import {
   Message,
   Popover,
   DatePicker,
-  TimeSelect,
-  TimePicker,
   Row,
   Col,
   Icon,
@@ -76,13 +74,11 @@ Vue.use(CheckboxGroup)
 Vue.use(OptionGroup)
 Vue.use(ButtonGroup)
 Vue.use(DatePicker)
-Vue.use(TimeSelect)
-Vue.use(TimePicker)
+// Vue.use(TimeSelect)
+// Vue.use(TimePicker)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Icon)
-
-
 
 
 Vue.use(Input)
@@ -91,7 +87,6 @@ Vue.use(FormItem)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Button)
-
 Vue.use(Dialog)
 Vue.use(Popover)
 

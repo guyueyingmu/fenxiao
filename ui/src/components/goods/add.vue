@@ -146,6 +146,8 @@
                 <el-button @click="resetForm('form')">重置</el-button>
             </el-form-item>
         </el-form>
+
+   
     </div>
 </template>
 <script>
@@ -162,7 +164,7 @@ export default {
     data() {
         return {
             customToolbar: [
-                ['bold', 'italic', 'underline','color'],
+                ['bold', 'italic', 'underline', 'color'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 ['image']
             ],
@@ -293,23 +295,11 @@ export default {
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-        get_cat() {
-            let url = '/admin/goodscat/get_list',
-                vm = this;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.cat_list = res.data.list;
-                } else {
-                    vm.handleError(res)
-                }
-
-            })
-
-        }
+   
     },
 
     created() {
-        this.get_cat();
+        // this.get_cat();
         this.setBreadcrumb(['商品', '增加商品'])
 
 
