@@ -53,13 +53,14 @@
             </el-table-column>
             <el-table-column prop="sort" label="排序" width="100"></el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
-            <el-table-column label="操作" width="120" fixed="right"  align="center">
+            <el-table-column label="操作" width="120" fixed="right" align="center">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="goto('goods_edit/id/'+scope.row.id)">编辑</el-button>
-                    <el-button type="text" size="small" >删除</el-button>
+                    <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
+
     </div>
 </template>
 <script>
@@ -72,7 +73,7 @@ export default {
             formInline: {
                 goods_type: '',
                 goods_name: '',
-                status: ''
+                status: 1
 
             },
             list: []
@@ -85,7 +86,7 @@ export default {
         onSubmit() {
 
         },
-     
+
         get_list() {
             let url = '/admin/goodsall/get_list',
                 vm = this;
@@ -98,8 +99,39 @@ export default {
                 }
                 vm.loading = false;
             })
+        },
+        onRemove(index) {
+            let vm = this;
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                vm.removeData(index)
 
+            }).catch(() => {
+            });
+
+        },
+        removeData(index) {
+            let _data = this.list[index]
+            let url = '/admin/goodsall/del/good_id/' + _data.id,
+                vm = this;
+            vm.loading = true;
+            this.apiGet(url).then(function(res) {
+                if (res.code) {
+                   vm.list.splice(index,1)
+                    vm.$message({
+                        type: 'success',
+                        message: res.msg
+                    });
+                } else {
+                    vm.handleError(res)
+                }
+                vm.loading = false;
+            })
         }
+
     },
     created() {
         this.get_list();
