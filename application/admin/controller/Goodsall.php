@@ -228,6 +228,7 @@ class Goodsall extends Base
                     $list[] = ['good_id' => $data['id'], 'img_url' => $v['img_url'], 'add_time' => time()];
                 }
             }
+            $banner_res = [];
             if($list){
                 $banner_res = $good_banner->saveAll($list);
             }
