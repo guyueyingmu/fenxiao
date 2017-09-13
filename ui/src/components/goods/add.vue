@@ -152,11 +152,11 @@
 import { mapActions } from "vuex";
 import http from '../../assets/js/http'
 import { VueEditor } from 'vue2-editor'
-import { Upload } from 'element-ui'
+// import { Upload } from 'element-ui'
 export default {
     mixins: [http],
     components: {
-        "el-upload": Upload,
+        // "el-upload": Upload,
         VueEditor
     },
     data() {
