@@ -6,7 +6,7 @@
         <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="商品小图" prop="good_img">
                 <div class="red">尺寸为 320 * 320 正方形</div>
-                <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/*" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.good_img" :src="form.good_img" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -14,7 +14,7 @@
 
             <el-form-item label="商品轮播图">
                 <div class="red">尺寸为 640 * 320 长方形</div>
-                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/*" :file-list="banner_imgFileList" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :file-list="banner_imgFileList" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
@@ -45,8 +45,7 @@
                 <el-col :span="12">
                     <el-form-item label="商品分类">
                         <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
-                            <el-option label="区域一" value="1"></el-option>
-                            <el-option label="区域二" value="2"></el-option>
+                            <el-option v-for="item in cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -94,13 +93,13 @@
                 <el-col :span="12">
 
                     <el-form-item label="参与分销" v-if="form.good_type < 4">
-                        <el-radio-group v-model="form.distribution" placeholder="参与分销">
+                        <el-radio-group v-model="form.distribution" placeholder="积分类商品不参与分销，参与分销的必须是现金支付的商品">
                             <el-radio :label="1">参与</el-radio>
                             <el-radio :label="2">不参与</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="积分兑换" v-if="form.good_type >= 4">
-                        <el-input v-model="form.credits" placeholder="积分兑换" :maxlength="10"></el-input>
+                        <el-input v-model="form.credits" placeholder="积分类商品时必填" :maxlength="10"></el-input>
                     </el-form-item>
 
                 </el-col>
@@ -113,7 +112,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="赠送积分">
-                        <el-input v-model="form.presenter_credits" placeholder="赠送积分" :maxlength="10"></el-input>
+                        <el-input v-model="form.presenter_credits" placeholder="购买该商品赠送积分" :maxlength="10"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -122,7 +121,7 @@
 
                 <el-col :span="12">
                     <el-form-item label="排序">
-                        <el-input v-model="form.sort" placeholder="排序 0 - 999" :maxlength="3"></el-input>
+                        <el-input v-model="form.sort" placeholder="请输入0~999之间整数，数字越大排序越前" :maxlength="3"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -138,7 +137,8 @@
                 <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="10"></el-input>
             </el-form-item>
             <el-form-item label="商品详情">
-                <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input>
+                <!-- <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input> -->
+                <vue-editor v-model="form.detail" :editorToolbar2="customToolbar"></vue-editor>
             </el-form-item>
             <div style="height:40px;"></div>
             <el-form-item label-width="40%">
@@ -151,17 +151,25 @@
 <script>
 import { mapActions } from "vuex";
 import http from '../../assets/js/http'
+import { VueEditor } from 'vue2-editor'
 import { Upload } from 'element-ui'
 export default {
     mixins: [http],
     components: {
-        "el-upload": Upload
+        "el-upload": Upload,
+        VueEditor
     },
     data() {
         return {
+            customToolbar: [
+                ['bold', 'italic', 'underline','color'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['image']
+            ],
             dialogVisible: false,
             dialogImageUrl: '',
             banner_imgFileList: [],
+            cat_list: [],
             form: {
                 good_img: '',
                 banner_img: [],
@@ -212,7 +220,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            setB: 'setBreadcrumb'
+            setBreadcrumb: 'setBreadcrumb'
         }),
 
         handleRemove(file, fileList) {
@@ -220,7 +228,7 @@ export default {
         },
         handlePictureSuccess(res, fileList) {
             if (res.code == 1) {
-                let _d = { url: res.data.img_path,id:'',img_url: res.data.img_path, is_show: 1 }
+                let _d = { url: res.data.img_path, id: '', img_url: res.data.img_path, is_show: 1 }
                 this.banner_imgFileList.push(_d)
                 this.form.banner_img.push(_d)
             }
@@ -239,19 +247,30 @@ export default {
             }
         },
         beforeAvatarUpload(file) {
-
+            const isJPG = file.type === 'image/jpeg';
+            const isPNG = file.type === 'image/png';
+            let isTypeOk = false;
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
+                this.$message.error('上传图片大小不能超过 2MB!');
             }
-            return isLt2M;
+
+            if (!isPNG && !isJPG) {
+                this.$message.error('上传图片只能是 PNG 或 JPG 格式!');
+
+            } else {
+                isTypeOk = true
+            }
+
+            return isLt2M && isTypeOk;
         },
         submitForm(formName) {
             let url = '/admin/goodsall/add',
                 data = this.form,
                 vm = this;
             this.apiPost(url, data).then(function(res) {
-                if (res.codo) {
+                if (res.code) {
+                    vm.$message.success('添加成功');
 
                 } else {
                     vm.handleError(res)
@@ -273,12 +292,25 @@ export default {
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
+        },
+        get_cat() {
+            let url = '/admin/goodscat/get_list',
+                vm = this;
+            this.apiGet(url).then(function(res) {
+                if (res.code) {
+                    vm.cat_list = res.data.list;
+                } else {
+                    vm.handleError(res)
+                }
+
+            })
+
         }
     },
 
     created() {
-
-        this.setB(['商品', '增加商品'])
+        this.get_cat();
+        this.setBreadcrumb(['商品', '增加商品'])
 
 
     }
