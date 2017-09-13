@@ -47,10 +47,12 @@ class Goodscat extends Base
         
         $result = [
             "list" => $list,
-            "total" => $total,
-            "total_page" => $total_page,
-            "limit" => $limit,
-            "current_page" => $page,
+            "pages" => [
+                "total" => $total,
+                "total_page" => $total_page,
+                "limit" => $limit,
+                "current_page" => $page,
+            ]            
         ];
         
         $this->success("成功", "", $result);
