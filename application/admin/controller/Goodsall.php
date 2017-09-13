@@ -72,7 +72,12 @@ class Goodsall extends Base
      * @return string
      */
     public function add(){
-        $data = input('post.');
+        $data = input('post.', '', 'trim');
+        
+        if(in_array($data['good_type'],[4, 5])){
+            $data['distribution'] = 2;
+        }
+        
         $validate_res = $this->validate($data, "Goods");
         if(true !== $validate_res){
             // 验证失败 输出错误信息
@@ -198,10 +203,14 @@ class Goodsall extends Base
      * ....
      */
     public function edit(){
-        $data = input('post.');
+        $data = input('post.', '', 'trim');
         
         if(!isset($data['id']) || !$data['id']){
             $this->error("参数错误");
+        }
+        
+        if(in_array($data['good_type'],[4, 5])){
+            $data['distribution'] = 2;
         }
         
         $validate_res = $this->validate($data, "Goods");

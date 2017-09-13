@@ -46,14 +46,21 @@ function getThumbUrl($img) {
 /**
  * 计算分销商获佣金额
  * @param float $amount 商品总额
+ * @param int $level 分销等级
  */
-function get_earn_amount($amount){
+function get_earn_amount($amount, $level = 1){
     if($amount <= 0){
         return 0;
     }
-    $earn1 = $amount * config('distribution_first_percent')/100;
-    $earn2 = $earn1 * (config('platform_service_percent') + config('platform_maintain_percent') + config('tax_percent'))/100;
-    $earn = $earn1 - $earn2;
+    if($level == 1){
+        $earn1 = $amount * (config('distribution_first_percent')/100);
+        $earn2 = $earn1 * ((config('platform_service_percent') + config('platform_maintain_percent') + config('tax_percent'))/100);
+        $earn = $earn1 - $earn2;
+    }else{
+        $earn1 = $amount * (config('distribution_first_percent')/100) * (config('distribution_second_percent')/100);
+        $earn2 = $earn1 * ((config('platform_service_percent') + config('tax_percent'))/100);
+        $earn = $earn1 - $earn2;
+    }
     
     return $earn;
 }
