@@ -17,6 +17,10 @@ class Base extends Controller
                 $this->redirect($url);
             }
         }
+        
+        //配置信息
+        $config = db("Config")->column("c_name, c_value");
+        config($config);
     }
     
     /**

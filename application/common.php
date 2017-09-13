@@ -42,3 +42,18 @@ function getThumbUrl($img) {
 
     return $thumb;
 }
+
+/**
+ * 计算分销商获佣金额
+ * @param float $amount 商品总额
+ */
+function get_earn_amount($amount){
+    if($amount <= 0){
+        return 0;
+    }
+    $earn1 = $amount * config('distribution_first_percent')/100;
+    $earn2 = $earn1 * (config('platform_service_percent') + config('platform_maintain_percent') + config('tax_percent'))/100;
+    $earn = $earn1 - $earn2;
+    
+    return $earn;
+}

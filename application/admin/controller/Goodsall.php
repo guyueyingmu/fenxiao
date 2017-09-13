@@ -21,7 +21,7 @@ class Goodsall extends Base
     public function get_list(){
         
         $page = input("param.page", 1, 'intval');
-        $limit = db("Config")->where('c_name','admin_page_limit')->where('c_type','0')->value('c_value');
+        $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
         $cat_id = input("param.cat_id", "", 'intval');
@@ -58,6 +58,7 @@ class Goodsall extends Base
             "list" => $list,
             "total" => $total,
             "total_page" => $total_page,
+            "limit" => $limit,
             "current_page" => $page,
         ];
         
