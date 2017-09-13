@@ -1,15 +1,15 @@
-body{
+body {
     padding: 0;
     margin: 0;
     font-size: 12px;
     line-height: 1.4;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     background: #eee;
 }
 
-.page_heade{
+.page_heade {
     position: relative;
-    .goods_add_btn{
+    .goods_add_btn {
         position: absolute;
         right: 10px;
         top: 0;
@@ -17,39 +17,66 @@ body{
 }
 
 .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
+    border: 1px dashed #aaa;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
+}
+
+.avatar-uploader .el-upload:hover {
     border-color: #20a0ff;
-  }
-  .avatar-uploader-icon {
+}
+
+.avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
     width: 80px;
     height: 80px;
     line-height: 80px;
     text-align: center;
-  }
-  .avatar {
+}
+
+.avatar {
     width: 80px;
     height: 80px;
     display: block;
-  }
+}
 
-  .el-upload.el-upload--picture-card{
+.el-upload.el-upload--picture-card {
     height: 74px;
     width: 148px;
-    line-height:74px;
+    line-height: 74px;
 }
-.layout .el-upload-list--picture-card .el-upload-list__item{
+
+.layout .el-upload-list--picture-card .el-upload-list__item {
     height: 74px;
     width: 148px;
-    line-height:74px;
+    line-height: 74px;
 }
-.red{
-    color: #f00;
+
+.red {
+    color: rgb(229, 89, 172);
+}
+.small{
+    font-size: 80%;
+ 
+}
+.my_error {
+    padding-bottom:1em; 
+    &.is-error {
+        .el-upload--picture-card {
+            border-color: #f00;
+        }
+        .avatar-uploader{
+            .el-upload {
+                border-color: #f00;
+            }
+        }
+    }
+}
+.pagination{
+    display: block;
+    padding: 2em; 
+    text-align: right
 }

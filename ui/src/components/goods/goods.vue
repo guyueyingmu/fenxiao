@@ -3,32 +3,32 @@
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
                 <el-form-item label="商品名/编号">
-                    <el-input v-model="formInline.goods_name" placeholder="商品名/编号" style="width:120px"></el-input>
+                    <el-input v-model="formInline.keyword" placeholder="商品名/编号" style="width:120px"></el-input>
                 </el-form-item>
 
                 <el-form-item label="商品分类">
-                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px">
-                        <el-option label="区域一" :value="1"></el-option>
-                        <el-option label="区域二" :value="2"></el-option>
+                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px" clearable>
+
+                        <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="商品类型">
-                    <el-select v-model="formInline.goods_type" placeholder="商品类型" style="width:120px">
-                        <el-option label="区域一" :value="1"></el-option>
-                        <el-option label="区域二" :value="2"></el-option>
+                    <el-select v-model="formInline.goods_type" placeholder="商品类型" style="width:120px" clearable>
+                        <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="商品状态">
-                    <el-select v-model="formInline.status" placeholder="商品状态" style="width:120px">
+                    <el-select v-model="formInline.status" placeholder="商品状态" style="width:90px" clearable>
                         <el-option label="上架" :value="1"></el-option>
                         <el-option label="下架" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">搜索</el-button>
+                    <el-button type="primary" @click="onSearch()">搜索</el-button>
+                    <el-button type="danger" @click="onReset" v-if="isSearch">清空</el-button>
                 </el-form-item>
             </el-form>
             <el-button type="warning" class="goods_add_btn" @click="goto('goods_add')">添加商品</el-button>
@@ -60,49 +60,82 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pagination">
+
+            <el-pagination v-if="parseInt(pages.total_page,10) > 1"  @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
+            </el-pagination>
+        </div>
 
     </div>
 </template>
 <script>
-import { mapActions } from "vuex";
 import http from '@/assets/js/http'
 export default {
     mixins: [http],
     data() {
         return {
+            isSearch: false,
             formInline: {
                 goods_type: '',
-                goods_name: '',
-                status: 1
-
+                keyword: '',
+                cat_id: '',
+                status: ''
             },
             list: []
         }
     },
     methods: {
-        ...mapActions({
-            setBreadcrumb: 'setBreadcrumb'
-        }),
-        onSubmit() {
-
+        //currentPage 改变时会触发
+        handleCurrentChange(current_paged) {
+        
+            if (this.isSearch) {
+                this.onSearch(current_paged)
+            } else {
+                this.get_list(current_paged)
+            }
+        },
+        //清空
+        onReset() {
+            this.formInline = {
+                goods_type: '',
+                keyword: '',
+                cat_id: '',
+                status: ''
+            }
+            this.get_list(1)
+            this.isSearch = false;
+        },
+        //搜索
+        onSearch(current_paged) {
+          
+            this.isSearch = true;
+            current_paged = current_paged || 1;
+            let searchData = this.formInline
+            this.get_list(current_paged, searchData)
         },
 
-        get_list() {
-            let url = '/admin/goodsall/get_list',
+        //取数据
+        get_list(page, searchData) {
+            page = page || 1;
+            let url = '/admin/goodsall/get_list?page=' + page,
                 vm = this;
+
             vm.loading = true;
-            this.apiGet(url).then(function(res) {
+            this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
+                    vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)
                 }
                 vm.loading = false;
             })
         },
+
+        //删除确认
         onRemove(index) {
             let vm = this;
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -113,6 +146,7 @@ export default {
             });
 
         },
+        //删除
         removeData(index) {
             let _data = this.list[index]
             let url = '/admin/goodsall/del/good_id/' + _data.id,
@@ -120,7 +154,7 @@ export default {
             vm.loading = true;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                   vm.list.splice(index,1)
+                    vm.list.splice(index, 1)
                     vm.$message({
                         type: 'success',
                         message: res.msg
@@ -133,6 +167,7 @@ export default {
         }
 
     },
+    //组件初始化
     created() {
         this.get_list();
         this.setBreadcrumb(['商品', '商品列表'])

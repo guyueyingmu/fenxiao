@@ -50,7 +50,8 @@ import {
   BreadcrumbItem,
   Table,
   TableColumn,
-  Alert
+  Alert,
+  pagination
 } from 'element-ui'
 
 Vue.use(Radio)
@@ -89,6 +90,7 @@ Vue.use(Option)
 Vue.use(Button)
 Vue.use(Dialog)
 Vue.use(Popover)
+Vue.use(pagination)
 
 
 Vue.use(Loading.directive)
