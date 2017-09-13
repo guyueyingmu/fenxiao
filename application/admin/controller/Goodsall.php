@@ -185,7 +185,7 @@ class Goodsall extends Base
         }
         
         $good_info['banner_img'] = $banner_list;
-        exit(json_encode($good_info));
+        
         $this->success('成功', '', $good_info);
     }
     
