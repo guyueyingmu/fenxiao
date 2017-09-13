@@ -56,7 +56,7 @@
         <div id="u470_div" class=""></div>
         <!-- Unnamed () -->
         <div id="u471" class="text" style="visibility: visible;">
-          <p style="font-size:20px;text-align:center;"><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;">订单列表</span></p><p style="font-size:20px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;"><br></span></p><p style="font-size:16px;text-align:left;"><span style="font-family:'应用字体 Regular', '应用字体';">订单编号生成表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID（订单编号主键ID，初始值2208000），生成时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单编号规则</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">年份+订单编号生产表主键ID+（100~999）随机数</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">例： 162208000112 共12位，随着订单编号生产表主键ID的增大，位数也会大</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID，订单编号，订单总额，扣减积分，订单状态（</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:14px;color:#1E1E1E;">待处理</span><span style="font-family:'应用字体 Regular', '应用字体';">，已取消，已发货，已服务，已完成），支付状态（未支付，已支付，已退款，支付失败，退款失败），订单取消原因（1超时未支付，2后台取消），订单来源（1微信），下单用户ID，用户手机，下单时间，支付时间，退费时间，取消时间，完成时间，支付交易号，退款交易号，支付备注，退费备注，收货人，收货人手机，收货人地址，订单分成处理（默认1未处理，2已处理），支付方式（微信支付，线下支付，积分支付）</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单商品表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">id，订单编号，商品编号，商品小图标，商品名称，商品分类，积分扣减，购买单价，购买数量，参与分销，商品类型，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">收货人信息表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID，收货人，收货人电话，省份，城市，详细地址，添加时间，用户ID</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单发货记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID, 订单编号，后台操作人名称，发货时间，配送方式（1上门自提、2快递、3其他），快递编号，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单服务记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID, 订单编号，后台操作人名称，服务时间，备注，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">1、全部订单菜单为读取所有的订单</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">2、“点击发货”填写发货后，更改订单表的发货状态为已发货，同时添加订单发货记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">3、“点击服务”确认后，更改订单表的服务状态为已服务，同时添加订单服务记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">4、注意：添加记录进订单表时，如果订单中的商品类型有发货类和服务类的时候，订单的发货状态为 未发货， 服务状态为 未服务</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p>
+          <p style="font-size:20px;text-align:center;"><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;">订单列表</span></p><p style="font-size:20px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;"><br></span></p><p style="font-size:16px;text-align:left;"><span style="font-family:'应用字体 Regular', '应用字体';">订单编号生成表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID（订单编号主键ID，初始值2208000），生成时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单编号规则</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">年份+订单编号生产表主键ID+（100~999）随机数</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">例： 162208000112 共12位，随着订单编号生产表主键ID的增大，位数也会大</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID，订单编号，订单总额，扣减积分，订单状态（</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:14px;color:#1E1E1E;">待处理</span><span style="font-family:'应用字体 Regular', '应用字体';">，已取消，已发货，已服务，已完成），支付状态（未支付，已支付，已退款，支付失败，退款失败），订单取消原因（1超时未支付，2后台取消），订单来源（1微信），下单用户ID，用户手机，下单时间，支付时间，退费时间，取消时间，完成时间，支付交易号，退款交易号，支付备注，退费备注，收货人，收货人手机，收货人地址，订单分成处理（默认1未处理，2已处理），支付方式（微信支付，线下支付，积分支付）</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单商品表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">id，订单编号，商品表ID,商品编号，商品小图标，商品名称，商品分类，积分扣减，购买单价，购买数量，参与分销，商品类型，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">收货人信息表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID，收货人，收货人电话，省份，城市，详细地址，添加时间，用户ID</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单发货记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID, 订单编号，后台操作人名称，发货时间，配送方式（1上门自提、2快递、3其他），快递编号，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">订单服务记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';">ID, 订单编号，后台操作人名称，服务时间，备注，添加时间</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">1、全部订单菜单为读取所有的订单</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">2、“点击发货”填写发货后，更改订单表的发货状态为已发货，同时添加订单发货记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">3、“点击服务”确认后，更改订单表的服务状态为已服务，同时添加订单服务记录表</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">4、注意：添加记录进订单表时，如果订单中的商品类型有发货类和服务类的时候，订单的发货状态为 未发货， 服务状态为 未服务</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p>
         </div>
       </div>
 
@@ -261,10 +261,10 @@
 
         <!-- Unnamed (矩形) -->
         <div id="u513" class="ax_default _形状">
-          <img id="u513_img" class="img " src="images/订单列表/u513.png"/>
+          <div id="u513_div" class=""></div>
           <!-- Unnamed () -->
           <div id="u514" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
           </div>
         </div>
 
@@ -273,43 +273,43 @@
           <div id="u515_div" class=""></div>
           <!-- Unnamed () -->
           <div id="u516" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u517" class="ax_default _形状">
-          <div id="u517_div" class=""></div>
-          <!-- Unnamed () -->
-          <div id="u518" class="text" style="visibility: visible;">
             <p><span style="font-family:'应用字体 Regular', '应用字体';">完成时间</span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
-        <div id="u519" class="ax_default _形状">
-          <img id="u519_img" class="img " src="images/订单列表/u519.png"/>
+        <div id="u517" class="ax_default _形状">
+          <img id="u517_img" class="img " src="images/订单列表/u517.png"/>
           <!-- Unnamed () -->
-          <div id="u520" class="text" style="display: none; visibility: hidden">
+          <div id="u518" class="text" style="display: none; visibility: hidden">
             <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
-        <div id="u521" class="ax_default _形状">
-          <div id="u521_div" class=""></div>
+        <div id="u519" class="ax_default _形状">
+          <div id="u519_div" class=""></div>
           <!-- Unnamed () -->
-          <div id="u522" class="text" style="visibility: visible;">
+          <div id="u520" class="text" style="visibility: visible;">
             <p><span style="font-family:'应用字体 Regular', '应用字体';">用户手机</span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
+        <div id="u521" class="ax_default _形状">
+          <img id="u521_img" class="img " src="images/订单列表/u521.png"/>
+          <!-- Unnamed () -->
+          <div id="u522" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">13980807777</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
         <div id="u523" class="ax_default _形状">
-          <img id="u523_img" class="img " src="images/订单列表/u523.png"/>
+          <div id="u523_div" class=""></div>
           <!-- Unnamed () -->
           <div id="u524" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">13980807777</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
           </div>
         </div>
 
@@ -318,7 +318,7 @@
           <div id="u525_div" class=""></div>
           <!-- Unnamed () -->
           <div id="u526" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
           </div>
         </div>
 
@@ -327,16 +327,16 @@
           <div id="u527_div" class=""></div>
           <!-- Unnamed () -->
           <div id="u528" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
         <div id="u529" class="ax_default _形状">
-          <div id="u529_div" class=""></div>
+          <img id="u529_img" class="img " src="images/订单列表/u529.png"/>
           <!-- Unnamed () -->
           <div id="u530" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
           </div>
         </div>
 
@@ -345,34 +345,34 @@
           <img id="u531_img" class="img " src="images/订单列表/u531.png"/>
           <!-- Unnamed () -->
           <div id="u532" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u533" class="ax_default _形状">
-          <img id="u533_img" class="img " src="images/订单列表/u533.png"/>
-          <!-- Unnamed () -->
-          <div id="u534" class="text" style="visibility: visible;">
             <p><span style="font-family:'应用字体 Regular', '应用字体';">微信</span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
-        <div id="u535" class="ax_default _形状">
-          <img id="u535_img" class="img " src="images/订单列表/u531.png"/>
+        <div id="u533" class="ax_default _形状">
+          <img id="u533_img" class="img " src="images/订单列表/u529.png"/>
           <!-- Unnamed () -->
-          <div id="u536" class="text" style="visibility: visible;">
+          <div id="u534" class="text" style="visibility: visible;">
             <p><span style="font-family:'应用字体 Regular', '应用字体';">待处理</span></p>
           </div>
         </div>
 
         <!-- Unnamed (矩形) -->
+        <div id="u535" class="ax_default _形状">
+          <div id="u535_div" class=""></div>
+          <!-- Unnamed () -->
+          <div id="u536" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
         <div id="u537" class="ax_default _形状">
-          <div id="u537_div" class=""></div>
+          <img id="u537_img" class="img " src="images/订单列表/u537.png"/>
           <!-- Unnamed () -->
           <div id="u538" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">微信支付</span></p>
           </div>
         </div>
 
@@ -381,7 +381,7 @@
           <img id="u539_img" class="img " src="images/订单列表/u539.png"/>
           <!-- Unnamed () -->
           <div id="u540" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">微信支付</span></p>
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情&nbsp; &nbsp; 取消订单</span></p>
           </div>
         </div>
       </div>
@@ -734,7 +734,7 @@
 
       <!-- Unnamed (矩形) -->
       <div id="u618" class="ax_default _形状">
-        <img id="u618_img" class="img " src="images/订单列表/u533.png"/>
+        <img id="u618_img" class="img " src="images/订单列表/u531.png"/>
         <!-- Unnamed () -->
         <div id="u619" class="text" style="display: none; visibility: hidden">
           <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
@@ -1615,7 +1615,7 @@
 
       <!-- Unnamed (矩形) -->
       <div id="u812" class="ax_default _形状">
-        <img id="u812_img" class="img " src="images/订单列表/u812.png"/>
+        <img id="u812_img" class="img " src="images/订单列表/u539.png"/>
         <!-- Unnamed () -->
         <div id="u813" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情&nbsp; &nbsp; 取消订单</span></p>
@@ -2077,7 +2077,7 @@
 
         <!-- Unnamed (矩形) -->
         <div id="u915" class="ax_default _形状">
-          <img id="u915_img" class="img " src="images/订单列表/u519.png"/>
+          <img id="u915_img" class="img " src="images/订单列表/u517.png"/>
           <!-- Unnamed () -->
           <div id="u916" class="text" style="display: none; visibility: hidden">
             <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
@@ -2095,7 +2095,7 @@
 
         <!-- Unnamed (矩形) -->
         <div id="u919" class="ax_default _形状">
-          <img id="u919_img" class="img " src="images/订单列表/u523.png"/>
+          <img id="u919_img" class="img " src="images/订单列表/u521.png"/>
           <!-- Unnamed () -->
           <div id="u920" class="text" style="visibility: visible;">
             <p><span style="font-family:'应用字体 Regular', '应用字体';">13980807777</span></p>
@@ -3168,7 +3168,7 @@
 
       <!-- Unnamed (水平线) -->
       <div id="u1155" class="ax_default _水平线">
-        <img id="u1155_img" class="img " src="images/订单列表/u652.png"/>
+        <img id="u1155_img" class="img " src="images/订单列表/u1155.png"/>
         <!-- Unnamed () -->
         <div id="u1156" class="text" style="display: none; visibility: hidden">
           <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
@@ -3177,19 +3177,19 @@
 
       <!-- Unnamed (矩形) -->
       <div id="u1157" class="ax_default _形状">
-        <div id="u1157_div" class=""></div>
+        <img id="u1157_img" class="img " src="images/订单列表/u654.png"/>
         <!-- Unnamed () -->
-        <div id="u1158" class="text" style="display: none; visibility: hidden">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        <div id="u1158" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">确定取消</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1159" class="ax_default _一级标题">
-        <div id="u1159_div" class=""></div>
+      <div id="u1159" class="ax_default _形状">
+        <img id="u1159_img" class="img " src="images/订单列表/u668.png"/>
         <!-- Unnamed () -->
         <div id="u1160" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">服务员：</span></p>
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">取消</span></p>
         </div>
       </div>
 
@@ -3198,104 +3198,101 @@
         <div id="u1161_div" class=""></div>
         <!-- Unnamed () -->
         <div id="u1162" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">服务时间：</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (下拉列表框) -->
-      <div id="u1163" class="ax_default _下拉列表框">
-        <select id="u1163_input" class="text_sketch">
-          <option selected value="2016-08-27 10:50:30">2016-08-27 10:50:30</option>
-        </select>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1164" class="ax_default box_1">
-        <div id="u1164_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1165" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;李四</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1166" class="ax_default _一级标题">
-        <div id="u1166_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1167" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">备注：</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1168" class="ax_default box_1">
-        <div id="u1168_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1169" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;李四</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1170" class="ax_default _形状">
-        <img id="u1170_img" class="img " src="images/订单列表/u654.png"/>
-        <!-- Unnamed () -->
-        <div id="u1171" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">确定取消</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1172" class="ax_default _形状">
-        <img id="u1172_img" class="img " src="images/订单列表/u668.png"/>
-        <!-- Unnamed () -->
-        <div id="u1173" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">取消</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1174" class="ax_default _一级标题">
-        <div id="u1174_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1175" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">12</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1176" class="ax_default _形状">
-        <div id="u1176_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1177" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;订单信息</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1178" class="ax_default _形状">
-        <div id="u1178_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1179" class="text" style="display: none; visibility: hidden">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1180" class="ax_default _一级标题">
-        <div id="u1180_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1181" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单编号：1234</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1182" class="ax_default _一级标题">
-        <div id="u1182_div" class=""></div>
+      <div id="u1163" class="ax_default _一级标题">
+        <div id="u1163_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1183" class="text" style="visibility: visible;">
+        <div id="u1164" class="text" style="visibility: visible;">
           <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">下单时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1165" class="ax_default _一级标题">
+        <div id="u1165_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1166" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">下单用户：1234</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1167" class="ax_default _一级标题">
+        <div id="u1167_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1168" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">用户手机：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">13980807777</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1169" class="ax_default box_1">
+        <div id="u1169_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1170" class="text" style="visibility: visible;">
+          <p style="font-size:13px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:13px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">1、取消成功后， 订单状态改为已取消</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:20px;"><span style="font-family:'应用字体 Regular', '应用字体';font-size:16px;color:#FF0000;">确定取消后需要写入“操作日志”表</span><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;">（详见操作日志）</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (组合) -->
+      <div id="u1171" class="ax_default">
+
+        <!-- Unnamed (矩形) -->
+        <div id="u1172" class="ax_default _形状">
+          <div id="u1172_div" class=""></div>
+          <!-- Unnamed () -->
+          <div id="u1173" class="text" style="display: none; visibility: hidden">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (水平线) -->
+        <div id="u1174" class="ax_default _水平线">
+          <img id="u1174_img" class="img " src="images/商品列表/u177.png"/>
+          <!-- Unnamed () -->
+          <div id="u1175" class="text" style="display: none; visibility: hidden">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u1176" class="ax_default _一级标题">
+          <div id="u1176_div" class=""></div>
+          <!-- Unnamed () -->
+          <div id="u1177" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">提示</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u1178" class="ax_default _一级标题">
+          <div id="u1178_div" class=""></div>
+          <!-- Unnamed () -->
+          <div id="u1179" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">取消成功！</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u1180" class="ax_default _形状">
+          <img id="u1180_img" class="img " src="images/商品列表/u183.png"/>
+          <!-- Unnamed () -->
+          <div id="u1181" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">确定</span></p>
+          </div>
+        </div>
+
+        <!-- Unnamed (矩形) -->
+        <div id="u1182" class="ax_default _形状">
+          <img id="u1182_img" class="img " src="images/商品列表/u185.png"/>
+          <!-- Unnamed () -->
+          <div id="u1183" class="text" style="visibility: visible;">
+            <p><span style="font-family:'应用字体 Regular', '应用字体';">取消</span></p>
+          </div>
         </div>
       </div>
 
@@ -3304,551 +3301,1087 @@
         <div id="u1184_div" class=""></div>
         <!-- Unnamed () -->
         <div id="u1185" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">下单用户：1234</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1186" class="ax_default _一级标题">
-        <div id="u1186_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1187" class="text" style="visibility: visible;">
-          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">用户手机：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">13980807777</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1188" class="ax_default box_1">
-        <div id="u1188_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1189" class="text" style="visibility: visible;">
-          <p style="font-size:13px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:13px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">1、取消成功后， 订单状态改为已取消</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (组合) -->
-      <div id="u1190" class="ax_default">
-
-        <!-- Unnamed (矩形) -->
-        <div id="u1191" class="ax_default _形状">
-          <div id="u1191_div" class=""></div>
-          <!-- Unnamed () -->
-          <div id="u1192" class="text" style="display: none; visibility: hidden">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (水平线) -->
-        <div id="u1193" class="ax_default _水平线">
-          <img id="u1193_img" class="img " src="images/商品列表/u177.png"/>
-          <!-- Unnamed () -->
-          <div id="u1194" class="text" style="display: none; visibility: hidden">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u1195" class="ax_default _一级标题">
-          <div id="u1195_div" class=""></div>
-          <!-- Unnamed () -->
-          <div id="u1196" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">提示</span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u1197" class="ax_default _一级标题">
-          <div id="u1197_div" class=""></div>
-          <!-- Unnamed () -->
-          <div id="u1198" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">取消成功！</span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u1199" class="ax_default _形状">
-          <img id="u1199_img" class="img " src="images/商品列表/u183.png"/>
-          <!-- Unnamed () -->
-          <div id="u1200" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">确定</span></p>
-          </div>
-        </div>
-
-        <!-- Unnamed (矩形) -->
-        <div id="u1201" class="ax_default _形状">
-          <img id="u1201_img" class="img " src="images/商品列表/u185.png"/>
-          <!-- Unnamed () -->
-          <div id="u1202" class="text" style="visibility: visible;">
-            <p><span style="font-family:'应用字体 Regular', '应用字体';">取消</span></p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1203" class="ax_default _一级标题">
-        <div id="u1203_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1204" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">商品评论</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1205" class="ax_default _形状">
-        <div id="u1205_div" class=""></div>
+      <div id="u1186" class="ax_default _形状">
+        <div id="u1186_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1206" class="text" style="visibility: visible;">
+        <div id="u1187" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单总额</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1207" class="ax_default _形状">
-        <img id="u1207_img" class="img " src="images/订单列表/u509.png"/>
+      <div id="u1188" class="ax_default _形状">
+        <img id="u1188_img" class="img " src="images/订单列表/u509.png"/>
         <!-- Unnamed () -->
-        <div id="u1208" class="text" style="visibility: visible;">
+        <div id="u1189" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">$380</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1209" class="ax_default _形状">
-        <img id="u1209_img" class="img " src="images/订单列表/u513.png"/>
+      <div id="u1190" class="ax_default _形状">
+        <div id="u1190_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1210" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1211" class="ax_default _形状">
-        <div id="u1211_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1212" class="text" style="visibility: visible;">
+        <div id="u1191" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1213" class="ax_default _形状">
-        <div id="u1213_div" class=""></div>
+      <div id="u1192" class="ax_default _形状">
+        <div id="u1192_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1214" class="text" style="visibility: visible;">
+        <div id="u1193" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">完成时间</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1215" class="ax_default _形状">
-        <div id="u1215_div" class=""></div>
+      <div id="u1194" class="ax_default _形状">
+        <div id="u1194_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1216" class="text" style="visibility: visible;">
+        <div id="u1195" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1217" class="ax_default _形状">
-        <div id="u1217_div" class=""></div>
+      <div id="u1196" class="ax_default _形状">
+        <div id="u1196_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1218" class="text" style="visibility: visible;">
+        <div id="u1197" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1219" class="ax_default _形状">
-        <div id="u1219_div" class=""></div>
+      <div id="u1198" class="ax_default _形状">
+        <div id="u1198_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1220" class="text" style="visibility: visible;">
+        <div id="u1199" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1221" class="ax_default _形状">
-        <img id="u1221_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1200" class="ax_default _形状">
+        <img id="u1200_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1222" class="text" style="visibility: visible;">
+        <div id="u1201" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1223" class="ax_default _形状">
-        <img id="u1223_img" class="img " src="images/订单列表/u533.png"/>
+      <div id="u1202" class="ax_default _形状">
+        <img id="u1202_img" class="img " src="images/订单列表/u531.png"/>
         <!-- Unnamed () -->
-        <div id="u1224" class="text" style="visibility: visible;">
+        <div id="u1203" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">微信</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1225" class="ax_default _形状">
-        <img id="u1225_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1204" class="ax_default _形状">
+        <img id="u1204_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1226" class="text" style="visibility: visible;">
+        <div id="u1205" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">待处理</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1227" class="ax_default _形状">
-        <div id="u1227_div" class=""></div>
+      <div id="u1206" class="ax_default _形状">
+        <div id="u1206_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1228" class="text" style="visibility: visible;">
+        <div id="u1207" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1229" class="ax_default _形状">
-        <img id="u1229_img" class="img " src="images/订单列表/u539.png"/>
+      <div id="u1208" class="ax_default _形状">
+        <img id="u1208_img" class="img " src="images/订单列表/u537.png"/>
         <!-- Unnamed () -->
-        <div id="u1230" class="text" style="visibility: visible;">
+        <div id="u1209" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">微信支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1231" class="ax_default _形状">
-        <div id="u1231_div" class=""></div>
+      <div id="u1210" class="ax_default _形状">
+        <div id="u1210_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1232" class="text" style="visibility: visible;">
+        <div id="u1211" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单总额</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1233" class="ax_default _形状">
-        <img id="u1233_img" class="img " src="images/订单列表/u509.png"/>
+      <div id="u1212" class="ax_default _形状">
+        <img id="u1212_img" class="img " src="images/订单列表/u509.png"/>
         <!-- Unnamed () -->
-        <div id="u1234" class="text" style="visibility: visible;">
+        <div id="u1213" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">$380</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1235" class="ax_default _形状">
-        <div id="u1235_div" class=""></div>
+      <div id="u1214" class="ax_default _形状">
+        <div id="u1214_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1236" class="text" style="visibility: visible;">
+        <div id="u1215" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1237" class="ax_default _形状">
-        <div id="u1237_div" class=""></div>
+      <div id="u1216" class="ax_default _形状">
+        <div id="u1216_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1238" class="text" style="visibility: visible;">
+        <div id="u1217" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">完成时间</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1239" class="ax_default _形状">
-        <div id="u1239_div" class=""></div>
+      <div id="u1218" class="ax_default _形状">
+        <div id="u1218_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1240" class="text" style="visibility: visible;">
+        <div id="u1219" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1241" class="ax_default _形状">
-        <div id="u1241_div" class=""></div>
+      <div id="u1220" class="ax_default _形状">
+        <div id="u1220_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1242" class="text" style="visibility: visible;">
+        <div id="u1221" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1243" class="ax_default _形状">
-        <div id="u1243_div" class=""></div>
+      <div id="u1222" class="ax_default _形状">
+        <div id="u1222_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1244" class="text" style="visibility: visible;">
+        <div id="u1223" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1245" class="ax_default _形状">
-        <img id="u1245_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1224" class="ax_default _形状">
+        <img id="u1224_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1246" class="text" style="visibility: visible;">
+        <div id="u1225" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1247" class="ax_default _形状">
-        <img id="u1247_img" class="img " src="images/订单列表/u533.png"/>
+      <div id="u1226" class="ax_default _形状">
+        <img id="u1226_img" class="img " src="images/订单列表/u531.png"/>
         <!-- Unnamed () -->
-        <div id="u1248" class="text" style="visibility: visible;">
+        <div id="u1227" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">微信</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1249" class="ax_default _形状">
-        <img id="u1249_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1228" class="ax_default _形状">
+        <img id="u1228_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1250" class="text" style="visibility: visible;">
+        <div id="u1229" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">待处理</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1251" class="ax_default _形状">
-        <div id="u1251_div" class=""></div>
+      <div id="u1230" class="ax_default _形状">
+        <div id="u1230_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1252" class="text" style="visibility: visible;">
+        <div id="u1231" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1253" class="ax_default _形状">
-        <img id="u1253_img" class="img " src="images/订单列表/u539.png"/>
+      <div id="u1232" class="ax_default _形状">
+        <img id="u1232_img" class="img " src="images/订单列表/u537.png"/>
         <!-- Unnamed () -->
-        <div id="u1254" class="text" style="visibility: visible;">
+        <div id="u1233" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">线下支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1255" class="ax_default _形状">
-        <div id="u1255_div" class=""></div>
+      <div id="u1234" class="ax_default _形状">
+        <div id="u1234_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1256" class="text" style="visibility: visible;">
+        <div id="u1235" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">扣减积分</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1257" class="ax_default _形状">
-        <img id="u1257_img" class="img " src="images/订单列表/u509.png"/>
+      <div id="u1236" class="ax_default _形状">
+        <img id="u1236_img" class="img " src="images/订单列表/u509.png"/>
         <!-- Unnamed () -->
-        <div id="u1258" class="text" style="visibility: visible;">
+        <div id="u1237" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">380</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1259" class="ax_default _形状">
-        <img id="u1259_img" class="img " src="images/订单列表/u513.png"/>
+      <div id="u1238" class="ax_default _形状">
+        <div id="u1238_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1260" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1261" class="ax_default _形状">
-        <div id="u1261_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1262" class="text" style="visibility: visible;">
+        <div id="u1239" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1263" class="ax_default _形状">
-        <div id="u1263_div" class=""></div>
+      <div id="u1240" class="ax_default _形状">
+        <div id="u1240_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1264" class="text" style="visibility: visible;">
+        <div id="u1241" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">完成时间</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1265" class="ax_default _形状">
-        <div id="u1265_div" class=""></div>
+      <div id="u1242" class="ax_default _形状">
+        <div id="u1242_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1266" class="text" style="visibility: visible;">
+        <div id="u1243" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1267" class="ax_default _形状">
-        <div id="u1267_div" class=""></div>
+      <div id="u1244" class="ax_default _形状">
+        <div id="u1244_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1268" class="text" style="visibility: visible;">
+        <div id="u1245" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1269" class="ax_default _形状">
-        <div id="u1269_div" class=""></div>
+      <div id="u1246" class="ax_default _形状">
+        <div id="u1246_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1270" class="text" style="visibility: visible;">
+        <div id="u1247" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1271" class="ax_default _形状">
-        <img id="u1271_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1248" class="ax_default _形状">
+        <img id="u1248_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1272" class="text" style="visibility: visible;">
+        <div id="u1249" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1273" class="ax_default _形状">
-        <img id="u1273_img" class="img " src="images/订单列表/u533.png"/>
+      <div id="u1250" class="ax_default _形状">
+        <img id="u1250_img" class="img " src="images/订单列表/u531.png"/>
         <!-- Unnamed () -->
-        <div id="u1274" class="text" style="visibility: visible;">
+        <div id="u1251" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">微信</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1275" class="ax_default _形状">
-        <img id="u1275_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1252" class="ax_default _形状">
+        <img id="u1252_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1276" class="text" style="visibility: visible;">
+        <div id="u1253" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">待处理</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1277" class="ax_default _形状">
-        <div id="u1277_div" class=""></div>
+      <div id="u1254" class="ax_default _形状">
+        <div id="u1254_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1278" class="text" style="visibility: visible;">
+        <div id="u1255" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1279" class="ax_default _形状">
-        <img id="u1279_img" class="img " src="images/订单列表/u539.png"/>
+      <div id="u1256" class="ax_default _形状">
+        <img id="u1256_img" class="img " src="images/订单列表/u537.png"/>
         <!-- Unnamed () -->
-        <div id="u1280" class="text" style="visibility: visible;">
+        <div id="u1257" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">积分支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1281" class="ax_default _形状">
-        <div id="u1281_div" class=""></div>
+      <div id="u1258" class="ax_default _形状">
+        <div id="u1258_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1282" class="text" style="visibility: visible;">
+        <div id="u1259" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">扣减积分</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1283" class="ax_default _形状">
-        <img id="u1283_img" class="img " src="images/订单列表/u509.png"/>
+      <div id="u1260" class="ax_default _形状">
+        <img id="u1260_img" class="img " src="images/订单列表/u509.png"/>
         <!-- Unnamed () -->
-        <div id="u1284" class="text" style="visibility: visible;">
+        <div id="u1261" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">380</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1285" class="ax_default _形状">
-        <img id="u1285_img" class="img " src="images/订单列表/u513.png"/>
+      <div id="u1262" class="ax_default _形状">
+        <div id="u1262_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1286" class="text" style="visibility: visible;">
-          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情</span></p>
-        </div>
-      </div>
-
-      <!-- Unnamed (矩形) -->
-      <div id="u1287" class="ax_default _形状">
-        <div id="u1287_div" class=""></div>
-        <!-- Unnamed () -->
-        <div id="u1288" class="text" style="visibility: visible;">
+        <div id="u1263" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">操作</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1289" class="ax_default _形状">
-        <div id="u1289_div" class=""></div>
+      <div id="u1264" class="ax_default _形状">
+        <div id="u1264_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1290" class="text" style="visibility: visible;">
+        <div id="u1265" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">完成时间</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1291" class="ax_default _形状">
-        <div id="u1291_div" class=""></div>
+      <div id="u1266" class="ax_default _形状">
+        <div id="u1266_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1292" class="text" style="visibility: visible;">
+        <div id="u1267" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1293" class="ax_default _形状">
-        <div id="u1293_div" class=""></div>
+      <div id="u1268" class="ax_default _形状">
+        <div id="u1268_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1294" class="text" style="visibility: visible;">
+        <div id="u1269" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1295" class="ax_default _形状">
-        <div id="u1295_div" class=""></div>
+      <div id="u1270" class="ax_default _形状">
+        <div id="u1270_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1296" class="text" style="visibility: visible;">
+        <div id="u1271" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1297" class="ax_default _形状">
-        <img id="u1297_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1272" class="ax_default _形状">
+        <img id="u1272_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1298" class="text" style="visibility: visible;">
+        <div id="u1273" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">已支付</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1299" class="ax_default _形状">
-        <img id="u1299_img" class="img " src="images/订单列表/u533.png"/>
+      <div id="u1274" class="ax_default _形状">
+        <img id="u1274_img" class="img " src="images/订单列表/u531.png"/>
         <!-- Unnamed () -->
-        <div id="u1300" class="text" style="visibility: visible;">
+        <div id="u1275" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">微信</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1301" class="ax_default _形状">
-        <img id="u1301_img" class="img " src="images/订单列表/u531.png"/>
+      <div id="u1276" class="ax_default _形状">
+        <img id="u1276_img" class="img " src="images/订单列表/u529.png"/>
         <!-- Unnamed () -->
-        <div id="u1302" class="text" style="visibility: visible;">
+        <div id="u1277" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">待处理</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1303" class="ax_default _形状">
-        <div id="u1303_div" class=""></div>
+      <div id="u1278" class="ax_default _形状">
+        <div id="u1278_div" class=""></div>
         <!-- Unnamed () -->
-        <div id="u1304" class="text" style="visibility: visible;">
+        <div id="u1279" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">支付方式</span></p>
         </div>
       </div>
 
       <!-- Unnamed (矩形) -->
-      <div id="u1305" class="ax_default _形状">
-        <img id="u1305_img" class="img " src="images/订单列表/u539.png"/>
+      <div id="u1280" class="ax_default _形状">
+        <img id="u1280_img" class="img " src="images/订单列表/u537.png"/>
         <!-- Unnamed () -->
-        <div id="u1306" class="text" style="visibility: visible;">
+        <div id="u1281" class="text" style="visibility: visible;">
           <p><span style="font-family:'应用字体 Regular', '应用字体';">积分支付</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1282" class="ax_default _形状">
+        <img id="u1282_img" class="img " src="images/订单列表/u539.png"/>
+        <!-- Unnamed () -->
+        <div id="u1283" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情&nbsp; &nbsp; 取消订单</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1284" class="ax_default _形状">
+        <img id="u1284_img" class="img " src="images/订单列表/u539.png"/>
+        <!-- Unnamed () -->
+        <div id="u1285" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情&nbsp; &nbsp; 取消订单</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1286" class="ax_default _形状">
+        <img id="u1286_img" class="img " src="images/订单列表/u539.png"/>
+        <!-- Unnamed () -->
+        <div id="u1287" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情&nbsp; &nbsp; 取消订单</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1288" class="ax_default _形状">
+        <div id="u1288_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1289" class="text" style="visibility: visible;">
+          <p style="font-size:18px;text-align:center;"><span style="font-family:'应用字体 Regular', '应用字体';color:#FF0000;">订单详情</span></p><p style="font-size:16px;text-align:left;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">1、点击“订单详情”弹出新标签页</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">2、订单商品列表需要判断，订单类型，如果是积分商品，则不显示商品单价字段显示扣减积分 字段</span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;"><br></span></p><p style="font-size:16px;"><span style="font-family:'应用字体 Regular', '应用字体';"><br></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1290" class="ax_default _形状">
+        <div id="u1290_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1291" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1292" class="ax_default _形状">
+        <div id="u1292_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1293" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1294" class="ax_default _形状">
+        <div id="u1294_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1295" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1296" class="ax_default _形状">
+        <div id="u1296_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1297" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1298" class="ax_default _形状">
+        <div id="u1298_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1299" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1300" class="ax_default _一级标题">
+        <div id="u1300_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1301" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">欢迎你管理员，乔亮</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片) -->
+      <div id="u1302" class="ax_default _图片">
+        <img id="u1302_img" class="img " src="images/订单列表/u1302.png"/>
+        <!-- Unnamed () -->
+        <div id="u1303" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1304" class="ax_default _形状">
+        <div id="u1304_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1305" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单详情</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1306" class="ax_default _一级标题">
+        <div id="u1306_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1307" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1308" class="ax_default _一级标题">
+        <div id="u1308_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1309" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">收货人：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1310" class="ax_default _一级标题">
+        <div id="u1310_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1311" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">收货人地址：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1312" class="ax_default _一级标题">
+        <div id="u1312_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1313" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">张三</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1314" class="ax_default _一级标题">
+        <div id="u1314_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1315" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;广东广州-珠江新城查岗路20号</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1316" class="ax_default _一级标题">
+        <div id="u1316_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1317" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单编号：1234</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1318" class="ax_default _一级标题">
+        <div id="u1318_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1319" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">下单时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1320" class="ax_default _一级标题">
+        <div id="u1320_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1321" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">下单用户：1234</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1322" class="ax_default _一级标题">
+        <div id="u1322_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1323" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">用户手机：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">13980807777</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1324" class="ax_default _形状">
+        <div id="u1324_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1325" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">商品编号</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1326" class="ax_default _形状">
+        <div id="u1326_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1327" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">商品图标</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1328" class="ax_default _形状">
+        <div id="u1328_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1329" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">14567</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1330" class="ax_default _形状">
+        <div id="u1330_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1331" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (图片) -->
+      <div id="u1332" class="ax_default _图片">
+        <img id="u1332_img" class="img " src="images/订单列表/u565.png"/>
+        <!-- Unnamed () -->
+        <div id="u1333" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1334" class="ax_default _形状">
+        <div id="u1334_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1335" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">商品名称</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1336" class="ax_default _形状">
+        <div id="u1336_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1337" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">商品分类</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1338" class="ax_default _形状">
+        <div id="u1338_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1339" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">购买数量</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1340" class="ax_default _形状">
+        <div id="u1340_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1341" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">购买单价</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1342" class="ax_default _形状">
+        <div id="u1342_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1343" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">aa 美白霜</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1344" class="ax_default _形状">
+        <div id="u1344_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1345" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">美白系列</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1346" class="ax_default _形状">
+        <div id="u1346_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1347" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">X1</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1348" class="ax_default _形状">
+        <div id="u1348_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1349" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">￥190</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1350" class="ax_default _一级标题">
+        <div id="u1350_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1351" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">收货人电话：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1352" class="ax_default _一级标题">
+        <div id="u1352_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1353" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">&nbsp;13560089298</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1354" class="ax_default _二级标题">
+        <div id="u1354_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1355" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (水平线) -->
+      <div id="u1356" class="ax_default line">
+        <img id="u1356_img" class="img " src="images/订单列表/u1356.png"/>
+        <!-- Unnamed () -->
+        <div id="u1357" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1358" class="ax_default _一级标题">
+        <div id="u1358_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1359" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单总额：380</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1360" class="ax_default _一级标题">
+        <div id="u1360_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1361" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单状态：待处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1362" class="ax_default _一级标题">
+        <div id="u1362_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1363" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单来源：微信</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1364" class="ax_default _一级标题">
+        <div id="u1364_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1365" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单取消原因：后台取消</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1366" class="ax_default _一级标题">
+        <div id="u1366_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1367" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单分成处理：已处理</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1368" class="ax_default _一级标题">
+        <div id="u1368_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1369" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单取消时间：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1370" class="ax_default _一级标题">
+        <div id="u1370_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1371" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">订单完成时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1372" class="ax_default _一级标题">
+        <div id="u1372_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1373" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">支付状态：已支付</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1374" class="ax_default _一级标题">
+        <div id="u1374_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1375" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">退款时间：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1376" class="ax_default _二级标题">
+        <div id="u1376_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1377" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">支付信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (水平线) -->
+      <div id="u1378" class="ax_default line">
+        <img id="u1378_img" class="img " src="images/订单列表/u1356.png"/>
+        <!-- Unnamed () -->
+        <div id="u1379" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1380" class="ax_default _一级标题">
+        <div id="u1380_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1381" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">积分扣减：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1382" class="ax_default _一级标题">
+        <div id="u1382_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1383" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">支付时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1384" class="ax_default _一级标题">
+        <div id="u1384_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1385" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">支付交易号：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1386" class="ax_default _一级标题">
+        <div id="u1386_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1387" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">退款交易号：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1388" class="ax_default _一级标题">
+        <div id="u1388_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1389" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">支付备注：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1390" class="ax_default _一级标题">
+        <div id="u1390_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1391" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">退款备注：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1392" class="ax_default _二级标题">
+        <div id="u1392_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1393" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">配送信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (水平线) -->
+      <div id="u1394" class="ax_default line">
+        <img id="u1394_img" class="img " src="images/订单列表/u1356.png"/>
+        <!-- Unnamed () -->
+        <div id="u1395" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1396" class="ax_default _一级标题">
+        <div id="u1396_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1397" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">发货员：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1398" class="ax_default _一级标题">
+        <div id="u1398_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1399" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">发货时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1400" class="ax_default _一级标题">
+        <div id="u1400_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1401" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">快递编号：0939859t9358490</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1402" class="ax_default _一级标题">
+        <div id="u1402_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1403" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">配送方式：快递</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1404" class="ax_default _一级标题">
+        <div id="u1404_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1405" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">李四</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1406" class="ax_default _二级标题">
+        <div id="u1406_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1407" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">服务信息</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (水平线) -->
+      <div id="u1408" class="ax_default line">
+        <img id="u1408_img" class="img " src="images/订单列表/u1356.png"/>
+        <!-- Unnamed () -->
+        <div id="u1409" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1410" class="ax_default _一级标题">
+        <div id="u1410_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1411" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">服务员：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1412" class="ax_default _一级标题">
+        <div id="u1412_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1413" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">李四</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1414" class="ax_default _一级标题">
+        <div id="u1414_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1415" class="text" style="visibility: visible;">
+          <p style="font-size:14px;"><span style="font-family:'应用字体 Regular', '应用字体';color:#1E1E1E;">服务时间：</span><span style="font-family:'应用字体 Regular', '应用字体';font-size:13px;">2017-8-26 16:28:12</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1416" class="ax_default _一级标题">
+        <div id="u1416_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1417" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">备注：</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1418" class="ax_default _二级标题">
+        <div id="u1418_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1419" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">订单商品</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (水平线) -->
+      <div id="u1420" class="ax_default line">
+        <img id="u1420_img" class="img " src="images/订单列表/u1356.png"/>
+        <!-- Unnamed () -->
+        <div id="u1421" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1422" class="ax_default _形状">
+        <div id="u1422_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1423" class="text" style="visibility: visible;">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';">扣减积分</span></p>
+        </div>
+      </div>
+
+      <!-- Unnamed (矩形) -->
+      <div id="u1424" class="ax_default _形状">
+        <div id="u1424_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1425" class="text" style="display: none; visibility: hidden">
+          <p><span style="font-family:'应用字体 Regular', '应用字体';"></span></p>
         </div>
       </div>
     </div>
