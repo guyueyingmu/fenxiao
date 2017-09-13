@@ -9,7 +9,7 @@ use think\Validate;
 class Goods extends Validate
 {
     protected $rule = [
-            'good_img'  => 'require',//商品小图
+            'good_img'  => 'require|max:200',//商品小图
             'banner_img' => 'require|array',//商品轮播图
             'brand' => 'max:50',//品牌
             'good_num' => 'max:50',//商品编号
@@ -32,6 +32,7 @@ class Goods extends Validate
     
     protected $message = [
             'good_img.require' => '请上传商品小图',
+            'good_img.max' => '商品小图长度不能超过200',
             'banner_img.require' => '请上传商品轮播图',
             'banner_img.array' => '商品轮播图数据格式不正确',
             'brand.max' => '品牌长度不能超过50',
