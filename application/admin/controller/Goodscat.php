@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Goods;
-//use app\admin\model\GoodsCategory;
+use app\admin\model\GoodsCategory;
 use think\Db;
 
 /**
