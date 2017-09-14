@@ -110,4 +110,12 @@ class Login extends Controller
         
         return json_encode($menu_list);
     }
+    
+    /**
+     * 退出登录
+     */
+    public function log_out(){
+        session(null);
+        $this->redirect('login/index');
+    }
 }

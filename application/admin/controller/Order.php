@@ -13,6 +13,13 @@ class Order extends Base
 {
     //定义当前菜单id
     private static $menu_id = 5;
+    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];
+    private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];
+    private static $order_from = ['', '微信'];
+    private static $cancel_reason = ['', '超时未支付', '后台取消'];
+    private static $distribution_status = ['', '未处理', '已处理'];
+    private static $deliver_method = ['', '上门自提', '快递', '其他'];
+    private static $pay_method = ['', '微信支付', '线下支付', '积分支付'];
     /**
      * 获取列表
      * @return string
@@ -46,6 +53,11 @@ class Order extends Base
             foreach ($list as $k => $v){
                 $list[$k]['add_time'] = date("Y-m-d H:i:s",$v['add_time']);
                 $list[$k]['finish_time'] = $v['finish_time'] ? date("Y-m-d H:i:s",$v['finish_time']) : "";
+                
+                $list[$k]['pay_method_txt'] = self::$pay_method[$v['pay_method']];
+                $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
+                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];
+                $list[$k]['order_from_txt'] = self::$order_from[$v['order_from']];
             }
         }
         $total = Orders::alias("o")
@@ -62,7 +74,7 @@ class Order extends Base
             "current_page" => $page,
             "manage_user" => session("admin.nickname")
         ];
-        exit(json_encode($result));
+//        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     
@@ -71,7 +83,35 @@ class Order extends Base
      * @param int $order_id 订单id
      */
     public function get_order_info(){
+        $order_id = input("param.order_id", "", "intval");
+        if(!$order_id){
+            $this->error("参数错误");
+        }
+        //订单是否存在
+        $order_info = Orders::with('ordersGoods,orderService,orderConsignment')->alias("o")
+                ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
+                ->where('o.id', $order_id)
+                ->field("o.*, u.phone_number, u.nickname")
+                ->find();
+        if(!$order_info){
+            $this->error("订单不存在");
+        }
         
+        $order_info['add_time'] = date("Y-m-d H:i:s", $order_info['add_time']);
+        $order_info['finish_time'] = $order_info['finish_time'] ? date("Y-m-d H:i:s", $order_info['finish_time']) : "";
+        $order_info['pay_time'] = $order_info['pay_time'] ? date("Y-m-d H:i:s", $order_info['pay_time']) : "";
+        
+        $order_info['order_status_txt'] = self::$order_status[$order_info['order_status']];
+        $order_info['order_from_txt'] = self::$order_from[$order_info['order_from']];
+        $order_info['cancel_reason_txt'] = self::$cancel_reason[$order_info['cancel_reason']];
+        $order_info['distribution_status_txt'] = self::$distribution_status[$order_info['distribution_status']];
+        $order_info['pay_status_txt'] = self::$pay_status[$order_info['pay_status']];
+        
+        if($order_info['order_consignment']){
+            $order_info['order_consignment']['deliver_method_txt'] = self::$deliver_method[$order_info['order_consignment']['deliver_method']];
+        }
+//        exit(json_encode($order_info));
+        $this->success("成功", "", $order_info);
     }
     
     /**
@@ -270,7 +310,7 @@ class Order extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台发货操作', 'data' => $data]);
+        $this->add_log(self::$menu_id,['title' => '后台服务操作', 'data' => $data]);
         
         $this->success("发货成功");
     }
@@ -280,7 +320,27 @@ class Order extends Base
      * @param int $order_id 订单id
      */
     public function cancel(){
+        $order_id = input("param.order_id", "", "intval");
+        if(!$order_id){
+            $this->error("参数错误");
+        }
         
+        //订单是否存在
+        $order_info = Orders::get($order_id);
+        if(!$order_info){
+            $this->error("订单不存在");
+        }
+        
+        if($order_info['pay_status'] != 1){
+            $this->error("只有未支付的订单可以取消");
+        }
+        
+        $model = Orders::update(['id' => $order_id, 'order_status' => 4, 'cancel_reason' => 2, 'cancel_time' => time()]);
+                
+        //写日志
+        $this->add_log(self::$menu_id,['title' => '取消订单', 'data' => $model]);
+        
+        $this->success("取消成功");
     }
         
 }

@@ -65,7 +65,7 @@
         },
         methods: {
             submitForm() {
-                let url = 'login/log_in',
+                let url = '/admin/login/log_in',
                     data = this.form
                 this.$http.post(url, data).then(function (res) { console.log(res.body.url);
                     if(res.body.code == 1){
