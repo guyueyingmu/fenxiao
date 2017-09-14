@@ -6,9 +6,14 @@ import actions from './actions'
 import state from './state'
 Vue.use(Vuex)
 
+const getters = {
+    GOODTYPE: state => state.GOODTYPE
+  }
+
 const store = new Vuex.Store({
   state,
   actions,
-  mutations
+  mutations,
+  getters
 });
 export default store;

@@ -14,7 +14,7 @@
 
             <el-form-item label="商品轮播图" prop="banner_img" class="my_error">
                 <div class="red small">尺寸为 640 * 320 长方形</div>
-                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :file-list="form.banner_img" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
@@ -165,6 +165,7 @@ export default {
             ],
             dialogVisible: false,
             dialogImageUrl: '',
+            bannerImg_temp_list:[],
             cat_list: [],
             form: {},
             rules: {
@@ -232,12 +233,24 @@ export default {
         //删除轮播图
         handleRemove(file, fileList) {
             console.log(file, fileList);
+            let _d =   this.form.banner_img;
+            let url = file.url;
+            for(let i = 0;i<_d.length;i++){
+                if(url == _d[i].img_url){
+                    _d[i].is_show = 2;
+                    break 
+                }
+            }
+            this.form.banner_img = _d;
+
+
         },
 
         //轮播图上传成功
         handlePictureSuccess(res, fileList) {
             if (res.code == 1) {
-                let _d = { url: res.data.img_path, id: '', img_url: res.data.img_path, is_show: 1 }
+                this.bannerImg_temp_list.push({url: res.data.img_path})
+                let _d = { id: '', img_url: res.data.img_path, is_show: 1 }
                 this.form.banner_img.push(_d)
             }
         },
@@ -312,10 +325,13 @@ export default {
                 vm = this;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
+                    vm.bannerImg_temp_list = [];
                     let _d = res.data.banner_img;
                     for(let i =0;i<_d.length;i++){
-                    
-                        res.data.banner_img[i].url = _d[i].img_url;
+                        if(_d[i].is_show == 1){
+                            vm.bannerImg_temp_list.push({url:_d[i].img_url})
+                        }
+                        
                     }
                     vm.form = res.data;
                 } else {
