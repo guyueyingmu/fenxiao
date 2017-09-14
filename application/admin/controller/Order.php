@@ -50,10 +50,7 @@ class Order extends Base
                 ->order('o.id DESC')
                 ->select();
         if($list){
-            foreach ($list as $k => $v){
-                $list[$k]['add_time'] = date("Y-m-d H:i:s",$v['add_time']);
-                $list[$k]['finish_time'] = $v['finish_time'] ? date("Y-m-d H:i:s",$v['finish_time']) : "";
-                
+            foreach ($list as $k => $v){                
                 $list[$k]['pay_method_txt'] = self::$pay_method[$v['pay_method']];
                 $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
                 $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];
@@ -99,10 +96,6 @@ class Order extends Base
         if(!$order_info){
             $this->error("订单不存在");
         }
-        
-        $order_info['add_time'] = date("Y-m-d H:i:s", $order_info['add_time']);
-        $order_info['finish_time'] = $order_info['finish_time'] ? date("Y-m-d H:i:s", $order_info['finish_time']) : "";
-        $order_info['pay_time'] = $order_info['pay_time'] ? date("Y-m-d H:i:s", $order_info['pay_time']) : "";
         
         $order_info['order_status_txt'] = self::$order_status[$order_info['order_status']];
         $order_info['order_from_txt'] = self::$order_from[$order_info['order_from']];

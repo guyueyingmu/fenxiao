@@ -42,11 +42,6 @@ class Goodsall extends Base
                 ->page($page,$limit)
                 ->order('g.id DESC')
                 ->select();
-        if($list){
-            foreach ($list as $k => $v){
-                $list[$k]['add_time'] = date("Y-m-d H:i:s",$v['add_time']);
-            }
-        }
         $total = $goods->alias("g")
                 ->join("__GOODS_CATEGORY__ gc", "gc.id=g.cat_id", "LEFT")
                 ->where($where)
@@ -112,7 +107,8 @@ class Goodsall extends Base
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            $this->error("添加失败");
+//            $this->error("添加失败");
+            $this->error($e->getMessage());
         }
         $this->success("添加成功");
     }

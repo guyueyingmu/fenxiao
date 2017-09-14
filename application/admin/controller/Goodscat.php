@@ -34,11 +34,6 @@ class Goodscat extends Base
                 ->page($page,$limit)
                 ->order('gc.id DESC')
                 ->select();
-        if($list){
-            foreach ($list as $k => $v){
-                $list[$k]['add_time'] = date("Y-m-d H:i:s",$v['add_time']);
-            }
-        }
         $total = $goodscat->alias("gc")
                 ->where($where)
                 ->count();

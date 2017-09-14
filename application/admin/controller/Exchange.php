@@ -5,12 +5,12 @@ use think\Db;
 use app\admin\model\Orders;
 
 /**
- * 退款申请
+ * 换货申请
  */
-class Refund extends Base
+class Exchange extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 6;
+    private static $menu_id = 7;
     
     /**
      * 获取列表
@@ -30,19 +30,19 @@ class Refund extends Base
                 
         $where = "1=1";
         $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
-        $where .= $start_time ? " AND r.add_time >= '$start_time 00:00:00'" : "";
-        $where .= $end_time ? " AND r.add_time <= '$end_time 23:59:59'" : "";
+        $where .= $start_time ? " AND e.add_time >= '$start_time 00:00:00'" : "";
+        $where .= $end_time ? " AND e.add_time <= '$end_time 23:59:59'" : "";
         
-        $list = db('orders_refund_apply')->alias("r")
-                ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
+        $list = db('orders_exchange_apply')->alias("e")
+                ->join("__ORDERS__ o", "o.id=e.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
                 ->where($where)
-                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time")
+                ->field("e.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time")
                 ->page($page,$limit)
-                ->order('r.id DESC')
+                ->order('e.id DESC')
                 ->select();
-        $total = db('orders_refund_apply')->alias("r")
-                ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
+        $total = db('orders_exchange_apply')->alias("e")
+                ->join("__ORDERS__ o", "o.id=e.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
                 ->where($where)
                 ->count();
@@ -59,13 +59,13 @@ class Refund extends Base
                 "manage_user" => session("admin.nickname")                
             ]
         ];
-//        exit(json_encode($result));
+        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     
     /**
-     * 退款操作
-     * @param int $id 退款申请id
+     * 换货操作
+     * @param int $id 换货申请id
      * @param string $handle_user 处理员名字
      * @param datetime $handle_time 处理时间
      * @param int $status 处理状态（0未处理，1同意，2拒绝）
@@ -94,31 +94,16 @@ class Refund extends Base
             $this->error($validate_res);
         }
         
-        $refund = db("orders_refund_apply")->find($data['id']);
-        if(!$refund){
-            $this->error("退款申请不存在");
-        }
-        
-        $order = Orders::where('id', $refund['order_id'])->field("pay_method")->find();
-        if($order['pay_method'] != 1){
-            $this->error("只有微信支付的订单才能退款");
+        $exchange = db("orders_exchange_apply")->find($data['id']);
+        if(!$exchange){
+            $this->error("换货申请不存在");
         }
         
         Db::startTrans();
         try{
             //保存发货记录
             $data['admin_user_id'] = session("admin.uid");
-            db('orders_refund_apply')->update($data);
-            
-            if($data['status'] == 1){
-                //调用微信退款接口处理退款
-                $refund_trade_num = '1111';
-                $refund_note = '';
-                
-                //订单状态更改为 已取消， 支付状态为已退款
-                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => time(), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
-
-            }
+            db('orders_exchange_apply')->update($data);
             
             // 提交事务
             Db::commit();  
@@ -130,7 +115,7 @@ class Refund extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台退款操作', 'data' => $data]);
+        $this->add_log(self::$menu_id,['title' => '后台换货操作', 'data' => $data]);
         
         $this->success("操作成功");
     }
