@@ -118,4 +118,18 @@ class Login extends Controller
         session(null);
         $this->redirect('login/index');
     }
+    
+    /**
+     * 获取登录信息
+     */
+    public function get_user_info(){
+        if(session('admin.uid')){
+            $user_info = AdminUser::where('id', session('admin.uid'))->field("id,user_name,nickname,role_id")->find();
+            $user_info['role_name'] = AdminUserRole::where('id', $user_info['role_id'])->value('role_name');
+//            exit(json_encode($user_info));
+            $this->success("成功", "", $user_info);
+        }else{
+            $this->error("请登录");
+        }
+    }
 }
