@@ -41,12 +41,6 @@ class Refund extends Base
                 ->page($page,$limit)
                 ->order('r.id DESC')
                 ->select();
-        if($list){
-            foreach ($list as $k => $v){
-                $list[$k]['add_time'] = date("Y-m-d H:i:s",$v['add_time']);
-                $list[$k]['order_add_time'] = date("Y-m-d H:i:s",$v['order_add_time']);
-            }
-        }
         $total = db('orders_refund_apply')->alias("r")
                 ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
