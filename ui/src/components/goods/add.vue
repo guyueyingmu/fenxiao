@@ -130,7 +130,7 @@
                 </el-col>
             </el-row>
             <el-form-item label="商品标题" prop="good_title">
-                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="10"></el-input>
+                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="20"></el-input>
             </el-form-item>
             <el-form-item label="商品详情" prop="detail">
                 <!-- <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input> -->
@@ -174,7 +174,7 @@ export default {
                 cat_id: [{ required: true, type:'integer',message: '请选择分类', trigger: 'blur' },],
 
                 distribution: [{ required: true,type:'number', message: '请选择参与分销', trigger: 'blur' }],
-                credits: [{ required: true, message: '请输入积分兑换', trigger: 'blur' }],
+                credits: [{ required: true, pattern: /^.*$/ , message: '请输入积分兑换', trigger: 'blur' }],
                 good_type: [{ required: true, type:'integer',message: '请选择商品类型', trigger: 'blur' }],
                 price: [{ required: true, message: '请输入销售价格', trigger: 'blur' }],
 
@@ -312,7 +312,12 @@ export default {
                 vm = this;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    vm.form = res.data
+                    let _d = res.data.banner_img;
+                    for(let i =0;i<_d.length;i++){
+                    
+                        res.data.banner_img[i].url = _d[i].img_url;
+                    }
+                    vm.form = res.data;
                 } else {
                     vm.$alert(res.msg, '警告', {
                         type: 'error',
