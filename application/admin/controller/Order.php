@@ -147,7 +147,7 @@ class Order extends Base
         try{
             //保存发货记录
             $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = time();
+            $data['add_time'] = date("Y-m-d H:i:s");
             db('OrderConsignment')->insert($data);
             
             //修改订单状态为已发货，订单分成处理改为已处理
@@ -190,7 +190,7 @@ class Order extends Base
                 $log_data['order_user_id'] = $order_info['user_id'];
                 $log_data['staus'] = 1;
                 $log_data['admin_user_id'] = session("admin.uid");
-                $log_data['add_time'] = time();
+                $log_data['add_time'] = date("Y-m-d H:i:s");
                 foreach($good_list as $k=>$v){
                     if($v['distribution'] == 1){
                         $log_data['good_id'] = $v['good_id'];
@@ -227,7 +227,7 @@ class Order extends Base
                     $user_credit_log['credits_in'] = $presenter_credits;
                     $user_credit_log['credits_from'] = 2;
                     $user_credit_log['track_id'] = $order_info['id'];
-                    $user_credit_log['add_time'] = time();
+                    $user_credit_log['add_time'] = date("Y-m-d H:i:s");
                     db('users_credits_records')->insert($user_credit_log);
                 }
             }
@@ -279,7 +279,7 @@ class Order extends Base
         try{
             //保存服务记录
             $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = time();
+            $data['add_time'] = date("Y-m-d H:i:s");
             db('OrderService')->insert($data);
             
             //修改订单状态为已发货，订单分成处理改为已处理
@@ -331,7 +331,7 @@ class Order extends Base
             $this->error("只有未支付的订单可以取消");
         }
         
-        $model = Orders::update(['id' => $order_id, 'order_status' => 4, 'cancel_reason' => 2, 'cancel_time' => time()]);
+        $model = Orders::update(['id' => $order_id, 'order_status' => 4, 'cancel_reason' => 2, 'cancel_time' => date("Y-m-d H:i:s")]);
                 
         //写日志
         $this->add_log(self::$menu_id,['title' => '取消订单', 'data' => $model]);
