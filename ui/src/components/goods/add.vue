@@ -223,7 +223,7 @@ export default {
             }
             this.form = _form;
             let _breadCrumb = ['商品', '增加商品'];
-            if (vm.$route.name == 'goods_edit') {
+            if (vm.$route.name == 'Goods_edit') {
                 _breadCrumb = ['商品', '编辑商品'];
                 vm.isEdit = true;
                 vm.get_edit_item(vm.$route.params.id);

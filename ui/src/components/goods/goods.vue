@@ -63,7 +63,7 @@
             <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
             <el-table-column label="操作" width="120" fixed="right" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="goto('goods_edit/id/'+scope.row.id)">编辑</el-button>
+                    <el-button type="text" size="small" @click="goto('/goods_edit/id/'+scope.row.id)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
