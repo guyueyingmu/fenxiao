@@ -9,4 +9,14 @@ class Orders extends Model
     {
         return $this->hasMany('OrdersGoods', 'order_id');
     }
+    
+    public function orderService()
+    {
+        return $this->hasOne('OrderService', 'order_id');
+    }
+    
+    public function orderConsignment()
+    {
+        return $this->hasOne('OrderConsignment', 'order_id');
+    }
 }
