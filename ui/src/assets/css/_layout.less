@@ -6,11 +6,13 @@
 
 .layout-breadcrumb {
     padding: 20px 15px 0;
-    .el-breadcrumb{
+    .el-breadcrumb {
         font-size: 14px;
-      
     }
-    .el-breadcrumb__item:last-child .el-breadcrumb__item__inner, .el-breadcrumb__item:last-child .el-breadcrumb__item__inner a, .el-breadcrumb__item:last-child .el-breadcrumb__item__inner a:hover, .el-breadcrumb__item:last-child .el-breadcrumb__item__inner:hover{
+    .el-breadcrumb__item:last-child .el-breadcrumb__item__inner,
+    .el-breadcrumb__item:last-child .el-breadcrumb__item__inner a,
+    .el-breadcrumb__item:last-child .el-breadcrumb__item__inner a:hover,
+    .el-breadcrumb__item:last-child .el-breadcrumb__item__inner:hover {
         font-weight: 700;
         color: #495060;
     }
@@ -26,6 +28,7 @@
 
 .layout-content-main {
     padding: 10px;
+    position: relative;
 }
 
 .layout-copy {
@@ -57,7 +60,7 @@
     background: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     display: flex;
-   justify-content: space-between;
+    justify-content: space-between;
 }
 
 .layout-logo-left {
@@ -66,8 +69,52 @@
     background: #5b6270;
     border-radius: 3px;
     margin: 15px auto;
+    text-align: center;
+    span {
+        font-size: 14px;
+        color: #fff;
+        line-height: 30px;
+    }
 }
-.login-info{
+
+.login-info {
     padding: 10px;
-    img,spna{ vertical-align: middle;}
+    img,
+    span {
+        vertical-align: middle;
+    }
+    span {
+        display: inline-block;
+        margin: 0 1em
+    }
+}
+
+.child-view {
+    transition: all .5s cubic-bezier(.55, 0, .1, 1);
+    position: static;
+    overflow: auto;
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+    opacity: 0;
+    transform: translate3d(30px, 0, 0);
+    overflow: hidden;
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    opacity: 0;
+    top: 10px;
+    bottom: 10px;
+    transform: translate3d(-30px, 0, 0);
+    overflow: hidden;
 }

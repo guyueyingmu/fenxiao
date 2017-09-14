@@ -14,7 +14,7 @@
                 </el-form-item>
 
                 <el-form-item label="商品类型">
-                    <el-select v-model="formInline.goods_type" placeholder="商品类型" style="width:120px" clearable>
+                    <el-select v-model="formInline.good_type" placeholder="商品类型" style="width:120px" clearable>
                         <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
                     </el-select>
                 </el-form-item>
@@ -28,10 +28,10 @@
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
-                    <el-button type="danger" @click="onReset" v-if="isSearch">清空</el-button>
+                    <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="warning" class="goods_add_btn" @click="goto('goods_add')">添加商品</el-button>
+            <el-button type="warning" class="goods_add_btn" @click="goto('/goods_add')">添加商品</el-button>
 
         </div>
 
@@ -84,7 +84,7 @@ export default {
         return {
             isSearch: false,
             formInline: {
-                goods_type: '',
+                good_type: '',
                 keyword: '',
                 cat_id: '',
                 status: ''

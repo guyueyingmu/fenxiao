@@ -23,22 +23,22 @@ import {
   RadioGroup,
   RadioButton,
   Checkbox,
-  CheckboxGroup,
+//   CheckboxGroup,
   Input,
   Form,
   FormItem,
   Select,
   Option,
-  OptionGroup,
+//   OptionGroup,
   Button,
-  ButtonGroup,
-  Switch,
+//   ButtonGroup,
+//   Switch,
   Dialog,
   Loading,
   MessageBox,
   Message,
-  Popover,
-  DatePicker,
+  Tooltip,
+//   DatePicker,
   Row,
   Col,
   Icon,
@@ -50,12 +50,13 @@ import {
   Table,
   TableColumn,
   Alert,
-  pagination
+  pagination,
+//   Upload
 } from 'element-ui'
 
 Vue.use(Radio)
 Vue.use(Checkbox)
-Vue.use(Switch)
+// Vue.use(Switch)
 Vue.use(RadioButton)
 Vue.use(RadioGroup)
 Vue.use(Breadcrumb)
@@ -70,10 +71,10 @@ Vue.use(Table)
 Vue.use(TableColumn)
 
 
-Vue.use(CheckboxGroup)
-Vue.use(OptionGroup)
-Vue.use(ButtonGroup)
-Vue.use(DatePicker)
+// Vue.use(CheckboxGroup)
+// Vue.use(OptionGroup)
+// Vue.use(ButtonGroup)
+// Vue.use(DatePicker)
 // Vue.use(TimeSelect)
 // Vue.use(TimePicker)
 Vue.use(Row)
@@ -88,8 +89,10 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Button)
 Vue.use(Dialog)
-Vue.use(Popover)
+Vue.use(Tooltip)
 Vue.use(pagination)
+// Vue.use(Upload)
+
 
 
 Vue.use(Loading.directive)
@@ -99,7 +102,9 @@ Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$message = Message
+Vue.prototype.$prompt = MessageBox.prompt
 Vue.config.productionTip = false
+
 Vue.config.devtools = true;
 
 /* eslint-disable no-new */

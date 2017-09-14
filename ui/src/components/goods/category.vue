@@ -1,0 +1,187 @@
+<template>
+    <div>
+        <div class="page_heade" @keyup.enter="onSearch()">
+            <el-form :inline="true" :model="formInline">
+                <el-form-item label="商品分类">
+                    <el-input v-model="formInline.keyword" placeholder="商品分类" style="width:220px"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="onSearch()">搜索</el-button>
+                    <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
+                </el-form-item>
+            </el-form>
+            <el-button type="warning" class="goods_add_btn" @click="open_addCat()">添加分类</el-button>
+
+        </div>
+
+        <el-table :data="list" border style="width: 100%" v-loading.body="loading">
+            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+            <el-table-column prop="cat_name" label="商品分类"></el-table-column>
+            <el-table-column prop="nickname" label="添加人" width="200"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
+            <el-table-column label="操作" width="120" align="center">
+                <template scope="scope">
+                    <el-button type="text" size="small" @click="open_addCat(scope.row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="pagination">
+            <el-pagination v-if="parseInt(pages.total_page,10) > 1" @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
+            </el-pagination>
+        </div>
+
+    </div>
+</template>
+<script>
+import http from '@/assets/js/http'
+export default {
+    mixins: [http],
+    data() {
+        return {
+            isSearch: false,
+            formInline: {
+                good_type: '',
+                keyword: '',
+                cat_id: '',
+                status: ''
+            },
+            list: []
+        }
+    },
+    methods: {
+        //添加分类
+        open_addCat(data) {
+            let vm = this, inputValue = data ? data.cat_name : '';
+            this.$prompt('请输入分类名', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputPattern: /\S/,
+                inputErrorMessage: '分类名格式不正确',
+                closeOnClickModal: false,
+                inputValue: inputValue || '',
+                beforeClose: function(action, instance, done) {
+                    if (action == 'confirm') {
+                        let _d = { id: data ? data.id : '', cat_name: instance.inputValue }
+                        vm.postNewCat(_d, done)
+                    } else {
+                        done(); //关闭窗口
+                    }
+
+                }
+            }).catch(() => {
+
+            })
+        },
+        //保存数据
+        postNewCat(data, cb) {
+            let url = data.id ? '/admin/goodscat/edit' : '/admin/goodscat/add', vm = this, _data = { id: data.id, cat_name: data.cat_name };
+            this.apiPost(url, _data).then((res) => {
+                if (res.code) {
+                    vm.$message.success(res.msg);
+                    vm.get_list();
+                    if (typeof cb == "function") {
+                        cb(); //关闭窗口
+                    }
+
+                } else {
+                    vm.handleError(res)
+                }
+
+            })
+
+        },
+
+
+        //currentPage 改变时会触发
+        handleCurrentChange(current_paged) {
+
+            if (this.isSearch) {
+                this.onSearch(current_paged)
+            } else {
+                this.get_list(current_paged)
+            }
+        },
+        //清空
+        onReset() {
+            this.formInline = {
+
+                keyword: '',
+
+            }
+            this.get_list(1)
+            this.isSearch = false;
+        },
+        //搜索
+        onSearch(current_paged) {
+
+            this.isSearch = true;
+            current_paged = current_paged || 1;
+            let searchData = this.formInline
+            this.get_list(current_paged, searchData)
+        },
+
+        //取数据
+        get_list(page, searchData) {
+            page = page || 1;
+            let url = '/admin/goodscat/get_list?page=' + page,
+                vm = this;
+
+            vm.loading = true;
+            this.apiGet(url, searchData).then(function(res) {
+                if (res.code) {
+                    vm.list = res.data.list;
+                    vm.pages = res.data.pages
+                } else {
+                    vm.handleError(res)
+                }
+                vm.loading = false;
+            })
+        },
+
+        //删除确认
+        onRemove(index) {
+            let vm = this;
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                vm.removeData(index)
+
+            }).catch(() => {
+            });
+
+        },
+        //删除
+        removeData(index) {
+            let _data = this.list[index]
+            let url = '/admin/goodscat/del?id=' + _data.id,
+                vm = this;
+            vm.loading = true;
+            this.apiGet(url).then(function(res) {
+                if (res.code) {
+                    vm.list.splice(index, 1)
+                    vm.$message({
+                        type: 'success',
+                        message: res.msg
+                    });
+                } else {
+                    vm.handleError(res)
+                }
+                vm.loading = false;
+            })
+        }
+
+    },
+    //组件初始化
+    created() {
+        this.get_list();
+        this.setBreadcrumb(['商品', '商品分类'])
+        this.setMenu('0-1');
+
+    }
+
+}
+</script>

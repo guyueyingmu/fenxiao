@@ -8,7 +8,14 @@ const mutations = {
     state.cat_list = val;
   },
   setMenu(state, val) {
-    state.myMenu = val;
+      console.log(val)
+    if (val) {
+      let _array = val.split('-')
+      state.myMenu.b = [_array[0]]
+    }
+    state.myMenu.a = val.toString();
+
+
   },
   setTitle(state, str) {
     window.document.title = str;

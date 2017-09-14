@@ -5,20 +5,39 @@
     <meta charset="UTF-8">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="/static/admin/lib/element-ui/index.css">
+
     <style>
-         [v-cloak]{
-             display: none;
-         }
-    
+        body {
+            font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+        }
+        h1{
+            margin: 0;
+            padding-top: 2em;
+            color: #97a8be;
+            font-size: 40px;
+            font-weight: 100;
+            text-align: center;
+            line-height: 3;
+            padding-left: 77px;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
     </style>
     <title>登录</title>
 </head>
 
 <body>
     <div id="app" v-cloak="">
-        <div class="login"  @keyup.enter="submitForm('form')">
+
+        <div class="login" @keyup.enter="submitForm('form')">
+            <h1>分销管理系统</h1>
             <el-row type="flex">
-                <el-col  style="width:400px;padding: 20% 0 0;margin: auto">
+                <el-col style="width:400px;padding: 3% 0 0;margin: auto">
+                  
                     <el-form label-width="100px" class="demo-ruleForm">
                         <el-form-item label="用户名">
                             <el-input type="text" v-model="form.user_name" auto-complete="off"></el-input>
@@ -27,9 +46,9 @@
                             <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="验证码">
-                               <el-input   style=" vertical-align: middle;width: 120px" type="text" v-model="form.verify" auto-complete="off"></el-input>
-                               <img onclick="get_verify()" id="captcha_img" src="{:captcha_src()}" width="160" height="45" alt="" style=" vertical-align: middle;"> 
-                            </el-form-item>
+                            <el-input style=" vertical-align: middle;width: 120px" type="text" v-model="form.verify" auto-complete="off"></el-input>
+                            <img onclick="get_verify()" id="captcha_img" src="{:captcha_src()}" width="160" height="45" alt="" style=" vertical-align: middle;">
+                        </el-form-item>
 
 
                         <el-form-item>
@@ -48,30 +67,31 @@
 <!-- 引入组件库 -->
 <script src="/static/admin/lib/element-ui/index.js"></script>
 <script>
-    function get_verify(){
-        document.getElementById('captcha_img').src="{:captcha_src()}?r="+Math.random();
+    function get_verify() {
+        document.getElementById('captcha_img').src = "{:captcha_src()}?r=" + Math.random();
     }
-    
+
     Vue.http.options.emulateJSON = true;
     new Vue({
         el: '#app',
         data: {
             form: {
-                user_name:'',
+                user_name: '',
                 password: '',
-                verify:''
+                verify: ''
             },
-            verify_img:'',
+            verify_img: '',
         },
         methods: {
             submitForm() {
                 let url = '/admin/login/log_in',
                     data = this.form
-                this.$http.post(url, data).then(function (res) { console.log(res.body.url);
-                    if(res.body.code == 1){
+                this.$http.post(url, data).then(function (res) {
+                    console.log(res.body.url);
+                    if (res.body.code == 1) {
                         this.$message.success(res.body.msg);
-                        location.href=res.body.url;
-                    }else{
+                        location.href = res.body.url;
+                    } else {
                         this.$message.error(res.body.msg);
                     }
                 }, function (err) {

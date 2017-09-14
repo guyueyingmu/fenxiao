@@ -43,10 +43,13 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
+                    
                     <el-form-item label="商品分类" prop="cat_id">
+                        <el-tooltip class="item" effect="dark" content="亲~ 分类可以在左边主菜单里进行增加哦! ~_~" placement="right">
                         <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
                             <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
                         </el-select>
+                        </el-tooltip>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -95,7 +98,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="积分兑换" v-if="form.good_type >= 4" prop="credits">
-                        <el-input v-model="form.credits" placeholder="积分类商品时必填" :maxlength="10"></el-input>
+                        <el-input v-model="form.credits" placeholder="积分类商品时必填" :maxlength="7"></el-input>
                     </el-form-item>
 
                 </el-col>
@@ -103,12 +106,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="可用库存">
-                        <el-input v-model="form.inventory" placeholder="可用库存" :maxlength="10"></el-input>
+                        <el-input v-model="form.inventory" placeholder="可用库存" :maxlength="7"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="赠送积分">
-                        <el-input v-model="form.presenter_credits" placeholder="购买该商品赠送积分" :maxlength="10"></el-input>
+                        <el-input v-model="form.presenter_credits" placeholder="购买该商品赠送积分" :maxlength="7"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>

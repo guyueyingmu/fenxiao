@@ -57,7 +57,7 @@ const apiMethods = {
         },
         //统一服务器出错处理
         serverError(err) {
-            this.$alert('请求超时，请检查网络,' + 'serverError:' + err.status);
+            this.$alert('服务器出错，错误码：' + err.status +',\n' + 'url：'+err.url,'警告',{type:'error'});
         },
         //统一异常处理
         handleError(res) {

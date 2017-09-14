@@ -4,9 +4,13 @@ import Router from 'vue-router'
 
 
 const Goods = () =>
-  import ( /* webpackChunkName: "Goods" */ '@/components/goods/goods')
+  import ( /* webpackChunkName: "goods" */ '@/components/goods/goods')
+  
 const Goods_add = () =>
-  import ( /* webpackChunkName: "Goods_add" */ '@/components/goods/add')
+  import ( /* webpackChunkName: "goods_add" */ '@/components/goods/add')
+  
+const Goods_category = () =>
+  import ( /* webpackChunkName: "goods_category" */ '@/components/goods/category')
 
 Vue.use(Router)
 const router = new Router({
@@ -29,8 +33,13 @@ const router = new Router({
     },
     {
       path: '/goods_edit/id/:id',
-      name: 'goods_edit',
+      name: 'Goods_edit',
       component: Goods_add
+    },
+    {
+      path: '/goods_category',
+      name: 'Goods_category',
+      component: Goods_category
     },
 
   ]
