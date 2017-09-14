@@ -28,23 +28,25 @@ class Goodcomment extends Base
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
                 
-        $where = "1=1";
-        $where .= $keyword ? " AND user_id=$keyword" : "";
-        $where .= $start_time ? " AND add_time >= '$start_time 00:00:00'" : "";
-        $where .= $end_time ? " AND add_time <= '$end_time 23:59:59'" : "";
+        $where = "c.delete_time IS NULL";
+        $where .= $keyword ? " AND c.user_id=$keyword" : "";
+        $where .= $start_time ? " AND c.add_time >= '$start_time 00:00:00'" : "";
+        $where .= $end_time ? " AND c.add_time <= '$end_time 23:59:59'" : "";
         
-        $goods = new GoodsComments();
-        $list = $goods
+        $comments = new GoodsComments();
+        $list = $comments->alias('c')
+                ->join("__ADMIN_USER__ au", "au.id=c.admin_user_id", "LEFT")
                 ->where($where)
+                ->field("c.*,au.nickname")
                 ->page($page,$limit)
-                ->order('id DESC')
+                ->order('c.id DESC')
                 ->select();
         if($list){
             foreach ($list as $k => $v){
                 $list[$k]['good_link'] = url('/mini/Good/info',['id' => $v['good_id']]); //前台商品链接
             }
         }
-        $total = $goods->where($where)->count();
+        $total = $comments->alias('c')->where($where)->count();
         
         $total_page = ceil($total/$limit);
         
@@ -57,7 +59,7 @@ class Goodcomment extends Base
                 "current_page" => $page,
             ]            
         ];
-        exit(json_encode($result));
+//        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     
