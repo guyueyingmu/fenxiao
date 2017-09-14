@@ -1,6 +1,9 @@
 <?php
 namespace app\admin\controller;
 
+use think\Db;
+use app\admin\model\Orders;
+
 /**
  * 退款申请
  */
@@ -74,7 +77,7 @@ class Refund extends Base
      * @param int $status 处理状态（0未处理，1同意，2拒绝）
      * @param string $handle_note 处理备注
      */
-    public function consignment(){
+    public function handle(){
         $data = input("param.", "", "trim");
                 
         $validate_res = $this->validate($data,[
@@ -95,18 +98,30 @@ class Refund extends Base
             $this->error($validate_res);
         }
         
+        $refund = db("orders_refund_apply")->find($data['id']);
+        if(!$refund){
+            $this->error("退款申请不存在");
+        }
+        
+        $order = Orders::where('id', $refund['order_id'])->field("pay_method")->find();
+        if($order['pay_method'] != 1){
+            $this->error("只有微信支付的订单才能退款");
+        }
+        
         Db::startTrans();
         try{
             //保存发货记录
             $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = time();
-            db('OrderConsignment')->insert($data);
+            db('orders_refund_apply')->update($data);
             
-            //修改订单状态为已发货，订单分成处理改为已处理
-            Orders::update(['id' => $data['order_id'], 'order_status' => 2, 'distribution_status' => 2]);
-            
-            if($good_type == 1){
-                $this->save_log($order_info);
+            if($data['status'] == 1){
+                //调用微信退款接口处理退款
+                $refund_trade_num = '1111';
+                $refund_note = '';
+                
+                //订单状态更改为 已取消， 支付状态为已退款
+                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => time(), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
+
             }
             
             // 提交事务
@@ -119,7 +134,7 @@ class Refund extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台发货操作', 'data' => $data]);
+        $this->add_log(self::$menu_id,['title' => '后台退款操作', 'data' => $data]);
         
         $this->success("操作成功");
     }
