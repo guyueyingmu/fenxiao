@@ -85,6 +85,7 @@ class Refund extends Base
             'handle_user' => 'require|max:50',
             'handle_time' => 'require|dateFormat:Y-m-d H:i:s',
             'status' => 'require|in:1,2',
+            'handle_note' => 'max:1000',
         ],[
             'id.require' => '参数错误',
             'handle_user.require' => '请输入处理员',
@@ -93,6 +94,7 @@ class Refund extends Base
             'handle_time.dateFormat' => '处理时间格式不正确',
             'status.require' => '请选择处理状态',
             'status.in' => '处理状态数据不正确',
+            'handle_note.max' => '处理备注长度不能超过1000',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);

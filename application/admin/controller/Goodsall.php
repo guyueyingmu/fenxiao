@@ -112,7 +112,8 @@ class Goodsall extends Base
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            $this->error("添加失败");
+//            $this->error("添加失败");
+            $this->error($e->getMessage());
         }
         $this->success("添加成功");
     }
