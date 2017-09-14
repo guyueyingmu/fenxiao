@@ -86,7 +86,7 @@ class Goodsall extends Base
         try{
             //保存商品表
             $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = time();
+            $data['add_time'] = date("Y-m-d H:i:s");
             $good = new Goods($data);
             $good->save();
             
@@ -94,7 +94,7 @@ class Goodsall extends Base
             $good_banner = new GoodsBanner;
             foreach($banner_img as $v){
                 if($v['img_url'] && $v['is_show'] == 1){
-                    $list[] = ['good_id' => $good->id, 'img_url' => $v['img_url'], 'add_time' => time()];
+                    $list[] = ['good_id' => $good->id, 'img_url' => $v['img_url'], 'add_time' => date("Y-m-d H:i:s")];
                 }
             }
             $banner_res = $good_banner->saveAll($list);
@@ -222,7 +222,7 @@ class Goodsall extends Base
         try{
             //保存商品表
             $data['edit_admin_user'] = session("admin.uid");
-            $data['edit_time'] = time();
+            $data['edit_time'] = date("Y-m-d H:i:s");
             Goods::update($data);
             
             //保存轮播图
@@ -233,7 +233,7 @@ class Goodsall extends Base
                     $delete_banners[] = $v['id'];
                     $delete_list[] = $v;
                 }elseif(!$v['id'] && $v['img_url'] && $v['is_show'] == 1){
-                    $list[] = ['good_id' => $data['id'], 'img_url' => $v['img_url'], 'add_time' => time()];
+                    $list[] = ['good_id' => $data['id'], 'img_url' => $v['img_url'], 'add_time' => date("Y-m-d H:i:s")];
                 }
             }
             $banner_res = [];
