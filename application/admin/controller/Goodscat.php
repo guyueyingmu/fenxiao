@@ -75,7 +75,7 @@ class Goodscat extends Base
         
         //保存商品分类
         $data['admin_user_id'] = session("admin.uid");
-        $data['add_time'] = time();
+        $data['add_time'] = date("Y-m-d H:i:s");
         $goodcat = new GoodsCategory($data);
         $goodcat->save();
         
@@ -117,7 +117,7 @@ class Goodscat extends Base
         
         //保存商品分类
         $data['edit_admin_user'] = session("admin.uid");
-        $data['edit_time'] = time();
+        $data['edit_time'] = date("Y-m-d H:i:s");
         GoodsCategory::update($data);
         
         
