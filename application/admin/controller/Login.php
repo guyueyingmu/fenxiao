@@ -49,7 +49,7 @@ class Login extends Controller
             $this->error($validate_res);
         }
         
-        $user_info = AdminUser::get(['user_name' => $data['user_name']]);
+        $user_info = AdminUser::get(['user_name' => $data['user_name'], 'is_show' => 1]);
         if(!$user_info){
             $this->error("账号不存在");
         }
