@@ -83,6 +83,7 @@ export default {
                     vm.get_list();
                     if (typeof cb == "function") {
                         cb(); //关闭窗口
+
                     }
 
                 } else {
@@ -132,6 +133,11 @@ export default {
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
+                    if(vm.isSearch == false){
+                        //通知全局商品分类数据
+                          vm.setCatList(res.data.list)
+
+                    }
                     vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)
