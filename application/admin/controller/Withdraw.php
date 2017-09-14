@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 
 use think\Db;
-use app\admin\model\Users;
 
 /**
  * 提现申请
@@ -30,13 +29,19 @@ class Withdraw extends Base
         $where .= $keyword ? " AND (u.id LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
         $where .= $status ? " AND w.status = $status" : "";
         
-        $users = new Users();
-        $list = $users->where($where)
-                ->field("id,nickname,img_url,sex,province,city,phone_number,credits,account_balance,status,register_time,last_login_time")
+        $withdraw = db('users_withdraw');
+        $list = $withdraw->alias('w')
+                ->join("__USERS__ u", "u.id=w.user_id", "LEFT")
+                ->join("__ADMIN_USER__ au", "au.id=w.admin_user_id", "LEFT")
+                ->where($where)
+                ->field("w.user_id,u.nickname,u.phone_number,u.account_balance,w.amount,w.add_time,w.status,w.handle_time,w.admin_user_id,au.nickname admin_user_name")
                 ->page($page,$limit)
-                ->order($sort)
+                ->order('w.id DESC')
                 ->select();
-        $total = $users->where($where)->count();
+        $total = $withdraw->alias('w')
+                ->join("__USERS__ u", "u.id=w.user_id", "LEFT")
+                ->join("__ADMIN_USER__ au", "au.id=w.admin_user_id", "LEFT")
+                ->where($where)->count();
         
         $total_page = ceil($total/$limit);
         
@@ -54,43 +59,63 @@ class Withdraw extends Base
     }
     
     /**
-     * 设置
-     * @param int $id 用户id
-     * @param int $credits 用户积分
-     * @param int $status 用户状态
+     * 提现处理
+     * @param int $id 提现申请id
+     * @param int $status 提现审核状态（2同意 3拒绝）
      */
     public function handle(){
         $data = input("param.", "", "trim");
         
         $validate_res = $this->validate($data,[
             'id'  => 'require',
-            'credits' => 'require|number|between:0,9999999',
-            'status' => 'require|in:1,2',
+            'status' => 'require|in:2,3',
         ],[
             'id.require' => '参数错误',
-            'credits.require' => '请输入用户积分',
-            'credits.number' => '用户积分必须是整数',
-            'credits.between' => '用户积分只能在0-9999999之间',
-            'status.require' => '请选择用户状态',
-            'status.in' => '用户状态数据格式不正确',
+            'status.require' => '请选择处理状态',
+            'status.in' => '处理状态数据不正确',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);
         }
         
-        $user = Users::get($data['id']);
-        if(!$user){
-            $this->error("数据不存在");
+        $info = db("users_withdraw")->find($data['id']);
+        if(!$info){
+            $this->error("提现申请数据不存在");
         }
-        $res = $user->update($data);
-        if($res){
-            
-            //写日志
-            $this->add_log(self::$menu_id,['title' => '用户设置', 'data' => $data]);
-            
-            $this->success('设置成功');
-        }else{
-            $this->error('设置失败');
+        if($info['status'] != 1){
+            $this->error("已处理，不能重复处理");
         }
+        
+        Db::startTrans();
+        try{
+            
+            if($data['status'] == 2){
+        
+                $user_account = db('users')->where('id', $info['user_id'])->value('account_balance');
+
+                if($info['amount'] > $user_account){
+                    exception('提现金额高于账户余额，无法提现');
+                }
+                
+                //扣减用户账户余额
+                db("users")->where('id', $info['user_id'])->setDec('account_balance', $info['amount']);
+            }
+            $data['handle_time'] = date("Y-m-d H:i:s");
+            $data['admin_user_id'] = session("admin.uid");
+            db('users_withdraw')->update($data);
+            
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+//            $this->error("操作失败");
+            $this->error($e->getMessage());
+        }
+            
+        //写日志
+        $this->add_log(self::$menu_id,['title' => '后台提现处理', 'data' => $data]);
+        
+        $this->success("操作成功");        
     }
 }
