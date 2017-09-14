@@ -130,7 +130,7 @@
                 </el-col>
             </el-row>
             <el-form-item label="商品标题" prop="good_title">
-                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="10"></el-input>
+                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="20"></el-input>
             </el-form-item>
             <el-form-item label="商品详情" prop="detail">
                 <!-- <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input> -->
