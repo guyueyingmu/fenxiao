@@ -193,6 +193,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['商品', '商品列表'])
+        this.setMenu('0-0');
     }
 
 }
