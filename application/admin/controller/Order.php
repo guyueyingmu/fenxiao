@@ -176,7 +176,7 @@ class Order extends Base
      * 发货和服务操作的后续操作，如：保存分成日志等
      * @param float $input_total_amount 后台输入的收款总额
      */
-    protected function save_log($order_info, $input_total_amount){
+    protected function save_log($order_info, $input_total_amount = 0){
         //写入分成日志表
         $user_info = Users::where('id', $order_info['user_id'])->field('pid,distribution_level')->find();
         if($user_info['distribution_level'] != 0 && $user_info['pid'] > 0){
