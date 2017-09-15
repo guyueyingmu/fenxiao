@@ -89,7 +89,9 @@
                                     <td>{{item.phone_number}}</td>
                                     <td>{{item.add_time}}</td>
                                     <td>{{item.total_amount}}</td>
-                                    <td> <span :class="{'red': item.order_status == 1}">{{item.order_status_txt }}</span></td>
+                                    <td>
+                                        <span :class="{'red': item.order_status == 1}">{{item.order_status_txt }}</span>
+                                    </td>
                                     <td>{{item.pay_status_txt }}</td>
                                     <td>{{item.order_from_txt}}</td>
                                     <td>{{item.pay_method_txt }}</td>
@@ -119,7 +121,7 @@
                                                     <th class="center">商品分类</th>
                                                     <th class="center">购买单价</th>
                                                     <th class="center">购买数量</th>
-                                                    <th class="center" style="    border-bottom-width: 1px;">操作</th>
+                                                    <th class="center" style="border-bottom-width: 1px;">操作</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -132,7 +134,7 @@
                                                     <td class="center">{{goods.buy_num}}</td>
 
                                                     <td class="center tool_no_border" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
-                                                        <el-button  size="small">立即处理</el-button>
+                                                        <el-button size="small" @click="killOrder">立即处理</el-button>
 
                                                     </td>
                                                 </tr>
@@ -160,6 +162,25 @@
             </el-pagination>
         </div>
 
+        <!-- 弹窗 -->
+        <el-dialog title="实物类商品--发货"  :visible.sync="dialogFormVisible">
+            <el-form :model="dialogForm" :inline="true">
+                <el-form-item label="活动名称">
+                    <el-input v-model="dialogForm.name" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" >
+                    <el-select v-model="dialogForm.region" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -173,6 +194,12 @@ export default {
     },
     data() {
         return {
+            dialogForm:{
+                name:'',
+                region:''
+
+            },
+            dialogFormVisible:false,
             pickerOptions: {
                 shortcuts: [
                     {
@@ -226,28 +253,32 @@ export default {
                 order_status: '',
                 keyword: '',
                 pay_status: '',
-                start_time:'',
-                end_time:''
+                start_time: '',
+                end_time: ''
 
             },
             list: []
         }
     },
     methods: {
-        fromDate(val){
-            if(val){
+        //处理订单
+        killOrder(){
+            this.dialogFormVisible = true;
+        },
+        fromDate(val) {
+            if (val) {
                 let _v = val.split(' - ');
                 this.formInline.start_time = _v[0]
                 this.formInline.end_time = _v[1]
             }
-            
+
         },
         onSelectedTabs(tab) {
-           let _name = tab.name;
-           let _data = {
-               order_status:_name
-           }
-           this.get_list(1,_data)
+            let _name = tab.name;
+            let _data = {
+                order_status: _name
+            }
+            this.get_list(1, _data)
 
         },
         //设置下架状态样式
