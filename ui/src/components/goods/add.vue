@@ -193,7 +193,9 @@ export default {
     },
     created() {
         // 组件创建完后获取数据，
-        this.initData()
+        this.initData();
+        this.setMenu('0-0');
+
     },
     methods: {
         //组件内的方法

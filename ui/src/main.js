@@ -6,7 +6,8 @@ import router from './router'
 import vueResource from 'vue-resource'
 
 import store from './vuex'
-
+// import filter from './filter'
+// filter(Vue)
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
@@ -51,6 +52,8 @@ import {
   TableColumn,
   Alert,
   pagination,
+  Tabs,
+  TabPane
 //   Upload
 } from 'element-ui'
 
@@ -91,6 +94,8 @@ Vue.use(Button)
 Vue.use(Dialog)
 Vue.use(Tooltip)
 Vue.use(pagination)
+Vue.use(Tabs)
+Vue.use(TabPane)
 // Vue.use(Upload)
 
 
@@ -108,6 +113,8 @@ Vue.config.productionTip = false
 Vue.config.devtools = true;
 
 /* eslint-disable no-new */
+
+  
 const Vm = new Vue({
   el: '#app',
   router,

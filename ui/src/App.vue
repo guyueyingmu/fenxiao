@@ -20,7 +20,6 @@
                 <div class="layout-header">
                     <div class="layout-header-left"></div>
                     <div class="login-info">
-                        <img src="" width="40" height="40" alt="">
                         <span>欢迎您，{{nickname}}</span>
                         <a href="javascript:;" @click="loginOut">退出</a>
                     </div>
