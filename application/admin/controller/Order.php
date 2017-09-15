@@ -13,13 +13,13 @@ class Order extends Base
 {
     //定义当前菜单id
     private static $menu_id = 5;
-    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];
-    private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];
-    private static $order_from = ['', '微信'];
-    private static $cancel_reason = ['', '超时未支付', '后台取消'];
-    private static $distribution_status = ['', '未处理', '已处理'];
-    private static $deliver_method = ['', '上门自提', '快递', '其他'];
-    private static $pay_method = ['', '微信支付', '线下支付', '积分支付'];
+    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
+    private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];//支付状态
+    private static $order_from = ['', '微信'];//订单来源
+    private static $cancel_reason = ['', '超时未支付', '后台取消'];//取消原因
+    private static $distribution_status = ['', '未处理', '已处理'];//分销处理
+    private static $deliver_method = ['', '上门自提', '快递', '其他'];//配送方式
+    private static $pay_method = ['', '微信支付', '线下支付', '积分支付'];//支付方式
     /**
      * 获取列表
      * @return string
@@ -188,7 +188,7 @@ class Order extends Base
 
                 $log_data['order_id'] = $order_info['id'];
                 $log_data['order_user_id'] = $order_info['user_id'];
-                $log_data['staus'] = 1;
+                $log_data['status'] = 1;
                 $log_data['admin_user_id'] = session("admin.uid");
                 $log_data['add_time'] = date("Y-m-d H:i:s");
                 foreach($good_list as $k=>$v){
