@@ -12,8 +12,11 @@ const Goods_add = () =>
 const Goods_category = () =>
   import ( /* webpackChunkName: "goods_category" */ '@/components/goods/category')
 
-  const Order_list = () =>
+const Order_list = () =>
   import ( /* webpackChunkName: "order_list" */ '@/components/order/list')
+  
+const Users = () =>
+  import ( /* webpackChunkName: "users" */ '@/components/users/users')
 
 Vue.use(Router)
 const router = new Router({
@@ -48,6 +51,11 @@ const router = new Router({
       path: '/orders',
       name: 'Order',
       component: Order_list
+    },
+    {
+      path: '/users',
+      name: 'Users',
+      component: Users
     },
 
   ]
