@@ -97,6 +97,11 @@ body {
 }
 
 .ui-table-wrapper {
+    .table_list>table{
+        &:hover{
+            box-shadow:  0 0 7px 1px rgba(0, 0, 0, 0.5);
+        }
+    }
  
     table {
         width: 100%;
@@ -105,23 +110,23 @@ body {
         padding: 0;
         margin: 0;
         border-collapse:collapse;
-        &:hover{
-            tr:last-child{
-               &>td{
-                   border-bottom-color: #C0CCDA
-                }
+        // &:hover{
+        //     tr:last-child{
+        //        &>td{
+        //            border-bottom-color: #C0CCDA
+        //         }
               
-            }
-            border-top-color:#C0CCDA;
-            border-left-color:#FF4949;
+        //     }
+        //     border-top-color:#C0CCDA;
+        //     // border-left-color:#FF4949;
 
-            td,th{
-                &:last-child{
-                    border-right-color: #C0CCDA
-                } 
+        //     td,th{
+        //         &:last-child{
+        //             border-right-color: #C0CCDA
+        //         } 
                
-            }
-        }
+        //     }
+        // }
         th {
             color: #1f2d3d;
             background-color: #eef1f6;
@@ -181,7 +186,7 @@ body {
         }
 
         &.bg >thead th{
-            background: #ffffe5;
+            background: #ffeded;
         }
     }
 

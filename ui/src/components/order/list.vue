@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="tabs_p">
-            <el-tabs v-model="radio3" type="card" @tab-click="handleClick">
-                <el-tab-pane label="全部订单" name="tabs1"></el-tab-pane>
-                <el-tab-pane label="待处理订单" name="tabs2"></el-tab-pane>
-                <el-tab-pane label="已服务订单" name="tabs3"></el-tab-pane>
-                <el-tab-pane label="已取消订单" name="tabs4"></el-tab-pane>
-                <el-tab-pane label="已完成订单" name="tabs5"></el-tab-pane>
+            <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
+                <el-tab-pane label="全部订单" name="0"></el-tab-pane>
+                <el-tab-pane label="待处理订单" name="1"></el-tab-pane>
+                <el-tab-pane label="已服务订单" name="2"></el-tab-pane>
+                <el-tab-pane label="已取消订单" name="4"></el-tab-pane>
+                <el-tab-pane label="已完成订单" name="5"></el-tab-pane>
             </el-tabs>
         </div>
 
@@ -27,7 +27,6 @@
                 </el-form-item>
                 <el-form-item label="支付状态">
                     <el-select v-model="formInline.pay_status" placeholder="支付状态" style="width:120px" clearable>
-
                         <el-option :value="1" label="未支付"></el-option>
                         <el-option :value="2" label="已支付"></el-option>
                         <el-option :value="3" label="已退费"></el-option>
@@ -133,7 +132,7 @@
                                                     <td class="center">{{goods.buy_num}}</td>
 
                                                     <td class="center tool_no_border" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
-                                                        <el-button type="text" size="small">点击发货</el-button>
+                                                        <el-button  size="small">立即处理</el-button>
 
                                                     </td>
                                                 </tr>
@@ -163,6 +162,7 @@
 
     </div>
 </template>
+
 <script>
 import http from '@/assets/js/http'
 import { DatePicker } from 'element-ui'
@@ -219,7 +219,7 @@ export default {
                         }
                     }]
             },
-            radio3: 'tabs1',
+            tabs: '',
             value7: '',
             isSearch: false,
             formInline: {
@@ -242,8 +242,13 @@ export default {
             }
             
         },
-        handleClick(tab, event) {
-            console.log(tab, event);
+        onSelectedTabs(tab) {
+           let _name = tab.name;
+           let _data = {
+               order_status:_name
+           }
+           this.get_list(1,_data)
+
         },
         //设置下架状态样式
         tableRowClassName(row, index) {
