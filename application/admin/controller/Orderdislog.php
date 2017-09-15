@@ -28,16 +28,14 @@ class Orderdislog extends Base
         $where .= $keyword ? " AND dl.earn_user_id = '$keyword'" : "";
         
         $list = db('order_distribution_log')->alias("dl")
-                ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
-                ->join("__ADMIN_USER__ au", "au.id=o.admin_user_id", "LEFT")
+                ->join("__ORDERS__ o", "o.id=dl.order_id", "LEFT")
+                ->join("__ADMIN_USER__ au", "au.id=dl.admin_user_id", "LEFT")
                 ->where($where)
-                ->field("o.order_number,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status")
+                ->field("o.order_number,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status,dl.earn_time,dl.admin_user_id,au.nickname admin_user_name")
                 ->page($page,$limit)
-                ->order('r.id DESC')
+                ->order('dl.id DESC')
                 ->select();
-        $total = db('orders_refund_apply')->alias("r")
-                ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
-                ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
+        $total = db('order_distribution_log')->alias("dl")
                 ->where($where)
                 ->count();
         
@@ -58,61 +56,43 @@ class Orderdislog extends Base
     }
     
     /**
-     * 退款操作
-     * @param int $id 退款申请id
-     * @param string $handle_user 处理员名字
-     * @param datetime $handle_time 处理时间
-     * @param int $status 处理状态（0未处理，1同意，2拒绝）
-     * @param string $handle_note 处理备注
+     * 确定获佣操作
+     * @param int $id 分成日志id
+     * @param string $earn_amount 获佣金额
+     * @return string 
      */
     public function handle(){
-        $data = input("param.", "", "trim");
-                
-        $validate_res = $this->validate($data,[
-            'id'  => 'require',
-            'handle_user' => 'require|max:50',
-            'handle_time' => 'require|dateFormat:Y-m-d H:i:s',
-            'status' => 'require|in:1,2',
-            'handle_note' => 'max:1000',
-        ],[
-            'id.require' => '参数错误',
-            'handle_user.require' => '请输入处理员',
-            'handle_user.max' => '处理员长度不能超过50',
-            'handle_time.require' => '请选择处理时间',
-            'handle_time.dateFormat' => '处理时间格式不正确',
-            'status.require' => '请选择处理状态',
-            'status.in' => '处理状态数据不正确',
-            'handle_note.max' => '处理备注长度不能超过1000',
-        ]); 
-        if ($validate_res !== true) {
-            $this->error($validate_res);
+        $id = input("param.id", "", "intval");
+        $earn_amount = input("param.earn_amount", "", "float");
+//        echo $earn_amount;exit;
+        if(!$id){
+            $this->error("参数错误");
+        }
+        if(!$earn_amount || $earn_amount < 0){
+            $this->error("请输入获佣金额");
         }
         
-        $refund = db("orders_refund_apply")->find($data['id']);
-        if(!$refund){
-            $this->error("退款申请不存在");
+        $info = db("order_distribution_log")->find($id);
+        if(!$info){
+            $this->error("获佣数据不存在");
         }
-        
-        $order = Orders::where('id', $refund['order_id'])->field("pay_method")->find();
-        if($order['pay_method'] != 1){
-            $this->error("只有微信支付的订单才能退款");
+        if($info['status'] == 2){
+            $this->error("不能重复获佣");
         }
         
         Db::startTrans();
         try{
-            //保存发货记录
+            //更新获佣记录
+            $data['id'] = $id;
+            $data['earn_amount'] = $earn_amount;
+            $data['earn_time'] = date("Y-m-d H:i:s");
+            $data['status'] = 2;
             $data['admin_user_id'] = session("admin.uid");
-            db('orders_refund_apply')->update($data);
+            db('order_distribution_log')->update($data);
             
-            if($data['status'] == 1){
-                //调用微信退款接口处理退款
-                $refund_trade_num = '1111';
-                $refund_note = '';
-                
-                //订单状态更改为 已取消， 支付状态为已退款
-                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => time(), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
-
-            }
+            //更新获佣用户账户余额,获佣总额
+            db("users")->where('id', $info['earn_user_id'])->setInc("account_balance", $earn_amount);
+            db("users")->where('id', $info['earn_user_id'])->setInc("earn_total", $earn_amount);
             
             // 提交事务
             Db::commit();  
@@ -124,7 +104,7 @@ class Orderdislog extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台退款操作', 'data' => $data]);
+        $this->add_log(self::$menu_id,['title' => '分成日志获佣操作', 'data' => $data]);
         
         $this->success("操作成功");
     }

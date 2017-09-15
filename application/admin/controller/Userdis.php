@@ -95,7 +95,7 @@ class Userdis extends Base
                 "current_page" => $page,
             ]            
         ];
-        exit(json_encode($result));
+//        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
 }
