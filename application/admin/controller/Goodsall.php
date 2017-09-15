@@ -145,6 +145,9 @@ class Goodsall extends Base
             }elseif($img_type == 'banner_img'){
                 $max_w = 640;
                 $max_h = 320;
+            }elseif($img_type == 'good_cat_img'){
+                $max_w = 32;
+                $max_h = 32;
             }else{
                 $max_w = $max_h = 640;
             }

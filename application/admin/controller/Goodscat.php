@@ -60,14 +60,21 @@ class Goodscat extends Base
     public function add(){
         $data = [
             'cat_name'  => input("cat_name","","trim"),
+            'cat_img'  => input("cat_img","","trim"),
+            'sort'  => input("sort","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
             'cat_name'  => 'require|unique:goods_category|max:50',
+            'cat_img'  => 'require|max:200',
+            'sort'  => 'between:0,999',
         ],[
             'cat_name.require' => '请输入商品分类',
             'cat_name.unique' => '商品分类名已存在',
             'cat_name.max' => '商品分类长度不能超过50',
+            'cat_img.require' => '请上传分类图片',
+            'cat_img.max' => '图片地址长度不能超过200',
+            'sort.between' => '排序只能在0-999之间',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);
@@ -99,17 +106,24 @@ class Goodscat extends Base
         $data = [
             'id'  => input("id"),
             'cat_name'  => input("cat_name","","trim"),
+            'cat_img'  => input("cat_img","","trim"),
+            'sort'  => input("sort","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
             'id'  => 'require|number',
             'cat_name'  => 'require|unique:goods_category|max:50',
+            'cat_img'  => 'require|max:200',
+            'sort'  => 'between:0,999',
         ],[
             'id.require' => '参数错误',
             'id.number' => '参数格式错误',
             'cat_name.require' => '请输入商品分类',
             'cat_name.unique' => '商品分类名已存在',
             'cat_name.max' => '商品分类长度不能超过50',
+            'cat_img.require' => '请上传分类图片',
+            'cat_img.max' => '图片地址长度不能超过200',
+            'sort.between' => '排序只能在0-999之间',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);
@@ -118,8 +132,7 @@ class Goodscat extends Base
         //保存商品分类
         $data['edit_admin_user'] = session("admin.uid");
         $data['edit_time'] = date("Y-m-d H:i:s");
-        GoodsCategory::update($data);
-        
+        GoodsCategory::update($data);        
         
         //写日志
         $this->add_log(self::$menu_id,['title' => '编辑商品分类', 'data' => $data]);
