@@ -44,7 +44,6 @@
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="warning" class="goods_add_btn" @click="goto('/goods_add')">添加商品</el-button>
 
         </div>
 
@@ -134,14 +133,15 @@
                                                     <td class="center">{{goods.buy_num}}</td>
 
                                                     <td class="center tool_no_border" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
-                                                        <el-button size="small" @click="killOrder">立即处理</el-button>
-
+                                                        <el-button v-if="((item.order_status == 1 || item.order_status == 5 ) && item.pay_status == 2) ||  (item.order_status == 3 &&  item.pay_status == 1)" size="small" @click="killOrder(item,idx)">
+                                                            {{(goods.good_type == 1 || goods.good_type == 4) ? `立即发货` : `立即服务` }}</el-button>
+                                                        <span v-else style="color:#ccc">
+                                                            无操作
+                                                        </span>
                                                     </td>
                                                 </tr>
-
                                             </tbody>
                                         </table>
-
                                     </td>
 
                                 </tr>
@@ -163,21 +163,85 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="实物类商品--发货"  :visible.sync="dialogFormVisible">
-            <el-form :model="dialogForm" :inline="true">
-                <el-form-item label="活动名称">
-                    <el-input v-model="dialogForm.name" auto-complete="off"></el-input>
+        <el-dialog :title="dalogi_title[dialogForm.good_type]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading">
+            <!-- 要发货 1，3，4 -->
+            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 1 ||   dialogForm.good_type == 3 || dialogForm.good_type == 4">
+                <el-form-item label="发货员" label-width="100px">
+                    <el-input v-model="dialogForm.consignment_user" auto-complete="off" placeholder="发货员"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" >
-                    <el-select v-model="dialogForm.region" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+
+                <el-form-item label="发货时间" label-width="100px">
+                    <el-date-picker v-model="dialogForm.consignment_time" type="datetime" @change="fromDate2" :editable="false" placeholder="选择日期"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="配送方式" label-width="100px">
+                    <el-select v-model="dialogForm.deliver_method" placeholder="请选择配送方式" style="width:193px">
+                        <el-option label="上门自提" :value="1"></el-option>
+                        <el-option label="快递" :value="2"></el-option>
+                        <el-option label="其他" :value="3"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item class="is-required" label="快递编号" label-width="100px" v-if="dialogForm.deliver_method === 2">
+                    <el-input v-model="dialogForm.tracking_number" auto-complete="off" placeholder="快递编号">
+
+                    </el-input>
+                </el-form-item>
             </el-form>
+
+            <!-- 要服务 2 5 -->
+            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 2 || dialogForm.good_type == 5">
+                <el-form-item label="服务员" label-width="100px">
+                    <el-input v-model="dialogForm.service_user" auto-complete="off" placeholder="发货员"></el-input>
+                </el-form-item>
+
+                <el-form-item label="服务时间" label-width="100px">
+                    <el-date-picker v-model="dialogForm.service_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="备注" label-width="100px">
+                    <el-input v-model="dialogForm.note" auto-complete="off" placeholder="备注">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+
+            <div class="dialog_main">
+                <h4 class="dialog_order_title">订单信息</h4>
+                <div class="dialog_order_info">
+                    <el-row>
+                        <el-col :span="12">
+                            订单编号：
+                            <span>{{dialog_temp.order_number }}</span> <br> 用户手机：
+                            <span>{{ dialog_temp.phone_number }}</span>
+                        </el-col>
+                        <el-col :span="12">
+                            下单用户：
+                            <span>{{dialog_temp.nickname }}</span> <br> 用户手机：
+                            <span>{{ dialog_temp.add_time }}</span>
+                        </el-col>
+                    </el-row>
+                </div>
+                <h4 class="dialog_order_title">收货人信息</h4>
+                <div class="dialog_order_info">
+                    <el-row>
+                        <el-col :span="12">
+                            收货人：
+                            <span>{{dialog_temp.consignee_name }}</span>
+                        </el-col>
+                        <el-col :span="12">
+                            下单用户：
+                            <span>{{dialog_temp.consignee_phone }}</span>
+                        </el-col>
+                        <el-col>
+                            收货人地址：
+                            <span>{{ dialog_temp.consignee_address }}</span>
+                        </el-col>
+                    </el-row>
+                </div>
+
+            </div>
+
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dialog_ok">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -194,12 +258,28 @@ export default {
     },
     data() {
         return {
-            dialogForm:{
-                name:'',
-                region:''
+            dalogi_title: [
+                '',
+                '实物商品发货',
+                '虚拟商品服务',
+                '预约商品服务',
+                '积分商品发货',
+                '积分商品服务',
+            ],
+            dalogi_loading: false,
+            dialog_temp: {},
+            dialogForm: {
+                consignment_user: '',
+                deliver_method: '',
+                consignment_time: '',
+                tracking_number: '',
+                good_type: '',
+                service_user: '',
+                service_time: '',
+                note: ''
 
             },
-            dialogFormVisible:false,
+            dialogFormVisible: false,
             pickerOptions: {
                 shortcuts: [
                     {
@@ -248,6 +328,7 @@ export default {
             },
             tabs: '',
             value7: '',
+            value8: '',
             isSearch: false,
             formInline: {
                 order_status: '',
@@ -262,17 +343,61 @@ export default {
     },
     methods: {
         //处理订单
-        killOrder(){
+        killOrder(item, idx) {
+            this.dialogForm = {
+                consignment_user: '',
+                deliver_method: '',
+                consignment_time: '',
+                tracking_number: '',
+                good_type: '',
+                service_user: '',
+                service_time: '',
+                note: ''
+            }
             this.dialogFormVisible = true;
+            this.dialog_temp = item;
+            this.dialogForm.order_id = item.id;
+            this.dialogForm.good_type = item.orders_goods[0].good_type
+
+
         },
+        //确定弹窗
+        dialog_ok(done) {
+
+            let url = '/admin/order/consignment', vm = this, data = this.dialogForm;
+            if (this.dialogForm.good_type == 2 || this.dialogForm.good_type == 5 || this.dialogForm.good_type == 3) {
+                url = '/admin/order/service'
+            }
+            vm.dalogi_loading = true;
+
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$message.success(res.msg);
+                    done();
+
+
+                } else {
+                    vm.handleError(res)
+                }
+                vm.dalogi_loading = false;
+            })
+
+        },
+        //格式化日期范围
         fromDate(val) {
             if (val) {
                 let _v = val.split(' - ');
                 this.formInline.start_time = _v[0]
                 this.formInline.end_time = _v[1]
             }
-
         },
+        fromDate2(val) {
+            this.dialogForm.consignment_time = val
+        },
+        fromDate3(val) {
+            this.dialogForm.service_time = val
+        },
+        //选择标签页
         onSelectedTabs(tab) {
             let _name = tab.name;
             let _data = {
@@ -304,7 +429,7 @@ export default {
                 this.get_list(current_paged)
             }
         },
-        //清空
+        //清空搜索
         onReset() {
             this.formInline = {
                 goods_type: '',
@@ -328,7 +453,6 @@ export default {
             page = page || 1;
             let url = '/admin/order/get_list?page=' + page,
                 vm = this;
-
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
@@ -355,7 +479,7 @@ export default {
             });
 
         },
-        //删除
+        //删除列表数据
         removeData(index) {
             let _data = this.list[index]
             let url = '/admin/order/del/good_id/' + _data.id,
