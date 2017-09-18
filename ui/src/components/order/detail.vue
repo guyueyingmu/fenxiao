@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <div class="order_info_main" v-if="order_info">
+        <div class="order_info_main" v-if="order_info" v-loading="loading">
             <el-row class="order_info_main_grid" :gutter="50">
                 <el-col :span="12">
                     <h4 class="pen_title">订单信息</h4>

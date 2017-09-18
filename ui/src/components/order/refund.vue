@@ -27,7 +27,7 @@
         </div>
 
         <!-- 表格 -->
-        <el-table :data="list" border style="width: 100%">
+        <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="order_number" label="订单编号" width="120"></el-table-column>
             <el-table-column prop="user_id" label="下单用户ID" width="120"></el-table-column>
             <el-table-column prop="phone_number" label="用户手机"></el-table-column>
