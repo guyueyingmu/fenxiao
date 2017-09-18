@@ -17,6 +17,7 @@ class Goodcomment extends Base
      * @param string $keyword 用户id
      * @param string $start_time 开始时间
      * @param string $end_time 结束时间
+     * @param int $delete 是否已删除 1已删除
      * @return string
      */
     public function get_list(){
@@ -27,8 +28,10 @@ class Goodcomment extends Base
         $keyword = input("param.keyword", "", 'trim');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
+        $delete = input("param.delete", "", 'trim');
                 
-        $where = "c.delete_time IS NULL";
+        $where = "1=1";
+        $where .= $delete == 1 ? " AND c.delete_time IS NOT NULL" : "";
         $where .= $keyword ? " AND c.user_id=$keyword" : "";
         $where .= $start_time ? " AND c.add_time >= '$start_time 00:00:00'" : "";
         $where .= $end_time ? " AND c.add_time <= '$end_time 23:59:59'" : "";
@@ -59,7 +62,7 @@ class Goodcomment extends Base
                 "current_page" => $page,
             ]            
         ];
-//        exit(json_encode($result));
+        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     
