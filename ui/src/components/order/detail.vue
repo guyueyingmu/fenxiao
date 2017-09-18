@@ -37,9 +37,9 @@
                 <el-col :span="12">
                     <h4 class="pen_title">配送信息</h4>
                     发货员：
-                    <span>{{order_info.consignee_name}}</span> <br> 发货时间：
-                    <span>{{order_info.nickname}}</span> <br> 配送方式：
-                    <span>{{order_info.phone_number}}</span> <br> 快递编号：
+                    <span>{{order_info.consignment_user}}</span> <br> 发货时间：
+                    <span>{{order_info.consignment_time}}</span> <br> 配送方式：
+                    <span>{{order_info.consignment__method}}</span> <br> 快递编号：
                     <span>{{order_info.consignee_name}}</span> <br> 收货人：
                     <span>{{order_info.consignee_name}}</span><br> 收货人电话：
                     <span>{{order_info.consignee_phone}}</span> <br> 收货人地址：
@@ -48,9 +48,9 @@
                 <el-col :span="12">
                     <h4 class="pen_title">服务信息</h4>
                     服务员：
-                    <span>{{order_info.order_number}}</span> <br> 服务时间：
-                    <span>{{order_info.minus_credits}}</span> <br> 备注：
-                    <span>{{order_info.order_status_txt}}</span>
+                    <span>{{order_info.service_user}}</span> <br> 服务时间：
+                    <span>{{order_info.service_time}}</span> <br> 备注：
+                    <span>{{order_info.note}}</span>
                 </el-col>
                 </el-col>
             </el-row>
