@@ -65,6 +65,7 @@
                 </el-table-column>
                 <el-table-column prop="good_name" label="商品名称"></el-table-column>
                 <el-table-column prop="cat_name" label="商品分类" width="120"> </el-table-column>
+                <el-table-column prop="credits" label="扣减积分" width="120"> </el-table-column>
                 <el-table-column prop="price" label="购买单价" width="120"> </el-table-column>
                 <el-table-column prop="buy_num" label="购买数量"></el-table-column>
             </el-table>

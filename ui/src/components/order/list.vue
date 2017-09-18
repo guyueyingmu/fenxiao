@@ -467,9 +467,9 @@ export default {
         //取消订单确认
         OnCannelOrder(index) {
             let vm = this;
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            this.$confirm('是否取消当前订单?', '提示', {
+                confirmButtonText: '确定取消',
+                cancelButtonText: '点错了',
                 type: 'warning'
             }).then(() => {
                 vm.removeData(index)

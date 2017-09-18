@@ -24,6 +24,9 @@ const Users = () =>
 const Withdraw = () =>
   import ( /* webpackChunkName: "withdraw" */ '@/components/users/withdraw')
 
+const Refund = () =>
+  import ( /* webpackChunkName: "refund" */ '@/components/order/refund')  //退款
+
 Vue.use(Router)
 const router = new Router({
   routes: [{
@@ -72,6 +75,11 @@ const router = new Router({
       path: '/order_detail/order_id/:order_id',
       name: 'OrderDetail',
       component: OrderDetail
+    },
+    {
+      path: '/refund',   //退款
+      name: 'Refund',
+      component: Refund
     },
 
   ]
