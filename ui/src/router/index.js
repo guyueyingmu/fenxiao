@@ -101,7 +101,7 @@ const router = new Router({
       component: Exchange
     },
     {
-      path: '/goodcomment',
+      path: '/goods_comments',
       name: 'Goodcomment',
       component: Goodcomment
     },
