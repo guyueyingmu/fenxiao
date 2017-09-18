@@ -1,157 +1,82 @@
 <template>
     <div>
-        <div class="page_heade" @keyup.enter="onSearch()">
-            <el-form :inline="true" :model="formInline">
-                <el-form-item label="用户ID/手机号码">
-                    <el-input v-model="formInline.keyword" placeholder="用户ID/手机号码" style="width:180px"></el-input>
+        <div class="page_heade" >
+            <el-form :model="form" :rules="rules" label-width="200px">
+
+                <el-form-item label="签到获得积分" prop="signin_credits">
+                    <el-input v-model="form.signin_credits" auto-complete="off"></el-input>
                 </el-form-item>
 
-                <el-form-item label="签到日期">
-                    <el-date-picker v-model="value7" type="daterange" align="right" placeholder="选择日期范围" @change="fromDate" :picker-options="pickerOptions">
-                    </el-date-picker>
+                <el-form-item label="绑定手机获得积分" prop="bind_phone_credits">
+                    <el-input v-model="form.bind_phone_credits" auto-complete="off"></el-input>
                 </el-form-item>
 
-                <el-form-item>
-                    <el-button type="primary" @click="onSearch()">搜索</el-button>
-                    <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
+                <el-form-item label="分享商品获得积分" prop="share_good_credits">
+                    <el-input v-model="form.share_good_credits" auto-complete="off"></el-input>
+                </el-form-item>
+
+                <div style="height:40px;"></div>
+                <el-form-item label-width="40%">
+                    <el-button type="primary" @click="submitForm('form')">保存</el-button>
                 </el-form-item>
             </el-form>
 
-        </div>
-
-        <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="签到ID"></el-table-column>
-            <el-table-column prop="nickname" label="签到人"></el-table-column>
-            <el-table-column prop="phone_number" label="用户手机"></el-table-column>
-            <el-table-column prop="signin_date" label="签到日期"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间"></el-table-column>
-        </el-table>
-
-        <div class="pagination">
-            <el-pagination v-if="parseInt(pages.total_page,10) > 1" @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
-            </el-pagination>
         </div>
 
     </div>
 </template>
 <script>
 import http from '@/assets/js/http'
-import { DatePicker } from 'element-ui'
 export default {
     mixins: [http],
-    components: {
-        "el-date-picker": DatePicker,
-    },
     data() {
         return {
-            isSearch: false,
             dalogi_loading: false,
-            formInline: {
-                keyword: '',
-                start_time:'',
-                end_time:''
-            },
-            pickerOptions: {
-                shortcuts: [
-                    {
-                        text: '今天',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime());
-                            picker.$emit('pick', [start, end]);
-                        }
-                    },
-                    {
-                        text: '最近三天',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    },
-                    {
-                        text: '最近一周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-            },
-            value7:'',
-            list: []
+            form: {},
+            rules: {
+                signin_credits: [{ required: true, type:'string', message: '请输入签到获得积分', trigger: 'blur' }],
+                bind_phone_credits: [{ required: true, type:'string', message: '请输入绑定手机获得积分', trigger: 'blur' }],
+                share_good_credits: [{ required: true, type:'string', message: '请输入分享商品获得积分', trigger: 'blur' }],
+            }
         }
     },
     methods: {
-        //格式化日期范围
-        fromDate(val) {
-            if (val) {
-                let _v = val.split(' - ');
-                this.formInline.start_time = _v[0]
-                this.formInline.end_time = _v[1]
-            }
+
+        //提交表单
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let url = '/admin/Setting/set',
+                        data = this.form,
+                        vm = this;
+                    this.apiPost(url, data).then(function(res) {
+                        if (res.code) {
+                            vm.$message.success(res.msg);
+                            setTimeout(function() {
+                                vm.$router.push('/goods');
+                            }, 500)
+
+                        } else {
+                            vm.handleError(res)
+                        }
+
+                    })
+
+                } else {
+                    this.$message.error('请填写必填项！');
+                    return false;
+                }
+            });
         },
-
-
-        //currentPage 改变时会触发
-        handleCurrentChange(current_paged) {
-
-            if (this.isSearch) {
-                this.onSearch(current_paged)
-            } else {
-                this.get_list(current_paged)
-            }
-        },
-        //清空
-        onReset() {
-            this.formInline = {
-                keyword: '',
-                start_time:'',
-                end_time:''
-            }
-            this.value7 = '';
-            this.get_list(1)
-            this.isSearch = false;
-        },
-        //搜索
-        onSearch(current_paged) {
-
-            this.isSearch = true;
-            current_paged = current_paged || 1;
-            let searchData = this.formInline
-            this.get_list(current_paged, searchData)
-        },
-
         //取数据
-        get_list(page, searchData) {
-            page = page || 1;
-            let url = '/admin/Signin/get_list?page=' + page,
+        get_list() {
+            let url = '/admin/Setting/get_set?c_type=2',
                 vm = this;
 
             vm.loading = true;
-            this.apiGet(url, searchData).then(function(res) {
+            this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    vm.list = res.data.list;
-                    vm.pages = res.data.pages
+                    vm.form = res.data;
                 } else {
                     vm.handleError(res)
                 }
@@ -163,8 +88,8 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['用户', '签到列表'])
-        this.setMenu('2-2');
+        this.setBreadcrumb(['用户', '积分记录'])
+        this.setMenu('2-3');
 
     }
 
