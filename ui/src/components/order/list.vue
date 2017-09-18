@@ -96,8 +96,8 @@
                                     <td>{{item.pay_method_txt }}</td>
                                     <td>{{item.finish_time}}</td>
                                     <td class="center tool_no_border">
-                                        <el-button type="text" size="small" @click="goto('/order_detail/order_id/'+item.id)">详情</el-button>
-                                        <el-button type="text" size="small">取消订单</el-button>
+                                        <el-button type="text" size="small" @click="goto('/order_detail/order_id/'+item.id)">查看详情</el-button> <br>
+                                        <el-button type="text" size="small" v-if="item.order_status == 1" @click="OnCannelOrder(idx)">取消订单</el-button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -464,9 +464,8 @@ export default {
                 vm.loading = false;
             })
         },
-
-        //删除确认
-        onRemove(index) {
+        //取消订单确认
+        OnCannelOrder(index) {
             let vm = this;
             this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -479,10 +478,11 @@ export default {
             });
 
         },
+
         //删除列表数据
         removeData(index) {
             let _data = this.list[index]
-            let url = '/admin/order/del/good_id/' + _data.id,
+            let url = '/admin/order/cancel?order_id=' + _data.id,
                 vm = this;
             vm.loading = true;
             this.apiGet(url).then(function(res) {
