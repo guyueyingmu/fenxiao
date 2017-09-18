@@ -5,18 +5,21 @@ import Router from 'vue-router'
 
 const Goods = () =>
   import ( /* webpackChunkName: "goods" */ '@/components/goods/goods')
-  
+
 const Goods_add = () =>
   import ( /* webpackChunkName: "goods_add" */ '@/components/goods/add')
-  
+
 const Goods_category = () =>
   import ( /* webpackChunkName: "goods_category" */ '@/components/goods/category')
 
 const Order_list = () =>
   import ( /* webpackChunkName: "order_list" */ '@/components/order/list')
-  
+
 const Users = () =>
   import ( /* webpackChunkName: "users" */ '@/components/users/users')
+  
+const OrderDetail = () =>
+  import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
 
 Vue.use(Router)
 const router = new Router({
@@ -57,13 +60,18 @@ const router = new Router({
       name: 'Users',
       component: Users
     },
+    {
+      path: '/order_detail',
+      name: 'OrderDetail',
+      component: OrderDetail
+    },
 
   ]
 })
 //全局的 before 钩子
-router.beforeEach((to,from,next) =>{
- 
-    next()
+router.beforeEach((to, from, next) => {
+
+  next()
 })
 
 export default router
