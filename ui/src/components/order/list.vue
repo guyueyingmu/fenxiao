@@ -96,7 +96,7 @@
                                     <td>{{item.pay_method_txt }}</td>
                                     <td>{{item.finish_time}}</td>
                                     <td class="center tool_no_border">
-                                        <el-button type="text" size="small">详情</el-button>
+                                        <el-button type="text" size="small" @click="goto('/order_detail/order_id/'+item.id)">详情</el-button>
                                         <el-button type="text" size="small">取消订单</el-button>
                                     </td>
                                 </tr>

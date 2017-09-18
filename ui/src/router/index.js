@@ -17,7 +17,7 @@ const Order_list = () =>
 
 const Users = () =>
   import ( /* webpackChunkName: "users" */ '@/components/users/users')
-  
+
 const OrderDetail = () =>
   import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
 
@@ -61,7 +61,7 @@ const router = new Router({
       component: Users
     },
     {
-      path: '/order_detail',
+      path: '/order_detail/order_id/:order_id',
       name: 'OrderDetail',
       component: OrderDetail
     },
