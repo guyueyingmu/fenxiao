@@ -2,8 +2,8 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
-                <el-tab-pane label="退款申请" name="0"></el-tab-pane>
-                <el-tab-pane label="已退款" name="1"></el-tab-pane>
+                <el-tab-pane label="换货申请" name="0"></el-tab-pane>
+                <el-tab-pane label="已换货" name="1"></el-tab-pane>
                 <el-tab-pane label="已拒绝" name="2"></el-tab-pane>
             </el-tabs>
         </div>
@@ -44,9 +44,9 @@
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template scope="scope">
-                    <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
-                    <span v-else-if="scope.row.status === 1" class="text-des">已退款</span>
-                    <span v-else class="text-des">已拒绝</span>
+                    <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onExchange(scope.row,scope.row.$index)">立即处理</el-button>
+                    <span v-else-if="scope.row.status === 1" class="text-des">已换货</span>
+                    <span v-else  class="text-des">已拒绝</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="退款" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" size="small">
+        <el-dialog title="换货" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" size="small">
 
             <!-- 要服务 2 5 -->
             <el-form :model="dialogForm" :inline="true">
@@ -182,8 +182,8 @@ export default {
         }
     },
     methods: {
-        //退款弹窗
-        onRefund(item, idx) {
+        //换货弹窗
+        onExchange(item, idx) {
             this.dialogForm = {
                 handle_user: '',
                 handle_time: '',
@@ -200,7 +200,7 @@ export default {
         //确定弹窗
         dialog_ok() {
             let _data = this.dialogForm;
-            this.refundHandle(_data)
+            this.onHandle(_data)
         },
         //格式化日期范围
         fromDate(val) {
@@ -255,14 +255,13 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/refund/get_list?page=' + page,
+            let url = '/admin/exchange/get_list?page=' + page,
                 vm = this;
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
-                    vm.pages = res.data.pages;
-
+                    vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)
                 }
@@ -270,15 +269,15 @@ export default {
             })
         },
 
-        //退款
-        refundHandle(data, cb) {
+        
+        onHandle(data, cb) {
 
-            let url = '/admin/refund/handle',
+            let url = '/admin/exchange/handle',
                 vm = this;
             vm.loading = true;
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    vm.dialogFormVisible = false;
+                   vm.dialogFormVisible = false;
                     vm.$message({
                         type: 'success',
                         message: res.msg
@@ -294,8 +293,8 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['订单', '退款申请'])
-        this.setMenu('1-1');
+        this.setBreadcrumb(['订单', '换货申请'])
+        this.setMenu('1-2');
     }
 
 }

@@ -59,7 +59,7 @@ class Exchange extends Base
                 "manage_user" => session("admin.nickname")                
             ]
         ];
-        exit(json_encode($result));
+       // exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     

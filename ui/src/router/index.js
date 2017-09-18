@@ -17,7 +17,7 @@ const Order_list = () =>
 
 const OrderDetail = () =>
   import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
-  
+
 const Users = () =>
   import ( /* webpackChunkName: "users" */ '@/components/users/users')
 
@@ -25,10 +25,16 @@ const Withdraw = () =>
   import ( /* webpackChunkName: "withdraw" */ '@/components/users/withdraw')
 
 const Refund = () =>
-  import ( /* webpackChunkName: "refund" */ '@/components/order/refund')  //退款
-  
-  const Signin = () =>
-    import ( /* webpackChunkName: "signin" */ '@/components/users/signin')
+  import ( /* webpackChunkName: "refund" */ '@/components/order/refund') //退款
+
+const Signin = () =>
+  import ( /* webpackChunkName: "signin" */ '@/components/users/signin')
+
+const Exchange = () =>
+  import ( /* webpackChunkName: "exchange" */ '@/components/order/exchange')
+
+const Goodcomment = () =>
+  import ( /* webpackChunkName: "goodcomment" */ '@/components/order/goodcomment')
 
 Vue.use(Router)
 const router = new Router({
@@ -80,7 +86,7 @@ const router = new Router({
       component: OrderDetail
     },
     {
-      path: '/refund',   //退款
+      path: '/refund', //退款
       name: 'Refund',
       component: Refund
     },
@@ -88,6 +94,16 @@ const router = new Router({
       path: '/signin',
       name: 'Signin',
       component: Signin
+    },
+    {
+      path: '/exchange',
+      name: 'Exchange',
+      component: Exchange
+    },
+    {
+      path: '/goods_comments',
+      name: 'Goodcomment',
+      component: Goodcomment
     },
 
   ]

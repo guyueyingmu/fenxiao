@@ -46,7 +46,7 @@
                 <template scope="scope">
                     <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
                     <span v-else-if="scope.row.status === 1" class="text-des">已退款</span>
-                    <span v-else class="text-des">已拒绝</span>
+                    <span v-else  class="text-des">已拒绝</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -261,8 +261,7 @@ export default {
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
-                    vm.pages = res.data.pages;
-
+                    vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)
                 }
@@ -278,12 +277,12 @@ export default {
             vm.loading = true;
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    vm.dialogFormVisible = false;
+                   vm.dialogFormVisible = false;
+
                     vm.$message({
                         type: 'success',
                         message: res.msg
                     });
-                    vm.get_list();
                 } else {
                     vm.handleError(res)
                 }
