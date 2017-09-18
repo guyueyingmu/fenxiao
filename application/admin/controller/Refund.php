@@ -119,7 +119,7 @@ class Refund extends Base
                 $refund_note = '';
                 
                 //订单状态更改为 已取消， 支付状态为已退款
-                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => time(), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
+                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => date("Y-m-d H:i:s"), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
 
             }
             
