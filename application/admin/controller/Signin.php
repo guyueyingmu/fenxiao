@@ -27,8 +27,8 @@ class Signin extends Base
                 
         $where = "1=1";
         $where .= $keyword ? " AND (u.id LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
-        $where .= $start_time ? " AND s.add_time >= '$start_time 00:00:00'" : "";
-        $where .= $end_time ? " AND s.add_time <= '$end_time 23:59:59'" : "";
+        $where .= $start_time ? " AND s.signin_date >= '$start_time'" : "";
+        $where .= $end_time ? " AND s.signin_date <= '$end_time'" : "";
         
         $withdraw = db('signin');
         $list = $withdraw->alias('s')

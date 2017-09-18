@@ -101,6 +101,9 @@ class Refund extends Base
         if(!$refund){
             $this->error("退款申请不存在");
         }
+        if($refund['status'] != 1){
+            $this->error("已处理，不能重复处理");
+        }
         
         $order = Orders::where('id', $refund['order_id'])->field("pay_method")->find();
         if($order['pay_method'] != 1){
