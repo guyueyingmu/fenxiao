@@ -15,11 +15,14 @@ const Goods_category = () =>
 const Order_list = () =>
   import ( /* webpackChunkName: "order_list" */ '@/components/order/list')
 
+const OrderDetail = () =>
+  import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
+  
 const Users = () =>
   import ( /* webpackChunkName: "users" */ '@/components/users/users')
 
-const OrderDetail = () =>
-  import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
+const Withdraw = () =>
+  import ( /* webpackChunkName: "withdraw" */ '@/components/users/withdraw')
 
 Vue.use(Router)
 const router = new Router({
@@ -59,6 +62,11 @@ const router = new Router({
       path: '/users',
       name: 'Users',
       component: Users
+    },
+    {
+      path: '/withdraw',
+      name: 'Withdraw',
+      component: Withdraw
     },
     {
       path: '/order_detail/order_id/:order_id',
