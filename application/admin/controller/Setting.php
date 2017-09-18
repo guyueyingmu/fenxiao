@@ -47,8 +47,7 @@ class Setting extends Base
      */
     public function set(){
         $data = input('param.data', "", "trim");
-        $data = json_decode($data,true);
-     //   echo $data;exit;
+//        $data = json_decode($data,true);
         if(!$data){
             $this->error("请上传要设置的数据");
         }

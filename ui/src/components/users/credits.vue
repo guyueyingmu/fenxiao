@@ -2,11 +2,11 @@
     <div>
         <div class="page_heade" @keyup.enter="onSearch()">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="用户ID/手机号码">
-                    <el-input v-model="formInline.keyword" placeholder="用户ID/手机号码" style="width:180px"></el-input>
+                <el-form-item label="用户ID">
+                    <el-input v-model="formInline.keyword" placeholder="用户ID" style="width:180px"></el-input>
                 </el-form-item>
 
-                <el-form-item label="签到日期">
+                <el-form-item label="获得时间">
                     <el-date-picker v-model="value7" type="daterange" align="right" placeholder="选择日期范围" @change="fromDate" :picker-options="pickerOptions">
                     </el-date-picker>
                 </el-form-item>
@@ -20,11 +20,13 @@
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="签到ID"></el-table-column>
-            <el-table-column prop="nickname" label="签到人"></el-table-column>
-            <el-table-column prop="phone_number" label="用户手机"></el-table-column>
-            <el-table-column prop="signin_date" label="签到日期"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间"></el-table-column>
+            <el-table-column prop="user_id" label="用户ID"></el-table-column>
+            <el-table-column prop="nickname" label="用户昵称"></el-table-column>
+            <el-table-column prop="credits_in" label="收入积分"></el-table-column>
+            <el-table-column prop="credits_out" label="支出积分"></el-table-column>
+            <el-table-column prop="credits_from_txt" label="渠道"></el-table-column>
+            <el-table-column prop="track_id" label="track"></el-table-column>
+            <el-table-column prop="add_time" label="获得时间"></el-table-column>
         </el-table>
 
         <div class="pagination">
@@ -144,7 +146,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/Signin/get_list?page=' + page,
+            let url = '/admin/Credits/get_list?page=' + page,
                 vm = this;
 
             vm.loading = true;
@@ -163,8 +165,8 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['用户', '签到列表'])
-        this.setMenu('2-2');
+        this.setBreadcrumb(['用户', '积分记录'])
+        this.setMenu('2-4');
 
     }
 

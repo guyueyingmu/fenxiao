@@ -1,5 +1,5 @@
 <template>
-    <div style="padding:5% 0; width:500px;" v-loading="loading">
+    <div style="padding:5% 10% 0 0; " v-loading="loading">
         <el-form ref="ruleForm" label-width="230px" class="demo-ruleForm">
             <el-form-item :label="item.show_name" :prop="item.c_name" v-for="item in ruleForm" :key="item.id">
                 <el-input v-model="item.c_value"></el-input>
@@ -26,7 +26,7 @@ export default {
         },
         //存数据
         save_set(data) {
-           let _data = {data :JSON.stringify(JSON.stringify(data))}
+           let _data = {data:data}
 
             let url = '/admin/setting/set',
                 vm = this;
