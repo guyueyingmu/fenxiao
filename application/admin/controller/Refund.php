@@ -71,7 +71,7 @@ class Refund extends Base
      * @param int $id 退款申请id
      * @param string $handle_user 处理员名字
      * @param datetime $handle_time 处理时间
-     * @param int $status 处理状态（0未处理，1同意，2拒绝）
+     * @param int $status 处理状态（1未处理，2同意，3拒绝）
      * @param string $handle_note 处理备注
      */
     public function handle(){
@@ -81,7 +81,7 @@ class Refund extends Base
             'id'  => 'require',
             'handle_user' => 'require|max:50',
             'handle_time' => 'require|dateFormat:Y-m-d H:i:s',
-            'status' => 'require|in:1,2',
+            'status' => 'require|in:2,3',
             'handle_note' => 'max:1000',
         ],[
             'id.require' => '参数错误',
@@ -113,7 +113,7 @@ class Refund extends Base
             $data['admin_user_id'] = session("admin.uid");
             db('orders_refund_apply')->update($data);
             
-            if($data['status'] == 1){
+            if($data['status'] == 2){
                 //调用微信退款接口处理退款
                 $refund_trade_num = '1111';
                 $refund_note = '';
