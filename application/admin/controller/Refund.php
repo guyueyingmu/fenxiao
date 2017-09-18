@@ -17,6 +17,7 @@ class Refund extends Base
      * @param string $keyword 关键词搜索
      * @param string $start_time 开始时间
      * @param string $end_time 结束时间
+     * @param int $status 处理状态（1未处理，2同意，3拒绝）
      * @return string
      */
     public function get_list(){
@@ -27,8 +28,10 @@ class Refund extends Base
         $keyword = input("param.keyword", "", 'trim');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
+        $status = input("param.status", "", 'trim');
                 
         $where = "1=1";
+        $where .= $status ? " AND r.status = '$status'" : "";
         $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
         $where .= $start_time ? " AND r.add_time >= '$start_time 00:00:00'" : "";
         $where .= $end_time ? " AND r.add_time <= '$end_time 23:59:59'" : "";
