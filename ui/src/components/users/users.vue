@@ -3,7 +3,7 @@
         <div class="page_heade" @keyup.enter="onSearch()">
             <el-form :inline="true" :model="formInline">
                 <el-form-item label="用户昵称/手机号码">
-                    <el-input v-model="formInline.keyword" placeholder="用户昵称/手机号码" style="width:220px"></el-input>
+                    <el-input v-model="formInline.keyword" placeholder="用户昵称/手机号码" style="width:180px"></el-input>
                 </el-form-item>
 
                 <el-form-item label="注册时间">
@@ -12,14 +12,14 @@
                 </el-form-item>
 
                 <el-form-item label="状态">
-                    <el-select v-model="formInline.status" placeholder="状态" style="width:120px" clearable>
+                    <el-select v-model="formInline.status" placeholder="状态" style="width:100px" clearable>
                         <el-option :value="1" label="启用"></el-option>
                         <el-option :value="2" label="禁用"></el-option>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="积分排序">
-                    <el-select v-model="formInline.credits_sort" placeholder="积分排序" style="width:120px" clearable>
+                    <el-select v-model="formInline.credits_sort" placeholder="积分排序" style="width:100px" clearable>
                         <el-option :value="1" label="降序"></el-option>
                         <el-option :value="2" label="升序"></el-option>
                     </el-select>
@@ -77,7 +77,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="设置" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading">
+        <el-dialog title="设置" :visible.sync="dialogFormVisible" size="tiny" :close-on-click-modal="false" v-loading="dalogi_loading">
 
             <el-form :model="dialogForm" :inline="true">
                 <div>
