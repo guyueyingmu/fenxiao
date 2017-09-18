@@ -4,37 +4,43 @@ import Router from 'vue-router'
 
 
 const Goods = () =>
-  import ( /* webpackChunkName: "goods" */ '@/components/goods/goods')
+  import( /* webpackChunkName: "goods" */ '@/components/goods/goods')
 
 const Goods_add = () =>
-  import ( /* webpackChunkName: "goods_add" */ '@/components/goods/add')
+  import( /* webpackChunkName: "goods_add" */ '@/components/goods/add')
 
 const Goods_category = () =>
-  import ( /* webpackChunkName: "goods_category" */ '@/components/goods/category')
+  import( /* webpackChunkName: "goods_category" */ '@/components/goods/category')
 
 const Order_list = () =>
-  import ( /* webpackChunkName: "order_list" */ '@/components/order/list')
+  import( /* webpackChunkName: "order_list" */ '@/components/order/list')
 
 const OrderDetail = () =>
-  import ( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
+  import( /* webpackChunkName: "OrderDetail" */ '@/components/order/detail')
 
 const Users = () =>
-  import ( /* webpackChunkName: "users" */ '@/components/users/users')
+  import( /* webpackChunkName: "users" */ '@/components/users/users')
 
 const Withdraw = () =>
-  import ( /* webpackChunkName: "withdraw" */ '@/components/users/withdraw')
+  import( /* webpackChunkName: "withdraw" */ '@/components/users/withdraw')
 
 const Refund = () =>
-  import ( /* webpackChunkName: "refund" */ '@/components/order/refund') //退款
+  import( /* webpackChunkName: "refund" */ '@/components/order/refund') //退款
 
 const Signin = () =>
-  import ( /* webpackChunkName: "signin" */ '@/components/users/signin')
+  import( /* webpackChunkName: "signin" */ '@/components/users/signin')
 
 const Exchange = () =>
-  import ( /* webpackChunkName: "exchange" */ '@/components/order/exchange')
+  import( /* webpackChunkName: "exchange" */ '@/components/order/exchange')
 
 const Goodcomment = () =>
-  import ( /* webpackChunkName: "goodcomment" */ '@/components/order/goodcomment')
+  import( /* webpackChunkName: "goodcomment" */ '@/components/order/goodcomment')
+
+const Credits = () =>
+  import( /* webpackChunkName: "credits" */ '@/components/users/credits')
+
+const Score = () =>
+  import( /* webpackChunkName: "score" */ '@/components/users/score')
 
 const DisGoods = () =>
   import ( /* webpackChunkName: "DisGoods" */ '@/components/dis/dis_goods')
@@ -113,7 +119,16 @@ const router = new Router({
       name: 'DisGoods',
       component: DisGoods
     },
-
+    {
+        path: '/score_list',
+        name: 'Credits',
+        component: Credits
+      },
+      {
+        path: '/score',
+        name: 'Score',
+        component: Score
+      },
   ]
 })
 //全局的 before 钩子
