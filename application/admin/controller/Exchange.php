@@ -101,6 +101,9 @@ class Exchange extends Base
         if(!$exchange){
             $this->error("换货申请不存在");
         }
+        if($exchange['status'] != 1){
+            $this->error("已处理，不能重复处理");
+        }
         
         Db::startTrans();
         try{
