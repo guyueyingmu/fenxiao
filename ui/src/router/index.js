@@ -35,6 +35,9 @@ const Exchange = () =>
 
 const Goodcomment = () =>
   import ( /* webpackChunkName: "goodcomment" */ '@/components/order/goodcomment')
+  
+  const Credits = () =>
+    import ( /* webpackChunkName: "credits" */ '@/components/users/credits')
 
 Vue.use(Router)
 const router = new Router({
@@ -104,6 +107,11 @@ const router = new Router({
       path: '/goods_comments',
       name: 'Goodcomment',
       component: Goodcomment
+    },
+    {
+      path: '/score',
+      name: 'Credits',
+      component: Credits
     },
 
   ]
