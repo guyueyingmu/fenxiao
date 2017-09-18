@@ -44,7 +44,9 @@
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
+                    <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
+                    <span v-else-if="scope.row.status === 1" class="text-des">已退款</span>
+                    <span v-else  class="text-des">已拒绝</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -86,8 +88,7 @@
                     <el-row>
                         <el-col :span="12">
                             订单编号：
-                            <span>{{dialog_temp.order_number }}</span> <br>
-                             下单时间：
+                            <span>{{dialog_temp.order_number }}</span> <br> 下单时间：
                             <span>{{ dialog_temp.order_add_time }}</span>
                         </el-col>
                         <el-col :span="12">
@@ -197,9 +198,9 @@ export default {
 
         },
         //确定弹窗
-        dialog_ok(done) {
+        dialog_ok() {
             let _data = this.dialogForm;
-            this.refundHandle(_data, done)
+            this.refundHandle(_data)
         },
         //格式化日期范围
         fromDate(val) {
@@ -277,6 +278,7 @@ export default {
             vm.loading = true;
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
+                   vm.dialogFormVisible = false;
 
                     vm.$message({
                         type: 'success',
@@ -288,13 +290,12 @@ export default {
                 vm.loading = false;
             })
         }
-
     },
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['订单', '订单列表'])
-        this.setMenu('1-0');
+        this.setBreadcrumb(['订单', '退款申请'])
+        this.setMenu('1-1');
     }
 
 }
