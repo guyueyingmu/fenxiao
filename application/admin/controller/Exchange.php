@@ -17,6 +17,7 @@ class Exchange extends Base
      * @param string $keyword 关键词搜索
      * @param string $start_time 开始时间
      * @param string $end_time 结束时间
+     * @param int $status 处理状态（1未处理，2同意，3拒绝）
      * @return string
      */
     public function get_list(){
@@ -27,8 +28,10 @@ class Exchange extends Base
         $keyword = input("param.keyword", "", 'trim');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
+        $status = input("param.status", "", 'trim');
                 
         $where = "1=1";
+        $where .= $status ? " AND e.status = '$status'" : "";
         $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
         $where .= $start_time ? " AND e.add_time >= '$start_time 00:00:00'" : "";
         $where .= $end_time ? " AND e.add_time <= '$end_time 23:59:59'" : "";
@@ -68,7 +71,7 @@ class Exchange extends Base
      * @param int $id 换货申请id
      * @param string $handle_user 处理员名字
      * @param datetime $handle_time 处理时间
-     * @param int $status 处理状态（0未处理，1同意，2拒绝）
+     * @param int $status 处理状态（1未处理，2同意，3拒绝）
      * @param string $handle_note 处理备注
      */
     public function handle(){
@@ -78,7 +81,7 @@ class Exchange extends Base
             'id'  => 'require',
             'handle_user' => 'require|max:50',
             'handle_time' => 'require|dateFormat:Y-m-d H:i:s',
-            'status' => 'require|in:1,2',
+            'status' => 'require|in:2,3',
             'handle_note' => 'max:1000',
         ],[
             'id.require' => '参数错误',
