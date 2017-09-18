@@ -34,7 +34,7 @@ class Withdraw extends Base
                 ->join("__USERS__ u", "u.id=w.user_id", "LEFT")
                 ->join("__ADMIN_USER__ au", "au.id=w.admin_user_id", "LEFT")
                 ->where($where)
-                ->field("w.user_id,u.nickname,u.phone_number,u.account_balance,w.amount,w.add_time,w.status,w.handle_time,w.admin_user_id,au.nickname admin_user_name")
+                ->field("w.id,w.user_id,u.nickname,u.phone_number,u.account_balance,w.amount,w.add_time,w.status,w.handle_time,w.admin_user_id,au.nickname admin_user_name")
                 ->page($page,$limit)
                 ->order('w.id DESC')
                 ->select();

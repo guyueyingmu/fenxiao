@@ -45,7 +45,7 @@
             <el-table-column prop="nickname" label="用户昵称"></el-table-column>
             <el-table-column prop="img_url" label="头像" width="100">
                 <template scope="scope">
-                  <img style="width:50px;" v-if="scope.row.img_url" :src="scope.row.img_url" />
+                    <img style="width:50px;" v-if="scope.row.img_url" :src="scope.row.img_url" />
                 </template>
             </el-table-column>
             <el-table-column prop="sex" label="性别" width="100">
@@ -85,7 +85,7 @@
                         <el-input v-model="dialogForm.id" placeholder="用户ID" :disabled="true"></el-input>
                     </el-form-item>
                 </div>
-                
+
                 <div>
                     <el-form-item label="用户昵称" label-width="100px">
                         <el-input v-model="dialogForm.nickname" placeholder="用户昵称" :disabled="true"></el-input>
@@ -118,7 +118,7 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import { DatePicker,InputNumber } from 'element-ui'
+import { DatePicker, InputNumber } from 'element-ui'
 export default {
     mixins: [http],
     components: {
@@ -130,9 +130,9 @@ export default {
             isSearch: false,
             dalogi_loading: false,
             dialogFormVisible: false,
-            dialogForm:{
-                id:0,
-                nickname:'',
+            dialogForm: {
+                id: 0,
+                nickname: '',
                 credits: 0,
                 status: 0
             },
@@ -206,10 +206,10 @@ export default {
         //打开设置
         open_set(data) {
             this.dialogForm = {
-                id:data.id,
-                nickname:data.nickname,
-                credits:data.credits,
-                status:data.status
+                id: data.id,
+                nickname: data.nickname,
+                credits: data.credits,
+                status: data.status
             }
             this.dialogFormVisible = true;
         },
@@ -222,7 +222,11 @@ export default {
                 if (res.code) {
                     vm.$message.success(res.msg);
                     vm.dialogFormVisible = false;
-                    vm.onSearch(vm.pages.current_page);
+                    if (vm.isSearch) {
+                        vm.onSearch(vm.pages.current_page);
+                    }else{
+                        vm.get_list();
+                    }
                 } else {
                     vm.handleError(res)
                 }
