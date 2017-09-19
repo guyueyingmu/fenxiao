@@ -25,7 +25,7 @@
             <el-table-column prop="" label="操作" width="250">
                 <template scope="scope">
                     <el-button type="text" @click="open(true,scope.row)">修改</el-button>
-                    <el-button type="text" @click="onRemove">删除</el-button>
+                    <el-button type="text" @click="onRemove(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
 
@@ -130,31 +130,34 @@ export default {
         },
 
         //删除确认
-        onRemove(index) {
+        onRemove(item) {
             let vm = this;
             this.$confirm('该角色已被使用，如需删除，请把使用该角色的管理员调整为其他角色！', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                vm.removeData(index)
+                alert()
+                vm.removeData(item)
 
             }).catch(() => {
             });
         },
         //删除
-        removeData(index) {
-            let _data = this.list[index]
-            let url = '/admin/role/del_role/role_id/' + _data.id,
+        removeData(item) {
+          
+            let url = '/admin/role/del_role/role_id/' + item.id,
                 vm = this;
             vm.loading = true;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    vm.list.splice(index, 1)
+                    
                     vm.$message({
                         type: 'success',
                         message: res.msg
                     });
+                    vm.get_list();
+
                 } else {
                     vm.handleError(res)
                 }
@@ -168,9 +171,11 @@ export default {
             setTimeout(function() {
                 if (isEdit) {
                     vm.dialog.role_name = item.role_name
+                    vm.dialog.role_id = item.id
                     let _menu_list = item.menu_auth.split(',')
                     vm.$refs.tree.setCheckedKeys(_menu_list);
                 } else {
+                        vm.dialog.role_id = '';
                     vm.dialog.role_name = '';
                     vm.$refs.tree.setCheckedKeys([]);
                 }
