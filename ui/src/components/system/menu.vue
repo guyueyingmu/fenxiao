@@ -30,7 +30,7 @@
 
         </div>
 
-        <el-table :data="list"  border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
+        <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
             <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
             <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
             <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
@@ -82,20 +82,6 @@ export default {
         }
     },
     methods: {
-        //设置下架状态样式
-        tableRowClassName(row, index){
-            if(row.status == 2){
-                return 'status_off'
-            }else{
-                return ''
-            }
-
-        },
-        //表格设置分类名
-        getType(good_type_id){
-            let id = parseInt(good_type_id,10)
-            return this.$store.getters.GOODTYPE[id-1].label;
-        },
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
         
