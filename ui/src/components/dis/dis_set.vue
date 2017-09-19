@@ -65,14 +65,15 @@ export default {
         },
         initData() {
             this.c_type = this.$route.params.c_type;
-            let bread = ['分销', '分销设置'];
+            let bread = ['分销', '分销设置'], setmenu = '3-4';
             if(this.c_type == 2){
                 bread = ['用户', '积分设置'];
+                setmenu = '2-4';
             }
 
             this.get_set(this.c_type);
             this.setBreadcrumb(bread)
-            this.setMenu('3-4');
+            this.setMenu(setmenu);
         }
     },
     watch: {
