@@ -31,10 +31,14 @@ class Role extends Base
 				$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
 				if($row['menu_auth']=='all'){ 
 					$list[$key]['menu_auth_name'] = db('admin_menu')->where('pid != 0 and status =1')->column('menu_name');
-				}else{ 
-					$auth = explode(',',$row['menu_auth']);
-					foreach($auth as $k=>$v){ 
-						$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
+					$menu_auth = db('admin_menu')->where('pid != 0 and status =1')->column('id');
+					$list[$key]['menu_auth'] = implode(",", $menu_auth);
+				}else{
+					if($row['menu_auth'] != ''){	
+						$auth = explode(',',$row['menu_auth']);
+						foreach($auth as $k=>$v){ 
+							$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
+						}
 					}
 				}
 				//$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
@@ -46,7 +50,7 @@ class Role extends Base
 		$total_page = ceil($total/$limit);
 	
 		$result['list'] = $list;
-		
+		//print_r($list);exit;
        //分页
         $result['pages']['total'] = $total;
         $result['pages']['limit'] = $limit;
@@ -78,7 +82,7 @@ class Role extends Base
 
 		
         $result['menu'] = $menu;
-    
+		
         $this->success("成功","",$result);
 		
 		
@@ -95,12 +99,14 @@ class Role extends Base
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
-				'role_name'  => 'require|unique:role_name',
+				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',		
 			]); 
 			
 			if ($validate_res !== true) {
@@ -110,7 +116,7 @@ class Role extends Base
 			$data['edit_time'] = time();
 			$new_role = db('admin_user_role')->where('id='.$role_id)->update($data);	
 			//写入日志表			
-			$this->add_log(self::$menu_id,['title' => '更新角色', 'admin_user_role' => $data]);		
+			$this->add_log(self::$menu_id,['title' => '更新角色', 'data' => $data]);		
 			//=============================
 			$this->success("修改成功");
 
@@ -120,10 +126,12 @@ class Role extends Base
 				'menu_auth' => input("menu_auth","","trim"),//逗号隔开的菜单id
 			];
 			$validate_res = $this->validate($data,[	
-				'role_name'  => 'require|unique:role_name',
+				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[				
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',	
 			]); 
 			
 			if ($validate_res !== true) {
@@ -133,7 +141,7 @@ class Role extends Base
 			$new_role =  db('admin_user_role')->insertGetId($data);	
 			$data['id'] = $new_role;
 			//写入日志表
-			$this->add_log(self::$menu_id,['title' => '新增角色', 'admin_user_role' => $data]);				
+			$this->add_log(self::$menu_id,['title' => '新增角色', 'data' => $data]);				
 			//=============================
 			
 			$this->success("新增成功");
@@ -160,7 +168,7 @@ class Role extends Base
         $res = $role->delete();
         if($res){
             //写日志
-			$this->add_log(self::$menu_id,['title' => '删除角色', 'admin_user_role' => $role]);	
+			$this->add_log(self::$menu_id,['title' => '删除角色', 'data' => $role]);	
             
             $this->success('删除成功');
         }else{
