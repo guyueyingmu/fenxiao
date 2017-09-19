@@ -61,6 +61,21 @@ const disSet = () =>
 const disMember = () =>
   import( /* webpackChunkName: "disMember" */ '@/components/dis/dis_member')
 
+const UserRole = () =>
+  import( /* webpackChunkName: "UserRole" */ '@/components/system/user_role')
+
+const Menu = () =>
+  import( /* webpackChunkName: "menu" */ '@/components/system/menu')
+
+const Manager = () =>
+  import( /* webpackChunkName: "manager" */ '@/components/system/manager')
+
+const Log = () =>
+  import( /* webpackChunkName: "log" */ '@/components/system/log')
+
+const disMember = () =>
+  import( /* webpackChunkName: "disMember" */ '@/components/dis/dis_member')
+
 Vue.use(Router)
 const router = new Router({
   routes: [{
@@ -164,6 +179,27 @@ const router = new Router({
     path: '/dis_set', //分销设置
     name: 'disSet',
     component: disSet
+  },
+  {
+    path: '/user_role', //角色管理
+    name: 'UserRole',
+    component: UserRole
+  },
+
+  {
+    path: '/menu', //角色管理
+    name: 'Menu',
+    component: Menu
+  },
+  {
+    path: '/manager', //管理员
+    name: 'Manager',
+    component: Manager
+  },
+  {
+    path: '/log', //日志
+    name: 'Log',
+    component: Log
   },
   {
     path: '/dis_member/user_id/:user_id/level/:level', //分销商-我的会员

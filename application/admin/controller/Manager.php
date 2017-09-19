@@ -3,12 +3,14 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminUser;
 
+
+//管理员管理
 class Manager extends Base
 {
      //定义当前菜单id
     private static $menu_id = 23;
 	
-    public function getlist(){
+    public function get_list(){
 		$page = input("page",1,"intval");
 		$limit = config('paginate.list_rows');
 		$map = [];
@@ -18,21 +20,29 @@ class Manager extends Base
            $map['nickname']  =   array('like', '%'.(string)$keyword.'%');	
 		}
 		
-		$count =db('admin_user')->where($map)->count();
+		$total =db('admin_user')->where($map)->count();
 		$list=db('admin_user')						
 			->where($map)
 			->order('id desc')
 			->page($page,$limit)
 			->select();
-		
-		foreach($list as $key=>$row){
-				$row['role_name']=db('admin_user_role')->where("id=".$row['role_id'])->value('role_name');	
-				$list[$key]=$row;
-		}	
+		if($list){ 
+			foreach($list as $key=>$row){
+					$list[$key]['add_time'] = date("Y-m-d H:i:s",$row['add_time']);
+					$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
+					$list[$key]['login_time'] = date("Y-m-d H:i:s",$row['login_time']);
+					$row['role_name']=db('admin_user_role')->where("id=".$row['role_id'])->value('role_name');	
+					$list[$key]=$row;
+			}
+		}
+		$total_page = ceil($total/$limit);	
 	
 		$result['list'] = $list;
-        $result['total'] = $count;
-        $result['limit'] = $limit;
+        //分页
+        $result['pages']['total'] = $total;
+        $result['pages']['limit'] = $limit;
+	    $result['pages']['total_page'] = $total_page;
+		$result['pages']['current_page'] = $page;
         
         $this->success("成功","",$result);
     }
@@ -41,13 +51,13 @@ class Manager extends Base
 	//  修改/添加角色页
 	public function add_user(){
 		
-		$user_id = input("user_id","","trim");	
-		$user = db('admin_user')->where('id ='.$user_id)->find();
+		$user_id = input("user_id","","trim");
+		if($user_id){ 
+			$user = db('admin_user')->where('id ='.$user_id)->find();
+			$result['user'] = $user;
+		}	
 		
 		$role = db('admin_user_role')->where("role_name !='超级管理员'")->order('sort,id desc')->select();		
-		
-		
-		$result['user'] = $user;
         $result['role'] = $role;
     
         $this->success("成功","",$result);
@@ -66,9 +76,9 @@ class Manager extends Base
 			$data = [
 				'id'  => $user_id,
 				'user_name'  => input("user_name","","trim"),
-				'nickname' = > input("nickname","","trim"),
+				'nickname' => input("nickname","","trim"),
 				'role_id'  => input("role_id","","trim"),
-				'status' = > input("status","","trim"),
+				'status' => input("status","","trim"),
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
@@ -96,9 +106,9 @@ class Manager extends Base
 		}else{
 			$data = [				
 				'user_name'  => input("user_name","","trim"),
-				'nickname' = > input("nickname","","trim"),
+				'nickname' => input("nickname","","trim"),
 				'role_id'  => input("role_id","","trim"),
-				'status' = > input("status","","trim"),
+				'status' => input("status","","trim"),
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
