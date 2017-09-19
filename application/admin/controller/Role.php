@@ -60,17 +60,19 @@ class Role extends Base
 	//  修改/添加角色页
 	public function add_role(){
 		
-		$role_id = input("role_id","","trim");	
-		$role = db('admin_user_role')->where('id ='.$role_id)->find();
-		$role['menu_auth'] = explode(',',$role['menu_auth']);
-		
+		$role_id = input("role_id","","trim");
+		if($role_id){
+			$role = db('admin_user_role')->where('id ='.$role_id)->find();
+			$role['menu_auth'] = explode(',',$role['menu_auth']);
+			$result['role'] = $role;
+		}	
 		
 		$menu = db('admin_menu')->where('pid=0 and status = 1')->order('sort,id desc')->select();		
 		foreach($menu as &$row){ 
 			$row['child_list']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort,id desc')->select();	
 		}
 
-		$result['role'] = $role;
+		
         $result['menu'] = $menu;
     
         $this->success("成功","",$result);

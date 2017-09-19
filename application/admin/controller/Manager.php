@@ -51,13 +51,13 @@ class Manager extends Base
 	//  修改/添加角色页
 	public function add_user(){
 		
-		$user_id = input("user_id","","trim");	
-		$user = db('admin_user')->where('id ='.$user_id)->find();
+		$user_id = input("user_id","","trim");
+		if($user_id){ 
+			$user = db('admin_user')->where('id ='.$user_id)->find();
+			$result['user'] = $user;
+		}	
 		
 		$role = db('admin_user_role')->where("role_name !='超级管理员'")->order('sort,id desc')->select();		
-		
-		
-		$result['user'] = $user;
         $result['role'] = $role;
     
         $this->success("成功","",$result);
