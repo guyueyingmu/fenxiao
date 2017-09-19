@@ -26,7 +26,7 @@ export default {
         },
         //存数据
         save_set(data) {
-           let _data = {data:data}
+           let _data = {data:JSON.stringify(data)}
 
             let url = '/admin/setting/set',
                 vm = this;
