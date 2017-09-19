@@ -2,40 +2,35 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品名/编号">
-                    <el-input v-model="formInline.keyword" placeholder="商品名/编号" style="width:120px"></el-input>
-                </el-form-item>
-
-                <el-form-item label="商品分类">
-                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px" clearable>
-
-                        <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
+                <el-form-item label="操作人">
+                    <el-select v-model="formInline.keyword" placeholder="操作人" style="width:100px" clearable>
+                        <el-option :value="item.id" :label="item.nickname" v-for="item in admin_users" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="商品类型">
-                    <el-select v-model="formInline.good_type" placeholder="商品类型" style="width:120px" clearable>
-                        <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                    </el-select>
+                <el-form-item label="操作时间">
+                    <el-date-picker v-model="value7" type="daterange" align="right" placeholder="选择日期范围" @change="fromDate" :picker-options="pickerOptions">
+                    </el-date-picker>
                 </el-form-item>
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
+
             </el-form>
 
         </div>
 
-        <el-table :data="list" border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="ID" width="100" fixed="left"></el-table-column>
-            <el-table-column prop="admin_user_name" label="操作人" width="150" fixed="left"></el-table-column>
-            <el-table-column prop="log_time" label="操作时间" width="150"></el-table-column>
+        <el-table :data="list" border style="width: 100%" v-loading.body="loading">
+            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+            <el-table-column prop="admin_user_name" label="操作人" width="150"></el-table-column>
+            <el-table-column prop="log_time" label="操作时间" width="170"></el-table-column>
             <el-table-column prop="menu_name" label="操作菜单名称" width="150"></el-table-column>
             <el-table-column prop="content" label="操作内容">
                 <template scope="scope">
                     <div>{{scope.row.content2.title}}</div>
-                    <div v-for="item in  scope.row.content2.data" >{{item}}</div>
+                    <div>{{scope.row.content2.data}}</div>
 
 
                 </template>
@@ -51,34 +46,80 @@
 </template>
 <script>
 import http from '@/assets/js/http'
+import { DatePicker } from 'element-ui'
 export default {
     mixins: [http],
+    components: {
+        "el-date-picker": DatePicker,
+    },
     data() {
         return {
             isSearch: false,
             formInline: {
-                good_type: '',
                 keyword: '',
-                cat_id: '',
+                starttime: '',
+                endtime: '',
 
             },
-            list: []
+            list: [],
+            pickerOptions: {
+                shortcuts: [
+                    {
+                        text: '今天',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime());
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '最近三天',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+            },
+            value7: '',
+            admin_users:[]
         }
     },
     methods: {
-        //设置下架状态样式
-        tableRowClassName(row, index) {
-            if (row.status == 2) {
-                return 'status_off'
-            } else {
-                return ''
+        //格式化日期范围
+        fromDate(val) {
+            if (val) {
+                let _v = val.split(' - ');
+                this.formInline.starttime = _v[0]
+                this.formInline.endtime = _v[1]
             }
-
-        },
-        //表格设置分类名
-        getType(good_type_id) {
-            let id = parseInt(good_type_id, 10)
-            return this.$store.getters.GOODTYPE[id - 1].label;
         },
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
@@ -92,10 +133,11 @@ export default {
         //清空
         onReset() {
             this.formInline = {
-                goods_type: '',
                 keyword: '',
-                cat_id: '',
+                starttime: '',
+                endtime: '',
             }
+            this.value7 = '';
             this.get_list(1)
             this.isSearch = false;
         },
@@ -111,7 +153,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/Logrecord/get_list?page=' + 7,
+            let url = '/admin/Logrecord/get_list?page=' + page,
                 vm = this;
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
@@ -121,6 +163,7 @@ export default {
                     }
 
                     vm.list = res.data.list;
+                    vm.admin_users = res.data.admin_user;
                 
                     vm.pages = res.data.pages
                 } else {
@@ -129,40 +172,6 @@ export default {
                 vm.loading = false;
             })
         },
-
-        //删除确认
-        onRemove(index) {
-            let vm = this;
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                vm.removeData(index)
-
-            }).catch(() => {
-            });
-
-        },
-        //删除
-        removeData(index) {
-            let _data = this.list[index]
-            let url = '/admin/Logrecord/del/good_id/' + _data.id,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.list.splice(index, 1)
-                    vm.$message({
-                        type: 'success',
-                        message: res.msg
-                    });
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
-        }
     },
     //组件初始化
     created() {
