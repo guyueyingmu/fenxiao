@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\controller;
 
+//日志管理
 class Logrecord extends Base
 {
 	 //定义当前菜单id

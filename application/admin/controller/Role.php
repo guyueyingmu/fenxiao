@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminUserRole;
 
+//管理员角色管理
 class Role extends Base
 {
 	 //定义当前菜单id
@@ -28,6 +29,14 @@ class Role extends Base
 			foreach($list as $key=>$row){
 				$list[$key]['add_time'] = date("Y-m-d H:i:s",$row['add_time']);
 				$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
+				if($row['menu_auth']=='all'){ 
+					$list[$key]['menu_auth_name'] = db('admin_menu')->where('pid != 0 and status =1')->column('menu_name');
+				}else{ 
+					$auth = explode(',',$row['menu_auth']);
+					foreach($auth as $k=>$v){ 
+						$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
+					}
+				}
 				//$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
 				//$list[$key]=$row;
 			}	
@@ -76,7 +85,7 @@ class Role extends Base
 			$data = [
 				'id'  => $role_id,
 				'role_name'  => input("role_name","","trim"),
-				'menu_auth' = > input("menu_auth","","trim"),//逗号隔开的菜单id
+				'menu_auth' => input("menu_auth","","trim"),//逗号隔开的菜单id
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
@@ -102,7 +111,7 @@ class Role extends Base
 		}else{
 			$data = [				
 				'role_name'  => input("role_name","","trim"),
-				'menu_auth' = > input("menu_auth","","trim"),//逗号隔开的菜单id
+				'menu_auth' => input("menu_auth","","trim"),//逗号隔开的菜单id
 			];
 			$validate_res = $this->validate($data,[	
 				'role_name'  => 'require|unique:role_name',
