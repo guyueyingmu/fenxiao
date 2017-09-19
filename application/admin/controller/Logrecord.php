@@ -6,7 +6,7 @@ class Logrecord extends Base
 	 //定义当前菜单id
     private static $menu_id = 24;
 	
-    public function getlist(){
+    public function get_list(){
 		$page = input("page",1,"intval");
 		$limit = config('paginate.list_rows');
 		$map = [];
@@ -31,21 +31,32 @@ class Logrecord extends Base
 		
 		
 		
-		$count =db('admin_log')->where($map)->count();
+		$total =db('admin_log')->where($map)->count();
 		$list=db('admin_log')					
 			->where($map)
 			->order('id desc')
 			->page($page,$limit)
 			->select();
-		
+		if($list){
+            foreach ($list as $k => $v){                
+               $list[$k]['log_time'] = date("Y-m-d H:i:s",$v['log_time']);
+               $list[$k]['admin_user_name'] = db('admin_user')->where('id = '.$v['admin_user_id'])->value('nickname');
+            }
+        }
 		$admin_user = db('admin_user')->where('is_show=1')->select();
 	
+		$total_page = ceil($total/$limit);
 		
 		$result['list'] = $list;
 		$result['admin_user'] = $admin_user;
-        $result['total'] = $count;
-        $result['limit'] = $limit;
-        
+		
+		//分页
+        $result['pages']['total'] = $total;
+        $result['pages']['limit'] = $limit;
+	    $result['pages']['total_page'] = $total_page;
+		$result['pages']['current_page'] = $page;
+		
+      
         $this->success("成功","",$result);
     }
 
