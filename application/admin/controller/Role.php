@@ -78,7 +78,7 @@ class Role extends Base
 
 		
         $result['menu'] = $menu;
-    
+		
         $this->success("成功","",$result);
 		
 		
@@ -95,7 +95,7 @@ class Role extends Base
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
-				'role_name'  => 'require|unique:role_name',
+				'role_name'  => 'require|unique:admin_user_role',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
@@ -120,7 +120,7 @@ class Role extends Base
 				'menu_auth' => input("menu_auth","","trim"),//逗号隔开的菜单id
 			];
 			$validate_res = $this->validate($data,[	
-				'role_name'  => 'require|unique:role_name',
+				'role_name'  => 'require|unique:admin_user_role',
 			],[				
 				'role_name.require' => '角色名不能为空！',
 				'role_name.unique' => '该角色已存在！',           

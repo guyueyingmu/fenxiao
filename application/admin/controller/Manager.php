@@ -82,7 +82,7 @@ class Manager extends Base
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
-				'role_name'  => 'require|unique:role_name',
+				'user_name'  => 'require|unique:admin_user',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
@@ -112,7 +112,7 @@ class Manager extends Base
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
-				'role_name'  => 'require|unique:role_name',
+				'user_name'  => 'require|unique:admin_user',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
