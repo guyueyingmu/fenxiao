@@ -1,8 +1,8 @@
 <template>
     <div style="padding:5% 10% 0 0; " v-loading="loading">
         <el-form ref="ruleForm" label-width="230px" class="demo-ruleForm">
-            <el-form-item :label="item.show_name" :prop="item.c_name" v-for="item in ruleForm" :key="item.id">
-                <el-input v-model="item.c_value"></el-input>
+            <el-form-item :label="item.show_name" :prop="item.c_name" v-for="(item,k) in ruleForm" :key="item.id">
+                <el-input v-model="item.c_value" :disabled="k == 0"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存设置</el-button>
