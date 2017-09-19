@@ -19,47 +19,31 @@
                     </el-select>
                 </el-form-item>
 
-
-
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-         
 
         </div>
 
-        <el-table :data="list"  border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
-            <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
-            <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
-            <el-table-column prop="specification" label="商品规格" width="150"></el-table-column>
-            <el-table-column prop="brand" label="品牌" width="150"></el-table-column>
-            <el-table-column prop="credits" label="积分兑换" width="150"></el-table-column>
-            <el-table-column prop="presenter_credits" label="赠送积分" width="150"></el-table-column>
-            <el-table-column prop="good_type" label="商品类型" width="250">
-                 <template scope="scope">
-                  <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="distribution" label="参与分销" width="100">
+        <el-table :data="list" border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
+            <el-table-column prop="id" label="ID" width="100" fixed="left"></el-table-column>
+            <el-table-column prop="admin_user_name" label="操作人" width="150" fixed="left"></el-table-column>
+            <el-table-column prop="log_time" label="操作时间" width="150"></el-table-column>
+            <el-table-column prop="menu_name" label="操作菜单名称" width="150"></el-table-column>
+            <el-table-column prop="content" label="操作内容">
                 <template scope="scope">
-                    {{scope.row.distribution === 1?'参与':'不参与'}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="status" align="center" label="是否上架" width="150">
-                <template scope="scope">
-                    {{scope.row.status === 1?'上架':'下架'}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="sort" label="排序" width="100"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
+                    <div>{{scope.row.content2.title}}</div>
+                    <div v-for="item in  scope.row.content2.data" >{{item}}</div>
 
+
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
 
-            <el-pagination v-if="parseInt(pages.total_page,10) > 1"  @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
+            <el-pagination v-if="parseInt(pages.total_page,10) > 1" @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
             </el-pagination>
         </div>
 
@@ -83,22 +67,22 @@ export default {
     },
     methods: {
         //设置下架状态样式
-        tableRowClassName(row, index){
-            if(row.status == 2){
+        tableRowClassName(row, index) {
+            if (row.status == 2) {
                 return 'status_off'
-            }else{
+            } else {
                 return ''
             }
 
         },
         //表格设置分类名
-        getType(good_type_id){
-            let id = parseInt(good_type_id,10)
-            return this.$store.getters.GOODTYPE[id-1].label;
+        getType(good_type_id) {
+            let id = parseInt(good_type_id, 10)
+            return this.$store.getters.GOODTYPE[id - 1].label;
         },
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
-        
+
             if (this.isSearch) {
                 this.onSearch(current_paged)
             } else {
@@ -117,7 +101,7 @@ export default {
         },
         //搜索
         onSearch(current_paged) {
-          
+
             this.isSearch = true;
             current_paged = current_paged || 1;
             let searchData = this.formInline
@@ -127,13 +111,17 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodsall/get_list?page=' + page,
+            let url = '/admin/Logrecord/get_list?page=' + 7,
                 vm = this;
-
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
+                    for(let i=0;i<res.data.list.length;i++){
+                        res.data.list[i].content2 = JSON.parse(res.data.list[i].content)
+                    }
+
                     vm.list = res.data.list;
+                
                     vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)
@@ -159,7 +147,7 @@ export default {
         //删除
         removeData(index) {
             let _data = this.list[index]
-            let url = '/admin/goodsall/del/good_id/' + _data.id,
+            let url = '/admin/Logrecord/del/good_id/' + _data.id,
                 vm = this;
             vm.loading = true;
             this.apiGet(url).then(function(res) {

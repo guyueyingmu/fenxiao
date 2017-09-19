@@ -15,6 +15,7 @@ class Orderdislog extends Base
     /**
      * 获取列表
      * @param string $keyword 获佣分销商用户ID
+     * @param int $status 获佣状态（1等待获佣， 2已获佣）  
      * @return string
      */
     public function get_list(){
@@ -23,15 +24,17 @@ class Orderdislog extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $status = input("param.status", "", 'intval');
                 
         $where = "1=1";
+        $where .= $status ? " AND dl.status = '$status'" : "";
         $where .= $keyword ? " AND dl.earn_user_id = '$keyword'" : "";
         
         $list = db('order_distribution_log')->alias("dl")
                 ->join("__ORDERS__ o", "o.id=dl.order_id", "LEFT")
                 ->join("__ADMIN_USER__ au", "au.id=dl.admin_user_id", "LEFT")
                 ->where($where)
-                ->field("o.order_number,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status,dl.earn_time,dl.admin_user_id,au.nickname admin_user_name")
+                ->field("dl.id,o.order_number,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status,dl.earn_time,dl.admin_user_id,au.nickname admin_user_name,dl.earn_amount_input")
                 ->page($page,$limit)
                 ->order('dl.id DESC')
                 ->select();
@@ -84,7 +87,7 @@ class Orderdislog extends Base
         try{
             //更新获佣记录
             $data['id'] = $id;
-            $data['earn_amount'] = $earn_amount;
+            $data['earn_amount_input'] = $earn_amount;
             $data['earn_time'] = date("Y-m-d H:i:s");
             $data['status'] = 2;
             $data['admin_user_id'] = session("admin.uid");

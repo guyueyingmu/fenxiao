@@ -7,6 +7,7 @@ const state ={
     },
     breadcrumb:[],
     cat_list:[],
+    nav_list:[],
     GOODTYPE:[
         {label:'实物类商品(微信支付 需要快递)',id:1},
         {label:'拟类商品(微信支付 无需快递)',id:2},

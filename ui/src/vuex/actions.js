@@ -5,6 +5,9 @@ const actions ={
       setCatList ({commit},val) {
         commit('setCatList',val)
       },
+      setNavlist ({commit},val) {
+        commit('setNavlist',val)
+      },
       setMenu ({commit},val) {
         commit('setMenu',val)
       },

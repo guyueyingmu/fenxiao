@@ -134,6 +134,7 @@ export default {
                 let data = JSON.parse(res);
                 vm.list = data;
                 // vm.setMenu({a:'0-0',b:[0]})
+                vm.setNavlist(data)
             }
         })
         //用户信息

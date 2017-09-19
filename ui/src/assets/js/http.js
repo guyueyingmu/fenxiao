@@ -17,7 +17,8 @@ const apiMethods = {
             setTitle:"setTitle",
             setBreadcrumb: 'setBreadcrumb',
             setCatList:'setCatList',
-            setMenu:'setMenu'
+            setMenu:'setMenu',
+            setNavlist:'setNavlist'
         }),
         //统一跳转
         goto(url) {

@@ -7,6 +7,9 @@ const mutations = {
   setCatList(state, val) {
     state.cat_list = val;
   },
+  setNavlist(state, val) {
+    state.nav_list = val;
+  },
   setMenu(state, val) {
       console.log(val)
     if (val) {
