@@ -68,8 +68,12 @@ class Role extends Base
 		}	
 		
 		$menu = db('admin_menu')->where('pid=0 and status = 1')->order('sort,id desc')->select();		
-		foreach($menu as &$row){ 
-			$row['child_list']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort,id desc')->select();	
+		foreach($menu as &$row){
+			$row['label'] = $row['menu_name'];	
+			$row['children']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort,id desc')->select();
+			foreach($row['children'] as &$v){ 
+				$v['label'] = $v['menu_name'];
+			}	
 		}
 
 		
