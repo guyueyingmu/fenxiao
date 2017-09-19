@@ -100,7 +100,7 @@ class Goodsall extends Base
             $banner_res = $good_banner->saveAll($list);
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '添加商品', 'good' => $good, 'banner_img' => $banner_res]);
+            $this->add_log(self::$menu_id,['title' => '添加商品', 'data' => ['good' =>$good, 'banner_img' => $banner_res]]);
             
             // 提交事务
             Db::commit();  
@@ -256,7 +256,7 @@ class Goodsall extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '编辑商品', 'good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]);
+        $this->add_log(self::$menu_id,['title' => '编辑商品', 'data' => ['good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]]);
         
         $this->success("编辑成功");
     }

@@ -18,18 +18,22 @@ class Logrecord extends Base
 		$endtime = input("endtime","","trim");	
 		
 		
-		if($keyword){
-           $map['admin_user_id']  =   $keyword;	
-		}
-		
-        if($starttime && strtotime($starttime)){
-            $map['log_time'] = array("EGT", strtotime($starttime." 00:00:00"));
-        }
-       
-        if($endtime && strtotime($endtime)){
-            $map['log_time'] = array("ELT", strtotime($endtime." 23:59:59"));
-        }
-		
+//		if($keyword){
+//           $map['admin_user_id']  =   $keyword;	
+//		}
+//		
+//        if($starttime && strtotime($starttime)){
+//            $map['log_time'] = array("EGT", strtotime($starttime." 00:00:00"));
+//        }
+//       
+//        if($endtime && strtotime($endtime)){
+//            $map['log_time'] = array("ELT", strtotime($endtime." 23:59:59"));
+//        }
+        
+        $map = "1=1";
+        $map .= $keyword ? " AND admin_user_id=$keyword" : "";
+        $map .= $starttime ? " AND log_time >= '".strtotime($starttime." 00:00:00")."'" : "";
+        $map .= $endtime ? " AND log_time <= '".strtotime($endtime." 23:59:59")."'" : "";
 		
 		
 		$total =db('admin_log')->where($map)->count();
