@@ -8,7 +8,7 @@ class Role extends Base
 	 //定义当前菜单id
     private static $menu_id = 21;
 	
-    public function getlist(){
+    public function get_list(){
 		$page = input("page",1,"intval");
 		$limit = config('paginate.list_rows');
 		$map = [];
@@ -17,21 +17,32 @@ class Role extends Base
            $map['role_name']  =   array('like', '%'.(string)$keyword.'%');	
 		}
 		
-		$count =db('admin_user_role')->where($map)->count();
+		$total =db('admin_user_role')->where($map)->count();
 		$list=db('admin_user_role')						
 			->where($map)
 			->order('id desc')
 			->page($page,$limit)
 			->select();
-	/*	
-		foreach($list as $key=>$row){
-			$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
-			$list[$key]=$row;
-		}	
-	*/	
+			
+		if($list){ 
+			foreach($list as $key=>$row){
+				$list[$key]['add_time'] = date("Y-m-d H:i:s",$row['add_time']);
+				$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
+				//$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
+				//$list[$key]=$row;
+			}	
+		}
+		
+	
+		$total_page = ceil($total/$limit);
+	
 		$result['list'] = $list;
-        $result['total'] = $count;
-        $result['limit'] = $limit;
+		
+       //分页
+        $result['pages']['total'] = $total;
+        $result['pages']['limit'] = $limit;
+	    $result['pages']['total_page'] = $total_page;
+		$result['pages']['current_page'] = $page;
         
         $this->success("成功","",$result);
     }
