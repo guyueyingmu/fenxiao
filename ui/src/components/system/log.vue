@@ -177,7 +177,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['系统', '日志'])
-        this.setMenu('4-3');
+        this.setMenu('4-2');
     }
 
 }

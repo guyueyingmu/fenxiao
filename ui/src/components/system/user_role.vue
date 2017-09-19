@@ -18,16 +18,18 @@
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="role_name" label="角色名称" width="150"></el-table-column>
             <el-table-column prop="menu_auth_name" label="菜单权限">
-                  <template scope="scope">
-                      <div style="padding:10px 0">
-                            <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
-                      </div>
+                <template scope="scope">
+                    <div style="padding:10px 0">
+                        <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column prop="" label="操作" width="250">
                 <template scope="scope">
-                    <el-button type="text" @click="open(true,scope.row)">修改</el-button>
-                    <el-button type="text" @click="onRemove(scope.row)">删除</el-button>
+                    <div v-if="scope.row.id !== 1">
+                        <el-button type="text" @click="open(true,scope.row)">修改</el-button>
+                        <el-button type="text" @click="onRemove(scope.row)">删除</el-button>
+                    </div>
                 </template>
             </el-table-column>
 
@@ -60,12 +62,12 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import { Tree,Tag } from 'element-ui'
+import { Tree, Tag } from 'element-ui'
 export default {
     mixins: [http],
     components: {
         "el-tree": Tree,
-        'el-tag':Tag
+        'el-tag': Tag
     },
     data() {
         return {
@@ -139,7 +141,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                alert()
+             
                 vm.removeData(item)
 
             }).catch(() => {
@@ -147,13 +149,13 @@ export default {
         },
         //删除
         removeData(item) {
-          
+
             let url = '/admin/role/del_role/role_id/' + item.id,
                 vm = this;
             vm.loading = true;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    
+
                     vm.$message({
                         type: 'success',
                         message: res.msg
@@ -177,7 +179,7 @@ export default {
                     let _menu_list = item.menu_auth.split(',')
                     vm.$refs.tree.setCheckedKeys(_menu_list);
                 } else {
-                        vm.dialog.role_id = '';
+                    vm.dialog.role_id = '';
                     vm.dialog.role_name = '';
                     vm.$refs.tree.setCheckedKeys([]);
                 }

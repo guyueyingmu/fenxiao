@@ -64,8 +64,6 @@ const disMember = () =>
 const UserRole = () =>
   import( /* webpackChunkName: "UserRole" */ '@/components/system/user_role')
 
-const Menu = () =>
-  import( /* webpackChunkName: "menu" */ '@/components/system/menu')
 
 const Manager = () =>
   import( /* webpackChunkName: "manager" */ '@/components/system/manager')
@@ -183,11 +181,7 @@ const router = new Router({
     component: UserRole
   },
 
-  {
-    path: '/menu', //角色管理
-    name: 'Menu',
-    component: Menu
-  },
+
   {
     path: '/manager', //管理员
     name: 'Manager',
