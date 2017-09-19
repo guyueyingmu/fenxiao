@@ -73,9 +73,6 @@ const Manager = () =>
 const Log = () =>
   import( /* webpackChunkName: "log" */ '@/components/system/log')
 
-const disMember = () =>
-  import( /* webpackChunkName: "disMember" */ '@/components/dis/dis_member')
-
 Vue.use(Router)
 const router = new Router({
   routes: [{
@@ -176,7 +173,7 @@ const router = new Router({
     component: Userdis
   },
   {
-    path: '/dis_set', //分销设置
+    path: '/dis_set/c_type/:c_type', //分销设置
     name: 'disSet',
     component: disSet
   },

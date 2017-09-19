@@ -2,7 +2,7 @@
     <div style="padding:5% 10% 0 0; " v-loading="loading">
         <el-form ref="ruleForm" label-width="230px" class="demo-ruleForm">
             <el-form-item :label="item.show_name" :prop="item.c_name" v-for="(item,k) in ruleForm" :key="item.id">
-                <el-input v-model="item.c_value" :disabled="k == 0"></el-input>
+                <el-input v-model="item.c_value" :disabled="k == 0 && c_type == 1"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存设置</el-button>
@@ -18,6 +18,7 @@ export default {
     data() {
         return {
             ruleForm: [],
+            c_type:'',
         }
     },
     methods: {
@@ -62,15 +63,24 @@ export default {
                 vm.loading = false;
             })
         },
+        initData() {
+            this.c_type = this.$route.params.c_type;
+            let bread = ['分销', '分销设置'];
+            if(this.c_type == 2){
+                bread = ['用户', '积分设置'];
+            }
 
-
-
+            this.get_set(this.c_type);
+            this.setBreadcrumb(bread)
+            this.setMenu('3-4');
+        }
+    },
+    watch: {
+        $route: "initData"
     },
     //组件初始化
     created() {
-        this.get_set(1);
-        this.setBreadcrumb(['分销', '分销设置'])
-        this.setMenu('3-4');
+        this.initData();
     }
 
 }
