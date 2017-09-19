@@ -29,7 +29,7 @@ class Userdis extends Base
         $users = new Users();
         $list = $users->where($where)->alias('u')
                 ->join('__USERS__ pu', 'pu.id=u.pid', 'LEFT')
-                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=u.`id`)) c_total2")
+                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,u.dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=u.`id`)) c_total2")
                 ->page($page,$limit)
                 ->order('u.id DESC')
                 ->select();
@@ -73,7 +73,7 @@ class Userdis extends Base
         $keyword = input("param.keyword", "", 'trim');
                 
         $where = "status = 1";
-        $where .= $type == 1 ? " AND pid = $id" : " AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=$id)";
+        $where .= " AND pid = $id"; //" AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=$id)";
         $where .= $keyword ? " AND (id LIKE '%$keyword%' OR phone_number LIKE '%$keyword%')" : "";
 
         $users = new Users();

@@ -1,25 +1,17 @@
 <template>
     <div>
+        <div class="tabs_p">
+            <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
+                <el-tab-pane label="分成日志" name="0"></el-tab-pane>
+                <el-tab-pane label="已获佣" name="2"></el-tab-pane>
+            </el-tabs>
+        </div>
+
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品名/编号">
-                    <el-input v-model="formInline.keyword" placeholder="商品名/编号" style="width:120px"></el-input>
+                <el-form-item label="获佣分销商用户ID">
+                    <el-input v-model="formInline.keyword" placeholder="获佣分销商用户ID" style="width:140px"></el-input>
                 </el-form-item>
-
-                <el-form-item label="商品分类">
-                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px" clearable>
-
-                        <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="商品类型">
-                    <el-select v-model="formInline.good_type" placeholder="商品类型" style="width:120px" clearable>
-                        <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                    </el-select>
-                </el-form-item>
-
-
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
@@ -30,31 +22,34 @@
 
         </div>
 
-        <el-table :data="list"  border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
-            <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
-            <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
-            <el-table-column prop="specification" label="商品规格" width="150"></el-table-column>
-            <el-table-column prop="brand" label="品牌" width="150"></el-table-column>
-            <el-table-column prop="credits" label="积分兑换" width="150"></el-table-column>
-            <el-table-column prop="presenter_credits" label="赠送积分" width="150"></el-table-column>
-            <el-table-column prop="good_type" label="商品类型" width="250">
-                 <template scope="scope">
-                  <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="distribution" label="参与分销" width="100">
+        <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
+            <el-table-column prop="order_number" label="订单编号"></el-table-column>
+            <el-table-column prop="order_user_id" label="下单用户ID" width="110"></el-table-column>
+            <el-table-column prop="good_id" label="商品ID"></el-table-column>
+            <el-table-column prop="earn_amount" label="获佣金额">            
                 <template scope="scope">
-                    {{scope.row.distribution === 1?'参与':'不参与'}}
+                    {{scope.row.status === 2?scope.row.earn_amount_input:scope.row.earn_amount}}
                 </template>
             </el-table-column>
-            <el-table-column prop="status" align="center" label="是否上架" width="150">
+            <el-table-column prop="earn_user_id" label="获佣分销商用户ID" width="150"></el-table-column>
+            <el-table-column prop="level" label="获佣级别">                
                 <template scope="scope">
-                    {{scope.row.status === 1?'上架':'下架'}}
+                    {{scope.row.level === 1?'一级获佣':'二级获佣'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="排序" width="100"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
+            <el-table-column prop="status" label="获佣状态">                
+                <template scope="scope">
+                    {{scope.row.status === 1?'等待获佣':'已获佣'}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="earn_time" label="获佣时间" width="170"></el-table-column>
+            <el-table-column prop="admin_user_id" label="管理员ID"></el-table-column>
+            <el-table-column prop="admin_user_name" align="center" label="管理员名称"></el-table-column>
+            <el-table-column label="操作" align="center">
+                <template scope="scope">
+                    <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1">确定获佣</el-button>
+                </template>
+            </el-table-column>
 
         </el-table>
         <div class="pagination">
@@ -62,6 +57,22 @@
             <el-pagination v-if="parseInt(pages.total_page,10) > 1"  @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
             </el-pagination>
         </div>
+
+        <!-- 弹窗 -->
+        <el-dialog title="提示" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading">
+            
+            <el-form :model="dialogForm" :inline="true">
+                <el-form-item label="获佣金额" label-width="100px">
+                    <el-input v-model="dialogForm.earn_amount" auto-complete="off" placeholder="获佣金额"></el-input>
+                </el-form-item>
+            </el-form>
+
+            <div style="color:#8492A6; padding-top:15px;">确定获佣后，则添加金额进该获佣分销商的获佣总额和账户余额！</div>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="post_handle()">确 定</el-button>
+            </div>
+        </el-dialog>
 
     </div>
 </template>
@@ -71,30 +82,56 @@ export default {
     mixins: [http],
     data() {
         return {
+            tabs: '',
             isSearch: false,
+            dialogFormVisible: false,
+            dalogi_loading: false,
             formInline: {
-                good_type: '',
                 keyword: '',
-                cat_id: '',
 
             },
-            list: []
+            list: [],
+            dialogForm: {
+                id: '',
+                earn_amount: '',
+            },
         }
     },
     methods: {
-        //设置下架状态样式
-        tableRowClassName(row, index){
-            if(row.status == 2){
-                return 'status_off'
-            }else{
-                return ''
-            }
+        open_win(data){
+            this.dialogForm.id = data.id;
+            this.dialogForm.earn_amount = data.earn_amount;
+            this.dialogFormVisible = true;
+        },
+        //保存数据
+        post_handle() {
+            let url = '/admin/Orderdislog/handle', vm = this, data = this.dialogForm;
+            vm.dalogi_loading = true;
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$message.success(res.msg);
+                    vm.dialogFormVisible = false;
+                    if (vm.isSearch) {
+                        vm.onSearch(vm.pages.current_page);
+                    }else{
+                        vm.get_list();
+                    }
+                } else {
+                    vm.handleError(res)
+                }
+                vm.dalogi_loading = false;
+            })
 
         },
-        //表格设置分类名
-        getType(good_type_id){
-            let id = parseInt(good_type_id,10)
-            return this.$store.getters.GOODTYPE[id-1].label;
+
+        //选择标签页
+        onSelectedTabs(tab) {
+            let _name = tab.name;
+            let _data = {
+                status: _name
+            }
+            this.get_list(1, _data)
+
         },
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
@@ -108,9 +145,7 @@ export default {
         //清空
         onReset() {
             this.formInline = {
-                goods_type: '',
                 keyword: '',
-                cat_id: '',
             }
             this.get_list(1)
             this.isSearch = false;
@@ -127,7 +162,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodsall/get_list?page=' + page,
+            let url = '/admin/Orderdislog/get_list?page=' + page,
                 vm = this;
 
             vm.loading = true;
@@ -142,46 +177,13 @@ export default {
             })
         },
 
-        //删除确认
-        onRemove(index) {
-            let vm = this;
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                vm.removeData(index)
-
-            }).catch(() => {
-            });
-
-        },
-        //删除
-        removeData(index) {
-            let _data = this.list[index]
-            let url = '/admin/goodsall/del/good_id/' + _data.id,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.list.splice(index, 1)
-                    vm.$message({
-                        type: 'success',
-                        message: res.msg
-                    });
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
-        }
 
     },
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['分销', '分销商品列表'])
-        this.setMenu('3-0');
+        this.setBreadcrumb(['分销', '分成日志'])
+        this.setMenu('3-3');
     }
 
 }
