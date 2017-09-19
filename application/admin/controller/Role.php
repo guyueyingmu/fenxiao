@@ -98,11 +98,13 @@ class Role extends Base
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
 				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',		
 			]); 
 			
 			if ($validate_res !== true) {
@@ -123,9 +125,11 @@ class Role extends Base
 			];
 			$validate_res = $this->validate($data,[	
 				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[				
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',	
 			]); 
 			
 			if ($validate_res !== true) {
