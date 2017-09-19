@@ -41,6 +41,7 @@ class Logrecord extends Base
             foreach ($list as $k => $v){                
                $list[$k]['log_time'] = date("Y-m-d H:i:s",$v['log_time']);
                $list[$k]['admin_user_name'] = db('admin_user')->where('id = '.$v['admin_user_id'])->value('nickname');
+			   $list[$k]['menu_name'] = db('admin_menu')->where('id = '.$v['menu_id'])->value('menu_name');
             }
         }
 		$admin_user = db('admin_user')->where('is_show=1')->select();
