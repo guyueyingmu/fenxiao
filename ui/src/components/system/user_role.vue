@@ -17,10 +17,14 @@
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="role_name" label="角色名称" width="150"></el-table-column>
-            <el-table-column prop="cat_name" label="菜单权限"></el-table-column>
+            <el-table-column prop="menu_auth_name" label="菜单权限">
+                  <template scope="scope">
+                      <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="" label="操作" width="250">
                 <template scope="scope">
-                    <el-button type="text" @click="open(true,scope.row.menu_auth)">修改</el-button>
+                    <el-button type="text" @click="open(true,scope.row)">修改</el-button>
                     <el-button type="text" @click="onRemove">删除</el-button>
                 </template>
             </el-table-column>
@@ -54,11 +58,12 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import { Tree } from 'element-ui'
+import { Tree,Tag } from 'element-ui'
 export default {
     mixins: [http],
     components: {
         "el-tree": Tree,
+        'el-tag':Tag
     },
     data() {
         return {
@@ -156,26 +161,33 @@ export default {
                 vm.loading = false;
             })
         },
-        open(isEdit, menu_auth) {
-            this.dialogFormVisible = true,
-                this.dialogLoading = true
+        open(isEdit, item) {
+            this.dialogFormVisible = true
+            let vm = this;
+
+            setTimeout(function() {
+                if (isEdit) {
+                    vm.dialog.role_name = item.role_name
+                    let _menu_list = item.menu_auth.split(',')
+                    vm.$refs.tree.setCheckedKeys(_menu_list);
+                } else {
+                    vm.dialog.role_name = '';
+                    vm.$refs.tree.setCheckedKeys([]);
+                }
+
+            }, 100)
+
+
+        },
+        get_menu_list() {
             let vm = this, url = '/admin/role/add_role';
-
-            if (isEdit) {
-                console.log(idx)
-                vm.menu_list = menu_auth.split(',')
-
-            } else {
-                this.apiGet(url).then((res) => {
-                    vm.dialogLoading = false
-                    if (res.code) {
-                        vm.menu_list = res.data.menu;
-                    } else {
-                        vm.handleError(res)
-                    }
-                })
-            }
-
+            this.apiGet(url).then((res) => {
+                if (res.code) {
+                    vm.menu_list = res.data.menu;
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
         save_menu(data) {
             // this.dialogFormVisible = false 
@@ -187,7 +199,8 @@ export default {
                 vm.dialogLoading = false
                 if (res.code) {
                     vm.$message.success(res.msg);
-                    vm.dialogFormVisible = false
+                    vm.dialogFormVisible = false;
+                    vm.get_list();
                 } else {
                     vm.handleError(res)
                 }
@@ -200,6 +213,7 @@ export default {
         this.get_list();
         this.setBreadcrumb(['系统', '角色管理'])
         this.setMenu('4-0');
+        this.get_menu_list()
     }
 
 }
