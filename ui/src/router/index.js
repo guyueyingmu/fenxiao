@@ -173,7 +173,7 @@ const router = new Router({
     component: Userdis
   },
   {
-    path: '/dis_set/c_type/:c_type', //分销设置
+    path: '/set/c_type/:c_type', //分销设置
     name: 'disSet',
     component: disSet
   },
