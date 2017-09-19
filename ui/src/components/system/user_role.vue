@@ -11,7 +11,7 @@
                 </el-form-item>
             </el-form>
 
-            <el-button type="warning" class="goods_add_btn" @click="dialogFormVisible = true">添加角色</el-button>
+            <el-button type="warning" class="goods_add_btn" @click="open(false)">添加角色</el-button>
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
@@ -20,7 +20,7 @@
             <el-table-column prop="cat_name" label="菜单权限"></el-table-column>
             <el-table-column prop="" label="操作" width="250">
                 <template scope="scope">
-                    <el-button type="text">修改</el-button>
+                    <el-button type="text" @click="open(true,scope.row.menu_auth)">修改</el-button>
                     <el-button type="text" @click="onRemove">删除</el-button>
                 </template>
             </el-table-column>
@@ -36,17 +36,17 @@
         <el-dialog title="添加角色" :visible.sync="dialogFormVisible" :open="open">
             <el-form label-width="100px">
                 <el-form-item label="角色名称">
-                    <el-input v-model="dialog.name" auto-complete="off"></el-input>
+                    <el-input v-model="dialog.role_name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域">
-                    <el-tree :data="menu_list" show-checkbox node-key="id">
+                <el-form-item label="活动区域" v-loading="dialogLoading">
+                    <el-tree ref="tree" :data="menu_list" show-checkbox node-key="id">
                     </el-tree>
-
                 </el-form-item>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="save_menu">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -54,19 +54,21 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import {Tree} from 'element-ui'
+import { Tree } from 'element-ui'
 export default {
     mixins: [http],
-       components: {
+    components: {
         "el-tree": Tree,
     },
     data() {
         return {
             isSearch: false,
             dialogFormVisible: false,
+            dialogLoading: false,
             menu_list: [],
             dialog: {
-
+                role_name: '',
+                menu_auth: ''
             },
             formInline: {
                 keyword: '',
@@ -154,20 +156,45 @@ export default {
                 vm.loading = false;
             })
         },
-        open() {
-            console.log('open')
-            let vm = this, url = '/admin/role/add_role', data = {
-                role_id: 1
+        open(isEdit, menu_auth) {
+            this.dialogFormVisible = true,
+                this.dialogLoading = true
+            let vm = this, url = '/admin/role/add_role';
+
+            if (isEdit) {
+                console.log(idx)
+                vm.menu_list = menu_auth.split(',')
+
+            } else {
+                this.apiGet(url).then((res) => {
+                    vm.dialogLoading = false
+                    if (res.code) {
+                        vm.menu_list = res.data.menu;
+                    } else {
+                        vm.handleError(res)
+                    }
+                })
             }
-            this.apiGet(url, { data: data }).then((res) => {
+
+
+        },
+        save_menu(data) {
+            // this.dialogFormVisible = false 
+            let _data = this.$refs.tree.getCheckedKeys(true);
+            console.log(_data)
+            this.dialog.menu_auth = _data.join(',');
+            let vm = this, url = '/admin/role/save_role';
+            this.apiPost(url, vm.dialog).then((res) => {
+                vm.dialogLoading = false
                 if (res.code) {
-                    vm.menu_list = res.data.list;
-                    console.log(res)
+                    vm.$message.success(res.msg);
+                    vm.dialogFormVisible = false
+                } else {
+                    vm.handleError(res)
                 }
-
             })
-
         }
+
     },
     //组件初始化
     created() {
