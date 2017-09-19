@@ -19,7 +19,9 @@
             <el-table-column prop="role_name" label="角色名称" width="150"></el-table-column>
             <el-table-column prop="menu_auth_name" label="菜单权限">
                   <template scope="scope">
-                      <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
+                      <div style="padding:10px 0">
+                            <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
+                      </div>
                 </template>
             </el-table-column>
             <el-table-column prop="" label="操作" width="250">
