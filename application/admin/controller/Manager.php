@@ -3,6 +3,8 @@ namespace app\admin\controller;
 
 use app\admin\model\AdminUser;
 
+
+//管理员管理
 class Manager extends Base
 {
      //定义当前菜单id
@@ -74,9 +76,9 @@ class Manager extends Base
 			$data = [
 				'id'  => $user_id,
 				'user_name'  => input("user_name","","trim"),
-				'nickname' = > input("nickname","","trim"),
+				'nickname' => input("nickname","","trim"),
 				'role_id'  => input("role_id","","trim"),
-				'status' = > input("status","","trim"),
+				'status' => input("status","","trim"),
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
@@ -104,9 +106,9 @@ class Manager extends Base
 		}else{
 			$data = [				
 				'user_name'  => input("user_name","","trim"),
-				'nickname' = > input("nickname","","trim"),
+				'nickname' => input("nickname","","trim"),
 				'role_id'  => input("role_id","","trim"),
-				'status' = > input("status","","trim"),
+				'status' => input("status","","trim"),
 			];
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
