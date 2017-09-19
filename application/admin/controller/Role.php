@@ -33,10 +33,12 @@ class Role extends Base
 					$list[$key]['menu_auth_name'] = db('admin_menu')->where('pid != 0 and status =1')->column('menu_name');
 					$menu_auth = db('admin_menu')->where('pid != 0 and status =1')->column('id');
 					$list[$key]['menu_auth'] = implode(",", $menu_auth);
-				}else{ 
-					$auth = explode(',',$row['menu_auth']);
-					foreach($auth as $k=>$v){ 
-						$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
+				}else{
+					if($row['menu_auth'] != ''){	
+						$auth = explode(',',$row['menu_auth']);
+						foreach($auth as $k=>$v){ 
+							$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
+						}
 					}
 				}
 				//$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
@@ -48,7 +50,7 @@ class Role extends Base
 		$total_page = ceil($total/$limit);
 	
 		$result['list'] = $list;
-		print_r($list);exit;
+		//print_r($list);exit;
        //分页
         $result['pages']['total'] = $total;
         $result['pages']['limit'] = $limit;
@@ -98,11 +100,13 @@ class Role extends Base
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
 				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[
 				'id.require' => '参数错误',
 				'id.number' => '参数格式错误',
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',		
 			]); 
 			
 			if ($validate_res !== true) {
@@ -123,9 +127,11 @@ class Role extends Base
 			];
 			$validate_res = $this->validate($data,[	
 				'role_name'  => 'require|unique:admin_user_role',
+				'menu_auth'  => 'require',
 			],[				
 				'role_name.require' => '角色名不能为空！',
-				'role_name.unique' => '该角色已存在！',           
+				'role_name.unique' => '该角色已存在！',
+				'menu_auth.require' => '权限不能为空！',	
 			]); 
 			
 			if ($validate_res !== true) {
