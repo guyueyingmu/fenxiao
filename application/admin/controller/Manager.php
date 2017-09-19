@@ -99,7 +99,7 @@ class Manager extends Base
 			$data['edit_time'] = time();
 			$new_user = db('admin_user')->where('id='.$user_id)->update($data);		
 			//写入日志表
-			$this->add_log(self::$menu_id,['title' => '更新管理员', 'admin_user' => $data]);           
+			$this->add_log(self::$menu_id,['title' => '更新管理员', 'data' => $data]);           
 			//=============================
 
 			$this->success("修改成功");		
@@ -129,7 +129,7 @@ class Manager extends Base
 			$new_user =  db('admin_user')->insertGetId($data);
 			$data['id'] = $new_user;	
 			//写入日志表
-			$this->add_log(self::$menu_id,['title' => '新增管理员', 'admin_user' => $data]);
+			$this->add_log(self::$menu_id,['title' => '新增管理员', 'data' => $data]);
 			//=============================	
 			$this->success("新增成功");
 		}	
@@ -156,7 +156,7 @@ class Manager extends Base
 		$update = db('admin_user')->where('id='.$user_id)->update($data);
 		$data['id'] = $user_id;
 		//写入日志表		
-		$this->add_log(self::$menu_id,['title' => $val, 'admin_user' => $data]);
+		$this->add_log(self::$menu_id,['title' => $val, 'data' => $data]);
 		//=============================
 		$this->success("修改成功");
 		
@@ -175,7 +175,7 @@ class Manager extends Base
 		
 		$data['id'] = $user_id;
 		//写入日志表
-		$this->add_log(self::$menu_id,['title' => '删除管理员', 'admin_user' => $data]);		
+		$this->add_log(self::$menu_id,['title' => '删除管理员', 'data' => $data]);		
 		//=============================	
 		$this->success("删除成功");	
 	
