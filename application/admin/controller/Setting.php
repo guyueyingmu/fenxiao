@@ -47,19 +47,18 @@ class Setting extends Base
      */
     public function set(){
         $data = input('param.data', "", "trim");
-//        $data = json_decode($data,true);
+        $data = json_decode($data,true);
         if(!$data){
             $this->error("请上传要设置的数据");
         }
         $c_type = "";
         
         Db::startTrans();
-   
+        
         try{
             foreach($data as $k=>$v){
-              
                 if($v['id']){
-                    if($c_type === ""){
+                    if($c_type == ""){
                         $c_type = db("config")->where("id", $v['id'])->value("c_type");
                     }
                     $updata = ['id' => $v['id'], 'c_value' => $v['c_value'], 'edit_time' => time()];

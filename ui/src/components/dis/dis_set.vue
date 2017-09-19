@@ -68,7 +68,7 @@ export default {
     },
     //组件初始化
     created() {
-        this.get_set();
+        this.get_set(1);
         this.setBreadcrumb(['分销', '分销设置'])
         this.setMenu('3-4');
     }

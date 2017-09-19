@@ -88,8 +88,8 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['用户', '积分记录'])
-        this.setMenu('2-3');
+        this.setBreadcrumb(['用户', '积分设置'])
+        this.setMenu('2-4');
 
     }
 

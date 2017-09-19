@@ -2,24 +2,9 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品名/编号">
-                    <el-input v-model="formInline.keyword" placeholder="商品名/编号" style="width:120px"></el-input>
+                <el-form-item label="用户ID/手机号码">
+                    <el-input v-model="formInline.keyword" placeholder="用户ID/手机号码" style="width:120px"></el-input>
                 </el-form-item>
-
-                <el-form-item label="商品分类">
-                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px" clearable>
-
-                        <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="商品类型">
-                    <el-select v-model="formInline.good_type" placeholder="商品类型" style="width:120px" clearable>
-                        <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                    </el-select>
-                </el-form-item>
-
-
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
@@ -30,32 +15,24 @@
 
         </div>
 
-        <el-table :data="list"  border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
-            <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
-            <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
-            <el-table-column prop="specification" label="商品规格" width="150"></el-table-column>
-            <el-table-column prop="brand" label="品牌" width="150"></el-table-column>
-            <el-table-column prop="credits" label="积分兑换" width="150"></el-table-column>
-            <el-table-column prop="presenter_credits" label="赠送积分" width="150"></el-table-column>
-            <el-table-column prop="good_type" label="商品类型" width="250">
-                 <template scope="scope">
-                  <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column prop="distribution" label="参与分销" width="100">
+        <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
+            <el-table-column prop="id" label="用户ID"></el-table-column>
+            <el-table-column prop="nickname" label="用户昵称"></el-table-column>
+            <el-table-column prop="phone_number" label="手机号码"></el-table-column>
+            <el-table-column prop="dis_scan_time" label="分销扫码时间"></el-table-column>
+            <el-table-column prop="pid" label="所属分销商用户ID"></el-table-column>
+            <el-table-column prop="distribution_level" label="分销等级">
                 <template scope="scope">
-                    {{scope.row.distribution === 1?'参与':'不参与'}}
+                    {{scope.row.distribution_level === 1?'会员':'分销商'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="status" align="center" label="是否上架" width="150">
+            <el-table-column prop="distributor_time" label="设为分销商时间"></el-table-column>
+            <el-table-column label="操作" width="100" align="center">
                 <template scope="scope">
-                    {{scope.row.status === 1?'上架':'下架'}}
+                    <el-button type="text" size="small" @click="open_set(scope.row)" v-if="scope.row.distribution_level == 1">设为分销商</el-button>
+                    <el-button type="text" size="small" @click="open_set(scope.row)" v-if="scope.row.distribution_level == 2">退出分销商</el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="排序" width="100"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
-
         </el-table>
         <div class="pagination">
 
@@ -82,20 +59,10 @@ export default {
         }
     },
     methods: {
-        //设置下架状态样式
-        tableRowClassName(row, index){
-            if(row.status == 2){
-                return 'status_off'
-            }else{
-                return ''
-            }
+        open_set(){
 
         },
-        //表格设置分类名
-        getType(good_type_id){
-            let id = parseInt(good_type_id,10)
-            return this.$store.getters.GOODTYPE[id-1].label;
-        },
+
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
         
@@ -127,7 +94,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodsall/get_list?page=' + page,
+            let url = '/admin/Userdismember/get_list?page=' + page,
                 vm = this;
 
             vm.loading = true;
@@ -140,48 +107,14 @@ export default {
                 }
                 vm.loading = false;
             })
-        },
-
-        //删除确认
-        onRemove(index) {
-            let vm = this;
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                vm.removeData(index)
-
-            }).catch(() => {
-            });
-
-        },
-        //删除
-        removeData(index) {
-            let _data = this.list[index]
-            let url = '/admin/goodsall/del/good_id/' + _data.id,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.list.splice(index, 1)
-                    vm.$message({
-                        type: 'success',
-                        message: res.msg
-                    });
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
         }
 
     },
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['分销', '分销商品列表'])
-        this.setMenu('3-0');
+        this.setBreadcrumb(['分销', '分销会员列表'])
+        this.setMenu('3-1');
     }
 
 }
