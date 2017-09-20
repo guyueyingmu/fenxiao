@@ -95,6 +95,7 @@ class Login extends Controller
     
     /**
      * 获取菜单
+     * @param int $type 类型 1全部
      */
     public function get_menu(){
         $where = "status = 1";

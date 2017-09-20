@@ -77,15 +77,14 @@ class Role extends Base
 			$result['role'] = $role;
 		}	
 		
-		$menu = db('admin_menu')->where('pid=0 and status = 1')->order('sort,id desc')->select();		
+		$menu = db('admin_menu')->where('pid=0 and status = 1')->order('sort desc,id asc')->select();		
 		foreach($menu as &$row){
 			$row['label'] = $row['menu_name'];	
-			$row['children']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort,id desc')->select();
+			$row['children']=db('admin_menu')->where('status = 1 and pid='.$row['id'])->order('sort desc,id asc')->select();
 			foreach($row['children'] as &$v){ 
 				$v['label'] = $v['menu_name'];
 			}	
 		}
-
 		
         $result['menu'] = $menu;
 		
