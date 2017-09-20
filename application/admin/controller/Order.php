@@ -12,7 +12,7 @@ use app\admin\model\Users;
 class Order extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 5;
+    public $menu_id = 5;
     private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
     private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];//支付状态
     private static $order_from = ['', '微信'];//订单来源
@@ -20,6 +20,12 @@ class Order extends Base
     private static $distribution_status = ['', '未处理', '已处理'];//分销处理
     private static $deliver_method = ['', '上门自提', '快递', '其他'];//配送方式
     private static $pay_method = ['', '微信支付', '线下支付', '积分支付'];//支付方式
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     /**
      * 获取列表
      * @return string
@@ -167,7 +173,7 @@ class Order extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台发货操作', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '后台发货操作', 'data' => $data]);
         
         $this->success("发货成功");
     }
@@ -306,7 +312,7 @@ class Order extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台服务操作', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '后台服务操作', 'data' => $data]);
         
         $this->success("发货成功");
     }
@@ -334,7 +340,7 @@ class Order extends Base
         $model = Orders::update(['id' => $order_id, 'order_status' => 4, 'cancel_reason' => 2, 'cancel_time' => date("Y-m-d H:i:s")]);
                 
         //写日志
-        $this->add_log(self::$menu_id,['title' => '取消订单', 'data' => $model]);
+        $this->add_log($this->menu_id,['title' => '取消订单', 'data' => $model]);
         
         $this->success("取消成功");
     }

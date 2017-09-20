@@ -100,15 +100,24 @@ class Login extends Controller
         $where = "status = 1";
         
         if(session("admin.menu_auth") && session("admin.menu_auth") != 'all'){
-            $where .= " AND id IN (".session("admin.menu_auth").")"; 
+            $where .= " AND (id IN (".session("admin.menu_auth").") OR pid = 0)"; 
         }
             
         $menu_list = AdminMenu::where($where)->order("sort DESC,id ASC")->select();
         
         $tree = new \tree\Tree();
         $menu_list = $tree->toTree(json_decode( json_encode( $menu_list),true), 'id', 'pid', 'child');  
+//        print_r($menu_list);exit;
+        $menu = array();
+        if($menu_list){
+            foreach($menu_list as $k=>$v){
+                if(isset($v['child'])){
+                    $menu[] = $v;
+                }
+            }
+        }
         
-        return json_encode($menu_list);
+        return json_encode($menu);
     }
     
     /**
@@ -125,7 +134,9 @@ class Login extends Controller
     public function get_user_info(){
         if(session('admin.uid')){
             $user_info = AdminUser::where('id', session('admin.uid'))->field("id,user_name,nickname,role_id")->find();
-            $user_info['role_name'] = AdminUserRole::where('id', $user_info['role_id'])->value('role_name');
+            $role_info = AdminUserRole::where('id', $user_info['role_id'])->field('role_name,menu_auth')->find();
+            $user_info['role_name'] = $role_info['role_name'];
+            $user_info['menu_auth'] = $role_info['menu_auth'];
 //            exit(json_encode($user_info));
             $this->success("成功", "", $user_info);
         }else{

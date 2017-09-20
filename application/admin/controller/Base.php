@@ -5,7 +5,9 @@ use think\Controller;
 
 class Base extends Controller
 {
-    public function _initialize(){
+    public $menu_id = '';
+
+    public function __construct(){
 //        session("admin.uid",1);
 //        session("admin.current_menu",3);
         
@@ -18,9 +20,18 @@ class Base extends Controller
             }
         }
         
+        //检测权限
+//        exit();
+        
         //配置信息
         $config = db("Config")->column("c_name, c_value");
         config($config);
+    }
+    
+    public function check_auth(){
+        if(session('admin.menu_auth') != 'all' && !in_array($this->menu_id, explode(",", session('admin.menu_auth')))){
+            $this->error("没有访问权限");
+        }
     }
     
     /**

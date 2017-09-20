@@ -9,7 +9,13 @@ use app\admin\model\Users;
 class Userdis extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 17;
+    public $menu_id = 17;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表

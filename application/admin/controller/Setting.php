@@ -7,7 +7,8 @@ use think\Db;
  */
 class Setting extends Base
 {
-    
+    public $menu_id = '';
+
     /**
      * 获取设置数据
      * @param int $c_type 配置类型 0系统设置 1分销配置 2积分设置
@@ -15,6 +16,10 @@ class Setting extends Base
      */
     public function get_set(){
         $c_type = input("param.c_type", "");
+        
+        $this->menu_id = $c_type == 1 ? 19 : ($c_type == 2 ? 13 : '');
+        $this->check_auth();
+        
         $where = "1=1";
         $where .= $c_type !== "" ? " AND c_type=$c_type" : "";
         
@@ -66,6 +71,8 @@ class Setting extends Base
                 }
             }
             
+            $this->menu_id = $c_type == 1 ? 19 : ($c_type == 2 ? 13 : '');
+            $this->check_auth();           
   
             if(!in_array($c_type, [1, 2])){
                 exception("非法操作");
@@ -81,14 +88,12 @@ class Setting extends Base
         }
         
         if($c_type == 1){
-            $log_menu = 19;
             $log_title = "分销设置";
         }elseif($c_type == 2){
-            $log_menu = 13;
             $log_title = "积分设置";
         }
         //写日志
-        $this->add_log($log_menu,['title' => $log_title, 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => $log_title, 'data' => $data]);
         
         $this->success("操作成功");
     }

@@ -10,7 +10,13 @@ use app\admin\model\Orders;
 class Orderdislog extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 18;
+    public $menu_id = 18;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表
@@ -107,7 +113,7 @@ class Orderdislog extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '分成日志获佣操作', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '分成日志获佣操作', 'data' => $data]);
         
         $this->success("操作成功");
     }

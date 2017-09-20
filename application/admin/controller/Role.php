@@ -7,7 +7,13 @@ use app\admin\model\AdminUserRole;
 class Role extends Base
 {
 	 //定义当前菜单id
-    private static $menu_id = 21;
+    public $menu_id = 21;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
 	
     public function get_list(){
 		$page = input("page",1,"intval");
@@ -116,7 +122,7 @@ class Role extends Base
 			$data['edit_time'] = time();
 			$new_role = db('admin_user_role')->where('id='.$role_id)->update($data);	
 			//写入日志表			
-			$this->add_log(self::$menu_id,['title' => '更新角色', 'data' => $data]);		
+			$this->add_log($this->menu_id,['title' => '更新角色', 'data' => $data]);		
 			//=============================
 			$this->success("修改成功");
 
@@ -141,7 +147,7 @@ class Role extends Base
 			$new_role =  db('admin_user_role')->insertGetId($data);	
 			$data['id'] = $new_role;
 			//写入日志表
-			$this->add_log(self::$menu_id,['title' => '新增角色', 'data' => $data]);				
+			$this->add_log($this->menu_id,['title' => '新增角色', 'data' => $data]);				
 			//=============================
 			
 			$this->success("新增成功");
@@ -168,7 +174,7 @@ class Role extends Base
         $res = $role->delete();
         if($res){
             //写日志
-			$this->add_log(self::$menu_id,['title' => '删除角色', 'data' => $role]);	
+			$this->add_log($this->menu_id,['title' => '删除角色', 'data' => $role]);	
             
             $this->success('删除成功');
         }else{

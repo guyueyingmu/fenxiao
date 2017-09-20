@@ -7,7 +7,13 @@ namespace app\admin\controller;
 class Signin extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 12;
+    public $menu_id = 12;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表

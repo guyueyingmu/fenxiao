@@ -9,7 +9,13 @@ use think\Db;
 class Withdraw extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 11;
+    public $menu_id = 11;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表
@@ -114,7 +120,7 @@ class Withdraw extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '后台提现处理', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '后台提现处理', 'data' => $data]);
         
         $this->success("操作成功");        
     }

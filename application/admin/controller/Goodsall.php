@@ -12,7 +12,14 @@ use think\Db;
 class Goodsall extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 3;
+    public $menu_id = 3;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
+    
     /**
      * 获取列表
      * @param string $keyword 商品编号/商品名
@@ -100,7 +107,7 @@ class Goodsall extends Base
             $banner_res = $good_banner->saveAll($list);
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '添加商品', 'data' => ['good' =>$good, 'banner_img' => $banner_res]]);
+            $this->add_log($this->menu_id,['title' => '添加商品', 'data' => ['good' =>$good, 'banner_img' => $banner_res]]);
             
             // 提交事务
             Db::commit();  
@@ -256,7 +263,7 @@ class Goodsall extends Base
         }
             
         //写日志
-        $this->add_log(self::$menu_id,['title' => '编辑商品', 'data' => ['good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]]);
+        $this->add_log($this->menu_id,['title' => '编辑商品', 'data' => ['good' => $data, 'new_banner_img' => $banner_res, 'delete_banner_img' => $delete_list]]);
         
         $this->success("编辑成功");
     }
@@ -279,7 +286,7 @@ class Goodsall extends Base
         if($res){
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '删除商品', 'data' => $good]);
+            $this->add_log($this->menu_id,['title' => '删除商品', 'data' => $good]);
             
             $this->success('删除成功');
         }else{

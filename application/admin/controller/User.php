@@ -9,7 +9,13 @@ use app\admin\model\Users;
 class User extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 10;
+    public $menu_id = 10;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表
@@ -101,7 +107,7 @@ class User extends Base
         if($res){
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '用户设置', 'data' => $data]);
+            $this->add_log($this->menu_id,['title' => '用户设置', 'data' => $data]);
             
             $this->success('设置成功');
         }else{

@@ -7,8 +7,14 @@ namespace app\admin\controller;
 class Credits extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 25;
+    public $menu_id = 25;
     private static $credits_from = ['', '签到收入', '购买商品收入', '分享收入', '积分兑换支出', '后台操作收入', '后台操作支出'];
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
 
     /**
      * 获取列表

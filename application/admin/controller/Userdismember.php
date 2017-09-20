@@ -9,7 +9,13 @@ use app\admin\model\Users;
 class Userdismember extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 16;
+    public $menu_id = 16;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     
     /**
      * 获取列表
@@ -96,7 +102,7 @@ class Userdismember extends Base
         if($res){
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => $log_title, 'data' => $data]);
+            $this->add_log($this->menu_id,['title' => $log_title, 'data' => $data]);
             
             $this->success('设置成功');
         }else{

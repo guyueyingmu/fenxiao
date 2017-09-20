@@ -11,7 +11,13 @@ use think\Db;
 class Goodscat extends Base
 {
     //定义当前菜单id
-    private static $menu_id = 4;
+    public $menu_id = 4;
+    
+    public function __construct(\think\Request $request = null) {
+        parent::__construct($request);
+        
+        $this->check_auth();
+    }
     /**
      * 获取列表
      * @return string
@@ -89,7 +95,7 @@ class Goodscat extends Base
         if($goodcat->id){
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '添加商品分类', 'data' => $goodcat]);
+            $this->add_log($this->menu_id,['title' => '添加商品分类', 'data' => $goodcat]);
             
             $this->success("添加成功");
         }else{
@@ -135,7 +141,7 @@ class Goodscat extends Base
         GoodsCategory::update($data);        
         
         //写日志
-        $this->add_log(self::$menu_id,['title' => '编辑商品分类', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '编辑商品分类', 'data' => $data]);
         
         $this->success("编辑成功");
     }
@@ -165,7 +171,7 @@ class Goodscat extends Base
         if($res){
             
             //写日志
-            $this->add_log(self::$menu_id,['title' => '删除商品分类', 'data' => $cat]);
+            $this->add_log($this->menu_id,['title' => '删除商品分类', 'data' => $cat]);
             
             $this->success('删除成功');
         }else{
