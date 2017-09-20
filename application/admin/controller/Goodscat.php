@@ -15,8 +15,10 @@ class Goodscat extends Base
     
     public function __construct(\think\Request $request = null) {
         parent::__construct($request);
-        
-        $this->check_auth();
+                
+        if($request->action() != 'get_list'){
+            $this->check_auth();
+        }
     }
     /**
      * 获取列表
@@ -55,7 +57,7 @@ class Goodscat extends Base
                 "current_page" => $page,
             ]            
         ];
-        
+//        exit(json_encode($result));
         $this->success("成功", "", $result);
     }
     
