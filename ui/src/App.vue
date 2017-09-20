@@ -32,13 +32,25 @@
                 </div>
                 <div class="layout-content">
                     <div class="layout-content-main" :style="{'min-height':minHeight}">
+
                         <transition :name="transitionName">
-                            <router-view class="child-view"></router-view>
+                
+                            <router-view class="child-view"> </router-view>
+
+
                         </transition>
                     </div>
                 </div>
             </el-col>
         </el-row>
+
+        <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" size="tiny" :close-on-click-modal="false">
+            <span>
+                <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您没有访问该页面的权限！</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="$store.state.RoseDialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 </template>
@@ -58,6 +70,7 @@ export default {
     },
     data() {
         return {
+
             //activeMenuOpen: ['0'],
             transitionName: 'slide-left',
             list: [],
@@ -71,20 +84,7 @@ export default {
         }
     },
     methods: {
-        //取商品分类
-        get_cat() {
-            let url = '/admin/goodscat/get_list',
-                vm = this;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.setCatList(res.data.list)
 
-                } else {
-                    vm.handleError(res)
-                }
-
-            })
-        },
         //退出登录
         loginOut() {
             let url = '/admin/Login/log_out', vm = this;
@@ -150,6 +150,7 @@ export default {
         }
     },
     created() {
+
         //初始化，获取菜单信息
         let vm = this;
         let url = '/admin/login/get_menu'
@@ -162,8 +163,9 @@ export default {
                     }
                 }
                 vm.list = data;
-
+                window.localStorage.setItem('__Menu__', JSON.stringify(data))
                 vm.setNavlist(data)
+
             }
         })
         //用户信息
@@ -172,7 +174,6 @@ export default {
                 vm.nickname = res.data.nickname;
             }
         })
-        this.get_cat();
 
 
 

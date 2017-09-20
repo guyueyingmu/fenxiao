@@ -12,7 +12,9 @@ const mutations = {
   },
   setTitle(state, str) {
     window.document.title = str;
-
+  },
+  setRose(state, str) {
+    state.RoseDialogVisible= str;
   }
 }
 

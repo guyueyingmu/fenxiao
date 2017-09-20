@@ -7,7 +7,8 @@ import state from './state'
 Vue.use(Vuex)
 
 const getters = {
-    GOODTYPE: state => state.GOODTYPE
+    GOODTYPE: state => state.GOODTYPE,
+    nav_list: state => state.nav_list
   }
 
 const store = new Vuex.Store({

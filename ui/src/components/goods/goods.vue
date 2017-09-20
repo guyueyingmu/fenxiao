@@ -35,7 +35,7 @@
 
         </div>
 
-        <el-table :data="list"  border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
+        <el-table :data="list" border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
             <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
             <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
             <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
@@ -45,8 +45,8 @@
             <el-table-column prop="credits" label="积分兑换" width="150"></el-table-column>
             <el-table-column prop="presenter_credits" label="赠送积分" width="150"></el-table-column>
             <el-table-column prop="good_type" label="商品类型" width="250">
-                 <template scope="scope">
-                  <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
+                <template scope="scope">
+                    <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="distribution" label="参与分销" width="100">
@@ -70,7 +70,7 @@
         </el-table>
         <div class="pagination">
 
-            <el-pagination v-if="parseInt(pages.total_page,10) > 1"  @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
+            <el-pagination v-if="parseInt(pages.total_page,10) > 1" @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
             </el-pagination>
         </div>
 
@@ -94,22 +94,22 @@ export default {
     },
     methods: {
         //设置下架状态样式
-        tableRowClassName(row, index){
-            if(row.status == 2){
+        tableRowClassName(row, index) {
+            if (row.status == 2) {
                 return 'status_off'
-            }else{
+            } else {
                 return ''
             }
 
         },
         //表格设置分类名
-        getType(good_type_id){
-            let id = parseInt(good_type_id,10)
-            return this.$store.getters.GOODTYPE[id-1].label;
+        getType(good_type_id) {
+            let id = parseInt(good_type_id, 10)
+            return this.$store.getters.GOODTYPE[id - 1].label;
         },
         //currentPage 改变时会触发
         handleCurrentChange(current_paged) {
-        
+
             if (this.isSearch) {
                 this.onSearch(current_paged)
             } else {
@@ -129,7 +129,7 @@ export default {
         },
         //搜索
         onSearch(current_paged) {
-          
+
             this.isSearch = true;
             current_paged = current_paged || 1;
             let searchData = this.formInline
@@ -186,14 +186,30 @@ export default {
                 }
                 vm.loading = false;
             })
-        }
+        },
+            //取商品分类
+        get_cat() {
+            let url = '/admin/goodscat/get_list',
+                vm = this;
+            this.apiGet(url).then(function(res) {
+                if (res.code) {
+                    vm.setCatList(res.data.list)
+
+                } else {
+                    vm.handleError(res)
+                }
+
+            })
+        },
 
     },
+
     //组件初始化
     created() {
         this.get_list();
+        this.get_cat();
         this.setBreadcrumb(['商品', '商品列表'])
-        
+
     }
 
 }

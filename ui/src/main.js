@@ -24,22 +24,22 @@ import {
   RadioGroup,
   RadioButton,
   Checkbox,
-//   CheckboxGroup,
+  //   CheckboxGroup,
   Input,
   Form,
   FormItem,
   Select,
   Option,
-//   OptionGroup,
+  //   OptionGroup,
   Button,
-//   ButtonGroup,
-//   Switch,
+  //   ButtonGroup,
+  //   Switch,
   Dialog,
   Loading,
   MessageBox,
   Message,
   Tooltip,
-//   DatePicker,
+  //   DatePicker,
   Row,
   Col,
   Icon,
@@ -54,7 +54,7 @@ import {
   pagination,
   Tabs,
   TabPane
-//   Upload
+  //   Upload
 } from 'element-ui'
 
 Vue.use(Radio)
@@ -113,8 +113,90 @@ Vue.config.productionTip = false
 Vue.config.devtools = true;
 
 /* eslint-disable no-new */
+window.localStorage.removeItem('__Menu__')
 
+//全局的 before 钩子
+router.beforeEach((to, from, next) => {
+
+  function _check(menu) {
+    let canView = false;
+    var Reg = new RegExp(to.path)
+
+    for (let i = 0; i < menu.length; i++) {
+      let _break = false;
+      for (let k = 0; k < menu[i].child.length; k++) {
+        if (Reg.test(menu[i].child[k].link)) {
+          canView = true;
+          _break = true;
+          break;
+        } else {
+          if (to.meta.role) {
+            var Reg2 = new RegExp(to.meta.role)
   
+            if (Reg2.test(to.path)) {
+              canView = true;
+              _break = true;
+              break;
+            } else {
+              canView = false
+            }
+          } else {
+            canView = false
+          }
+
+
+        }
+      }
+      if (_break) {
+        break;
+      }
+    }
+    return canView;
+  }
+
+  setTimeout(function () {
+    if (_check(store.getters.nav_list)) {
+      next()
+    } else {
+      console.log('您没有权限访问！')
+      // alert('您没有权限访问！')
+      store.state.RoseDialogVisible = true
+
+      next(false)
+
+    }
+  })
+
+
+
+
+
+
+  //   let menu = window.localStorage.getItem('__Menu__')
+
+  //   if (menu) {
+  //       console.log('2')
+  //     if (_check(menu)) {
+  //         console.log('bb')
+  //       next()
+  //     } else {
+  //       alert('无权访问')
+  //     }
+
+  //   } else {
+  //     console.log('4')
+  //     next(false)
+
+
+  //   }
+
+
+
+
+
+})
+
+
 const Vm = new Vue({
   el: '#app',
   router,

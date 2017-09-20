@@ -11,6 +11,9 @@ const actions ={
 
       setTitle({commit},val){
           commit('setTitle',val)
+      },
+      setRose({commit},val){
+          commit('setRose',val)
       }
     
 }

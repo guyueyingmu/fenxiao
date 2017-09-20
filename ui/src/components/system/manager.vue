@@ -2,22 +2,11 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品名/编号">
-                    <el-input v-model="formInline.keyword" placeholder="商品名/编号" style="width:120px"></el-input>
+                <el-form-item label="角色名称">
+                    <el-input v-model="formInline.keyword" placeholder="角色名称" style="width:200px"></el-input>
                 </el-form-item>
 
-                <el-form-item label="商品分类">
-                    <el-select v-model="formInline.cat_id" placeholder="商品分类" style="width:120px" clearable>
-
-                        <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="商品类型">
-                    <el-select v-model="formInline.good_type" placeholder="商品类型" style="width:120px" clearable>
-                        <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                    </el-select>
-                </el-form-item>
+              
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
@@ -93,13 +82,13 @@
             </div>
         </el-dialog>
 
-        <!-- 添加角色 -->
+        <!-- 查看权限 -->
         <el-dialog title="查看权限" :visible.sync="dialogFormVisible2">
             <el-tree ref="tree" :data="menu_list" show-checkbox node-key="id">
             </el-tree>
             <div slot="footer" class="dialog-footer">
 
-                <el-button @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="dialogFormVisible2 = false">确 定</el-button>
             </div>
         </el-dialog>
 
@@ -164,9 +153,9 @@ export default {
         //清空
         onReset() {
             this.formInline = {
-                goods_type: '',
+              
                 keyword: '',
-                cat_id: '',
+          
             }
             this.get_list(1)
             this.isSearch = false;
