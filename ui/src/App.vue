@@ -52,6 +52,14 @@
             </span>
         </el-dialog>
 
+        <el-dialog title="警告" :visible.sync="$store.state.LoginDialogVisible" size="tiny" :close-on-click-modal="false" :close="closeLogin">
+            <span>
+                <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您登录已超时，请重新登录！</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="closeLogin">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -84,6 +92,9 @@ export default {
         }
     },
     methods: {
+        closeLogin(){
+             window.location = '/admin/Login/log_out'
+        },
 
         //退出登录
         loginOut() {
