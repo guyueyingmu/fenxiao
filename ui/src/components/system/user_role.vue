@@ -46,7 +46,7 @@
                 <el-form-item label="角色名称">
                     <el-input v-model="dialog.role_name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" v-loading="dialogLoading">
+                <el-form-item label="权限" v-loading="dialogLoading">
                     <el-tree ref="tree" :data="menu_list" show-checkbox node-key="id">
                     </el-tree>
                 </el-form-item>
@@ -221,7 +221,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['系统', '角色管理'])
-        this.setMenu('4-0');
+        
         this.get_menu_list()
     }
 

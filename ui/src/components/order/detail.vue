@@ -117,7 +117,7 @@ export default {
 
         this.get_order_info(this.$route.params.order_id);
         this.setBreadcrumb(['订单', '订单详情'])
-        this.setMenu('1-0');
+        
     }
 
 }

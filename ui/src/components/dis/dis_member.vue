@@ -28,7 +28,7 @@
             <el-table-column prop="distributor_time" label="设为分销商时间"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="goto('/dis_member/user_id/'+scope.row.id+'/level/2')" v-if="level == 1 && scope.row.distribution_level == 2">查看二级会员</el-button>
+                    <el-button type="text" size="small" @click="goto('/distributor/user_id/'+scope.row.id+'/level/2')" v-if="level == 1 && scope.row.distribution_level == 2">查看二级会员</el-button>
                 </template>
             </el-table-column>
 
@@ -110,7 +110,7 @@ export default {
             }
             this.get_list();
             this.setBreadcrumb(['分销', '分销商列表', bread])
-            this.setMenu('3-2');
+            
         }
 
     },

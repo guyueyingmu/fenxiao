@@ -73,7 +73,7 @@ export default {
 
             this.get_set(this.c_type);
             this.setBreadcrumb(bread)
-            this.setMenu(setmenu);
+            
         }
     },
     watch: {

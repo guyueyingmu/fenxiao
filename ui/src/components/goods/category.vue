@@ -196,7 +196,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['商品', '商品分类'])
-        this.setMenu('0-1');
+        
 
     }
 

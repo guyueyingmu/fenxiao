@@ -194,7 +194,7 @@ export default {
     created() {
         // 组件创建完后获取数据，
         this.initData();
-        this.setMenu('0-0');
+        
     
 
     },

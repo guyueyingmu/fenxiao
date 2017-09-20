@@ -1,10 +1,6 @@
 const state ={
     count : 1,
     DEV : window.location.port == '8080',
-    myMenu:{
-        a:'',
-        b:[0]
-    },
     breadcrumb:[],
     cat_list:[],
     nav_list:[],

@@ -176,8 +176,8 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['系统', '日志'])
-        this.setMenu('4-2');
+        this.setBreadcrumb(['系统', '操作日志'])
+        
     }
 
 }

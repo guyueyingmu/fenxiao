@@ -319,7 +319,7 @@ export default {
         this.get_list();
         this.get_role_list();
         this.setBreadcrumb(['系统', '管理员'])
-        this.setMenu('4-1');
+        
     }
 
 }

@@ -86,12 +86,12 @@ const router = new Router({
     component: Goods
   },
   {
-    path: '/goods_add',
+    path: '/goods/goods_add',
     name: 'Goods_add',
     component: Goods_add
   },
   {
-    path: '/goods_edit/id/:id',
+    path: '/goods/goods_edit/id/:id',
     name: 'Goods_edit',
     component: Goods_add
   },
@@ -116,7 +116,7 @@ const router = new Router({
     component: Withdraw
   },
   {
-    path: '/order_detail/order_id/:order_id',
+    path: '/orders/order_id/:order_id',
     name: 'OrderDetail',
     component: OrderDetail
   },
@@ -171,7 +171,12 @@ const router = new Router({
     component: Userdis
   },
   {
-    path: '/set/c_type/:c_type', //分销设置
+    path: '/dis_config/c_type/:c_type', //分销设置
+    name: 'disSet',
+    component: disSet
+  },
+  {
+    path: '/set/c_type/:c_type', //积分设置
     name: 'disSet',
     component: disSet
   },
@@ -193,7 +198,7 @@ const router = new Router({
     component: Log
   },
   {
-    path: '/dis_member/user_id/:user_id/level/:level', //分销商-我的会员
+    path: '/distributor/user_id/:user_id/level/:level', //分销商-我的会员
     name: 'disMember',
     component: disMember
   },
