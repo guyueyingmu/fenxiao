@@ -32,9 +32,9 @@ class Role extends Base
 			->select();
 			
 		if($list){ 
-			foreach($list as $key=>$row){
-				$list[$key]['add_time'] = date("Y-m-d H:i:s",$row['add_time']);
-				$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
+			foreach($list as $key=>$row){			
+				$list[$key]['add_time'] = $row['add_time'] ? date("Y-m-d H:i:s",$row['add_time']): "";
+				$list[$key]['edit_time'] = $row['edit_time'] ? date("Y-m-d H:i:s",$row['edit_time']): ""; 
 				if($row['menu_auth']=='all'){ 
 					$list[$key]['menu_auth_name'] = db('admin_menu')->where('pid != 0 and status =1')->column('menu_name');
 					$menu_auth = db('admin_menu')->where('pid != 0 and status =1')->column('id');
@@ -46,9 +46,7 @@ class Role extends Base
 							$list[$key]['menu_auth_name'][$k] = db('admin_menu')->where('id='.$v)->value('menu_name');
 						}
 					}
-				}
-				//$row['type']=db('admin_user')->where("role_id=".$row['id'])->count();	//type=1表示该角色已被使用	
-				//$list[$key]=$row;
+				}		
 			}	
 		}
 		
@@ -56,7 +54,7 @@ class Role extends Base
 		$total_page = ceil($total/$limit);
 	
 		$result['list'] = $list;
-		//print_r($list);exit;
+		
        //分页
         $result['pages']['total'] = $total;
         $result['pages']['limit'] = $limit;
