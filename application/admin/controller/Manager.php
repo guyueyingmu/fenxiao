@@ -35,9 +35,9 @@ class Manager extends Base
 		if($list){ 
       
 			foreach($list as $key=>$row){
-					$list[$key]['add_time'] = date("Y-m-d H:i:s",$row['add_time']);
-					$list[$key]['edit_time'] = date("Y-m-d H:i:s",$row['edit_time']);
-					$list[$key]['login_time'] = date("Y-m-d H:i:s",$row['login_time']);
+					$list[$key]['add_time'] = $row['add_time'] ? date("Y-m-d H:i:s",$row['add_time']): "";
+					$list[$key]['edit_time'] = $row['edit_time'] ? date("Y-m-d H:i:s",$row['edit_time']): ""; 
+					$list[$key]['login_time'] = $row['login_time'] ? date("Y-m-d H:i:s",$row['login_time']): "";
 					$list[$key]['role_name']=db('admin_user_role')->where("id=".$row['role_id'])->value('role_name');	
 				
 			}
@@ -96,7 +96,7 @@ class Manager extends Base
 			$validate_res = $this->validate($data,[
 				'id'  => 'require|number',
                 'user_name'  => 'require|unique:admin_user',
-                'nickname'  => 'require',
+                'nickname'  => 'require|unique:admin_user',
                 'role_id'  => 'require',
 			],[
 				'id.require' => '参数错误',
@@ -104,6 +104,7 @@ class Manager extends Base
 				'user_name.require' => '后台登录账号不能为空！',
 				'user_name.unique' => '该后台登录账号已存在！',
 				'nickname.require' => '管理员姓名不能为空！',
+				'nickname.unique' => '该管理员姓名已存在！',
 				'role_id.require' => '所属角色不能为空！',           
 			]); 
 			
@@ -134,7 +135,7 @@ class Manager extends Base
 	
 				'user_name'  => 'require|unique:admin_user',
                 'password'  => 'require',
-                'nickname'  => 'require',
+                'nickname'  => 'require|unique:admin_user',
                 'role_id'  => 'require',
                 
 			],[
@@ -143,6 +144,7 @@ class Manager extends Base
 				'user_name.require' => '后台登录账号不能为空！',
 				'user_name.unique' => '该后台登录账号已存在！',
 				'nickname.require' => '管理员姓名不能为空！',
+				'nickname.unique' => '该管理员姓名已存在！',
 				'role_id.require' => '所属角色不能为空！',           
 			]); 
 			
