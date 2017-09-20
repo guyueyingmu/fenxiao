@@ -183,7 +183,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['分销', '分成日志'])
-        this.setMenu('3-3');
+        
     }
 
 }

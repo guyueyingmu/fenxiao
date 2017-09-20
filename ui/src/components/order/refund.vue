@@ -295,7 +295,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['订单', '退款申请'])
-        this.setMenu('1-1');
+        
     }
 
 }

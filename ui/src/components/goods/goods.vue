@@ -31,7 +31,7 @@
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="warning" class="goods_add_btn" @click="goto('/goods_add')">添加商品</el-button>
+            <el-button type="warning" class="goods_add_btn" @click="goto('/goods/goods_add')">添加商品</el-button>
 
         </div>
 
@@ -63,7 +63,7 @@
             <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
             <el-table-column label="操作" width="120" fixed="right" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="goto('/goods_edit/id/'+scope.row.id)">编辑</el-button>
+                    <el-button type="text" size="small" @click="goto('/goods/goods_edit/id/'+scope.row.id)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
@@ -193,7 +193,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['商品', '商品列表'])
-        this.setMenu('0-0');
+        
     }
 
 }

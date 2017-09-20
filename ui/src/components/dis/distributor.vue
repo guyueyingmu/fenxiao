@@ -28,7 +28,7 @@
             <el-table-column label="操作" width="200" align="center">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="open_win(scope.row)">分销二维码</el-button>
-                    <el-button type="text" size="small" @click="goto('/dis_member/user_id/'+scope.row.id+'/level/1')">我的会员</el-button>
+                    <el-button type="text" size="small" @click="goto('/distributor/user_id/'+scope.row.id+'/level/1')">我的会员</el-button>
                 </template>
             </el-table-column>
 
@@ -130,7 +130,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['分销', '分销商列表'])
-        this.setMenu('3-2');
+        
     }
 
 }

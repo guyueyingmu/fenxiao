@@ -8,9 +8,7 @@ const actions ={
       setNavlist ({commit},val) {
         commit('setNavlist',val)
       },
-      setMenu ({commit},val) {
-        commit('setMenu',val)
-      },
+
       setTitle({commit},val){
           commit('setTitle',val)
       }

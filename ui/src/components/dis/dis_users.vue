@@ -148,7 +148,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['分销', '分销会员列表'])
-        this.setMenu('3-1');
+        
     }
 
 }

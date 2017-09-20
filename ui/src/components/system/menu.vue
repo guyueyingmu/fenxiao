@@ -167,7 +167,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['分销', '分销商品列表'])
-        this.setMenu('3-0');
+        
     }
 
 }

@@ -504,7 +504,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['订单', '订单列表'])
-        this.setMenu('1-0');
+        
     }
 
 }

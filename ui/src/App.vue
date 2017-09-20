@@ -6,11 +6,11 @@
                 <div class="layout-logo-left">
                     <span>分销管理系统</span>
                 </div>
-                <el-menu :default-active="$store.state.myMenu.a" :default-openeds="$store.state.myMenu.b" theme="dark">
+                <el-menu :router="true" theme="dark" :unique-opened="true" :default-active="activeMenu" :default-openeds="activeMenuOpen">
                     <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
                         <template slot="title">
                             <i class="el-icon-message"></i>{{item.menu_name}}</template>
-                        <el-menu-item :index="idx.toString()+'-'+c_idx.toString()" v-for="(c,c_idx) in item.child" :key="c.id" @click="go(c.menu_link,idx,c_idx)">{{c.menu_name}}</el-menu-item>
+                        <el-menu-item :index="c.link" v-for="(c,c_idx) in item.child" :key="c.id">{{c.menu_name}}</el-menu-item>
                     </el-submenu>
 
                 </el-menu>
@@ -58,6 +58,7 @@ export default {
     },
     data() {
         return {
+            //activeMenuOpen: ['0'],
             transitionName: 'slide-left',
             list: [],
             nickname: '',
@@ -70,19 +71,6 @@ export default {
         }
     },
     methods: {
-
-        //菜单跳转
-        go(url, idx, c_idx) {
-            if (url) {
-
-                if (this.$store.state.DEV) {
-                    let _url = url.replace('/admin/index/#', '')
-                    this.goto(_url)
-                } else {
-                    window.location = url;
-                }
-            }
-        },
         //取商品分类
         get_cat() {
             let url = '/admin/goodscat/get_list',
@@ -90,7 +78,7 @@ export default {
             this.apiGet(url).then(function(res) {
                 if (res.code) {
                     vm.setCatList(res.data.list)
-                  
+
                 } else {
                     vm.handleError(res)
                 }
@@ -123,6 +111,39 @@ export default {
     computed: {
         "minHeight"() {
             return (window.innerHeight - 144) + 'px'
+        },
+        activeMenu() {
+            var _path = this.$route.path;
+            _path = _path.split('/')
+            console.log('/' + _path[1], 9999)
+            return '/' + _path[1];
+        },
+        activeMenuOpen() {
+            var _path = this.$route.path, _array = '10';
+            _path = _path.split('/')
+           _path =  _path[1];
+            if (this.list.length && _path != '/') {
+                let data = this.list, _reg = new RegExp(_path)
+                for (let i = 0; i < data.length; i++) {
+                    let _break = false;
+                    for (let k = 0; k < data[i].child.length; k++) {
+                        if (_reg.test(data[i].child[k].menu_link)) {
+                            _array = i.toString();
+                            _break = true;
+
+                            break;
+                        }
+                    }
+                    if (_break) {
+                        break;
+                    }
+                }
+
+                // console.log(`计算菜单`, _array)
+            }
+
+            return [_array]
+
         }
     },
     created() {
@@ -132,8 +153,13 @@ export default {
         this.apiGet(url).then(function(res) {
             if (res) {
                 let data = JSON.parse(res);
+                for (let i = 0; i < data.length; i++) {
+                    for (let k = 0; k < data[i].child.length; k++) {
+                        data[i].child[k].link = data[i].child[k].menu_link.replace('/admin/index/#', '')
+                    }
+                }
                 vm.list = data;
-                // vm.setMenu({a:'0-0',b:[0]})
+
                 vm.setNavlist(data)
             }
         })
@@ -141,11 +167,13 @@ export default {
         this.apiGet('/admin/Login/get_user_info').then(function(res) {
             if (res.code) {
                 vm.nickname = res.data.nickname;
-
-                // vm.setMenu({a:'0-0',b:[0]})
             }
         })
         this.get_cat();
+
+
+
+
     }
 
 }

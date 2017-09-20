@@ -291,7 +291,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['用户', '用户列表'])
-        this.setMenu('2-0');
+        
 
     }
 

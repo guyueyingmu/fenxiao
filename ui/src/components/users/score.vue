@@ -89,7 +89,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['用户', '积分设置'])
-        this.setMenu('2-4');
+        
 
     }
 

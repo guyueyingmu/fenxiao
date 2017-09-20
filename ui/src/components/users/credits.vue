@@ -166,7 +166,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['用户', '积分记录'])
-        this.setMenu('2-3');
+        
 
     }
 
