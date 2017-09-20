@@ -134,7 +134,13 @@ const apiMethods = {
     },
     //统一异常处理
     handleError(res) {
-      this.$message.error(res.msg);
+        if(res.msg == '请登录后操作'){
+            this.$store.state.LoginDialogVisible = true
+
+        }else{
+            this.$message.error(res.msg);
+        }
+      
 
     }
   }

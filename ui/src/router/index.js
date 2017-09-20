@@ -181,13 +181,13 @@ const router = new Router({
     },
     {
       path: '/dis_config/c_type/:c_type', //分销设置
-      name: 'disSet',
+      name: 'dis_config',
       component: disSet,
       meta: { role: '/dis_config' }, //页面需要的权限
     },
     {
       path: '/set/c_type/:c_type', //积分设置
-      name: 'disSet',
+      name: 'set',
       component: disSet,
       meta: { role: '/set' }, //页面需要的权限
     },
