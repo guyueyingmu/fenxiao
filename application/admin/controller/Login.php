@@ -63,9 +63,6 @@ class Login extends Controller
             $this->error("用户被禁用，请联系管理员");
         }
         
-        //记录成功登录记录
-        AdminUserLogin::add_log($data['user_name'], 1);
-        
         //角色信息
         $role_info = AdminUserRole::get($user_info['role_id']);
         if(!$role_info){
@@ -73,6 +70,12 @@ class Login extends Controller
             AdminUserLogin::add_log($data['user_name'], 2);
             $this->error("用户信息有误");
         }
+        
+        //记录成功登录记录
+        AdminUserLogin::add_log($data['user_name'], 1);
+        
+        //更新最近登录时间
+        AdminUser::update(['id' => $user_info['id'], 'login_time' => time()]);
                 
         //保存session
         $session_arr['uid'] = $user_info['id'];
