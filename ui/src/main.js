@@ -110,10 +110,10 @@ Vue.prototype.$message = Message
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.config.productionTip = false
 
-Vue.config.devtools = true;
+// Vue.config.devtools = true;
 
 /* eslint-disable no-new */
-window.localStorage.removeItem('__Menu__')
+
 
 //全局的 before 钩子
 router.beforeEach((to, from, next) => {
@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) => {
         } else {
           if (to.meta.role) {
             var Reg2 = new RegExp(to.meta.role)
-  
+
             if (Reg2.test(to.path)) {
               canView = true;
               _break = true;
@@ -154,18 +154,26 @@ router.beforeEach((to, from, next) => {
     return canView;
   }
 
-  setTimeout(function () {
+  if (store.getters.nav_list.length > 0) {
     if (_check(store.getters.nav_list)) {
       next()
     } else {
       console.log('您没有权限访问！')
-      // alert('您没有权限访问！')
       store.state.RoseDialogVisible = true
-
       next(false)
-
     }
-  })
+  } else {
+    setTimeout(function () {
+      if (_check(store.getters.nav_list)) {
+        next()
+      } else {
+        console.log('您没有权限访问！')
+        store.state.RoseDialogVisible = true
+        next(false)
+      }
+    }, 500)
+  }
+
 
 
 
