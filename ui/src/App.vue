@@ -114,14 +114,17 @@ export default {
         },
         activeMenu() {
             var _path = this.$route.path;
-            _path = _path.split('/')
-            console.log('/' + _path[1], 9999)
-            return '/' + _path[1];
+            if (/goods_add/.test(_path) || /goods_edit/.test(_path) || /order_id/.test(_path) || /user_id/.test(_path)) {
+                _path = _path.split('/')
+                _path = '/' + _path[1];
+            }
+
+            return _path
         },
         activeMenuOpen() {
             var _path = this.$route.path, _array = '10';
             _path = _path.split('/')
-           _path =  _path[1];
+            _path = '/' + _path[1];
             if (this.list.length && _path != '/') {
                 let data = this.list, _reg = new RegExp(_path)
                 for (let i = 0; i < data.length; i++) {

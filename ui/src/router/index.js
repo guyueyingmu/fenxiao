@@ -116,7 +116,7 @@ const router = new Router({
     component: Withdraw
   },
   {
-    path: '/order_detail/order_id/:order_id',
+    path: '/orders/order_id/:order_id',
     name: 'OrderDetail',
     component: OrderDetail
   },
@@ -172,6 +172,11 @@ const router = new Router({
   },
   {
     path: '/dis_config/c_type/:c_type', //分销设置
+    name: 'disSet',
+    component: disSet
+  },
+  {
+    path: '/set/c_type/:c_type', //积分设置
     name: 'disSet',
     component: disSet
   },
