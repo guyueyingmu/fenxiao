@@ -141,15 +141,7 @@ export default {
             let id = parseInt(good_type_id, 10)
             return this.$store.getters.GOODTYPE[id - 1].label;
         },
-        //currentPage 改变时会触发
-        handleCurrentChange(current_paged) {
 
-            if (this.isSearch) {
-                this.onSearch(current_paged)
-            } else {
-                this.get_list(current_paged)
-            }
-        },
         //清空
         onReset() {
             this.formInline = {

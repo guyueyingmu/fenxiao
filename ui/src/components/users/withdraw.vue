@@ -122,17 +122,6 @@ export default {
             })
 
         },
-
-
-        //currentPage 改变时会触发
-        handleCurrentChange(current_paged) {
-
-            if (this.isSearch) {
-                this.onSearch(current_paged)
-            } else {
-                this.get_list(current_paged)
-            }
-        },
         //清空
         onReset() {
             this.formInline = {
@@ -144,7 +133,6 @@ export default {
         },
         //搜索
         onSearch(current_paged) {
-
             this.isSearch = true;
             current_paged = current_paged || 1;
             let searchData = this.formInline

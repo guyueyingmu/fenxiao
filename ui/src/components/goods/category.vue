@@ -50,7 +50,7 @@
                 <el-form-item label="排序">
                     <el-input v-model="dialog.sort" placeholder="排序 0 - 99" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="商品小图" class="my_error">
+                <el-form-item label="分类小图" class="my_error">
                     <div class="red small">尺寸为 32 * 32 正方形</div>
                     <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="dialog.cat_img" :src="dialog.cat_img" class="avatar">
@@ -151,17 +151,6 @@ export default {
 
             })
 
-        },
-
-
-        //currentPage 改变时会触发
-        handleCurrentChange(current_paged) {
-
-            if (this.isSearch) {
-                this.onSearch(current_paged)
-            } else {
-                this.get_list(current_paged)
-            }
         },
         //清空
         onReset() {

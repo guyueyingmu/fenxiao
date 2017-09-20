@@ -122,54 +122,7 @@ export default {
             dialog_temp: {},
             dialogFormVisible: false,
             dialogForm: {},
-            pickerOptions: {
-                shortcuts: [
-                    {
-                        text: '今天',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime());
-                            picker.$emit('pick', [start, end]);
-                        }
-                    },
-                    {
-                        text: '最近三天',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    },
-                    {
-                        text: '最近一周',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近一个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }, {
-                        text: '最近三个月',
-                        onClick(picker) {
-                            const end = new Date();
-                            const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                            picker.$emit('pick', [start, end]);
-                        }
-                    }]
-            },
             tabs: '',
-            value7: '',
             value8: '',
             isSearch: false,
             formInline: {
@@ -222,16 +175,6 @@ export default {
             }
             this.get_list(1, _data)
 
-        },
-
-        //currentPage 改变时会触发
-        handleCurrentChange(current_paged) {
-
-            if (this.isSearch) {
-                this.onSearch(current_paged)
-            } else {
-                this.get_list(current_paged)
-            }
         },
         //清空搜索
         onReset() {
