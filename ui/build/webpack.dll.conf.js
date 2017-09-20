@@ -13,16 +13,17 @@ function resolve(dir) {
 module.exports = {
   entry: {
     libs: [
+      'element-ui',
       'vue/dist/vue.esm.js',
-      'lodash',
+      'vue-resource',
       'vue-router',
       'vuex',
-      'element-ui',
+      '@/assets/js/http.js'
     ]
   },
   output: {
     path: path.resolve(__dirname, '../../public/static/admin/dll/'),
-    filename: '[name].[chunkhash:4].js',
+    filename: '[name].js',
     library: '[name]_library',
     publicPath: process.env.NODE_ENV === 'production' ?
       config.build.assetsPublicPath : config.dev.assetsPublicPath
