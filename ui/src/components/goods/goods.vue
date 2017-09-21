@@ -178,19 +178,22 @@ export default {
                 vm.loading = false;
             })
         },
-            //取商品分类
+        //取商品分类
         get_cat() {
-            let url = '/admin/goodscat/get_list',
-                vm = this;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.setCatList(res.data.list)
+            console.log(this.$store.state.cat_list.length)
+            if (this.$store.state.cat_list.length < 1) {
+                let url = '/admin/goodscat/get_list',
+                    vm = this;
+                this.apiGet(url).then(function(res) {
+                    if (res.code) {
+                        vm.setCatList(res.data.list)
 
-                } else {
-                    vm.handleError(res)
-                }
+                    } else {
+                        vm.handleError(res)
+                    }
 
-            })
+                })
+            }
         },
 
     },

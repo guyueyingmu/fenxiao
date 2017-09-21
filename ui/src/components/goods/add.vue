@@ -43,12 +43,12 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    
+
                     <el-form-item label="商品分类" prop="cat_id">
                         <el-tooltip class="item" effect="dark" content="亲~ 分类可以在左边主菜单里进行增加哦! ~_~" placement="right">
-                        <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
-                            <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
-                        </el-select>
+                            <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
+                                <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
+                            </el-select>
                         </el-tooltip>
                     </el-form-item>
                 </el-col>
@@ -168,18 +168,18 @@ export default {
             ],
             dialogVisible: false,
             dialogImageUrl: '',
-            bannerImg_temp_list:[],
+            bannerImg_temp_list: [],
             cat_list: [],
             form: {},
             rules: {
-                good_img: [{ required: true, type:'string', message: '请上传商品小图', trigger: 'blur' }],
-                banner_img: [{ required: true,type:'array', message: '请上传商品轮播图', trigger: 'blur' }],
+                good_img: [{ required: true, type: 'string', message: '请上传商品小图', trigger: 'blur' }],
+                banner_img: [{ required: true, type: 'array', message: '请上传商品轮播图', trigger: 'blur' }],
                 good_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-                cat_id: [{ required: true, type:'integer',message: '请选择分类', trigger: 'blur' },],
+                cat_id: [{ required: true, type: 'integer', message: '请选择分类', trigger: 'blur' },],
 
-                distribution: [{ required: true,type:'number', message: '请选择参与分销', trigger: 'blur' }],
-                credits: [{ required: true, pattern: /^.*$/ , message: '请输入积分兑换', trigger: 'blur' }],
-                good_type: [{ required: true, type:'integer',message: '请选择商品类型', trigger: 'blur' }],
+                distribution: [{ required: true, type: 'number', message: '请选择参与分销', trigger: 'blur' }],
+                credits: [{ required: true, pattern: /^.*$/, message: '请输入积分兑换', trigger: 'blur' }],
+                good_type: [{ required: true, type: 'integer', message: '请选择商品类型', trigger: 'blur' }],
                 price: [{ required: true, message: '请输入销售价格', trigger: 'blur' }],
 
                 good_title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
@@ -194,8 +194,8 @@ export default {
     created() {
         // 组件创建完后获取数据，
         this.initData();
-        
-    
+
+
 
     },
     methods: {
@@ -238,24 +238,24 @@ export default {
 
         //删除轮播图
         handleRemove(file, fileList) {
-            console.log(file, fileList);
-            let _d =   this.form.banner_img;
+            let _d = this.form.banner_img;
             let url = file.url;
-            for(let i = 0;i<_d.length;i++){
-                if(url == _d[i].img_url){
+            for (let i = 0; i < _d.length; i++) {
+                if (url == _d[i].img_url) {
                     _d[i].is_show = 2;
-                    break 
+                    this.bannerImg_temp_list.splice(i,1)
+                    break
                 }
             }
             this.form.banner_img = _d;
-
+           
 
         },
 
         //轮播图上传成功
         handlePictureSuccess(res, fileList) {
             if (res.code == 1) {
-                this.bannerImg_temp_list.push({url: res.data.img_path})
+                this.bannerImg_temp_list.push({ url: res.data.img_path })
                 let _d = { id: '', img_url: res.data.img_path, is_show: 1 }
                 this.form.banner_img.push(_d)
             }
@@ -297,7 +297,7 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    let url = this.isEdit ? '/admin/goodsall/edit' : '/admin/goodsall/add',
+                    let url = this.isEdit ? '/admin/goodsall/edit?good_id='+this.form.id : '/admin/goodsall/add',
                         data = this.form,
                         vm = this;
                     this.apiPost(url, data).then(function(res) {
@@ -327,17 +327,17 @@ export default {
 
         //编辑时获取单条数据
         get_edit_item(id) {
-            let url = '/admin/goodsall/get_good_info/good_id/' + id,
+            let url = '/admin/goodsall/get_good_info?good_id=' + id,
                 vm = this;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
                     vm.bannerImg_temp_list = [];
                     let _d = res.data.banner_img;
-                    for(let i =0;i<_d.length;i++){
-                        if(_d[i].is_show == 1){
-                            vm.bannerImg_temp_list.push({url:_d[i].img_url})
+                    for (let i = 0; i < _d.length; i++) {
+                        if (_d[i].is_show == 1) {
+                            vm.bannerImg_temp_list.push({ url: _d[i].img_url })
                         }
-                        
+
                     }
                     vm.form = res.data;
                 } else {
