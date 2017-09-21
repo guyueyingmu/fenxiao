@@ -52,7 +52,7 @@
                 </el-form-item>
                 <el-form-item label="分类小图" class="my_error">
                     <div class="red small">尺寸为 32 * 32 正方形</div>
-                    <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="dialog.cat_img" :src="dialog.cat_img" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>

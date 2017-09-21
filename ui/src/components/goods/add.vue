@@ -6,7 +6,7 @@
         <el-form :model="form" ref="form" :rules="rules" label-width="100px">
             <el-form-item label="商品小图" prop="good_img" class="my_error">
                 <div class="red small">尺寸为 320 * 320 正方形</div>
-                <el-upload class="avatar-uploader" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.good_img" :src="form.good_img" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -14,7 +14,7 @@
 
             <el-form-item label="商品轮播图" prop="banner_img" class="my_error">
                 <div class="red small">尺寸为 640 * 320 长方形</div>
-                <el-upload list-type="picture-card" action="/admin/Goodsall/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <el-upload list-type="picture-card" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
