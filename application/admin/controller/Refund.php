@@ -11,6 +11,8 @@ class Refund extends Base
 {
     //定义当前菜单id
     public $menu_id = 6;
+    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
+    private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];//支付状态
     
     public function __construct(\think\Request $request = null) {
         parent::__construct($request);
@@ -46,10 +48,16 @@ class Refund extends Base
                 ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
                 ->where($where)
-                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time")
+                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time,o.order_status,o.pay_status")
                 ->page($page,$limit)
                 ->order('r.id DESC')
                 ->select();
+        if($list){
+            foreach($list as $k=>$v){
+                $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
+                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];                
+            }
+        }
         $total = db('orders_refund_apply')->alias("r")
                 ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")

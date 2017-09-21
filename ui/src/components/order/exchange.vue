@@ -29,6 +29,8 @@
         <!-- 表格 -->
         <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="order_number" label="订单编号" width="120"></el-table-column>
+            <el-table-column prop="order_status_txt" label="订单状态" width="120"></el-table-column>
+            <el-table-column prop="pay_status_txt" label="支付状态" width="120"></el-table-column>
             <el-table-column prop="user_id" label="下单用户ID" width="120"></el-table-column>
             <el-table-column prop="phone_number" label="用户手机"></el-table-column>
             <el-table-column prop="add_time" label="申请时间"> </el-table-column>
@@ -45,8 +47,6 @@
             <el-table-column label="操作" width="100">
                 <template scope="scope">
                     <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onExchange(scope.row,scope.row.$index)">立即处理</el-button>
-                    <span v-else-if="scope.row.status === 1" class="text-des">已换货</span>
-                    <span v-else  class="text-des">已拒绝</span>
                 </template>
             </el-table-column>
         </el-table>
