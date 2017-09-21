@@ -73,6 +73,12 @@ const Log = () =>
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
+  
+  const Banner = () =>
+    import ( /* webpackChunkName: "banner" */ '@/components/front/banner')
+    
+    const Kefu = () =>
+      import ( /* webpackChunkName: "kefu" */ '@/components/front/kefu')
 
 
 
@@ -216,7 +222,17 @@ const router = new Router({
 
     },
     {
-        path: '*', //分销商-我的会员
+      path: '/banner', //轮播图
+      name: 'Banner',
+      component: Banner
+    },
+    {
+      path: '/kefu', //客服
+      name: 'Kefu',
+      component: Kefu
+    },
+    {
+        path: '*', //404
         name: '404',
         component: noFound,
       

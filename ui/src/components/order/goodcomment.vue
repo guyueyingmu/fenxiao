@@ -27,7 +27,11 @@
 
         <!-- 表格 -->
         <el-table :data="list" border style="width: 100%" v-loading="loading">
-            <el-table-column prop="good_link" label="商品页面链接" width="200"></el-table-column>
+            <el-table-column prop="good_link" label="商品页面链接" width="200">
+                <template scope="scope">
+                    <a :href="scope.row.good_link">{{scope.row.good_link}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="user_id" label="用户ID" width="120"></el-table-column>
             <el-table-column prop="add_time" label="评论时间" width="180"></el-table-column>
             <el-table-column prop="content" label="评论内容" width="300"></el-table-column>

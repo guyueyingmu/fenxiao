@@ -58,8 +58,8 @@ class Asset extends Base
             $res['max_w'] = 640;
             $res['max_h'] = 320;
         }elseif($img_type == 'good_cat_img'){ //商品分类图
-            $res['max_w'] = 32;
-            $res['max_h'] = 32;
+            $res['max_w'] = 100;
+            $res['max_h'] = 100;
         }else{ //其他图片
             $res['max_w'] = $res['max_h'] = 640;
         }

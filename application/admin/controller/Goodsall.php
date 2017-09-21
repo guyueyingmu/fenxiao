@@ -99,11 +99,19 @@ class Goodsall extends Base
             
             //保存轮播图
             $good_banner = new GoodsBanner;
+            $have_banner_img = false;
             foreach($banner_img as $v){
+                if($v['is_show'] == 1){
+                    $have_banner_img = true;
+                }
                 if($v['img_url'] && $v['is_show'] == 1){
                     $list[] = ['good_id' => $good->id, 'img_url' => $v['img_url'], 'add_time' => date("Y-m-d H:i:s")];
                 }
             }
+            if($have_banner_img == false){
+                exception("请上传商品轮播图");
+            }
+            
             $banner_res = $good_banner->saveAll($list);
             
             //写日志
@@ -184,13 +192,20 @@ class Goodsall extends Base
             //保存轮播图
             $good_banner = new GoodsBanner;
             $list = $delete_banners = $delete_list = array();
+            $have_banner_img = false;
             foreach($banner_img as $v){
+                if($v['is_show'] == 1){
+                    $have_banner_img = true;
+                }
                 if($v['id'] && $v['is_show'] == 2){
                     $delete_banners[] = $v['id'];
                     $delete_list[] = $v;
                 }elseif(!$v['id'] && $v['img_url'] && $v['is_show'] == 1){
                     $list[] = ['good_id' => $data['id'], 'img_url' => $v['img_url'], 'add_time' => date("Y-m-d H:i:s")];
                 }
+            }
+            if($have_banner_img == false){
+                exception("请上传商品轮播图");
             }
             $banner_res = [];
             if($list){
@@ -205,7 +220,7 @@ class Goodsall extends Base
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            $this->error("编辑失败");
+            $this->error($e->getMessage());
         }
             
         //写日志
