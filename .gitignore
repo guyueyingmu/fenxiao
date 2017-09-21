@@ -4,3 +4,4 @@ composer.lock
 /nbproject/private/
 nbproject
 /public/uploads
+ui/config/index.js
