@@ -10,7 +10,7 @@ var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.other.conf')
 
-var spinner = ora('正在打包其它，请不要关闭...')
+var spinner = ora('正在打包 后台admin 源文件，请不要关闭...')
 spinner.start()
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {

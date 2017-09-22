@@ -13,7 +13,7 @@ var rm                = require('rimraf')
 var ora = require('ora')
 var spinner = ora({
   color: 'green',
-  text: '正为生产环境打包dll包，耐心点，不然自动关机。。。'
+  text: '正打包公用dll包，耐心点，不然自动关机。。。'
 })
 spinner.start()
 rm(path.resolve(__dirname, '../../public/static/admin/dll/'),  err => {
