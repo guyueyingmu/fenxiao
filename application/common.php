@@ -14,9 +14,10 @@
 /**
  * 获取缩略图地址
  * @param string $img 原图地址
+ * @param string $type 获取类型 1 大图
  * @return string
  */
-function getThumbUrl($img) {
+function getThumbUrl($img, $type = '') {
 
     $img = trim($img);
     if('' == $img){
@@ -31,14 +32,23 @@ function getThumbUrl($img) {
         $s1 = '';
         $s2 = $img;
     }
+    
+    if($type == 1){
+        if('thumb_' != substr($s2, 0, 6)){
+            return $img;
+        }
+        $s2 = str_replace('thumb_', '', $s2);
+        
+        $thumb = $s1. $s2;
+    }else{
+        //如果已经是缩略图则返回
+        if('thumb_' == substr($s2, 0, 6)){
+            return $img;
+        }
 
-    //如果已经是缩略图则返回
-    if('thumb_' == substr($s2, 0, 6)){
-        return $img;
+        //否则添加缩略图前缀
+        $thumb = $s1. 'thumb_' . $s2;
     }
-
-    //否则添加缩略图前缀
-    $thumb = $s1. 'thumb_' . $s2;
 
     return $thumb;
 }

@@ -34,13 +34,14 @@ class Asset extends Base
             $width = $image->width();
             $get_info = $this->upload_type($img_type);
             
+            // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+            $thumb_save_name = getThumbUrl(str_replace("\\","/",$save_name));
+            
             if($width > $get_info['max_w']){
-                // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
-                $thumb_save_name = getThumbUrl(str_replace("\\","/",$save_name));// echo $thumb_save_name."<br />";echo ROOT_PATH . 'public' . DS . 'uploads' . DS . $thumb_save_name;exit('xxx');
                 $image->thumb($get_info['max_w'], $get_info['max_h'])->save($file_path . DS . $thumb_save_name);
-                
-                $res_url = $url_path . DS . $thumb_save_name;
             }
+                
+            $res_url = $url_path . DS . $thumb_save_name;
             
             $this->success("上传成功","",["img_path" => $res_url]);
             
