@@ -1,14 +1,7 @@
 
-/**
-  * http.js v0.0.1
-  * (c) 2017 Nick
-  * @license MIT
-  */
-  'use strict';
-/*  */
-import {
-  mapActions
-} from "vuex";
+
+import { mapActions } from "vuex";
+
 const apiMethods = {
   data() {
     return {
