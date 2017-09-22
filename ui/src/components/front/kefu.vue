@@ -2,8 +2,8 @@
     <div>
         <div class="page_heade" @keyup.enter="onSearch()">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品分类">
-                    <el-input v-model="formInline.keyword" placeholder="商品分类" style="width:220px"></el-input>
+                <el-form-item label="用户呢称">
+                    <el-input v-model="formInline.keyword" placeholder="用户呢称" style="width:220px"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -11,27 +11,25 @@
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="warning" class="goods_add_btn" @click="open_addCat(false)">添加分类</el-button>
 
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="ID" width="100"></el-table-column>
-            <el-table-column prop="cat_img" label="分类小图"  width="100">
+            <el-table-column prop="id" label="用户ID" width="100"></el-table-column>
+            <el-table-column prop="cat_img" label="头像" width="100">
                 <template scope="scope">
                     <div style="padding:10px 0;">
-                        <img :src="scope.row.cat_img"  width="40" height="40" alt="">
+                        <img :src="scope.row.cat_img" width="40" height="40" alt="">
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="cat_name" label="商品分类"></el-table-column>
-            <el-table-column prop="sort" label="排序" width="80"></el-table-column>
-            <el-table-column prop="nickname" label="添加人" width="200"></el-table-column>
+            <el-table-column prop="cat_name" label="用户呢称"></el-table-column>
+            <el-table-column prop="sort" label="对话身份标识" width="180"></el-table-column>
+            <el-table-column prop="nickname" label="是否已读" width="200"></el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="open_addCat(true,scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
+                    <el-button type="text" size="small" @click="open_replyDialog(scope.row)">回复</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -40,30 +38,122 @@
             </el-pagination>
         </div>
 
-        <!-- 添加管理员 -->
-        <el-dialog title="请输入分类名" :visible.sync="dialogFormVisible">
-            <el-form label-width="100px">
-                <el-form-item label="分类名">
-                    <el-input v-model="dialog.cat_name" auto-complete="off"></el-input>
-                </el-form-item>
+        <div class="reply_list_main">
+            <div v-show="reply_show" class="reply_list_dialog_bg" @click="reply_show = false"></div>
+            <transition name="left">
+                <div v-show="reply_show" class="reply_list_dialog">
+                    <div class="reply_list_box">
+                        <div class="reply_list_content">
+                            <div class="item">
+                                <div class="item-box">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">张三</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <span>你好好</span>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
+                            <div class="item">
+                                <div class="item-box">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">张三</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <span>我不知道你们在说什么？</span>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
+                            <div class="item">
+                                <div class="item-box">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">张三</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="pro_box">
+                                            <div class="pro_box_flex">
+                                                <div class="pro_img"><img width="40" height="40"></div>
+                                                <div class="info">
+                                                    <div class="bl">无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品</div>
+                                                    <div class="cost">￥35</div>
 
-                <el-form-item label="排序">
-                    <el-input v-model="dialog.sort" placeholder="排序 0 - 99" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="分类小图" class="my_error">
-                    <div class="red small">尺寸为 32 * 32 正方形</div>
-                    <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="dialog.cat_img" :src="dialog.cat_img" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
 
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="postNewCat">确 定</el-button>
-            </div>
-        </el-dialog>
+                            <div class="item">
+                                <div class="item-box self">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">张三</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="pro_box">
+                                            <div class="pro_box_flex">
+                                                <div class="pro_img"><img width="40" height="40"></div>
+                                                <div class="info">
+                                                    <div class="bl">无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品</div>
+                                                    <div class="cost">￥35</div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
+                            <div class="item">
+                                <div class="item-box self">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">系统</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <span>我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊</span>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
+
+                            <div class="item">
+                                <div class="item-box">
+                                    <div class="avt"><img width="40" height="40">
+                                        <span class="name">张三</span>
+                                    </div>
+                                    <div class="item-content">
+                                        <span>asdasddsdasd12313123123fafffdsfdafsdfsfasdasddsdasd12313123123fafffdsfdafsdfsfasdasddsdasd12313123123fafffdsfdafsdfsf</span>
+                                    </div>
+                                </div>
+                                <div class="time">2017-05-05 14:02:00</div>
+                            </div>
+
+                        </div>
+                        <div class="sendBox">
+                            <el-row type="flex">
+
+                                <el-col style="width:60px;margin-right:10px;">
+                                    <el-upload class="upload-demo" action="#" :show-file-list="false">
+                                        <el-button size="info" type="primary" icon="upload"></el-button>
+                                    </el-upload>
+                                </el-col>
+                                <el-col>
+                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="dialog.content"> </el-input>
+                                </el-col>
+                                <el-col style="width:60px;margin-left:10px;">
+                                    <el-button type="info">发送</el-button>
+                                </el-col>
+                            </el-row>
+
+                        </div>
+                    </div>
+                </div>
+            </transition>
+
+        </div>
 
     </div>
 </template>
@@ -86,17 +176,20 @@ export default {
                 status: ''
             },
             dialog: {
-                cat_name: '',
+                content: '',
                 id: '',
-                sort: '0',
-                cat_img: ''
+
             },
-            list: []
+            list: [],
+            reply_show: false
         }
     },
     methods: {
-        //添加分类
-        open_addCat(isEdit, data) {
+        //回复
+        open_replyDialog(isEdit, data) {
+            this.reply_show = true;
+            // document.body.style.overflow = 'hidden'
+            return;
             this.dialogFormVisible = true;
             if (isEdit) {
                 this.dialog = data
