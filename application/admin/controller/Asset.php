@@ -37,13 +37,13 @@ class Asset extends Base
             // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
             $thumb_save_name = getThumbUrl(str_replace("\\","/",$save_name));
             
-            if($width > $get_info['max_w']){
+//            if($width > $get_info['max_w']){
                 $image->thumb($get_info['max_w'], $get_info['max_h'])->save($file_path . DS . $thumb_save_name);
-            }
+//            }
                 
             $res_url = $url_path . DS . $thumb_save_name;
             
-            $this->success("上传成功","",["img_path" => $res_url]);
+            $this->success("上传成功","",["img_path" => $res_url, "big_img_path" => $url_path . DS . $save_name]);
             
         }else{
             // 上传失败获取错误信息
