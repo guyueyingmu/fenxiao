@@ -51,7 +51,7 @@
                                         <div class="item-content">
                                             <span v-if="item.type ===1">{{item.content}}</span>
 
-                                            <span v-if="item.type ===2"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
+                                            <span v-if="item.type ===2" @click="onZoom(item.content.img_url)"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
 
                                             <div class="pro_box" v-if="item.type ===3">
                                                 <div class="pro_box_flex">
@@ -90,6 +90,9 @@
             </transition>
 
         </div>
+        <el-dialog v-model="d_zoon" size="tiny">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
 
     </div>
 </template>
@@ -101,7 +104,8 @@ export default {
 
     data() {
         return {
-            dialogFormVisible: false,
+            d_zoon: false,
+            dialogImageUrl: '',
             isSearch: false,
             replyLoading: false,
             formInline: {
@@ -124,7 +128,7 @@ export default {
         //回复
         open_replyDialog(item) {
             this.dialog.list = [];
-            this.dialog.info = item;
+            this.dialog.info = JSON.parse(JSON.stringify(item));
             this.dialog.info.content = '';
             this.reply_show = true;
             this.replyLoading = true;
@@ -139,12 +143,11 @@ export default {
         //小图上传成功
         messageImgSuccess(res, file) {
             if (res.code) {
-                console.log(res.data)
                 let _d = {};
                 _d.user_id = this.dialog.info.user_id
                 _d.type = 2;
                 _d.send_user = 2;
-                _d.nickname = this.dialog.info.nickname
+                _d.user_name = this.dialog.info.nickname
                 _d.content = res.data.img_path
                 this.send(_d)
             }
@@ -176,13 +179,11 @@ export default {
                     this.replyLoading = false;
                     setTimeout(() => {
                         IScroll1.refresh();
-
-
-                    }, 500)
+                    }, 600)
                     setTimeout(() => {
                         IScroll1.scrollTo(0, IScroll1.maxScrollY, 200)
                         IScroll1.enable();
-                    }, 600)
+                    }, 700)
 
 
                 } else {
@@ -190,23 +191,33 @@ export default {
                 }
             })
         },
+        onZoom(url) {
+            this.d_zoon = true
+            this.d_z_url = url
+
+        },
         onSend() {
             let _d = {};
             _d.user_id = this.dialog.info.user_id
             _d.type = 1;
             _d.send_user = 2;
-            _d.nickname = this.dialog.info.nickname
+            _d.user_name = this.dialog.info.nickname
             _d.content = this.dialog.info.content;
-
             this.send(_d)
             this.dialog.info.content = ''
         },
         //取对话数据
         send(data) {
-
             let url = '/admin/Kefu/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
+                    if (data.type == 2) {
+                        let _thumb_img_url = data.content;
+                        data.content = {
+                            thumb_img_url: _thumb_img_url
+                        }
+                    }
+                    console.log(data)
                     vm.dialog.list.push(data)
                     setTimeout(() => {
                         IScroll1.refresh();
