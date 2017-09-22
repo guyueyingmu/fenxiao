@@ -136,11 +136,13 @@ export default {
             var _path = this.$route.path, _array = '10';
             _path = _path.split('/')
             _path = '/' + _path[1];
+            // console.log(_path)
             if (this.list.length && _path != '/') {
-                let data = this.list, _reg = new RegExp(_path)
+                let data = this.list, _reg = new RegExp(_path +'$')
                 for (let i = 0; i < data.length; i++) {
                     let _break = false;
                     for (let k = 0; k < data[i].child.length; k++) {
+                        // console.log(data[i].child[k].menu_link)
                         if (_reg.test(data[i].child[k].menu_link)) {
                             _array = i.toString();
                             _break = true;

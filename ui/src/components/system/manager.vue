@@ -2,8 +2,8 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="角色名称">
-                    <el-input v-model="formInline.keyword" placeholder="角色名称" style="width:200px"></el-input>
+                <el-form-item label="管理员名称">
+                    <el-input v-model="formInline.keyword" placeholder="管理员名称" style="width:200px"></el-input>
                 </el-form-item>
 
               

@@ -2,11 +2,10 @@
 
 <template>
     <div style="width:800px;padding:4em">
-
         <el-form :model="form" ref="form" :rules="rules" label-width="100px">
             <el-form-item label="商品小图" prop="good_img" class="my_error">
                 <div class="red small">尺寸为 320 * 320 正方形</div>
-                <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="hSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.good_img" :src="form.good_img" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
@@ -14,7 +13,7 @@
 
             <el-form-item label="商品轮播图" prop="banner_img" class="my_error">
                 <div class="red small">尺寸为 640 * 320 长方形</div>
-                <el-upload list-type="picture-card" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="handlePictureSuccess" :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <el-upload list-type="picture-card" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="pSuccess" :on-preview="handlePV" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog v-model="dialogVisible" size="tiny">
@@ -137,7 +136,7 @@
             </el-form-item>
             <el-form-item label="商品详情" prop="detail">
                 <!-- <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input> -->
-                <vue-editor v-model="form.detail" :editorToolbar2="customToolbar"></vue-editor>
+                <vue-editor v-model="form.detail"></vue-editor>
             </el-form-item>
             <div style="height:40px;"></div>
             <el-form-item label-width="40%">
@@ -151,21 +150,16 @@
 <script>
 import http from '../../assets/js/http'
 import { VueEditor } from 'vue2-editor'
-// import { Upload } from 'element-ui'
+
 export default {
     mixins: [http],
     components: {
-        // "el-upload": Upload,
+
         VueEditor
     },
     data() {
         return {
             isEdit: false,
-            customToolbar: [
-                ['bold', 'italic', 'underline', 'color'],
-                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['image']
-            ],
             dialogVisible: false,
             dialogImageUrl: '',
             bannerImg_temp_list: [],
@@ -194,8 +188,6 @@ export default {
     created() {
         // 组件创建完后获取数据，
         this.initData();
-
-
 
     },
     methods: {
@@ -253,7 +245,7 @@ export default {
         },
 
         //轮播图上传成功
-        handlePictureSuccess(res, fileList) {
+        pSuccess(res, fileList) {
             if (res.code == 1) {
                 this.bannerImg_temp_list.push({ url: res.data.img_path })
                 let _d = { id: '', img_url: res.data.img_path, is_show: 1 }
@@ -261,14 +253,14 @@ export default {
             }
         },
         //查看轮播图
-        handlePictureCardPreview(file) {
+        handlePV(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
 
         },
 
         //小图上传成功
-        handleAvatarSuccess(res, file) {
+        hSuccess(res, file) {
             if (res.code) {
                 this.form.good_img = res.data.img_path
             }
