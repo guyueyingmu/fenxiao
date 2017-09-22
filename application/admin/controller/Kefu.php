@@ -45,10 +45,11 @@ class Kefu extends Base
         if($list){
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
-                    $list[$k]['content'] = json_decode($v['content'], true);
-                }elseif($v['type'] == 2){
-                    $list[$k]['content'] = ['img_url' => getThumbUrl($v['content'], 1), 'thumb_img_url' => $v['content']];                            
+                    $list[$k]['content'] = '商品信息';//json_decode($v['content'], true);
                 }
+//                elseif($v['type'] == 2){
+//                    $list[$k]['content'] = ['img_url' => getThumbUrl($v['content'], 1), 'thumb_img_url' => $v['content']];
+//                }
             }
         }
         

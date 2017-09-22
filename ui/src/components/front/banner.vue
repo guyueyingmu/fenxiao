@@ -1,17 +1,15 @@
 <template>
     <div>
-        <div class="page_heade" @keyup.enter="onSearch()">
+        <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="商品分类">
-                    <el-input v-model="formInline.keyword" placeholder="商品分类" style="width:220px"></el-input>
-                </el-form-item>
+                
 
                 <el-form-item>
                     <el-button type="primary" @click="onSearch()">搜索</el-button>
                     <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
                 </el-form-item>
             </el-form>
-            <el-button type="warning" class="goods_add_btn" @click="open_addCat(false)">添加分类</el-button>
+            <el-button type="warning" class="goods_add_btn" @click="open_addCat(false)">添加轮播图</el-button>
 
         </div>
 
@@ -40,7 +38,7 @@
             </el-pagination>
         </div>
 
-        <!-- 添加管理员 -->
+        <!-- 添加 -->
         <el-dialog title="请输入分类名" :visible.sync="dialogFormVisible">
             <el-form label-width="100px">
                 <el-form-item label="分类名">
