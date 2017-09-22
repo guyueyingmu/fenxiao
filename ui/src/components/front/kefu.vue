@@ -91,7 +91,7 @@
 
         </div>
         <el-dialog v-model="d_zoon" size="tiny">
-            <img width="100%" :src="dialogImageUrl" alt="">
+            <img width="100%" :src="d_z_url" alt="">
         </el-dialog>
 
     </div>
@@ -105,7 +105,7 @@ export default {
     data() {
         return {
             d_zoon: false,
-            dialogImageUrl: '',
+            d_z_url: '',
             isSearch: false,
             replyLoading: false,
             formInline: {
@@ -149,6 +149,11 @@ export default {
                 _d.send_user = 2;
                 _d.user_name = this.dialog.info.nickname
                 _d.content = res.data.img_path
+                _d.content2 = {}
+                _d.content2 = {
+                    thumb_img_url: res.data.img_path,
+                    img_url: res.data.big_img_path
+                }
                 this.send(_d)
             }
         },
@@ -209,15 +214,16 @@ export default {
         //取对话数据
         send(data) {
             let url = '/admin/Kefu/add', vm = this;
-            this.apiPost(url, data).then((res) => {
+            let _d = data;
+         
+
+            this.apiPost(url, _d).then((res) => {
                 if (res.code) {
-                    if (data.type == 2) {
-                        let _thumb_img_url = data.content;
-                        data.content = {
-                            thumb_img_url: _thumb_img_url
-                        }
+                    if (_d.type == 2) {
+                        data.content = _d.content2;
+                    } else {
+                        _d.content2 = null
                     }
-                    console.log(data)
                     vm.dialog.list.push(data)
                     setTimeout(() => {
                         IScroll1.refresh();
