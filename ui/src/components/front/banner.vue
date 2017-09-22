@@ -1,34 +1,32 @@
 <template>
     <div>
-        <div class="page_heade">
-            <el-form :inline="true" :model="formInline">
-                
-
-                <el-form-item>
-                    <el-button type="primary" @click="onSearch()">搜索</el-button>
-                    <el-button type="danger" @click="onReset" v-if="isSearch">清空搜索</el-button>
-                </el-form-item>
-            </el-form>
+        <div class="page_heade" style="height:50px;">
             <el-button type="warning" class="goods_add_btn" @click="open_addCat(false)">添加轮播图</el-button>
 
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="ID" width="100"></el-table-column>
-            <el-table-column prop="cat_img" label="分类小图"  width="100">
+            <el-table-column prop="id" label="ID"></el-table-column>
+            <el-table-column prop="img_url" label="轮播图">
                 <template scope="scope">
                     <div style="padding:10px 0;">
-                        <img :src="scope.row.cat_img"  width="40" height="40" alt="">
+                        <img :src="scope.row.img_url"  width="40" height="40" alt="">
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="cat_name" label="商品分类"></el-table-column>
-            <el-table-column prop="sort" label="排序" width="80"></el-table-column>
-            <el-table-column prop="nickname" label="添加人" width="200"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
-            <el-table-column label="操作" width="120" align="center">
+            <el-table-column prop="sort" label="排序"></el-table-column>
+            <el-table-column prop="admin_user_name" label="添加人"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间"></el-table-column>
+            <el-table-column prop="status" label="是否启用">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="open_addCat(true,scope.row)">编辑</el-button>
+                    <el-radio-group v-model="scope.row.status" size="small" @change="changeStatus(scope.row)">
+                        <el-radio-button :label="1">启用</el-radio-button>
+                        <el-radio-button :label="2">禁用</el-radio-button>
+                    </el-radio-group>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+                <template scope="scope">
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
@@ -77,41 +75,44 @@ export default {
         return {
             dialogFormVisible: false,
             isSearch: false,
-            formInline: {
-                good_type: '',
-                keyword: '',
-                cat_id: '',
-                status: ''
-            },
             dialog: {
-                cat_name: '',
-                id: '',
+                img_url: '',
                 sort: '0',
-                cat_img: ''
+                status: ''
             },
             list: []
         }
     },
     methods: {
-        //添加分类
-        open_addCat(isEdit, data) {
-            this.dialogFormVisible = true;
-            if (isEdit) {
-                this.dialog = data
-            } else {
-                this.dialog = {
-                    cat_name: '',
-                    id: '',
-                    sort: '0',
-                    cat_img: ''
-                }
+        changeStatus(item) {
+            let vm = this, url = '/admin/banner/edit', data = {
+                id: item.id,
+                status: item.status
+            };
+            this.apiPost(url, data).then((res) => {
+                vm.dialogLoading = false
+                if (res.code) {
+                    vm.$message.success(res.msg);
 
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        //添加
+        open_addCat(data) {
+            this.dialogFormVisible = true;
+            this.dialog = {
+                img_url: '',
+                sort: '0',
+                status: 1
             }
+
         },
         //小图上传成功
         handleAvatarSuccess(res, file) {
             if (res.code) {
-                this.dialog.cat_img = res.data.img_path
+                this.dialog.img_url = res.data.img_path
             }
         },
         //小图上传前处理
@@ -136,7 +137,7 @@ export default {
         //保存数据
         postNewCat() {
             let data = this.dialog;
-            let url = data.id ? '/admin/goodscat/edit' : '/admin/goodscat/add', vm = this;
+            let url = data.id ? '/admin/Banner/edit' : '/admin/Banner/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
                     vm.$message.success(res.msg);
@@ -150,40 +151,17 @@ export default {
             })
 
         },
-        //清空
-        onReset() {
-            this.formInline = {
-
-                keyword: '',
-
-            }
-            this.get_list(1)
-            this.isSearch = false;
-        },
-        //搜索
-        onSearch(current_paged) {
-
-            this.isSearch = true;
-            current_paged = current_paged || 1;
-            let searchData = this.formInline
-            this.get_list(current_paged, searchData)
-        },
 
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodscat/get_list?page=' + page,
+            let url = '/admin/Banner/get_list?page=' + page,
                 vm = this;
 
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
-                    if (vm.isSearch == false) {
-                        //通知全局商品分类数据
-                        vm.setCatList(res.data.list)
-
-                    }
                     vm.pages = res.data.pages
                 } else {
                     vm.handleError(res)

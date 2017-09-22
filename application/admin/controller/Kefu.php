@@ -86,7 +86,7 @@ class Kefu extends Base
                 ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
                 ->join("__ADMIN_USER__ au", "m.admin_user_id=au.id", "LEFT")
                 ->where($where)
-                ->field("m.user_id,u.nickname user_name,m.content,m.read_status,m.add_time,m.admin_user_id,au.nickname admin_user_name,m.type")
+                ->field("m.user_id,u.nickname user_name,m.content,m.read_status,m.add_time,m.admin_user_id,au.nickname admin_user_name,m.type,m.send_user")
                 ->page($page,$limit)
                 ->order('m.id ASC')
                 ->select();

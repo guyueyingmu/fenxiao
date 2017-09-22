@@ -23,7 +23,9 @@ class Banner extends Base
         $page = input("param.page", 1, 'intval');
         $limit = config('admin_page_limit');
                 
-        $list = db('banner')
+        $list = db('banner')->alias('b')
+                ->join("__ADMIN_USER__ au", "au.id=b.admin_user_id", "LEFT")
+                ->field("b.*,au.nickname admin_user_name")
                 ->page($page,$limit)
                 ->order('id DESC')
                 ->select();
