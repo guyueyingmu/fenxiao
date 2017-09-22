@@ -68,12 +68,9 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import { Upload } from 'element-ui'
 export default {
     mixins: [http],
-    components: {
-        "el-upload": Upload,
-    },
+
     data() {
         return {
             dialogFormVisible: false,

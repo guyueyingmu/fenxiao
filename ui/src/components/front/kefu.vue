@@ -15,17 +15,14 @@
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="用户ID" width="100"></el-table-column>
-            <el-table-column prop="cat_img" label="头像" width="100">
+            <el-table-column prop="user_id" label="用户ID" width="100"></el-table-column>
+            <el-table-column prop="nickname" label="用户呢称" width="180"></el-table-column>
+            <el-table-column prop="content" label="对话内容"></el-table-column>
+            <el-table-column prop="read_status" label="是否已读">
                 <template scope="scope">
-                    <div style="padding:10px 0;">
-                        <img :src="scope.row.cat_img" width="40" height="40" alt="">
-                    </div>
+                    {{scope.row.read_status == 1?"未读":"已读"}}
                 </template>
             </el-table-column>
-            <el-table-column prop="cat_name" label="用户呢称"></el-table-column>
-            <el-table-column prop="sort" label="对话身份标识" width="180"></el-table-column>
-            <el-table-column prop="nickname" label="是否已读" width="200"></el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
                 <template scope="scope">
@@ -39,112 +36,51 @@
         </div>
 
         <div class="reply_list_main">
-            <div v-show="reply_show" class="reply_list_dialog_bg" @click="reply_show = false"></div>
+            <div v-show="reply_show" class="reply_list_dialog_bg" @click="close_reply"></div>
             <transition name="left">
                 <div v-show="reply_show" class="reply_list_dialog">
                     <div class="reply_list_box">
-                        <div class="reply_list_content">
-                            <div class="item">
-                                <div class="item-box">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">张三</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <span>你好好</span>
-                                    </div>
-                                </div>
-                                <div class="time">2017-05-05 14:02:00</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-box">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">张三</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <span>我不知道你们在说什么？</span>
-                                    </div>
-                                </div>
-                                <div class="time">2017-05-05 14:02:00</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-box">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">张三</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <div class="pro_box">
-                                            <div class="pro_box_flex">
-                                                <div class="pro_img"><img width="40" height="40"></div>
-                                                <div class="info">
-                                                    <div class="bl">无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品</div>
-                                                    <div class="cost">￥35</div>
+                        <div class="reply_list_content" id="reply_list_content">
+                            <div class="sd-scroller" v-loading="replyLoading">
 
+                                <div class="item" v-for="(item,idx) in dialog.list" :key="idx">
+                                    <div class="item-box" :class="{'self':item.send_user == 2}">
+                                        <div class="avt"><img width="40" height="40">
+                                            <span class="name">{{item.user_name}}</span>
+                                        </div>
+                                        <div class="item-content">
+                                            <span v-if="item.type ===1">{{item.content}}</span>
+
+                                            <span v-if="item.type ===2"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
+
+                                            <div class="pro_box" v-if="item.type ===3">
+                                                <div class="pro_box_flex">
+                                                    <div class="pro_img"><img :src="item.content.good_img" width="40" height="40"></div>
+                                                    <div class="info">
+                                                        <div class="bl">{{item.content.good_title}}</div>
+                                                        <div class="cost">￥{{item.content.good_price}}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="time">{{item.add_time}}</div>
                                 </div>
-                                <div class="time">2017-05-05 14:02:00</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="item-box self">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">张三</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <div class="pro_box">
-                                            <div class="pro_box_flex">
-                                                <div class="pro_img"><img width="40" height="40"></div>
-                                                <div class="info">
-                                                    <div class="bl">无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品无敌产品</div>
-                                                    <div class="cost">￥35</div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="time">2017-05-05 14:02:00</div>
-                            </div>
-                            <div class="item">
-                                <div class="item-box self">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">系统</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <span>我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊我不想告诉你，你打我啊</span>
-                                    </div>
-                                </div>
-                                <div class="time">2017-05-05 14:02:00</div>
-                            </div>
-
-                            <div class="item">
-                                <div class="item-box">
-                                    <div class="avt"><img width="40" height="40">
-                                        <span class="name">张三</span>
-                                    </div>
-                                    <div class="item-content">
-                                        <span>asdasddsdasd12313123123fafffdsfdafsdfsfasdasddsdasd12313123123fafffdsfdafsdfsfasdasddsdasd12313123123fafffdsfdafsdfsf</span>
-                                    </div>
-                                </div>
-                                <div class="time">2017-05-05 14:02:00</div>
                             </div>
 
                         </div>
                         <div class="sendBox">
                             <el-row type="flex">
-
                                 <el-col style="width:60px;margin-right:10px;">
-                                    <el-upload class="upload-demo" action="#" :show-file-list="false">
+                                    <el-upload class="upload-demo" action="/admin/Asset/upload?_ajax=1" name="image" :on-success="messageImgSuccess" :data="{image_type:`message_img`}" :show-file-list="false">
                                         <el-button size="info" type="primary" icon="upload"></el-button>
                                     </el-upload>
                                 </el-col>
                                 <el-col>
-                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="dialog.content"> </el-input>
+                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="dialog.info.content"> </el-input>
                                 </el-col>
                                 <el-col style="width:60px;margin-left:10px;">
-                                    <el-button type="info">发送</el-button>
+                                    <el-button type="info" @click="onSend()">发送</el-button>
                                 </el-col>
                             </el-row>
 
@@ -159,25 +95,25 @@
 </template>
 <script>
 import http from '@/assets/js/http'
-import { Upload } from 'element-ui'
+import Iscroll from '@/assets/js/iscroll'
 export default {
     mixins: [http],
-    components: {
-        "el-upload": Upload,
-    },
+
     data() {
         return {
             dialogFormVisible: false,
             isSearch: false,
+            replyLoading: false,
             formInline: {
-                good_type: '',
                 keyword: '',
-                cat_id: '',
-                status: ''
+
             },
             dialog: {
-                content: '',
-                id: '',
+                info: {
+                    content: '',
+                    user_id: '',
+                },
+                list: []
 
             },
             list: [],
@@ -186,27 +122,31 @@ export default {
     },
     methods: {
         //回复
-        open_replyDialog(isEdit, data) {
+        open_replyDialog(item) {
+            this.dialog.list = [];
+            this.dialog.info = item;
+            this.dialog.info.content = '';
             this.reply_show = true;
-            // document.body.style.overflow = 'hidden'
-            return;
-            this.dialogFormVisible = true;
-            if (isEdit) {
-                this.dialog = data
-            } else {
-                this.dialog = {
-                    cat_name: '',
-                    id: '',
-                    sort: '0',
-                    cat_img: ''
-                }
-
-            }
+            this.replyLoading = true;
+            document.body.style.overflow = 'hidden'
+            this.get_talk_list(item.user_id);
+        },
+        close_reply() {
+            this.reply_show = false;
+            document.body.style.overflow = 'auto'
+            IScroll1.disable();
         },
         //小图上传成功
-        handleAvatarSuccess(res, file) {
+        messageImgSuccess(res, file) {
             if (res.code) {
-                this.dialog.cat_img = res.data.img_path
+                console.log(res.data)
+                let _d = {};
+                _d.user_id = this.dialog.info.user_id
+                _d.type = 2;
+                _d.send_user = 2;
+                _d.nickname = this.dialog.info.nickname
+                _d.content = res.data.img_path
+                this.send(_d)
             }
         },
         //小图上传前处理
@@ -225,32 +165,64 @@ export default {
             } else {
                 isTypeOk = true
             }
-
             return isLt2M && isTypeOk;
         },
-        //保存数据
-        postNewCat() {
-            let data = this.dialog;
-            let url = data.id ? '/admin/goodscat/edit' : '/admin/goodscat/add', vm = this;
-            this.apiPost(url, data).then((res) => {
+        //取对话数据
+        get_talk_list(user_id) {
+            let url = '/admin/Kefu/detail?user_id=' + user_id, vm = this;
+            this.apiGet(url).then((res) => {
                 if (res.code) {
-                    vm.$message.success(res.msg);
-                    vm.get_list();
-                    vm.dialogFormVisible = false;
+                    vm.dialog.list = res.data.list;
+                    this.replyLoading = false;
+                    setTimeout(() => {
+                        IScroll1.refresh();
+
+
+                    }, 500)
+                    setTimeout(() => {
+                        IScroll1.scrollTo(0, IScroll1.maxScrollY, 200)
+                        IScroll1.enable();
+                    }, 600)
+
 
                 } else {
                     vm.handleError(res)
                 }
-
             })
+        },
+        onSend() {
+            let _d = {};
+            _d.user_id = this.dialog.info.user_id
+            _d.type = 1;
+            _d.send_user = 2;
+            _d.nickname = this.dialog.info.nickname
+            _d.content = this.dialog.info.content;
 
+            this.send(_d)
+            this.dialog.info.content = ''
+        },
+        //取对话数据
+        send(data) {
+
+            let url = '/admin/Kefu/add', vm = this;
+            this.apiPost(url, data).then((res) => {
+                if (res.code) {
+                    vm.dialog.list.push(data)
+                    setTimeout(() => {
+                        IScroll1.refresh();
+                    }, 200)
+                    setTimeout(() => {
+                        IScroll1.scrollTo(0, IScroll1.maxScrollY, 200)
+                    }, 300)
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
         //清空
         onReset() {
             this.formInline = {
-
                 keyword: '',
-
             }
             this.get_list(1)
             this.isSearch = false;
@@ -267,9 +239,8 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodscat/get_list?page=' + page,
+            let url = '/admin/kefu/get_list?page=' + page,
                 vm = this;
-
             vm.loading = true;
             this.apiGet(url, searchData).then(function(res) {
                 if (res.code) {
@@ -287,59 +258,36 @@ export default {
             })
         },
 
-        //删除确认
-        onRemove(index) {
-            let vm = this;
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning',
-                beforeClose(action, instance, done) {
-                    if (action == 'confirm') {
-                        vm.removeData(index, done)
-                    } else {
-                        done(); //关闭窗口
-                    }
-                },
 
-            }).then(() => {
-
-
-            }).catch(() => {
-            });
-
-        },
-        //删除
-        removeData(index, cb) {
-            let _data = this.list[index]
-            let url = '/admin/goodscat/del?id=' + _data.id,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.list.splice(index, 1)
-                    vm.$message({
-                        type: 'success',
-                        message: res.msg
-                    });
-                    if (typeof cb == "function") {
-                        cb(); //关闭窗口
-                    }
-
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
-        }
 
     },
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['商品', '商品分类'])
+        this.setBreadcrumb(['前台', '在线客服'])
+        setTimeout(() => {
+            window.IScroll1 = new IScroll('#reply_list_content', { mouseWheel: true, scrollbars: true });
+        }, 500)
 
 
+    }, beforeRouteEnter(to, from, next) {
+        next(vm => {
+            if (window.IScroll1 == null || !window.IScroll1) {
+                setTimeout(() => {
+                    window.IScroll1 = new IScroll('#reply_list_content', { mouseWheel: true, scrollbars: true });
+                }, 500)
+            }
+
+        })
+
+    }
+    , beforeRouteLeave(to, from, next) {
+        if (window.IScroll1) {
+            window.IScroll1.destroy();
+        }
+
+        window.IScroll1 = null;
+        next()
     }
 
 }
