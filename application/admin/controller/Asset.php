@@ -50,6 +50,11 @@ class Asset extends Base
         }
     }
     
+    /**
+     * 上传图片类型处理
+     * @param string $img_type 图片类型 
+     * @return int
+     */
     public function upload_type($img_type = ''){
         if($img_type == 'good_img'){ //商品图片
             $res['max_w'] = 320;
@@ -60,6 +65,12 @@ class Asset extends Base
         }elseif($img_type == 'good_cat_img'){ //商品分类图
             $res['max_w'] = 100;
             $res['max_h'] = 100;
+        }elseif($img_type == 'banner_img'){ //首页轮播图
+            $res['max_w'] = 640;
+            $res['max_h'] = 320;
+        }elseif($img_type == 'message_img'){ //客服消息图片
+            $res['max_w'] = 200;
+            $res['max_h'] = 200;
         }else{ //其他图片
             $res['max_w'] = $res['max_h'] = 640;
         }
