@@ -6,8 +6,7 @@ import router from './router'
 import vueResource from 'vue-resource'
 
 import store from './vuex'
-// import filter from './filter'
-// filter(Vue)
+
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
@@ -15,7 +14,8 @@ Vue.config.devtools = true
 
 import Element from 'element-ui'
 Vue.use(Element)
-// import ElementUI from 'element-ui'
+
+
 import 'element-ui/lib/theme-default/index.css'
 import style from './assets/css/style.less'
 
