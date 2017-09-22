@@ -244,7 +244,7 @@ export default {
     //组件初始化
     created() {
         this.get_list();
-        this.setBreadcrumb(['商品', '商品分类'])
+        this.setBreadcrumb(['前台', '首页轮播图'])
 
 
     }
