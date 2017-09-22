@@ -37,19 +37,22 @@
         </div>
 
         <!-- 添加 -->
-        <el-dialog title="请输入分类名" :visible.sync="dialogFormVisible">
+        <el-dialog title="添加轮播图" :visible.sync="dialogFormVisible">
             <el-form label-width="100px">
-                <el-form-item label="分类名">
-                    <el-input v-model="dialog.cat_name" auto-complete="off"></el-input>
+                <el-form-item label="是否启用">
+                    <el-radio-group v-model="dialog.status" size="small">
+                        <el-radio-button :label="1">启用</el-radio-button>
+                        <el-radio-button :label="2">禁用</el-radio-button>
+                    </el-radio-group>
                 </el-form-item>
 
                 <el-form-item label="排序">
-                    <el-input v-model="dialog.sort" placeholder="排序 0 - 99" auto-complete="off"></el-input>
+                    <el-input v-model="dialog.sort" placeholder="排序 0 - 999" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="分类小图" class="my_error">
-                    <div class="red small">尺寸为 32 * 32 正方形</div>
-                    <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="dialog.cat_img" :src="dialog.cat_img" class="avatar">
+                <el-form-item label="轮播图" class="my_error">
+                    <div class="red small">尺寸为 640 * 320 正方形</div>
+                    <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -137,13 +140,12 @@ export default {
         //保存数据
         postNewCat() {
             let data = this.dialog;
-            let url = data.id ? '/admin/Banner/edit' : '/admin/Banner/add', vm = this;
+            let url = '/admin/Banner/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
                     vm.$message.success(res.msg);
                     vm.get_list();
                     vm.dialogFormVisible = false;
-
                 } else {
                     vm.handleError(res)
                 }
