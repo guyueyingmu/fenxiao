@@ -74,3 +74,10 @@ function get_earn_amount($amount, $level = 1){
     
     return $earn;
 }
+
+/**
+ * 生成gatewayworker的group_id
+ */
+function get_group_id($user_id){
+    return "user_$user_id";
+}
