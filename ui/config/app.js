@@ -4,10 +4,10 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../../application/app/view/index/index.html'),
-    assetsRoot: path.resolve(__dirname, '../../public/static/app'),
+    index: path.resolve(__dirname, '../../application/mini/view/index/index.html'),
+    assetsRoot: path.resolve(__dirname, '../../public/static/mini'),
     assetsSubDirectory: 'build', //引用子目录 
-    assetsPublicPath: '/static/app/', //引用根目录
+    assetsPublicPath: '/static/mini/', //引用根目录
     productionSourceMap:false ,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

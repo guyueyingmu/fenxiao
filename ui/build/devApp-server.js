@@ -1,5 +1,5 @@
 require('./check-versions')()
- var config = require('../config')
+ var config = require('../config/app')
 
 
 if (!process.env.NODE_ENV) {
@@ -11,7 +11,7 @@ var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
+var webpackConfig = require('./webpack.devApp.conf')
 
 
 
@@ -73,7 +73,7 @@ var readyPromise = new Promise(resolve => {
   _resolve = resolve
 })
 
-console.log('> Starting dev server...')
+console.log('> Starting dev server app...')
 devMiddleware.waitUntilValid(() => {
   console.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it

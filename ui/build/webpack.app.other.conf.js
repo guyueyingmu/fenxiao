@@ -47,7 +47,7 @@ var webpackConfig = merge(baseWebpackConfig, {
  
     new webpack.DllReferencePlugin({
         context: __dirname,
-        manifest: require('../../public/static/app/dll/libs-mainfest.json')
+        manifest: require('../../public/static/mini/dll/app_libs-mainfest.json')
       }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
@@ -57,7 +57,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       template: path.resolve(__dirname, '../src/app/index.html'),
       title:'首页',
       inject: true,
-      lib:'/static/app/dll/libs.js',
+      lib:'/static/mini/dll/app_libs.js',
       minify: {
         removeComments: true,
         collapseWhitespace: true,

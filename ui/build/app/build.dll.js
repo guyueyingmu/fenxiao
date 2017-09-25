@@ -6,6 +6,7 @@ var dllConfig         = require('../webpack.app.dll.conf');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
+
 var chalk = require('chalk')
 var rm                = require('rimraf')
 var ora = require('ora')
@@ -14,7 +15,7 @@ var spinner = ora({
   text: '正打包 app公用dll包，耐心点，不然自动关机。。。'
 })
 spinner.start()
-rm(path.resolve(__dirname, '../../../public/static/app/dll/'),  err => {
+rm(path.resolve(__dirname, '../../../public/static/mini/dll/'),  err => {
   if (err) throw err
   webpack(dllConfig,function (err, stats) {
     spinner.stop()

@@ -1,0 +1,58 @@
+.swiper-container {
+    height: auto;
+    padding-left: 50%;
+    img {
+        width: 100%;
+    }
+    .swiper-pagination-bullet {
+        background: #fff;
+        opacity: .8;
+        transition: width ease 0.3s;
+    }
+    .swiper-pagination-bullet-active {
+        background: #fff;
+        opacity: 1;
+        width: 12px;
+        height: 8px;
+        border-radius: 0.5rem;
+        transition: width ease 0.3s;
+    }
+    .swiper-pagination {
+        text-align: right;
+        width: 98%;
+    }
+}
+
+
+/*导航*/
+
+.nav-container {
+    background: #fff;
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: .15rem;
+        li {
+            flex-basis: 25%;
+            text-align: center;
+            align-items: center;
+            a {
+                padding: .26rem 0;
+                display: block;
+                color: #333;
+                text-decoration: none;
+                font-size: 12px;
+                &:active {
+                    background: #efefef;
+                }
+            }
+        }
+    }
+    .nav-icon {
+        display: block;
+        overflow: hidden;
+        width: 2.0rem;
+        height: 2.2rem;
+        margin: auto;
+    }
+}
