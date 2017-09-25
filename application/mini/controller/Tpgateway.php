@@ -16,7 +16,7 @@ class Tpgateway
         $client_id = input("param.client_id", "", "trim");
 
         // 假设用户已经登录，用户uid和群组id在session中
-        $uid      = session("mini.user_id");
+        $uid      = session("mini.uid");
         $group_id = get_group_id($uid);
         // client_id与uid绑定
         Gateway::bindUid($client_id, $uid);
@@ -25,7 +25,7 @@ class Tpgateway
     }
     
     public function send_msg(){
-        $uid = session("mini.user_id");
+        $uid = session("mini.uid");
         $message = input("param.message", "", "trim");
         $group = get_group_id($uid);
         

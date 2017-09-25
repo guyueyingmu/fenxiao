@@ -61,19 +61,19 @@ class Asset extends Base
             $res['max_w'] = 320;
             $res['max_h'] = 320;
         }elseif($img_type == 'good_banner_img'){ //商品轮播图
-            $res['max_w'] = 640;
+            $res['max_w'] = 750;
             $res['max_h'] = 320;
         }elseif($img_type == 'good_cat_img'){ //商品分类图
             $res['max_w'] = 100;
             $res['max_h'] = 100;
         }elseif($img_type == 'banner_img'){ //首页轮播图
-            $res['max_w'] = 640;
+            $res['max_w'] = 750;
             $res['max_h'] = 320;
         }elseif($img_type == 'message_img'){ //客服消息图片
             $res['max_w'] = 200;
             $res['max_h'] = 200;
         }else{ //其他图片
-            $res['max_w'] = $res['max_h'] = 640;
+            $res['max_w'] = $res['max_h'] = 750;
         }
         return $res;
     }
