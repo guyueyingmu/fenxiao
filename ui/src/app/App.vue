@@ -3,7 +3,7 @@
                   <!--微信里隐藏 导航-->
     <header class="hd_nav">
     <a href="javascript:history.go(-1)" class="iconfont icon-jiantou-copy"></a>
-    <h3 class="headerTitle">三广汇</h3>
+    <h3 class="headerTitle">首页</h3>
     </header>
         <transition :name="transitionName">
             <router-view class="child-view"> </router-view>
