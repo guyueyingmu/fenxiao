@@ -8,8 +8,10 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "dll": "node build/build.dll.js",
-    "other": "node build/build.other.js"
+    "admindll": "node build/admin/build.dll.js",
+    "admin": "node build/admin/build.other.js",
+    "appdll": "node build/app/build.dll.js",
+    "app": "node build/app/build.other.js"
   },
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
