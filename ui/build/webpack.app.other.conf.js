@@ -47,7 +47,7 @@ var webpackConfig = merge(baseWebpackConfig, {
  
     new webpack.DllReferencePlugin({
         context: __dirname,
-        manifest: require('../../public/static/app/dll/libs-mainfest.json')
+        manifest: require('../../public/static/app/dll/app_lisb-mainfest.json')
       }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
