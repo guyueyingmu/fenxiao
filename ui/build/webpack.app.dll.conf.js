@@ -14,7 +14,7 @@ function resolve(dir) {
 
 module.exports = {
   entry: {
-    app_lisb: [
+    app_libs: [
       'vue/dist/vue.esm.js',
       'vue-resource',
       'vue-router',

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 
+const home = () =>
+  import ( /* webpackChunkName: "home" */ '@/components/home')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -13,7 +15,7 @@ const router = new Router({
   routes: [{
       path: '/',
       name: 'home',
-      component: noFound,
+      component: home,
     },
     {
       path: '*',

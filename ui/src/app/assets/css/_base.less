@@ -1,8 +1,82 @@
 body {
     padding: 0;
     margin: 0;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.4;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     background: #eee;
 }
+
+ul,li{
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+
+/*回到顶部*/
+#goto_top,#goto_home{
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: fixed;
+    display: none;
+    z-index: 9999;
+    right: 5%;
+    bottom: 2.8rem;
+    text-align: center;
+    line-height: 44px;
+  
+    i{
+      color: #fff;
+      font-size: .5rem;
+      opacity: .7;
+    }
+    a{
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+  #goto_home{
+    bottom: 4rem;
+    display: block;
+  }
+
+  
+/*顶部带后退导航*/
+.hd_nav{
+    display: none;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    background-color: #fff;
+    overflow: hidden;
+    @p:1.1rem;
+    line-height: @p;
+    &.show{
+      display: flex;
+      box-shadow: 0 5px 5px rgba(136, 136, 136, 0.48);
+    }
+    a{
+      display: block;
+      width: @p;
+      height:@p ;
+      text-decoration: none;
+      text-align: center;
+      color: #333;
+      &:active{
+        background-color: #efefef;
+      }
+    }
+    h3{
+      flex: 1;
+      text-align: center;
+      padding-right: @p;
+      margin: 0;
+      font-weight: normal;
+      font-size: 18px;
+  
+    }
+  }
