@@ -22,7 +22,7 @@ module.exports = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, '../../public/static/app/dll/'),
+    path: path.resolve(__dirname, '../../public/static/mini/dll/'),
     filename: '[name].js',
     library: '[name]_library',
     publicPath: process.env.NODE_ENV === 'production' ?
@@ -75,7 +75,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('[name].[contenthash:4].css'),
     new webpack.DllPlugin({
-      path: path.resolve(__dirname, '../../public/static/app/dll/[name]-mainfest.json'),
+      path: path.resolve(__dirname, '../../public/static/mini/dll/[name]-mainfest.json'),
       name: '[name]_library',
       context: __dirname // 执行的上下文环境，对之后DllReferencePlugin有用
     }),
@@ -87,7 +87,7 @@ module.exports = {
     }),
     new AssetsPlugin({
       filename: 'bundle-config.json',
-      path: path.resolve(__dirname, '../../public/static/app/dll')
+      path: path.resolve(__dirname, '../../public/static/mini/dll')
     }),
   ]
 }
