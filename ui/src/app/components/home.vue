@@ -1,5 +1,6 @@
 <template>
     <div>
+      
 
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption">
@@ -63,7 +64,10 @@
             </ul>
         </div>
         <div class="page-title recommend ">
-            <span>推荐商品</span>
+            <span class="title">推荐商品</span>
+            <span class="more">更多
+                <i class="iconfont icon-arrow"></i>
+            </span>
         </div>
 
         <ul class="thumb-box">
@@ -74,40 +78,40 @@
                 </div>
                 <div class="info">
                     <span class="price">￥390.00</span>
-                    <span class="iconfont icon-addCard"></span>
+                    <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-               <li>
+            <li>
                 <div class="thumb"><img src="static/app/demo/1.png"></div>
                 <div class="title">
                     德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
                 </div>
                 <div class="info">
                     <span class="price">￥390.00</span>
-                    <span class="iconfont icon-addCard"></span>
+                    <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-                  <li>
+            <li>
                 <div class="thumb"><img src="static/app/demo/3.png"></div>
                 <div class="title">
                     维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
                 </div>
                 <div class="info">
                     <span class="price">￥390.00</span>
-                    <span class="iconfont icon-addCard"></span>
+                    <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-               <li>
+            <li>
                 <div class="thumb"><img src="static/app/demo/4.png"></div>
                 <div class="title">
-                   联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
+                    联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
                 </div>
                 <div class="info">
                     <span class="price">￥5999.00</span>
-                    <span class="iconfont icon-addCard"></span>
+                    <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            
+
         </ul>
     </div>
 </template>
@@ -115,8 +119,9 @@
 
 require('swiper/dist/css/swiper.css')
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-
+import http from '@/assets/js/http'
 export default {
+     mixins: [http],
     components: {
         swiper,
         swiperSlide
@@ -131,7 +136,7 @@ export default {
                 mousewheelControl: true,
                 observeParents: true,
                 autoHeight: true,
-           
+
             },
             swiperSlides: [
                 'static/app/home/banner/1.jpg',

@@ -13,10 +13,15 @@ Vue.config.devtools = true
 
 import style from './assets/css/style.less'
 
+const IS ={}
+IS.IPhone = /iPhone/.test(navigator.userAgent);
+IS.Android = /Android/.test(navigator.userAgent);
+IS.WeiXin = /MicroMessenger/.test(navigator.userAgent);
+Vue.prototype.$is = IS
 
 Vue.config.productionTip = false
-
 Vue.config.devtools = true;
+
 
 /* eslint-disable no-new */
 

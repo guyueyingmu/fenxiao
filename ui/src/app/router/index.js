@@ -5,6 +5,8 @@ import Router from 'vue-router'
 const home = () =>
   import ( /* webpackChunkName: "home" */ '@/components/home')
 
+const search = () =>
+  import ( /* webpackChunkName: "search" */ '@/components/search')
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
 
@@ -16,6 +18,11 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: home,
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: search,
     },
     {
       path: '*',
