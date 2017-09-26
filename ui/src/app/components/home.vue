@@ -60,9 +60,55 @@
                         <span>更多</span>
                     </a>
                 </li>
-
             </ul>
         </div>
+        <div class="page-title recommend ">
+            <span>推荐商品</span>
+        </div>
+
+        <ul class="thumb-box">
+            <li>
+                <div class="thumb"><img src="static/app/demo/2.png"></div>
+                <div class="title">
+                    诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通
+                </div>
+                <div class="info">
+                    <span class="price">￥390.00</span>
+                    <span class="iconfont icon-addCard"></span>
+                </div>
+            </li>
+               <li>
+                <div class="thumb"><img src="static/app/demo/1.png"></div>
+                <div class="title">
+                    德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
+                </div>
+                <div class="info">
+                    <span class="price">￥390.00</span>
+                    <span class="iconfont icon-addCard"></span>
+                </div>
+            </li>
+                  <li>
+                <div class="thumb"><img src="static/app/demo/3.png"></div>
+                <div class="title">
+                    维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
+                </div>
+                <div class="info">
+                    <span class="price">￥390.00</span>
+                    <span class="iconfont icon-addCard"></span>
+                </div>
+            </li>
+               <li>
+                <div class="thumb"><img src="static/app/demo/4.png"></div>
+                <div class="title">
+                   联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
+                </div>
+                <div class="info">
+                    <span class="price">￥5999.00</span>
+                    <span class="iconfont icon-addCard"></span>
+                </div>
+            </li>
+            
+        </ul>
     </div>
 </template>
 <script>

@@ -1,0 +1,20 @@
+.l-b {
+    position: relative;
+    &::after {
+        content: '';
+        background: #ddd;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.line(@l: 2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
