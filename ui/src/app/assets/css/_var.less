@@ -2,15 +2,28 @@
     position: relative;
     &::after {
         content: '';
-        background: #ddd;
+        background: #ccc;
         height: 1px;
         position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
+        transform: scaleY(0.5);
     }
 }
-
+.l-t {
+    position: relative;
+    &::after {
+        content: '';
+        background: #ccc;
+        height: 1px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        transform: scaleY(0.5);
+    }
+}
 .line(@l: 2) {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -20,3 +33,5 @@
 }
 
 @yellow:#f9d728;
+@orange:#ff8500;
+@skin2:#9973e4;

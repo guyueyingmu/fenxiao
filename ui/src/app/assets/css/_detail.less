@@ -1,0 +1,87 @@
+.detail{
+    h2{
+        font-size: 16px;
+        margin: 0;
+        font-weight: normal;
+        .line;
+    }
+    .header{
+        background: #fff;
+        padding: 10px;
+    }
+
+    .info{
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .price{
+           em{
+            font-size: 150%;
+           }
+        }
+        .share{
+            color: #666;
+            font-size: 13px;
+        }
+    }
+    .tags{
+        display: flex;
+        text-align: center;
+        line-height: 30px;
+        justify-content: space-around;
+        padding: 10px 2.5em;
+        background: #fff;
+        margin-top: 10px;
+        span{
+            padding: 0 10px;
+            display: block;
+            &.active{
+                color: @orange;
+            }
+        }
+        .a-line{
+            padding: 0;
+            width: 1px;
+            margin: 0 0em;
+            background: #ddd;
+        }
+    }
+    .content{
+        background: #fff;
+        img{
+            display: block;
+            max-width: 100%;
+        }
+    }
+
+    .tool{
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: #fff;
+        z-index: 99;
+        align-items: center;
+        justify-content: space-between;
+        .item{
+            text-align: center;
+            line-height: 1;
+            padding: 10px 0;
+            i{
+                display: block;
+                font-size: 20px;
+                
+            }
+            em{
+                font-size: 12px;
+            }
+            &.buy{
+                background:  @orange;
+                color: #fff;
+               
+            }
+        }
+    }
+}

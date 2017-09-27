@@ -37,7 +37,7 @@ export default {
 
             setTimeout(function() {
                 document.body.scrollTop = 0;
-            }, 500 )
+            }, 500)
         },
         getList() {
             let _list = window.localStorage.getItem('__SearchHistory__');
@@ -53,7 +53,7 @@ export default {
     },
     mounted() {
         this.init();
-
+        this.setTitle('搜索')
 
     }
 

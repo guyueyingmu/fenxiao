@@ -1,6 +1,5 @@
 <template>
-    <div>
-      
+    <div class="home">
 
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption">
@@ -71,7 +70,7 @@
         </div>
 
         <ul class="thumb-box">
-            <li>
+            <li @click="goto('/detail')">
                 <div class="thumb"><img src="static/app/demo/2.png"></div>
                 <div class="title">
                     诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通
@@ -81,7 +80,7 @@
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li>
+            <li @click="goto('/detail')">
                 <div class="thumb"><img src="static/app/demo/1.png"></div>
                 <div class="title">
                     德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
@@ -91,7 +90,7 @@
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li>
+            <li @click="goto('/detail')">
                 <div class="thumb"><img src="static/app/demo/3.png"></div>
                 <div class="title">
                     维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
@@ -101,7 +100,7 @@
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li>
+            <li @click="goto('/detail')">
                 <div class="thumb"><img src="static/app/demo/4.png"></div>
                 <div class="title">
                     联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
@@ -121,7 +120,8 @@ require('swiper/dist/css/swiper.css')
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import http from '@/assets/js/http'
 export default {
-     mixins: [http],
+    name: 'home',
+    mixins: [http],
     components: {
         swiper,
         swiperSlide
@@ -148,6 +148,7 @@ export default {
     },
 
     mounted() {
+        this.setTitle('首页')
 
 
     },
