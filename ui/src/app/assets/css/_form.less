@@ -1,0 +1,46 @@
+.ui-input{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    border:solid 1px #ddd;
+    padding: 0 2px;
+    outline: none;
+}
+
+.ui-checkbox{
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 1.2em;
+    font-size: 22px;
+    color: #888;
+    outline: none;
+    margin: 0;
+    display: block;
+    position: relative;
+    height: 1.2em;
+    &:before { 
+        // transform: translateY(-5px);
+        line-height: 1;
+        font-family:"iconfont" !important;
+        font-size:inherit;
+        font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        content: "\e692";
+        display: inline-block;
+        position: absolute;
+        top: 3px;
+        left: 0;
+        height: 22px;
+     }
+     &:checked::before{
+        content: "\e640";
+        color: @skin2;
+     }
+}

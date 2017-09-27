@@ -1,10 +1,9 @@
-
 /**
-  * http.js v0.0.1
-  * (c) 2017 Nick
-  * @license MIT
-  */
-  'use strict';
+ * http.js v0.0.1
+ * (c) 2017 Nick
+ * @license MIT
+ */
+'use strict';
 /*  */
 import {
   mapActions
@@ -22,13 +21,23 @@ const apiMethods = {
 
     }
   },
+  directives: {
+    focus: {
+      inserted: function (el, {
+        value
+      }) {
+
+        if (value) {
+          el.focus();
+        }
+      }
+    }
+  },
   methods: {
     //统一全局方法引用  见 "./vuex/actions.js"
     ...mapActions({
       setTitle: "setTitle",
-      setBreadcrumb: 'setBreadcrumb',
-      setCatList: 'setCatList',
-      setNavlist: 'setNavlist'
+      sethList: "setHList",
     }),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {
@@ -88,13 +97,13 @@ const apiMethods = {
     },
     //统一异常处理
     handleError(res) {
-        if(res.msg == '请登录后操作'){
-            this.$store.state.LoginDialogVisible = true
+      if (res.msg == '请登录后操作') {
+        this.$store.state.LoginDialogVisible = true
 
-        }else{
-            this.$message.error(res.msg);
-        }
-      
+      } else {
+        this.$message.error(res.msg);
+      }
+
 
     }
   }
