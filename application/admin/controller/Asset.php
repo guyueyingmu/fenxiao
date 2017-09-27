@@ -58,14 +58,14 @@ class Asset extends Base
      */
     public function upload_type($img_type = ''){
         if($img_type == 'good_img'){ //商品图片
-            $res['max_w'] = 320;
-            $res['max_h'] = 320;
+            $res['max_w'] = 270;
+            $res['max_h'] = 270;
         }elseif($img_type == 'good_banner_img'){ //商品轮播图
-            $res['max_w'] = 750;
-            $res['max_h'] = 320;
+            $res['max_w'] = 540;
+            $res['max_h'] = 540;
         }elseif($img_type == 'good_cat_img'){ //商品分类图
-            $res['max_w'] = 100;
-            $res['max_h'] = 100;
+            $res['max_w'] = 120;
+            $res['max_h'] = 120;
         }elseif($img_type == 'banner_img'){ //首页轮播图
             $res['max_w'] = 750;
             $res['max_h'] = 320;
@@ -73,7 +73,7 @@ class Asset extends Base
             $res['max_w'] = 200;
             $res['max_h'] = 200;
         }else{ //其他图片
-            $res['max_w'] = $res['max_h'] = 750;
+            $res['max_w'] = $res['max_h'] = 300;
         }
         return $res;
     }
