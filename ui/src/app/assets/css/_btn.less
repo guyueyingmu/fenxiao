@@ -1,0 +1,90 @@
+
+
+.btn-wrap {
+    min-height: 50px;
+}
+
+
+.btn-fixed {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 4;
+    box-shadow: 0 -5px 5px rgba(136, 136, 136, 0.48);
+}
+
+.ui-btn {
+    -webkit-appearance: none;
+    border: none;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    background: @skin;
+    text-align: center;
+    border-radius: 2px;
+    color: #fff;
+    outline: none;
+    box-sizing: border-box;
+    &:active {
+        opacity: .7;
+    }
+    &[disabled],
+    &.ui-btn-disabled {
+        opacity: .5;
+    
+        &:active {
+            opacity: .5;
+        }
+    }
+    a {
+        color: #fff;
+    }
+}
+.ui-btn-l2{
+    padding: 1em 0;
+    font-size: 105%;
+}
+
+
+.ui-btn-block {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 0;
+    border: none;
+
+}
+.btn-fixed{
+    .ui-btn-block{
+        height: 55px;
+        padding: 0;
+        line-height: 55px;
+    }
+}
+
+
+.ui-btn-getCode {
+    background: none;
+    color: @skin;
+    border: solid 1px @skin;
+   
+}
+
+
+.ui-btn-setDef,.ui-btn-edit{
+    padding: 2px 5px;
+    line-height: 1.5;
+    font-size: 14px;
+    background: none;
+    border:solid 1px #aaa;
+    color: #666;
+    i{
+      font-size: inherit;
+    }
+}
+.ui-btn-edit{
+
+}

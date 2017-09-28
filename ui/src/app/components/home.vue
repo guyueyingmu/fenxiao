@@ -68,45 +68,49 @@
                 <i class="iconfont icon-arrow"></i>
             </span>
         </div>
-
         <ul class="thumb-box">
-            <li @click="goto('/detail')">
-                <div class="thumb"><img src="static/app/demo/2.png"></div>
-                <div class="title">
+            <li>
+                <div class="thumb" @click="goto('/detail')"><img src="static/app/demo/2.png"></div>
+                <div class="title" @click="goto('/detail')">
                     诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通
                 </div>
                 <div class="info">
-                    <span class="price">￥390.00</span>
+                    <span class="price">￥
+                        <em>390.00</em>
+                    </span>
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li @click="goto('/detail')">
-                <div class="thumb"><img src="static/app/demo/1.png"></div>
-                <div class="title">
+            <li>
+                <div class="thumb" @click="goto('/detail')"><img src="static/app/demo/1.png"></div>
+                <div class="title" @click="goto('/detail')">
                     德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
                 </div>
                 <div class="info">
-                    <span class="price">￥390.00</span>
-                    <i class="iconfont icon-gouwuche1"></i>
+                    <span class="jifen">积分 390</span>
                 </div>
             </li>
-            <li @click="goto('/detail')">
-                <div class="thumb"><img src="static/app/demo/3.png"></div>
-                <div class="title">
+            <li>
+                <div class="thumb" @click="goto('/detail')"><img src="static/app/demo/3.png"></div>
+                <div class="title" @click="goto('/detail')">
                     维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
                 </div>
                 <div class="info">
-                    <span class="price">￥390.00</span>
+                    <span class="price">￥
+                        <em>390.00</em>
+                    </span>
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li @click="goto('/detail')">
-                <div class="thumb"><img src="static/app/demo/4.png"></div>
-                <div class="title">
+            <li>
+                <div class="thumb" @click="goto('/detail')"><img src="static/app/demo/4.png"></div>
+                <div class="title" @click="goto('/detail')">
                     联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
                 </div>
                 <div class="info">
-                    <span class="price">￥5999.00</span>
+                    <span class="price">￥
+                        <em>5999.00</em>
+                    </span>
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>

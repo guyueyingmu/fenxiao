@@ -51,7 +51,7 @@
                     <el-input v-model="dialog.sort" placeholder="排序 0 - 999" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="分类小图" class="my_error">
-                    <div class="red small">尺寸为 100 * 100 正方形</div>
+                    <div class="red small">尺寸为 120 * 120 正方形</div>
                     <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_cat_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="dialog.cat_img" :src="dialog.cat_img" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>

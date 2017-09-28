@@ -35,7 +35,7 @@
                 <li>
                     <a href="javascript:;">
                         <span class="num">12天</span>
-                        <span class="tit">已连续签到</span>
+                        <span class="tit">已签到</span>
                     </a>
                 </li>
             </ul>

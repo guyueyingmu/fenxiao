@@ -12,11 +12,14 @@ Vue.http.options.emulateJSON = true;
 Vue.config.devtools = true
 
 import style from './assets/css/style.less'
+import VueScroller from 'vue-scroller'
+Vue.use(VueScroller)
 
-const IS ={}
+const IS = {}
 IS.IPhone = /iPhone/.test(navigator.userAgent);
 IS.Android = /Android/.test(navigator.userAgent);
 IS.WeiXin = /MicroMessenger/.test(navigator.userAgent);
+IS.PC = /Win32/.test(navigator.platform);
 Vue.prototype.$is = IS
 
 Vue.config.productionTip = false
@@ -87,6 +90,51 @@ Vue.config.devtools = true;
 
 
 // })
+const loading = {
+  a: '',
+  inserted(el, binding) {
+    let html = '<div class="spin-mask"></div><div class="spin-main">\
+                <div class="loader">\
+                    <svg viewBox="25 25 50 50" class="circular">\
+                        <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" class="path"></circle>\
+                    </svg>\
+                </div>\
+                <div class="spin-text">加载中..</div>\
+            </div>'
+    let d = document.createElement("DIV")
+    if (binding.modifiers.full) {
+      d.className = 'load full'
+      el.style.position = 'relative'
+    } else {
+      d.className = 'load'
+    }
+    d.style.display = 'none'
+    d.innerHTML = html;
+    el.appendChild(d)
+    binding.def.a = d;
+    // console.log('inserted:', binding.def)
+
+  },
+  update(el, binding) {
+    // console.log('update:', binding.def)
+    if (binding.value) {
+      binding.def.a.style.display = 'block'
+    } else {
+      binding.def.a.style.display = 'none'
+    }
+
+
+  }
+}
+
+const focus = {
+  inserted: function (el) {
+    el.focus()
+  }
+}
+
+Vue.directive('loading', loading)
+Vue.directive('focus', focus)
 
 
 const Vm = new Vue({

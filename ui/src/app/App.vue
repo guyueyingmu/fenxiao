@@ -9,7 +9,7 @@
         <div class="search" :class="{'show':showSearch}" v-if="$route.name == 'home' || $route.name == 'search'">
             <div class="search-p" @click="onSearch" v-if="showSearch == false">
                 <i class="iconfont icon-sousuo"></i>请输入关键词搜索</div>
-            <div style="height:50px;" v-if="showSearch == true"></div>
+            <!-- <div style="height:50px;" v-if="showSearch == true"></div> -->
             <div class="search-box" v-if="showSearch == true">
 
                 <input type="text" placeholder="请输入关键词搜索" class="ui-input" @keyup.enter="search" v-model="searchForm.keyword" v-focus="showSearch">
@@ -19,7 +19,6 @@
             </div>
         </div>
         <transition :name="transitionName">
-
             <router-view class="child-view" :style="{'margin-bottom':showNav?'58px':''}">
 
             </router-view>
@@ -34,29 +33,37 @@
                 <i class="iconfont icon-fenlei1" :class="{'alt':$route.name == 'class'}"></i>
                 分类
             </div>
-            <div class="nva-item"  @click="goto('/cart')" :class="{'active':$route.name == 'cart'}">
+            <div class="nva-item" @click="goto('/cart')" :class="{'active':$route.name == 'cart'}">
                 <i class="iconfont icon-gouwuche"></i>
                 <i class="iconfont icon-gouwuche2 alt"></i>
                 购物车
             </div>
-            <div class="nva-item"   @click="goto('/userCenter')" :class="{'active':$route.name == 'userCenter'}">
+            <div class="nva-item" @click="goto('/userCenter')" :class="{'active':$route.name == 'userCenter'}">
                 <i class="iconfont icon-gerenzhongxin1"></i>
                 <i class="iconfont icon-gerenzhongxin alt"></i>
                 个人中心
             </div>
 
         </nav>
-        <div id="goto_top" v-show="gotoTop"><i class="iconfont icon-huidaodingbu" title="回到顶部"></i> </div>
-        <div id="goto_home" v-if="showNav == false"><i class="iconfont icon-shouye" @click="goto('/')" title="回到首页"></i> </div>
+        <div id="goto_top" v-show="gotoTop" @click="onGotoTop">
+            <i class="iconfont icon-huidaodingbu" title="回到顶部"></i>
+        </div>
+        <div id="goto_home" v-if="showNav == false">
+            <i class="iconfont icon-shouye" @click="goto('/')" title="回到首页"></i>
+        </div>
     </div>
 </template>
 
 <script>
 
 import http from './assets/js/http'
+import FastClick from '../../static/app/lib/fastclick'
+// require('../../static/app/lib/fastclick.js')
+
 export default {
     name: 'app',
     mixins: [http],
+
     watch: {
         '$route'(to, from) {
             const toDepth = to.path.split('/').length
@@ -76,33 +83,38 @@ export default {
             searchForm: {
                 keyword: ''
             },
-            gotoTop:false
+            gotoTop: false
 
         }
     },
-    computed:{
-        showNav(){
+    computed: {
+        showNav() {
             let name = this.$route.name;
-            if(name == 'home'|| name == null || name == 'cart' || name == 'class' || name == 'userCenter'){
+            if (name == 'home' || name == null || name == 'cart' || name == 'class' || name == 'userCenter') {
                 return true
-            }else{
+            } else {
                 return false;
             }
         }
     },
     methods: {
+        onGotoTop() {
+            document.body.scrollTop = 0;
+        },
         onSearch() {
             this.showSearch = true;
             this.goto('/search')
         },
         search() {
+            if(!this.searchForm.keyword){
+                return
+            }
             let _list = this.$store.state.hList;
-
             if (this.$store.state.hList.indexOf(this.searchForm.keyword) == -1) {
                 if (_list.length >= 10) {
                     _list.shift()
-                } 
-                    _list.push(this.searchForm.keyword)
+                }
+                _list.push(this.searchForm.keyword)
 
                 if (_list) {
                     _list = JSON.stringify(_list);
@@ -113,18 +125,23 @@ export default {
 
         }
     },
-    mounted(){
-        let vm  = this;
-         var fn = function (event) {
-             var top = document.body.scrollTop;
+    mounted() {
+        let vm = this;
+        var fn = function(event) {
+            var top = document.body.scrollTop;
 
-            if(top >= 100){
-               vm.gotoTop = true
-            }else{
-               vm.gotoTop = false
+            if (top >= 100) {
+                vm.gotoTop = true
+            } else {
+                vm.gotoTop = false
             }
         }
-          document.addEventListener('scroll',fn,false)
+        document.addEventListener('scroll', fn, false)
+
+        if (this.$is.IPhone && !this.$is.PC) {
+            FastClick.attach(document.body);
+        }
+
     }
 }
 </script>

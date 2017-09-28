@@ -10,7 +10,7 @@
             <el-table-column prop="img_url" label="轮播图">
                 <template scope="scope">
                     <div style="padding:10px 0;">
-                        <img :src="scope.row.img_url"  width="40" height="40" alt="">
+                        <img :src="scope.row.img_url"  width="100" height="43">
                     </div>
                 </template>
             </el-table-column>
@@ -50,7 +50,7 @@
                     <el-input v-model="dialog.sort" placeholder="排序 0 - 999" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="轮播图" class="my_error">
-                    <div class="red small">尺寸为 640 * 320 正方形</div>
+                    <div class="red small">尺寸为 750 * 320 长方形</div>
                     <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                         <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>

@@ -1,31 +1,30 @@
-.detail{
-    h2{
+.detail {
+    h2 {
         font-size: 16px;
         margin: 0;
         font-weight: normal;
         .line;
     }
-    .header{
+    .header {
         background: #fff;
         padding: 10px;
     }
-
-    .info{
+    .info {
         margin-top: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .price{
-           em{
-            font-size: 150%;
-           }
+        .price {
+            em {
+                font-size: 150%;
+            }
         }
-        .share{
+        .share {
             color: #666;
             font-size: 13px;
         }
     }
-    .tags{
+    .tags {
         display: flex;
         text-align: center;
         line-height: 30px;
@@ -33,29 +32,28 @@
         padding: 10px 2.5em;
         background: #fff;
         margin-top: 10px;
-        span{
+        span {
             padding: 0 10px;
             display: block;
-            &.active{
+            &.active {
                 color: @orange;
             }
         }
-        .a-line{
+        .a-line {
             padding: 0;
             width: 1px;
             margin: 0 0em;
             background: #ddd;
         }
     }
-    .content{
+    .content {
         background: #fff;
-        img{
+        img {
             display: block;
             max-width: 100%;
         }
     }
-
-    .tool{
+    .tool {
         display: flex;
         position: fixed;
         bottom: 0;
@@ -64,24 +62,93 @@
         background: #fff;
         z-index: 99;
         align-items: center;
-        justify-content: space-between;
-        .item{
+        box-shadow: 0 -5px 5px rgba(136, 136, 136, 0.48);
+        .item {
             text-align: center;
-            line-height: 1;
-            padding: 10px 0;
-            i{
+            padding: 0 1em;
+            @h: 56px;
+            &:active {
+                opacity: .7;
+            }
+            .iconfont {
                 display: block;
                 font-size: 20px;
-                
             }
-            em{
+            em {
                 font-size: 12px;
             }
-            &.buy{
-                background:  @orange;
+            &.btn {
+                padding-top: (@h / 2)-18;
+                padding-bottom: (@h / 2)-18;
+                line-height: 1;
+                padding: (@h / 2)-18 .6em;
+                &:active {
+                    background: #eeeeee;
+                }
+            }
+            &.buy {
+                background: #FF5722;
                 color: #fff;
-               
+                line-height: @h;
+                flex: 1;
+            }
+            &.add {
+                background: #FFC107;
+                color: #fff;
+                line-height: @h;
             }
         }
+    }
+    .myCart{
+        position: relative;
+        .num{
+            position: absolute;
+            z-index: 2;
+            top: 4px;
+            right: 5px;
+            font-size: 12px;
+            font-style: normal;
+            background: #f00;
+            padding: 2px 5px;
+            color: #fff;
+            font-weight: normal;
+            border-radius: 10px;
+        }
+    }
+}
+
+.comment-list {
+    background: #fff;
+    .tagsLabel {
+        padding: 1em;
+        text-align: center;
+        span {
+            display: inline-block;
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 211, 198, 0.57);
+            color: #444;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 0 5px;
+            &.active{
+                background: #ff8500;
+                color: #fff;
+            }
+        }
+    }
+}
+
+.noComment {
+    padding: 3em 0;
+    text-align: center;
+    box-sizing: border-box;
+    i {
+        color: #e7e7e7;
+        font-size: 100px;
+        line-height: 1;
+        display: block;
+        margin: 0 auto;
     }
 }
