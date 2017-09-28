@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use think\Db;
+use GatewayClient\Gateway;
 
 /**
  * 在线客服
@@ -10,12 +11,34 @@ class Kefu extends Base
 {
     //定义当前菜单id
     public $menu_id = 28;
+    public $register_address = '127.0.0.1:1238';
     
     public function __construct(\think\Request $request = null) {
         parent::__construct($request);
                 
         $this->check_auth();
+        
+        // 设置GatewayWorker服务的Register服务ip和端口，请根据实际情况改成实际值
+        Gateway::$registerAddress = $this->register_address;
     }
+    
+    /**
+     * 绑定客户端和uid
+     * @param int $user_id 用户id
+     */
+    public function bind(){
+        $client_id = input("param.client_id", "", "trim");
+        $user_id = input("param.user_id", "", "intval");
+
+        // 假设用户已经登录，用户uid和群组id在session中
+        $uid      = 'admin'. session("admin.uid");
+        $group_id = get_group_id($user_id);
+        // client_id与uid绑定
+        Gateway::bindUid($client_id, $uid);
+        // 加入某个群组（可调用多次加入多个群组）
+        Gateway::joinGroup($client_id, $group_id);
+    }
+    
     /**
      * 获取列表
      * @return string
@@ -30,7 +53,12 @@ class Kefu extends Base
         $where = "1=1";
         $where .= $keyword ? " AND m.user_id = $keyword" : "";
         
-        $subQuery = db('message')->group("user_id")->order("read_status ASC,add_time DESC")->buildSql();
+        $subQuery = db('message')->alias('m')
+                ->join('__MESSAGE_GROUP__ mg', 'mg.id=m.message_group_id', 'LEFT')
+                ->group("mg.id")
+                ->order("m.read_status ASC,m.add_time DESC")
+                ->field('m.*,mg.user_id')
+                ->buildSql();
         
         $list = Db::table($subQuery." m")
                 ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
@@ -70,35 +98,48 @@ class Kefu extends Base
     
     /**
      * 会话详细
-     * @param int $user_id 用户id
+     * @param int $message_group_id 会话id
      */
     public function detail(){
         
         $page = input("param.page", 1, 'intval');
         $limit = config('admin_page_limit');
         
-        $user_id = input("param.user_id", "", "intval");
-        if(!$user_id){
+        $message_group_id = input("param.message_group_id", "", "intval");
+        if(!$message_group_id){
             $this->error("参数错误");
         }
-        $where = 'm.user_id='. $user_id;
-        $list = db('message')->alias('m')
-                ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
-                ->join("__ADMIN_USER__ au", "m.admin_user_id=au.id", "LEFT")
+        
+        $group = db('message_group')->find($message_group_id);
+        $user_info = db('users')->field('nickname user_name,img_url')->find($group['user_id']);
+        
+        $where = 'message_group_id='. $message_group_id;
+        $list = db('message')
                 ->where($where)
-                ->field("m.user_id,u.nickname user_name,m.content,m.read_status,m.add_time,m.admin_user_id,au.nickname admin_user_name,m.type,m.send_user")
+                ->field("content,read_status,add_time,send_user_id,type,send_user")
                 ->page($page,$limit)
-                ->order('m.id ASC')
+                ->order('id ASC')
                 ->select();
-        $total = db('message')->alias('m')
+        $total = db('message')
                 ->where($where)
                 ->count();
         if($list){
+            $admin_user_info = [];
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
                     $list[$k]['content'] = json_decode($v['content'], true);
                 }elseif($v['type'] == 2){
                     $list[$k]['content'] = ['img_url' => getThumbUrl($v['content'], 1), 'thumb_img_url' => $v['content']];                            
+                }
+                if($v['send_user'] == 1){
+                    $list[$k]['user_name'] = $user_info['user_name'];
+                    $list[$k]['img_url'] = $user_info['img_url'];
+                }else{
+                    if(!isset($admin_user_info[$v['send_user_id']])){
+                        $admin_user_info[$v['send_user_id']] = db('admin_user')->field('id,nickname')->find();
+                    }
+                    $list[$k]['user_name'] = $admin_user_info[$v['send_user_id']]['nickname'];
+                    $list[$k]['img_url'] = '';
                 }
             }
         }
@@ -121,24 +162,24 @@ class Kefu extends Base
     /**
      * 添加
      * @param string $content 消息内容
-     * @param int $user_id 用户id
+     * @param int $message_group_id 会话id
      * @param int $type 消息类型 1文本 2图片 3商品
      * @return string 
      */
     public function add(){
         $data = [
             'content'  => input("content","","trim"),
-            'user_id'  => input("user_id","","trim"),
+            'message_group_id'  => input("message_group_id","","trim"),
             'type'  => input("type","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
-            'user_id'  => 'require|number',
+            'message_group_id'  => 'require|number',
             'content'  => 'require',
             'type'  => 'require|in:1,2,3',
         ],[
-            'user_id.require' => '参数错误',
-            'user_id.number' => '参数格式不正确',
+            'message_group_id.require' => '参数错误',
+            'message_group_id.number' => '参数格式不正确',
             'content.require' => '请输入消息内容',
             'type.require' => '请传入消息类型',
             'type.in' => '消息类型格式错误',
@@ -147,13 +188,19 @@ class Kefu extends Base
             $this->error($validate_res);
         }
         
-        $data['admin_user_id'] = session("admin.uid");
+        $data['send_user_id'] = session("admin.uid");
         $data['add_time'] = date("Y-m-d H:i:s");
         $data['send_user'] = 2;
         $data['read_status'] = 1;
         $data['id'] = db('message')->insertGetId($data);
         
         if($data['id']){
+            //推送消息
+            $uid = db('message_group')->where('id', $data['message_group_id'])->value('user_id');
+            $group = get_group_id($uid);
+            $exclude_user = Gateway::getClientIdByUid('admin'. session('admin.uid'));
+            // 向任意群组的网站页面发送数据
+            Gateway::sendToGroup($group, $data['content'], [$exclude_user]);
             
             //写日志
             $this->add_log($this->menu_id,['title' => '添加客服消息', 'data' => $data]);

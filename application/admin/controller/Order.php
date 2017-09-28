@@ -288,9 +288,11 @@ class Order extends Base
             $data['add_time'] = date("Y-m-d H:i:s");
             db('OrderService')->insert($data);
             
-            //修改订单状态为已发货，订单分成处理改为已处理
-            $order_edit = ['id' => $data['order_id'], 'order_status' => 2, 'distribution_status' => 2];
+            //修改订单状态为已服务，订单分成处理改为已处理
+            $order_edit = ['id' => $data['order_id'], 'order_status' => 3, 'distribution_status' => 2];
             if($good_type == 3){
+                $order_edit['pay_method'] = 2;
+                $order_edit['pay_time'] = date('Y-m-d H:i:s');
                 $order_edit['pay_status'] = 2;
                 $order_edit['total_amount'] = $data['total_amount'];
             }

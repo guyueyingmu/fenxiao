@@ -126,18 +126,13 @@ class Refund extends Base
         
         Db::startTrans();
         try{
-            //保存发货记录
             $data['admin_user_id'] = session("admin.uid");
             db('orders_refund_apply')->update($data);
             
             if($data['status'] == 2){
                 //调用微信退款接口处理退款
-                $refund_trade_num = '1111';
-                $refund_note = '';
-                
-                //订单状态更改为 已取消， 支付状态为已退款
-                Orders::update(['id' => $refund['order_id'], 'order_status' => 4, 'pay_status' => 3, 'refund_time' => date("Y-m-d H:i:s"), 'refund_trade_num' => $refund_trade_num, 'refund_note' => $refund_note]);
-
+                $pay = new \app\mini\controller\Payment();
+                $pay->refund($refund['order_id']);
             }
             
             // 提交事务
