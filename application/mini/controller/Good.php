@@ -63,10 +63,14 @@ class Good extends Base
         if(!$id){
             $this->error('参数错误');
         }
-        $info = db('goods')->where('id', $id)->where('status', 1)->field('id,good_title,price,detail,good_type,credits')->find();
+        $info = db('goods')->where('id', $id)->where('status', 1)->field('id,good_title,price,detail,good_type,credits,good_img')->find();
         if(!$info){
             $this->error('商品数据不存在');
         }
+        
+        //记录用户足迹
+        Footmark::add($info);
+        
         //轮播图
         $info['banner'] = db('goods_banner')->where('good_id', $id)->order('id DESC')->select();
         
@@ -80,6 +84,7 @@ class Good extends Base
         if($info['good_type'] == 1){
             $info['cart_total'] = db('goods_cart')->where('user_id', session('mini.uid'))->sum('total');
         }
+        
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
     }

@@ -34,6 +34,7 @@ class Withdraw extends Base
         $total_page = ceil($total/$limit);
         
         $result = [
+            'user_account' => db('users')->where('id', session('mini.uid'))->value('account_balance'),
             "list" => $list,
             "pages" => [
                 "total" => $total,

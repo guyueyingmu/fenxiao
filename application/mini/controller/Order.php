@@ -226,6 +226,7 @@ class Order extends Base
     
     /**
      * 获取列表
+     * @param status $int 过滤状态 1待付款 2待收货 4已取消 5已完成
      * @return type
      */
     public function get_list(){
@@ -233,6 +234,15 @@ class Order extends Base
         $limit = config('mini_page_limit');
         
         $where = 'user_id='.session('mini.uid');
+        
+        $status = input('param.status', '', 'intval');
+        if($status){
+            if($status == 1){
+                $where .= ' AND pay_status = 1 AND order_status = 1';
+            }elseif(in_array($status, [2, 4, 5])){
+                $where .= ' AND order_status ='. $status;
+            }
+        }
         
         $list = Orders::with("ordersGoods")
                 ->where($where)

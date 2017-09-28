@@ -39,6 +39,9 @@ class Home extends Base
         $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,dis_qrcode,account_balance')->find(session('mini.uid'));
         
         //营业总额，统计所有订单的总额
+        if($user_info['distribution_level'] == 2){
+            $user_info['total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
+        }
         
         //签到天数
         $user_info['sign_total'] = db('signin')->where('user_id', session('mini.uid'))->count();
@@ -135,6 +138,4 @@ class Home extends Base
         }
         $this->success('今天已签到  +'. config('signin_credits'). '积分');
     }
-    
-    
 }
