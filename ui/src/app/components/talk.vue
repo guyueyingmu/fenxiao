@@ -71,7 +71,6 @@ export default {
                 }, 200)
             }, false)
         }, 100)
-
     },
     data() {
         return {
