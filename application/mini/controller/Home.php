@@ -36,7 +36,7 @@ class Home extends Base
      * 个人中心信息
      */
     public function center_info(){
-        $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,dis_qrcode,account_balance')->find(session('mini.uid'));
+        $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,dis_qrcode,account_balance,sex,phone_number')->find(session('mini.uid'));
         
         //营业总额，统计所有订单的总额
         if($user_info['distribution_level'] == 2){
@@ -137,5 +137,107 @@ class Home extends Base
             $this->error($e->getMessage());
         }
         $this->success('今天已签到  +'. config('signin_credits'). '积分');
+    }
+    
+    /**
+     * 获取验证码
+     */
+    public function get_verify(){
+        $captcha = new \think\captcha\Captcha;
+        $captcha->fontSize = 30;
+        $captcha->length   = 4;
+        $captcha->useCurve = false;
+        return $captcha->entry();
+    }
+    
+    /**
+     * 发送短信验证码
+     */
+    public function send_phone_code(){
+        $data = [
+            'phone' => input("phone","","trim"),
+            'verify' => input("verify","","trim"),
+        ];
+        $validate_res = $this->validate($data,[
+            'phone'  => 'require|regex:1[3-9]{1}\d{9}$',
+            'verify' => 'require|captcha',
+        ],[
+            'phone.require' => '请输入手机号码',
+            'phone.regex' => '手机号码格式不正确',
+            'verify.require' => '请输入验证码',
+            'verify.captcha' => '验证码不正确',
+        ]); 
+        if ($validate_res !== true) {
+            $this->error($validate_res);
+        }
+        
+        $phone = db('users')->where('id', session('mini.uid'))->value('phone_number');
+        if($phone == $data['phone']){
+            $this->error('请不要绑定同一个手机号');
+        }
+        
+        //发送短信验证码
+        $res = Sms::get_code($data['phone']);
+        if($res['code'] == 40000){
+            $this->success('验证码发送成功');
+        }else{
+            $this->error($res['msg']);
+        }
+    }
+    
+    /**
+     * 绑定手机号
+     */
+    public function bind(){
+        $data = [
+            'phone' => input("phone","","trim"),
+            'phone_code' => input("phone_code","","trim"),
+        ];
+        $validate_res = $this->validate($data,[
+            'phone'  => 'require|regex:1[3-9]{1}\d{9}$',
+            'phone_code' => 'require',
+        ],[
+            'phone.require' => '请输入手机号码',
+            'phone.regex' => '手机号码格式不正确',
+            'phone_code.require' => '请输入短信验证码',
+        ]); 
+        if ($validate_res !== true) {
+            $this->error($validate_res);
+        }
+        
+        $res = Sms::check_code($data);
+        if($res['code'] != 40000){
+            $this->error($data['msg']);
+        }
+        
+        $update_res = db('users')->update([
+            'id' => session('mini.uid'),
+            'phone_number' => $data['phone']
+        ]);
+        if($update_res){
+            $this->success('绑定成功');
+        }else{
+            $this->error('绑定失败');
+        }
+    }
+    
+    /**
+     * 申请代理
+     */
+    public function dis_apply(){
+        $user_info = db('users')->field('phone_number')->find(session('mini.uid'));
+        if(!$user_info['phone_number']){
+            $this->error('未绑定手机号');
+        }
+        $res = db('distribution_apply')->insert([
+            'user_id' => session('mini.uid'),
+            'status' => 1,
+            'add_time' => date('Y-m-d H:i:s'),
+        ]);
+        if($res){
+            $this->error('申请成功');
+        }else{
+            $this->error('申请失败');
+        }
     }
 }
