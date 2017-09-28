@@ -36,11 +36,13 @@ class Home extends Base
      * 个人中心信息
      */
     public function center_info(){
-        $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,dis_qrcode,account_balance,sex,phone_number')->find(session('mini.uid'));
+        $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,account_balance,sex,phone_number')->find(session('mini.uid'));
         
         //营业总额，统计所有订单的总额
         if($user_info['distribution_level'] == 2){
             $user_info['total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
+            //分销二维码
+            $user_info['dis_qrcode'] = db('qrcode')->where('user_id', $user_info['id'])->value('qrcode_url');
         }
         
         //签到天数

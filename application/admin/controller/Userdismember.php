@@ -93,9 +93,9 @@ class Userdismember extends Base
             $data['distributor_time'] = date("Y-m-d H:i:s");
             $log_title = '设为分销商';
             
-            //生成分销二维码并存入用户表dis_qrcode
-            
-            
+            //生成分销二维码
+            $qrcode = new Qrcode();
+            $qrcode->get_qrcode($data['id']);            
         }
         
         $res = $user->update($data);

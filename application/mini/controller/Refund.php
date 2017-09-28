@@ -55,8 +55,11 @@ class Refund extends Base
         if(!$info){
             $this->error('订单不存在');
         }
-        if($info['pay_status'] == 2 && $info['order_status'] != 5){
+        if($info['pay_status'] != 2 && !in_array($info['order_status'], [1, 2])){
             $this->error('已支付未完成的订单才能申请退款');
+        }
+        if($info['pay_method'] != 1){
+            $this->error('微信支付的订单才能退款');
         }
         //是否已申请退款
         $exist = db('orders_refund_apply')->where('user_id', session('mini.uid'))->where('order_id', $order_id)->where('status', '!=', '3')->count();

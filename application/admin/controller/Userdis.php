@@ -35,11 +35,22 @@ class Userdis extends Base
         $users = new Users();
         $list = $users->where($where)->alias('u')
                 ->join('__USERS__ pu', 'pu.id=u.pid', 'LEFT')
-                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,u.dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=u.`id`)) c_total2")
+                ->join('__QRCODE__ q', 'q.user_id=u.id', 'LEFT')
+                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,q.qrcode_url dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=u.`id`)) c_total2")
                 ->page($page,$limit)
                 ->order('u.id DESC')
                 ->select();
         $total = $users->alias('u')->where($where)->count();
+        
+        if($list){
+            foreach($list as $k=>$v){
+                if(!$v['dis_qrcode']){                    
+                    //生成分销二维码
+                    $qrcode = new Qrcode();
+                    $list[$k]['dis_qrcode'] = $qrcode->get_qrcode($v['id']); 
+                }
+            }
+        }
         
         $total_page = ceil($total/$limit);
         
