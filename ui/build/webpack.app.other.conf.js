@@ -54,7 +54,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: path.resolve(__dirname, '../src/app/index.html'),
+      template: path.resolve(__dirname, '../src/mini/index.html'),
       title:'首页',
       inject: true,
       lib:'/static/mini/dll/app_libs.js',
@@ -76,8 +76,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static/app'),
-        to: config.build.assetsSubDirectory,
+        from: path.resolve(__dirname, '../static/mini'),
+        to: config.build.assetsRoot,
         ignore: ['.*']
       }
     ])

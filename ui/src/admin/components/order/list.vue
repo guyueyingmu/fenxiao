@@ -62,9 +62,9 @@
                                 <col width="100">
                                 <col width="100">
                                 <col width="100">
-                                <col>
+                                <col　width="160">
                                 <col width="120">
-                                <col width="120">
+                                <col >
                             </colgroup>
                             <thead>
                                 <tr>
@@ -96,7 +96,7 @@
                                     <td>{{item.pay_method_txt }}</td>
                                     <td>{{item.finish_time}}</td>
                                     <td class="center tool_no_border">
-                                        <el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button> <br>
+                                        <el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button> 　
                                         <el-button type="text" size="small" v-if="item.order_status == 1" @click="OnCannelOrder(idx)">取消订单</el-button>
                                     </td>
                                 </tr>

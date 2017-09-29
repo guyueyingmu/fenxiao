@@ -9,7 +9,7 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/app/main.js',
+    app: './src/mini/main.js',
  
   },
   output: {
@@ -23,7 +23,7 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src/app'),
+      '@': resolve('src/mini'),
     }
   },
   module: {

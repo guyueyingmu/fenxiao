@@ -6,7 +6,7 @@
                 <div class="layout-logo-left">
                     <span>分销管理系统</span>
                 </div>
-                <el-menu :router="true" theme="dark" :unique-opened="true" :default-active="activeMenu" :default-openeds="activeMenuOpen">
+                <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
                     <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
                         <template slot="title">
                             <i class="el-icon-message"></i>{{item.menu_name}}</template>
@@ -133,32 +133,40 @@ export default {
             return _path
         },
         activeMenuOpen() {
-            var _path = this.$route.path, _array = '10';
-            _path = _path.split('/')
-            _path = '/' + _path[1];
-            // console.log(_path)
-            if (this.list.length && _path != '/') {
-                let data = this.list, _reg = new RegExp(_path +'$')
-                for (let i = 0; i < data.length; i++) {
-                    let _break = false;
-                    for (let k = 0; k < data[i].child.length; k++) {
-                        // console.log(data[i].child[k].menu_link)
-                        if (_reg.test(data[i].child[k].menu_link)) {
-                            _array = i.toString();
-                            _break = true;
+      
 
-                            break;
-                        }
-                    }
-                    if (_break) {
-                        break;
-                    }
-                }
 
-                // console.log(`计算菜单`, _array)
+
+            // var _path = this.$route.path, _array = '10';
+            // _path = _path.split('/')
+            // _path = '/' + _path[1];
+            // // console.log(_path)
+            // if (this.list.length && _path != '/') {
+            //     let data = this.list, _reg = new RegExp(_path +'$')
+            //     for (let i = 0; i < data.length; i++) {
+            //         let _break = false;
+            //         for (let k = 0; k < data[i].child.length; k++) {
+            //             // console.log(data[i].child[k].menu_link)
+            //             if (_reg.test(data[i].child[k].menu_link)) {
+            //                 _array = i.toString();
+            //                 _break = true;
+
+            //                 break;
+            //             }
+            //         }
+            //         if (_break) {
+            //             break;
+            //         }
+            //     }
+
+            //     // console.log(`计算菜单`, _array)
+            // }
+            let a = [];
+            for(let i =0 ;i<this.list.length;i++){
+                a.push(i.toString())
             }
 
-            return [_array]
+            return a
 
         }
     },
