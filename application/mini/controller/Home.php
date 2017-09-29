@@ -40,7 +40,7 @@ class Home extends Base
         
         //营业总额，统计所有订单的总额
         if($user_info['distribution_level'] == 2){
-            $user_info['total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
+            $user_info['business_total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
             //分销二维码
             $user_info['dis_qrcode'] = db('qrcode')->where('user_id', $user_info['id'])->value('qrcode_url');
         }

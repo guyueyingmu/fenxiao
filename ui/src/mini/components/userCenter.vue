@@ -3,38 +3,39 @@
         <div class="user">
             <div class="userBox">
                 <div class="photo">
-                    <a href="javascript:;"><img src="static/mini/img/demo/avt.jpg" width="100%"> </a>
+                    <!-- static/mini/img/demo/avt.jpg -->
+                    <a href="javascript:;"><img :src="info.img_url" width="100%"> </a>
                 </div>
                 <div class="inners">
-                    <div class="name">赵三多</div>
-                    <div class="cardMsg">
+                    <div class="name">{{info.nickname}}</div>
+                    <div class="cardMsg" v-if="info.distribution_level == 2">
                         <span class="infor-tit">营业总额：</span>
                         <span class="infor-inte">
-                            <a href="javascript:;">￥108909</a>
+                            <a href="javascript:;">￥{{info.business_total_amount}}</a>
                         </span>
                     </div>
                 </div>
-                <div class="qrcode">
+                <div class="qrcode" v-if="info.distribution_level == 2">
                     <i class="iconfont icon-erweima"></i>
                     <div>分销</div>
                 </div>
             </div>
             <ul class="slef-card">
-                <li>
+                <li v-if="info.distribution_level == 2">
                     <a href="javascript:;">
-                        <span class="num">￥1082.00</span>
+                        <span class="num">￥{{info.earn_total}}</span>
                         <span class="tit">佣金</span>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:;">
-                        <span class="num">200</span>
+                        <span class="num">{{info.credits}}</span>
                         <span class="tit">积分</span>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:;">
-                        <span class="num">12天</span>
+                        <span class="num">{{info.sign_total}}天</span>
                         <span class="tit">已签到</span>
                     </a>
                 </li>
@@ -64,16 +65,16 @@
             <li>
                 <div class="title"><i class="iconfont icon-wodezujiline"></i> 我的足迹</div>
             </li>
-            <li>
+            <li v-if="info.distribution_level == 0">
                 <div class="title"><i class="iconfont icon-3"></i> 我要代理</div>
             </li>
 
             <li>
                 <div class="title"><i class="iconfont icon-zhanghao1"></i> 帐号</div>
             </li>
-            <li>
+            <!-- <li>
                 <div class="title"><i class="iconfont icon-logout"></i> 退出</div>
-            </li>
+            </li> -->
         </ul>
         <div style="height:20px;"></div>
 
