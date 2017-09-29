@@ -33,12 +33,12 @@
                 <div class="layout-content">
                     <div class="layout-content-main" :style="{'min-height':minHeight}">
 
-                        <transition :name="transitionName">
+                        <!-- <transition :name="transitionName"> -->
                 
                             <router-view class="child-view"> </router-view>
 
 
-                        </transition>
+                        <!-- </transition> -->
                     </div>
                 </div>
             </el-col>
