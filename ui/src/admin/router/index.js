@@ -56,7 +56,7 @@ const UserdisMember = () =>
   import( /* webpackChunkName: "userdisMember" */ '@/components/dis/dis_users')
 
 const disSet = () =>
-  import( /* webpackChunkName: "disSet" */ '@/components/dis/dis_set')
+import( /* webpackChunkName: "disSet" */ '@/components/dis/dis_set')
 
 const disMember = () =>
   import( /* webpackChunkName: "disMember" */ '@/components/dis/dis_member')
@@ -174,12 +174,12 @@ const router = new Router({
     component: Score
   },
   {
-    path: '/dis_log', //分成日志
+    path: '/dislog', //分成日志
     name: 'OrderdisLog',
     component: OrderdisLog
   },
   {
-    path: '/dis_users', //分销会员
+    path: '/disusers', //分销会员
     name: 'UserdisMember',
     component: UserdisMember
   },
@@ -189,10 +189,10 @@ const router = new Router({
     component: Userdis
   },
   {
-    path: '/dis_config/c_type/:c_type', //分销设置
-    name: 'dis_config',
+    path: '/disconfig/c_type/:c_type', //分销设置
+    name: 'disConfig',
     component: disSet,
-    meta: { role: '/dis_config' }, //页面需要的权限
+    meta: { role: '/disConfig' }, //页面需要的权限
   },
   {
     path: '/set/c_type/:c_type', //积分设置

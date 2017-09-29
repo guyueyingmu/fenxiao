@@ -133,7 +133,6 @@ router.beforeEach((to, from, next) => {
         } else {
           if (to.meta.role) {
             var Reg2 = new RegExp(to.meta.role)
-
             if (Reg2.test(to.path)) {
               canView = true;
               _break = true;
