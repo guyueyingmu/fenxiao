@@ -43,7 +43,7 @@ const Score = () =>
   import( /* webpackChunkName: "score" */ '@/components/users/score')
 
 const DisGoods = () =>
-  import( /* webpackChunkName: "disGoods" */ '@/components/dis/dis_log')
+  import( /* webpackChunkName: "disGoods" */ '@/components/dis/dis_goods')
 
 const OrderdisLog = () =>
   import( /* webpackChunkName: "orderdisLog" */ '@/components/dis/dis_log')
