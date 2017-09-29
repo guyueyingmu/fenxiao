@@ -91,17 +91,17 @@ const apiMethods = {
     },
     //统一服务器出错处理
     serverError(err) {
-      this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url, '警告', {
-        type: 'error'
-      });
+      // this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url, '警告', {
+      //   type: 'error'
+      // });
     },
     //统一异常处理
     handleError(res) {
       if (res.msg == '请登录后操作') {
-        this.$store.state.LoginDialogVisible = true
+        // this.$store.state.LoginDialogVisible = true
 
       } else {
-        this.$message.error(res.msg);
+        // this.$message.error(res.msg);
       }
 
 

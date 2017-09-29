@@ -84,9 +84,28 @@ import http from '@/assets/js/http'
 export default {
     name: 'userCenter',
     mixins: [http],
+    data() {
+        return {
+            info:{}
+        }
+    },
+    methods: {
+        get_info() {
+            let url = '/mini/Home/center_info',
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.info = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+    },
     mounted() {
         this.setTitle('会员中心')
-
+        this.get_info();
     },
 }
 
