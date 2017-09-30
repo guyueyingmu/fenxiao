@@ -115,7 +115,23 @@ export default {
 
             }).catch(() => {
             });
-        }
+        },
+        get_cat() {
+            console.log(this.$store.state.cat_list.length)
+            if (this.$store.state.cat_list.length < 1) {
+                let url = '/admin/goodscat/get_list',
+                    vm = this;
+                this.apiGet(url).then(function(res) {
+                    if (res.code) {
+                        vm.setCatList(res.data.list)
+
+                    } else {
+                        vm.handleError(res)
+                    }
+
+                })
+            }
+        },
     },
     computed: {
         "minHeight"() {
@@ -138,7 +154,8 @@ export default {
 
             return a
 
-        }
+        },
+
     },
     created() {
 
@@ -163,6 +180,7 @@ export default {
         this.apiGet('/admin/Login/get_user_info').then(function(res) {
             if (res.code) {
                 vm.nickname = res.data.nickname;
+                vm.get_cat();
             }
         })
 

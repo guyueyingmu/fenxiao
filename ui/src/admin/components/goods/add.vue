@@ -83,9 +83,11 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="商品类型" prop="good_type">
-                        <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
-                            <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                        </el-select>
+                        <el-tooltip class="item" effect="dark" :content="form.good_type?$store.state.GOODTYPE[form.good_type-1].tip:''" placement="top">
+                            <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
+                                <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
+                            </el-select>
+                        </el-tooltip>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -235,12 +237,12 @@ export default {
             for (let i = 0; i < _d.length; i++) {
                 if (url == _d[i].img_url) {
                     _d[i].is_show = 2;
-                    this.bannerImg_temp_list.splice(i,1)
+                    this.bannerImg_temp_list.splice(i, 1)
                     break
                 }
             }
             this.form.banner_img = _d;
-           
+
 
         },
 
@@ -289,8 +291,8 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.loading =  true;
-                    let url = this.isEdit ? '/admin/goodsall/edit?good_id='+this.form.id : '/admin/goodsall/add',
+                    this.loading = true;
+                    let url = this.isEdit ? '/admin/goodsall/edit?good_id=' + this.form.id : '/admin/goodsall/add',
                         data = this.form,
                         vm = this;
                     this.apiPost(url, data).then(function(res) {
@@ -321,7 +323,7 @@ export default {
 
         //编辑时获取单条数据
         get_edit_item(id) {
-              this.loading =  true;
+            this.loading = true;
             let url = '/admin/goodsall/get_good_info?good_id=' + id,
                 vm = this;
             this.apiGet(url).then(function(res) {
@@ -335,7 +337,7 @@ export default {
 
                     }
                     vm.form = res.data;
-                      vm.loading = false;
+                    vm.loading = false;
                 } else {
                     vm.$alert(res.msg, '警告', {
                         type: 'error',
