@@ -15,7 +15,7 @@
                         </span>
                     </div>
                 </div>
-                <i class="iconfont icon-shanchu " @click="del(idx);"></i>
+                <i class="iconfont icon-shanchu " @click="ondel(idx);"></i>
             </li>
         </ul>
         <div class="nodata" v-if="list.length < 1">
@@ -91,6 +91,9 @@ export default {
         }
     },
     methods: {
+        ondel(index){
+            this.del(index);
+        },
         //删除
         del(k){
             let url = '/mini/Cart/del', vm = this, data = {good_id: this.list[k].good_id};
