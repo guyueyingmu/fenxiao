@@ -7,6 +7,10 @@ import vueResource from 'vue-resource'
 
 import store from './vuex'
 
+
+import alert from './wegit/alert'
+Vue.use(alert)
+
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
 Vue.config.devtools = true

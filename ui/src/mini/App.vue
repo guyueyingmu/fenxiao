@@ -51,6 +51,7 @@
         <div id="goto_home" v-if="showNav == false">
             <i class="iconfont icon-shouye" @click="goto('/')" title="回到首页"></i>
         </div>
+        <alert></alert>
     </div>
 </template>
 
@@ -58,7 +59,6 @@
 
 import http from './assets/js/http'
 import FastClick from '../../static/mini/lib/fastclick'
-// require('../../static/mini/lib/fastclick.js')
 
 export default {
     name: 'app',
@@ -127,6 +127,7 @@ export default {
     },
     mounted() {
         let vm = this;
+        this.$msg('你好')
         var fn = function(event) {
             var top = document.body.scrollTop;
 

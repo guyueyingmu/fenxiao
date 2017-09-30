@@ -2,8 +2,8 @@
     <div class="home">
 
         <!--首页轮播图片尺寸  750 * 320-->
-        <swiper :options="swiperOption">
-            <swiper-slide v-for="(slide,k) in swiperSlides" :key="k">
+        <swiper :options="swiperOption" >
+            <swiper-slide v-for="(slide,k) in swiperSlides" :key="k" :style="setbannerHeight">
                 <img :src="slide.img_url">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -102,6 +102,12 @@ export default {
         swiper,
         swiperSlide
     },
+    computed:{
+        setbannerHeight(){
+            let a = window.innerWidth/2.34375;
+           return {'height':a +'px'}
+        }
+    },
     data() {
         return {
             swiperOption: {
@@ -112,6 +118,7 @@ export default {
                 mousewheelControl: true,
                 observeParents: true,
                 autoHeight: true,
+               
 
             },
             swiperSlides: [
