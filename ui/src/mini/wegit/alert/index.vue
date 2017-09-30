@@ -1,6 +1,7 @@
 <template>
     <div class="alert">
-       alert{{tit}}
+        alert
+        {{tit}}
     </div>
 </template>
 <script>
@@ -13,13 +14,11 @@ export default {
         }
     },
     methods: {
-        
-    },
-    mounted() {
-       this.tit = this.value 
+        show(str) {
+            this.str
+        }
 
-
-    },
+    }
 }
 
 </script>
