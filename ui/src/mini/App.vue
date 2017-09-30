@@ -51,7 +51,7 @@
         <div id="goto_home" v-if="showNav == false">
             <i class="iconfont icon-shouye" @click="goto('/')" title="回到首页"></i>
         </div>
-       
+
     </div>
 </template>
 
@@ -106,7 +106,7 @@ export default {
             this.goto('/search')
         },
         search() {
-            if(!this.searchForm.keyword){
+            if (!this.searchForm.keyword) {
                 return
             }
             let _list = this.$store.state.hList;
@@ -127,7 +127,16 @@ export default {
     },
     mounted() {
         let vm = this;
-        this.$msg('你好')
+        // this.$confirm({ 
+        //         title:'提示',
+        //         msg: 'sss', 
+        //         yes: function() {},
+        //         no:function(){},
+        //     })
+
+
+        //   this.$alert('内容',function(){console.log(233)})
+        
         var fn = function(event) {
             var top = document.body.scrollTop;
 

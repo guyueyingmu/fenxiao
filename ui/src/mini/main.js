@@ -42,19 +42,45 @@ Vue.prototype.$msg = function (str, time) {
   });
 }
 
-Vue.prototype.$confirm = function (opt,cb) {
-    MessageBox({
-        title: opt.title||'提示',
-        message: opt.msg,
-        showCancelButton: true
-      }).then(function(){
-          if(typeof cb == 'function'){
-              cb()
-          }
-      });
-  }
+Vue.prototype.$confirm = function (opt) {
+    if(!opt){return}
+  MessageBox({
+    title: opt.title || '提示',
+    message: opt.msg,
+    showCancelButton: true
+  }).then(function (action) {
+    if (action == 'confirm') {
+      if (typeof opt.yes == 'function') {
+        opt.yes()
+      }
+    }
+    if (action == 'cancel') {
+        if (typeof opt.no == 'function') {
+          opt.no()
+        }
+      }
 
+  });
+}
+Vue.prototype.$alert = function (msg,cb) {
+    if(!msg){return}
+  MessageBox({
+   
+    message: msg,
+    showCancelButton: false
+  }).then(function (action) {
+
+    if (action == 'confirm') {
+      if (typeof opt.cb == 'function') {
+        opt.cb()
+      }
+    }
   
+
+  });
+}
+
+
 /* eslint-disable no-new */
 
 
