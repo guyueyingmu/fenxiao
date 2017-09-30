@@ -56,7 +56,7 @@
                 <div class="title"><i class="iconfont icon-shouhoufuwu"></i> 售后记录</div>
             </li>
 
-            <li>
+            <li @click="goto('/address')">
                 <div class="title"><i class="iconfont icon-dizhi"></i> 收货地址</div>
             </li>
             <li>
