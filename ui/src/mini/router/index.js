@@ -49,6 +49,11 @@ const router = new Router({
       component: home,
     },
     {
+      path: '/search',
+      name: 'search',
+      component: search,
+    },
+    {
       path: '/search/cat_id/:cat_id',
       name: 'search',
       component: search,
