@@ -6,6 +6,7 @@ const state ={
     nav_list:[],
     RoseDialogVisible:false,
     LoginDialogVisible:false,
+    c_loading:true,
     GOODTYPE:[
         {label:'实物商品',id:1,tip:'(微信支付 需要快递)'},
         {label:'虚拟商品',id:2,tip:'(微信支付 无需快递)'},

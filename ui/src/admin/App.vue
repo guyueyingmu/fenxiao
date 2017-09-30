@@ -1,48 +1,48 @@
 <template>
     <div id="app">
 
-        <el-row class="layout" type="flex">
-            <el-col :span="4" :md="4" :lg="3" :xs="6" class="layout-menu-left">
-                <div class="layout-logo-left">
-                    <span>分销管理系统</span>
-                </div>
-                <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
-                    <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
-                        <template slot="title">
-                            <i class="el-icon-message"></i>{{item.menu_name}}</template>
-                        <el-menu-item :index="c.link" v-for="(c,c_idx) in item.child" :key="c.id">{{c.menu_name}}</el-menu-item>
-                    </el-submenu>
+        <div class="layout flex">
+            <div class="layout-menu-left">
+                <div class="my_nav_warp">
+                    <div class="my_nav">
+                        <div class="layout-logo-left">
+                            <span>分销管理系统</span>
+                        </div>
+                        <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
+                            <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
+                                <template slot="title">
+                                    <i class="el-icon-message"></i>{{item.menu_name}}</template>
+                                <el-menu-item :index="c.link" v-for="(c,c_idx) in item.child" :key="c.id">{{c.menu_name}}</el-menu-item>
+                            </el-submenu>
 
-                </el-menu>
-
-            </el-col>
-            <el-col :span="20" :md="20" :lg="21" :xs="18">
-                <div class="layout-header">
-                    <div class="layout-header-left"></div>
-                    <div class="login-info">
-                        <span>欢迎您，{{nickname}}</span>
-                        <a href="javascript:;" @click="loginOut">退出</a>
+                        </el-menu>
                     </div>
                 </div>
-                <div class="layout-breadcrumb">
-                    <el-breadcrumb separator="/">
-                        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                        <el-breadcrumb-item v-for="item in $store.state.breadcrumb" :key="item">{{item}}</el-breadcrumb-item>
-                    </el-breadcrumb>
-                </div>
-                <div class="layout-content">
-                    <div class="layout-content-main" :style="{'min-height':minHeight}">
 
-                        <!-- <transition :name="transitionName"> -->
-                
+            </div>
+            <div v-loading="$store.state.c_loading" class="layout-right">
+                <div class="layout-main-wrap">
+                    <div class="layout-header">
+                        <div class="layout-header-left"></div>
+                        <div class="login-info">
+                            <span>欢迎您，{{nickname}}</span>
+                            <a href="javascript:;" @click="loginOut">退出</a>
+                        </div>
+                    </div>
+                    <div class="layout-breadcrumb">
+                        <el-breadcrumb separator="/">
+                            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                            <el-breadcrumb-item v-for="item in $store.state.breadcrumb" :key="item">{{item}}</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </div>
+                    <div class="layout-content">
+                        <div class="layout-content-main" :style="{'min-height':minHeight}">
                             <router-view class="child-view"> </router-view>
-
-
-                        <!-- </transition> -->
+                        </div>
                     </div>
                 </div>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
 
         <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" size="tiny" :close-on-click-modal="false">
             <span>
@@ -78,8 +78,6 @@ export default {
     },
     data() {
         return {
-
-            //activeMenuOpen: ['0'],
             transitionName: 'slide-left',
             list: [],
             nickname: '',
@@ -87,13 +85,13 @@ export default {
                 l1: "",
                 l2: ''
             },
-
-
+            c_loading: false
         }
     },
+
     methods: {
-        closeLogin(){
-             window.location = '/admin/Login/log_out'
+        closeLogin() {
+            window.location = '/admin/Login/log_out'
         },
 
         //退出登录
@@ -133,36 +131,8 @@ export default {
             return _path
         },
         activeMenuOpen() {
-      
-
-
-
-            // var _path = this.$route.path, _array = '10';
-            // _path = _path.split('/')
-            // _path = '/' + _path[1];
-            // // console.log(_path)
-            // if (this.list.length && _path != '/') {
-            //     let data = this.list, _reg = new RegExp(_path +'$')
-            //     for (let i = 0; i < data.length; i++) {
-            //         let _break = false;
-            //         for (let k = 0; k < data[i].child.length; k++) {
-            //             // console.log(data[i].child[k].menu_link)
-            //             if (_reg.test(data[i].child[k].menu_link)) {
-            //                 _array = i.toString();
-            //                 _break = true;
-
-            //                 break;
-            //             }
-            //         }
-            //         if (_break) {
-            //             break;
-            //         }
-            //     }
-
-            //     // console.log(`计算菜单`, _array)
-            // }
             let a = [];
-            for(let i =0 ;i<this.list.length;i++){
+            for (let i = 0; i < this.list.length; i++) {
                 a.push(i.toString())
             }
 

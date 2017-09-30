@@ -2,6 +2,9 @@
     // border: 1px solid #d7dde4;
     // background: #f5f7f9;
     position: relative;
+   &.flex{
+    display: flex;
+   }
 }
 
 .layout-breadcrumb {
@@ -21,10 +24,9 @@
 .layout-content {
     min-height: 200px;
     margin: 15px;
-    overflow: hidden;
     background: #fff;
     border-radius: 4px;
-    overflow-y: auto;
+  
 }
 
 .layout-content-main {
@@ -37,9 +39,26 @@
     padding: 10px 0 20px;
     color: #9ea7b4;
 }
-
+.my_nav_warp{
+    position: relative;
+    width: 200px;
+    height: 100%;
+}
+.my_nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 9;
+    width: 200px;
+    background: #464c5b;
+}
 .layout-menu-left {
     background: #464c5b;
+    position: relative;
+    flex-basis: 200px;
+    width: 200px;
+    height: 100%;
     .el-menu--dark {
         background: none;
     }
@@ -55,7 +74,16 @@
         background: #20a0ff;
     }
 }
+.layout-right{
+    flex: 1;
+    width: auto;
+    overflow: hidden;
 
+}
+.layout-main-wrap{
+    overflow: auto;
+    min-width: 1200px;
+}
 .layout-header {
     height: 60px;
     background: #fff;

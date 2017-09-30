@@ -63,8 +63,8 @@
                                 <col width="100">
                                 <col width="100">
                                 <col　width="160">
-                                <col width="120">
                                 <col >
+                                <col width="220">
                             </colgroup>
                             <thead>
                                 <tr>

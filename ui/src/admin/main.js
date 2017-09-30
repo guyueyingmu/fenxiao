@@ -118,7 +118,7 @@ Vue.config.productionTip = false
 
 //全局的 before 钩子
 router.beforeEach((to, from, next) => {
-
+    store.state.c_loading = true
   function _check(menu) {
     let canView = false;
     var Reg = new RegExp(to.path)
@@ -155,52 +155,30 @@ router.beforeEach((to, from, next) => {
   }
 
   if (store.getters.nav_list.length > 0) {
+      console.log('有nav_list')
+    store.state.c_loading = false
     if (_check(store.getters.nav_list)) {
       next()
+     
     } else {
       console.log('您没有权限访问！')
       store.state.RoseDialogVisible = true
+      
       next(false)
     }
   } else {
     setTimeout(function () {
       if (_check(store.getters.nav_list)) {
         next()
+        store.state.c_loading = false
       } else {
         console.log('您没有权限访问！')
         store.state.RoseDialogVisible = true
+        
         next(false)
       }
     }, 500)
   }
-
-
-
-
-
-
-
-  //   let menu = window.localStorage.getItem('__Menu__')
-
-  //   if (menu) {
-  //       console.log('2')
-  //     if (_check(menu)) {
-  //         console.log('bb')
-  //       next()
-  //     } else {
-  //       alert('无权访问')
-  //     }
-
-  //   } else {
-  //     console.log('4')
-  //     next(false)
-
-
-  //   }
-
-
-
-
 
 })
 

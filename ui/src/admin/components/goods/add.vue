@@ -1,7 +1,7 @@
 
 
 <template>
-    <div style="width:800px;padding:4em">
+    <div style="padding:4em 40% 4em 4em" v-loading="loading" element-loading-text="拼命加载中">
         <el-form :model="form" ref="form" :rules="rules" label-width="100px">
             <el-form-item label="商品小图" prop="good_img" class="my_error">
                 <div class="red small">尺寸为 280 * 280 正方形</div>
@@ -169,11 +169,11 @@ export default {
                 good_img: [{ required: true, type: 'string', message: '请上传商品小图', trigger: 'blur' }],
                 banner_img: [{ required: true, type: 'array', message: '请上传商品轮播图', trigger: 'blur' }],
                 good_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-                cat_id: [{ required: true, type: 'integer', message: '请选择分类', trigger: 'blur' },],
+                cat_id: [{ required: true, pattern: /^.*$/, message: '请选择分类', trigger: 'blur' },],
 
                 distribution: [{ required: true, type: 'number', message: '请选择参与分销', trigger: 'blur' }],
                 credits: [{ required: true, pattern: /^.*$/, message: '请输入积分兑换', trigger: 'blur' }],
-                good_type: [{ required: true, type: 'integer', message: '请选择商品类型', trigger: 'blur' }],
+                good_type: [{ required: true, pattern: /^.*$/, message: '请选择商品类型', trigger: 'blur' }],
                 price: [{ required: true, message: '请输入销售价格', trigger: 'blur' }],
 
                 good_title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
@@ -289,6 +289,7 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    this.loading =  true;
                     let url = this.isEdit ? '/admin/goodsall/edit?good_id='+this.form.id : '/admin/goodsall/add',
                         data = this.form,
                         vm = this;
@@ -302,6 +303,7 @@ export default {
                         } else {
                             vm.handleError(res)
                         }
+                        vm.loading = false;
 
                     })
 
@@ -319,6 +321,7 @@ export default {
 
         //编辑时获取单条数据
         get_edit_item(id) {
+              this.loading =  true;
             let url = '/admin/goodsall/get_good_info?good_id=' + id,
                 vm = this;
             this.apiGet(url).then(function(res) {
@@ -332,6 +335,7 @@ export default {
 
                     }
                     vm.form = res.data;
+                      vm.loading = false;
                 } else {
                     vm.$alert(res.msg, '警告', {
                         type: 'error',
