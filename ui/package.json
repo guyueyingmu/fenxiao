@@ -15,6 +15,7 @@
   "dependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "element-ui": "^1.4.4",
+    "mint-ui": "^2.2.9",
     "vue": "^2.4.2",
     "vue-awesome-swiper": "^2.6.5",
     "vue-file-upload": "^0.1.4",

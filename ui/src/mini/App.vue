@@ -51,7 +51,7 @@
         <div id="goto_home" v-if="showNav == false">
             <i class="iconfont icon-shouye" @click="goto('/')" title="回到首页"></i>
         </div>
-        <alert></alert>
+       
     </div>
 </template>
 

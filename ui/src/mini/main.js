@@ -7,14 +7,19 @@ import vueResource from 'vue-resource'
 
 import store from './vuex'
 
+// 按需引入部分组件
+import {
+  Toast,
+  MessageBox
+} from 'mint-ui'
+Vue.component(Toast.name, Toast);
+Vue.component(MessageBox.name, MessageBox);
 
-import alert from './wegit/alert'
-Vue.use(alert)
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
 Vue.config.devtools = true
-
+// import 'mint-ui/lib/style.css'
 import style from './assets/css/style.less'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
@@ -29,6 +34,25 @@ Vue.prototype.$is = IS
 Vue.config.productionTip = false
 Vue.config.devtools = true;
 
+Vue.prototype.$msg = function (str, time) {
+  Toast({
+    message: str,
+    // position: 'bottom',
+    duration: time || 3000
+  });
+}
+
+Vue.prototype.$confirm = function (opt,cb) {
+    MessageBox({
+        title: opt.title||'提示',
+        message: opt.msg,
+        showCancelButton: true
+      }).then(function(){
+          if(typeof cb == 'function'){
+              cb()
+          }
+      });
+  }
 
 /* eslint-disable no-new */
 
