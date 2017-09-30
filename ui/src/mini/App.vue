@@ -133,10 +133,8 @@ export default {
         //         yes: function() {},
         //         no:function(){},
         //     })
-
-
         //   this.$alert('内容',function(){console.log(233)})
-        
+
         var fn = function(event) {
             var top = document.body.scrollTop;
 
