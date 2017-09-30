@@ -3,8 +3,8 @@
 
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption">
-            <swiper-slide v-for="slide in swiperSlides" :key="slide">
-                <img :src="slide">
+            <swiper-slide v-for="(slide,k) in swiperSlides" :key="k">
+                <img :src="slide.img_url">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -12,7 +12,13 @@
         <!--导航-->
         <div class="nav-container">
             <ul>
-                <li>
+                <li v-for="(cat, k) in cat_list" :key="k">
+                    <a href="javascript:;" @click="goto('/search/cat_id/'+cat.id)">
+                        <i class="nav-icon item-1"><img :src="cat.cat_img" width="100%"></i>
+                        <span>{{cat.cat_name}}</span>
+                    </a>
+                </li>
+                <!-- <li>
                     <a href="recommend/index.html">
                         <i class="nav-icon item-1"><img src="static/mini/img/home/icon/1.png" width="100%"></i>
                         <span>热门活动</span>
@@ -53,9 +59,9 @@
                         <i class="nav-icon item-7"><img src="static/mini/img/home/icon/7.png" width="100%"></i>
                         <span>我的券包</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
-                    <a href="introduction/index.html">
+                    <a href="/#/class">
                         <i class="nav-icon item-8"><img src="static/mini/img/home/icon/8.png" width="100%"></i>
                         <span>更多</span>
                     </a>
@@ -64,57 +70,23 @@
         </div>
         <div class="page-title recommend ">
             <span class="title">推荐商品</span>
-            <span class="more">更多
+            <span class="more" @click="goto('/search')">更多
                 <i class="iconfont icon-arrow"></i>
             </span>
         </div>
         <ul class="thumb-box">
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/2.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通
+            <li v-for="(good,k) in good_list" :key="k">
+                <div class="thumb" @click="goto('/detail/id/'+good.id)"><img :src="good.good_img"></div>
+                <div class="title" @click="goto('/detail/id/'+good.id)">
+                    {{good.good_title}}
                 </div>
                 <div class="info">
                     <span class="price">￥
-                        <em>390.00</em>
+                        <em>{{good.price}}</em>
                     </span>
                     <i class="iconfont icon-gouwuche1"></i>
                 </div>
             </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/1.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
-                </div>
-                <div class="info">
-                    <span class="jifen">积分 390</span>
-                </div>
-            </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/3.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
-                </div>
-                <div class="info">
-                    <span class="price">￥
-                        <em>390.00</em>
-                    </span>
-                    <i class="iconfont icon-gouwuche1"></i>
-                </div>
-            </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/4.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
-                </div>
-                <div class="info">
-                    <span class="price">￥
-                        <em>5999.00</em>
-                    </span>
-                    <i class="iconfont icon-gouwuche1"></i>
-                </div>
-            </li>
-
         </ul>
     </div>
 </template>
@@ -143,17 +115,60 @@ export default {
 
             },
             swiperSlides: [
-                'static/mini/img/home/banner/1.jpg',
-                'static/mini/img/home/banner/2.jpg',
-                'static/mini/img/home/banner/3.jpg',
-                'static/mini/img/home/banner/4.jpg',
-            ]
+                // 'static/mini/img/home/banner/1.jpg',
+                // 'static/mini/img/home/banner/2.jpg',
+                // 'static/mini/img/home/banner/3.jpg',
+                // 'static/mini/img/home/banner/4.jpg',
+            ],
+            cat_list: [],
+            good_list: []
         }
+    },
+    methods: {
+        get_banner() {
+            let url = '/mini/Home/banner',
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.swiperSlides = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        get_cat() {
+            let url = '/mini/Home/get_cat_list?page=1',
+                vm = this;
+
+            this.apiGet(url, {limit: 7}).then(function(res) {
+                if (res.code) {
+                    vm.cat_list = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        get_good() {
+            let url = '/mini/Good/get_list?page=1',
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.good_list = res.data.list;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
     },
 
     mounted() {
         this.setTitle('首页')
 
+        this.get_banner();
+        this.get_cat();
+        this.get_good();
 
     },
 

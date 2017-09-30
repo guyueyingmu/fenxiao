@@ -20,8 +20,8 @@ class Home extends Base
      * @return type
      */
     public function get_cat_list(){
-        $page = I('param.page', 1, 'intval');
-        $limit = I('param.limit', 0, 'intval');
+        $page = input('param.page', 1, 'intval');
+        $limit = input('param.limit', 0, 'intval');
         
         if($limit){
             $list = db('goods_category')->order('sort DESC')->limit($limit)->field('id,cat_name,cat_img')->select();            

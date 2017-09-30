@@ -49,7 +49,7 @@ const router = new Router({
       component: home,
     },
     {
-      path: '/search',
+      path: '/search/cat_id/:cat_id',
       name: 'search',
       component: search,
     },
@@ -69,7 +69,7 @@ const router = new Router({
       component: userCenter,
     },
     {
-      path: '/detail',
+      path: '/detail/id/:id',
       name: 'detail',
       component: detail,
     },
