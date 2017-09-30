@@ -1,22 +1,11 @@
 <template>
     <div>
         <ul class="ui-links">
-            <li>
-                <img src="static/mini/img/demo/1.png" width="50" height="50">
-                <span class="title">美白系列</span>
+            <li v-for="(cat, k) in cat_list" :key="k" @click="goto('/search/cat_id/'+cat.id)">
+                <img :src="cat.cat_img" width="50" height="50">
+                <span class="title">{{cat.cat_name}}</span>
                 <i class="iconfont icon-arrow"></i>
             </li>
-            <li>
-                <img src="static/mini/img/demo/1.png" width="50" height="50">
-                <span class="title">美白系列2</span>
-                <i class="iconfont icon-arrow"></i>
-            </li>
-            <li>
-                <img src="static/mini/img/demo/1.png" width="50" height="50">
-                <span class="title">美白系列3</span>
-                <i class="iconfont icon-arrow"></i>
-            </li>
-
         </ul>
     </div>
 </template>
@@ -25,9 +14,29 @@ import http from '@/assets/js/http'
 export default {
     name: 'class',
     mixins: [http],
+    data() {
+        return {            
+            cat_list: [],
+        }
+    },
+    methods: {
+        get_cat() {
+            let url = '/mini/Home/get_cat_list?page=1',
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.cat_list = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+    },
     mounted() {
         this.setTitle('商品分类')
 
+        this.get_cat();
     }
 
 

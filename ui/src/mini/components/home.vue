@@ -84,7 +84,7 @@
                     <span class="price">￥
                         <em>{{good.price}}</em>
                     </span>
-                    <i class="iconfont icon-gouwuche1"></i>
+                    <i class="iconfont icon-gouwuche1" @click="add_cart(good.id);"></i>
                 </div>
             </li>
         </ul>
@@ -125,6 +125,17 @@ export default {
         }
     },
     methods: {
+        //加入购物车
+        add_cart(good_id){
+            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$msg.success(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
         get_banner() {
             let url = '/mini/Home/banner',
                 vm = this;

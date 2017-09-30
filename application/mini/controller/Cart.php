@@ -11,15 +11,31 @@ class Cart extends Base
      * @return type
      */
     public function get_list(){
+        $page = input('param.page', 1, 'intval');
+        $limit = config('mini_page_limit');
         
         $list = db('goods_cart')->alias('gc')
                 ->join('__GOODS__ g', 'g.id=gc.good_id', 'LEFT')
                 ->where('gc.user_id', session('mini.uid'))
-                ->order('gc.id DESC')
-                ->field('gc.good_id,gc.total,g.good_title,g.good_img,g.price')
+                ->order('gc.id DESC')->page($page, $limit)
+                ->field('gc.good_id,gc.total,g.good_title,g.good_img,g.price,false selected')
                 ->select();
         
-        $this->success('成功', '', $list);
+        $total = db('goods_cart')->alias('gc')->where('gc.user_id', session('mini.uid'))->count();
+        
+        $total_page = ceil($total/$limit);
+        
+        $result = [
+            "list" => $list,
+            "pages" => [
+                "total" => $total,
+                "total_page" => $total_page,
+                "limit" => $limit,
+                "current_page" => $page,
+            ]            
+        ];
+        
+        $this->success('成功', '', $result);
     }
     
     /**

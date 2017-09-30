@@ -1,11 +1,11 @@
 <template>
     <div class="cart">
         <ul class="thumb-list">
-            <li v-for="(item,idx) in list" :key="item.id">
+            <li v-for="(item,idx) in list" :key="item.good_id">
                 <input type="checkbox" class="ui-checkbox" v-model="item.selected" @change="onChange">
-                <img :src="item.thumb" width="70" height="70">
+                <img :src="item.good_img" width="70" height="70">
                 <div class="info">
-                    <div class="title">{{item.title}}</div>
+                    <div class="title">{{item.good_title}}</div>
                     <div class="tool">
                         <span class="price">￥
                             <em>{{item.price}}</em>
@@ -15,10 +15,10 @@
                         </span>
                     </div>
                 </div>
-                <i class="iconfont icon-shanchu "></i>
+                <i class="iconfont icon-shanchu " @click="del(idx);"></i>
             </li>
         </ul>
-        <div class="nodata">
+        <div class="nodata" v-if="list.length < 1">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
             <div>您的购物车是空的~</div>
         </div>
@@ -49,22 +49,22 @@ export default {
     data() {
         return {
             list: [
-                {
-                    id: 1,
-                    thumb: 'static/mini/img/demo/3.png',
-                    title: 'SK-II"神仙水"晶透修护礼盒（神仙水230ml+洁面霜20g+清莹露30ml+微肌因修护精华霜15g）（护肤套装）',
-                    price: '390.99',
-                    total: 1,
-                    selected: false
-                },
-                {
-                    id: 2,
-                    thumb: 'static/mini/img/demo/1.png',
-                    title: '兰蔻（LANCOME）新精华肌底液30ml（小黑瓶 精华液 补水保湿提拉紧致 新老品随机发货）',
-                    price: '649.00',
-                    total: 1,
-                    selected: false
-                },
+                // {
+                //     id: 1,
+                //     thumb: 'static/mini/img/demo/3.png',
+                //     title: 'SK-II"神仙水"晶透修护礼盒（神仙水230ml+洁面霜20g+清莹露30ml+微肌因修护精华霜15g）（护肤套装）',
+                //     price: '390.99',
+                //     total: 1,
+                //     selected: false
+                // },
+                // {
+                //     id: 2,
+                //     thumb: 'static/mini/img/demo/1.png',
+                //     title: '兰蔻（LANCOME）新精华肌底液30ml（小黑瓶 精华液 补水保湿提拉紧致 新老品随机发货）',
+                //     price: '649.00',
+                //     total: 1,
+                //     selected: false
+                // },
             ]
             ,
             allCheakbox: false
@@ -80,7 +80,7 @@ export default {
                     i = i + 1;
                 }
             }
-            if (i == _d.length) {
+            if (_d.length > 0 && i == _d.length) {
                 this.allCheakbox = true;
             } else {
                 this.allCheakbox = false;
@@ -91,6 +91,18 @@ export default {
         }
     },
     methods: {
+        //删除
+        del(k){
+            let url = '/mini/Cart/del', vm = this, data = {good_id: this.list[k].good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    // vm.$msg.success(res.msg);
+                    vm.list.splice(k,1);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
         onChange() {
 
         },
@@ -99,12 +111,30 @@ export default {
             for (let item of _d) {
                 item.selected = event.target.checked;
             }
-        }
+        },
+        
+        //取数据
+        get_list(page) {
+            page = page || 1;
+            let url = '/mini/Cart/get_list?page=' + page,
+                vm = this;
+
+            vm.loading = true;
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.list = res.data.list;
+                    vm.pages = res.data.pages
+                } else {
+                    vm.handleError(res)
+                }
+                vm.loading = false;
+            })
+        },
 
     },
     mounted() {
         this.setTitle('我的购物车')
-
+        this.get_list();
     },
 }
 
