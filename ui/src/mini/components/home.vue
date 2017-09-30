@@ -137,7 +137,7 @@ export default {
             let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    vm.$msg.success(res.msg);
+                    vm.$msg(res.msg);
                 } else {
                     vm.handleError(res)
                 }
