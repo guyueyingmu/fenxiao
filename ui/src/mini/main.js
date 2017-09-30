@@ -54,6 +54,7 @@ Vue.prototype.$confirm = function (opt,cb) {
       });
   }
 
+  
 /* eslint-disable no-new */
 
 
