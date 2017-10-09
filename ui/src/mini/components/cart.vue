@@ -75,7 +75,10 @@ export default {
     methods: {
         ondel(index){
             let vm = this;
-            this.$confirm({msg:'确定删除此商品？'}, vm.del(index))
+            this.$confirm({
+                msg: '确定删除此商品？',
+                yes: function(){vm.del(index)}
+            })
         },
         //删除
         del(k){

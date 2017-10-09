@@ -2,8 +2,8 @@
     <div class="address">
         <ul class="ui-links">
             <li v-for="(item, idx) in list" :key="idx">
-                <div style="margin-right:10px;"><input type="checkbox" class="ui-checkbox"> </div>
-                <div class="info">
+                <div style="margin-right:10px;" v-if="is_use == 1"><input type="checkbox" class="ui-checkbox"> </div>
+                <div class="info f">
                     <div class="title">
                         <div class="flex">
                             <span>收货人：</span>
@@ -15,18 +15,18 @@
                         </div>
                         <div class="flex">
                             <span>配送至：</span>
-                            <i>{{item.province}}{{item.city}}{{item.area}}{{item.area}}</i>
+                            <i>{{item.province}} {{item.city}} {{item.area}} {{item.address}}</i>
                         </div>
                     </div>
                     <div class="tool">
                         <span class="skin" v-if="item.is_default == 1">默认地址</span>
-                        <span class="ui-btn ui-btn-setDef" v-else>设为默认</span>
-                        <span class="ui-btn ui-btn-edit">
+                        <span class="ui-btn ui-btn-setDef" v-else @click="set_default(idx)">设为默认</span>
+                        <span class="ui-btn ui-btn-edit" @click="goto('/edit_address/id/'+item.id)">
                             <i class="iconfont icon-bianji"></i> 编辑</span>
 
                     </div>
                 </div>
-                <i class="iconfont icon-shanchu "></i>
+                <i class="iconfont icon-shanchu " @click="ondel(idx)"></i>
             </li>
         </ul>
 
@@ -38,7 +38,7 @@
             <i class="iconfont icon-jia"></i> 添加地址
         </div>
         <div class="space"></div>
-        <div class="btn-wrap">
+        <div class="btn-wrap" v-if="is_use == 1">
             <div class="btn-fixed">
                 <button type="button" class="ui-btn ui-btn-block ui-btn-l2">选择并使用</button>
             </div>
@@ -54,19 +54,37 @@ export default {
     data() {
         return {
             list: [],
+            is_use: 0,
         }
     },
     methods: {
+        //设为默认
+        set_default(index){
+            let url = '/mini/Address/setdefault', vm = this, data = {id: this.list[index].id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$msg(res.msg);
+                    vm.get_list();
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
         ondel(index){
-            this.del(index);
+            let vm = this;
+            this.$confirm({
+                msg: '确定删除此地址？',
+                yes: function(){vm.del(index)}
+            })
         },
         //删除
         del(k){
-            let url = '/mini/Cart/del', vm = this, data = {good_id: this.list[k].good_id};
+            let url = '/mini/Address/del', vm = this, data = {id: this.list[k].id};
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    // vm.$msg.success(res.msg);
-                    vm.list.splice(k,1);
+                    vm.$msg(res.msg);
+                    // vm.list.splice(k,1);
+                    vm.get_list();
                 } else {
                     vm.handleError(res)
                 }
@@ -90,8 +108,13 @@ export default {
 
     },
     mounted() {
-        this.setTitle('选择地址')
+        this.setTitle('收货地址')
         this.get_list();
+
+        this.is_use = this.$route.params.is_use;
+        if(this.is_use == 1){
+            this.setTitle('选择地址');
+        }
     }
 
 

@@ -37,15 +37,18 @@ export default {
             temp: {}
         }
     },
-    mounted: function() {
+    mounted() {
 
         this.pro = this.data;
         if (!this.value) {
             this.city = this.pro[0]['child'];
             this.county = this.city[0]['child'];
         }
-        this.init();
 
+
+    },
+    beforeUpdate() {
+       this.init();
     },
     methods: {
         selpro: function() {
@@ -62,10 +65,10 @@ export default {
         },
         result: function() {
             var re = {
-                province: { id: this.pro[this.f.p].id, name: this.pro[this.f.p].name },
-                city: { id: this.city[this.f.c].id, name: this.city[this.f.c].name },
-                area: { id: this.county[this.f.cc].id, name: this.county[this.f.cc].name },
-                str:this.pro[this.f.p].name +' ' + this.city[this.f.c].name  +' ' + this.county[this.f.cc].name
+                province: this.pro[this.f.p].name ,
+                city:  this.city[this.f.c].name ,
+                area: this.county[this.f.cc].name ,
+                str: this.pro[this.f.p].name + ' ' + this.city[this.f.c].name + ' ' + this.county[this.f.cc].name
             };
             this.$emit("input", re);
         },

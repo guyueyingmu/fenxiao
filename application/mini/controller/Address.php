@@ -1,6 +1,7 @@
 <?php
 namespace app\mini\controller;
 
+use think\Db;
 /**
  * 收货地址
  */
@@ -72,6 +73,20 @@ class Address extends Base
         }
     }
     /**
+     * 获取编辑数据
+     */
+    public function detail(){
+        $id = input('param.id', '', 'intval');
+        if(!$id){
+            $this->error('参数错误');
+        }
+        $info = db('consignee_info')
+                ->where('user_id', session('mini.uid'))
+                ->where('id', $id)
+                ->find();
+        $this->success('成功', '', $info);
+    }
+    /**
      * 编辑
      */
     public function edit(){
@@ -133,11 +148,58 @@ class Address extends Base
         if(!$id){
             $this->error('参数错误');
         }
-        $res = db('consignee_info')->where('id', $id)->where('user_id', session('mini.uid'))->delete();
-        if($res){
-            $this->success('删除成功');
-        }else{
-            $this->error('删除失败');
+        
+        Db::startTrans();
+        try{
+            $info = db('consignee_info')->where('id', $id)->where('user_id', session('mini.uid'))->find();
+            
+            if(!$info){
+                exception("数据不存在");
+            }
+            
+            db('consignee_info')->where('id', $id)->where('user_id', session('mini.uid'))->delete();
+            
+            if($info['is_default'] == 1){
+                $new_default = db('consignee_info')->where(['user_id' => session('mini.uid')])->order('id DESC')->find();
+                if($new_default){
+                    db('consignee_info')->where(['id' => $new_default['id']])->update(['is_default' => 1]);
+                }
+            }
+            
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error($e->getMessage());
         }
+        
+        $this->success('删除成功');
+    }
+    
+    /**
+     * 设为默认
+     */
+    public function setdefault(){
+        $id = input('param.id', '', 'intval');
+        if(!$id){
+            $this->error('参数错误');
+        }
+        
+        Db::startTrans();
+        try{
+            db('consignee_info')->where(['user_id' => session('mini.uid'), 'is_default' => 1])->update(['is_default' => 0]);
+            
+            db('consignee_info')->update(['id' => $id, 'user_id' => session('mini.uid'), 'is_default' => 1]);
+            
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        
+        $this->success('成功');
     }
 }
