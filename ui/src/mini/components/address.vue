@@ -15,7 +15,10 @@
                         </div>
                         <div class="flex">
                             <span>配送至：</span>
-                            <i>{{item.province}} {{item.city}} {{item.area}} {{item.address}}</i>
+                            <i v-if="item.province == item.city">
+                               {{item.city}}市 {{item.area}} {{item.address}}
+                            </i>
+                            <i v-else>{{item.province}}省 {{item.city}}市 {{item.area}} {{item.address}}</i>
                         </div>
                     </div>
                     <div class="tool">
