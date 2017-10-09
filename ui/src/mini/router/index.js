@@ -97,8 +97,18 @@ const router = new Router({
       component: address,
     },
     {
+      path: '/address/is_use/:is_use',
+      name: 'address2',
+      component: address,
+    },
+    {
       path: '/add_address',
       name: 'addAddress',
+      component: addAddress,
+    },
+    {
+      path: '/edit_address/id/:id',
+      name: 'editAddress',
       component: addAddress,
     },
     {
