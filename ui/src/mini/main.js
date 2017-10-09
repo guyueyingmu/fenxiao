@@ -126,24 +126,21 @@ const loading = {
     } else {
       binding.def.a.style.display = 'none'
     }
-
-
   }
 }
 
-const focus3 = {
-  inserted(el) {
-    console.log(236)
-    el.focus()
+const focus = {
+  inserted(el, binding) {
+    el.focus();
   },
-  update(el) {
-    console.log(23)
-    el.focus()
+  update(el, binding) {
+    el.focus();
   }
 }
 
-Vue.directive('focus', focus3)
+Vue.directive('focusd', focus)
 Vue.directive('loading', loading)
+
 
 
 const Vm = new Vue({

@@ -24,7 +24,7 @@
                 <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="onTixian">申请提现</button>
             </div>
         </div>
-        <input type="text"  v-focus="">
+
         <div class="dialog" v-if="dialog">
             <div class="mint-msgbox-wrapper" style="position: absolute; z-index: 2099;">
                 <div class="mint-msgbox">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="mint-msgbox-content">
                         <div class="mint-msgbox-message">{{d.message}}</div>
-                        <div class="mint-msgbox-input"><input :placeholder="d.inputPlaceholder" v-model="d.inputValue" type="number" >
+                        <div class="mint-msgbox-input"><input :placeholder="d.inputPlaceholder" v-focusd v-model="d.inputValue" type="number" >
                         </div>
                         <div class="space"></div>
                     </div>
@@ -85,6 +85,7 @@
         mounted() {
             this.setTitle('佣金提现')
             // this.get_list();
+    
         }
     }
 </script>
