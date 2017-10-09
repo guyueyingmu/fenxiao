@@ -36,9 +36,12 @@ const fail = () =>
   const talk = () =>
   import ( /* webpackChunkName: "talk" */ '@/components/talk')
 
-const noFound = () =>
-  import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
+const tixian = () =>
+  import ( /* webpackChunkName: "tixian" */ '@/components/tixian')
 
+
+  const noFound = () =>
+  import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
 
 
 Vue.use(Router)
@@ -55,7 +58,7 @@ const router = new Router({
     },
     {
       path: '/search/cat_id/:cat_id',
-      name: 'search',
+      name: 'search2',
       component: search,
     },
     {
@@ -113,6 +116,11 @@ const router = new Router({
       name: 'talk',
       component: talk,
     },
+    {
+        path: '/tixian',
+        name: 'tixian',
+        component: tixian,
+      },
     {
       path: '*',
       name: '404',
