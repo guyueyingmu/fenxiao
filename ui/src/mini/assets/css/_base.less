@@ -695,6 +695,20 @@ img {
             display: block;
         }
     }
+    &.win {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 9;
+        right: 0;
+        height: auto;
+        
+        .spin-mask {
+            display: block;
+            opacity: .4;
+        }
+    }
     .spin-mask {
         display: none;
         position: absolute;
@@ -908,6 +922,9 @@ img {
         padding: 14px 15px;
         background: #fff;
         .l-b;
+        &.med{
+            align-items: center;
+        }
     }
 }
 
@@ -952,5 +969,17 @@ img {
             color: #E74747;
             line-height: 1;
         }
+    }
+}
+
+.ui-label{
+    background: #ddd;
+    color: #666;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-size: 14px;
+    &.active{
+        background: @skin2;
+        color: #fff;
     }
 }

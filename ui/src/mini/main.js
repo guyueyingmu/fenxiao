@@ -43,7 +43,9 @@ Vue.prototype.$msg = function (str, time) {
 }
 
 Vue.prototype.$confirm = function (opt) {
-    if(!opt){return}
+  if (!opt) {
+    return
+  }
   MessageBox({
     title: opt.title || '提示',
     message: opt.msg,
@@ -55,96 +57,41 @@ Vue.prototype.$confirm = function (opt) {
       }
     }
     if (action == 'cancel') {
-        if (typeof opt.no == 'function') {
-          opt.no()
-        }
+      if (typeof opt.no == 'function') {
+        opt.no()
       }
+    }
 
   });
 }
-Vue.prototype.$alert = function (msg,cb) {
-    if(!msg){return}
+Vue.prototype.$alert = function (msg, cb) {
+  if (!msg) {
+    return
+  }
   MessageBox({
-   
     message: msg,
     showCancelButton: false
   }).then(function (action) {
 
     if (action == 'confirm') {
-      if (typeof opt.cb == 'function') {
-        opt.cb()
+      if (typeof cb == 'function') {
+        cb()
       }
     }
-  
+
 
   });
 }
 
-
 /* eslint-disable no-new */
 
 
-// //全局的 before 钩子
-// router.beforeEach((to, from, next) => {
-
-//   function _check(menu) {
-//     let canView = false;
-//     var Reg = new RegExp(to.path)
-
-//     for (let i = 0; i < menu.length; i++) {
-//       let _break = false;
-//       for (let k = 0; k < menu[i].child.length; k++) {
-//         if (Reg.test(menu[i].child[k].link)) {
-//           canView = true;
-//           _break = true;
-//           break;
-//         } else {
-//           if (to.meta.role) {
-//             var Reg2 = new RegExp(to.meta.role)
-
-//             if (Reg2.test(to.path)) {
-//               canView = true;
-//               _break = true;
-//               break;
-//             } else {
-//               canView = false
-//             }
-//           } else {
-//             canView = false
-//           }
+//全局的 before 钩子
+router.beforeEach((to, from, next) => {
+  next()
+})
 
 
-//         }
-//       }
-//       if (_break) {
-//         break;
-//       }
-//     }
-//     return canView;
-//   }
-
-//   if (store.getters.nav_list.length > 0) {
-//     if (_check(store.getters.nav_list)) {
-//       next()
-//     } else {
-//       console.log('您没有权限访问！')
-//       store.state.RoseDialogVisible = true
-//       next(false)
-//     }
-//   } else {
-//     setTimeout(function () {
-//       if (_check(store.getters.nav_list)) {
-//         next()
-//       } else {
-//         console.log('您没有权限访问！')
-//         store.state.RoseDialogVisible = true
-//         next(false)
-//       }
-//     }, 500)
-//   }
-
-
-// })
 const loading = {
   a: '',
   inserted(el, binding) {
@@ -160,6 +107,8 @@ const loading = {
     if (binding.modifiers.full) {
       d.className = 'load full'
       el.style.position = 'relative'
+    } else if (binding.modifiers.win) {
+      d.className = 'load win'
     } else {
       d.className = 'load'
     }
@@ -182,14 +131,19 @@ const loading = {
   }
 }
 
-const focus = {
-  inserted: function (el) {
+const focus3 = {
+  inserted(el) {
+    console.log(236)
+    el.focus()
+  },
+  update(el) {
+    console.log(23)
     el.focus()
   }
 }
 
+Vue.directive('focus', focus3)
 Vue.directive('loading', loading)
-Vue.directive('focus', focus)
 
 
 const Vm = new Vue({

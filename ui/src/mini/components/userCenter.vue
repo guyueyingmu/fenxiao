@@ -23,19 +23,19 @@
             <ul class="slef-card">
                 <li v-if="info.distribution_level == 2">
                     <a href="javascript:;">
-                        <span class="num">￥{{info.earn_total}}</span>
+                        <span class="num">￥{{info.earn_total||0}}</span>
                         <span class="tit">佣金</span>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:;">
-                        <span class="num">{{info.credits}}</span>
+                        <span class="num">{{info.credits||0}}</span>
                         <span class="tit">积分</span>
                     </a>
                 </li>
                 <li>
                     <a href="javascript:;">
-                        <span class="num">{{info.sign_total}}天</span>
+                        <span class="num">{{info.sign_total|| 0}}天</span>
                         <span class="tit">已签到</span>
                     </a>
                 </li>
