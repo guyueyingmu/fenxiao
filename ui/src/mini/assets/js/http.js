@@ -12,6 +12,7 @@ const apiMethods = {
   data() {
     return {
       loading: false,
+      winloading:false,
       pages: {
         current_page: 1,
         total: 10,
@@ -57,41 +58,49 @@ const apiMethods = {
     },
     //统一GET数据
     apiGet(url, data) {
-      // const load = this.$loading()
+        let that = this;
+        that.loading = true;
       return new Promise((resolve, reject) => {
-
         this.$http.get(url, {
-          params: data
+          params: data,
+          _timeout: 5000,
+          onTimeout: (request) => {
+            console.log('timeout')
+        }
         }).then((response) => {
           resolve(response.body);
-          // load.close();
+          that.loading = false;
         }, (response) => {
+            this.serverError(response);
           reject(response);
-          this.serverError(response);
-          // load.close();
         });
       });
 
     },
     //统一POST数据
     apiPost(url, data) {
-      // const load = this.$loading()
+        let that = this;
+        that.loading = true;
       return new Promise((resolve, reject) => {
-
-        this.$http.post(url, data)
+        this.$http.post(url, data,{
+            _timeout: 5000,
+            onTimeout: (request) => {
+              console.log('timeout')
+          }
+        })
           .then((response) => {
             resolve(response.body);
-            // load.close();
+            that.loading = false;
           }, (response) => {
+              this.serverError(response);
             reject(response);
-            this.serverError(response);
-            // load.close();
           });
       });
     },
     //统一服务器出错处理
     serverError(err) {
       this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url);
+      this.loading = false;
     },
     //统一异常处理
     handleError(res) {

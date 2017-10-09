@@ -1,28 +1,34 @@
 <template>
-    <div>
-        <ul class="ui-fixd">
-            <li class="med">
-                <div class="f">
-                    <div><span class="grey">提现人：</span>张三</div>
-                    <div><span class="grey">提现申请金额：</span>￥600</div>
-                    <div><span class="grey">提现申请时间：</span>2017-8-9 12:15:50</div>
+    <div v-loading="loading">
+        <div v-if="loading == false && list.length > 0">
+            <ul class="ui-fixd">
+                <li class="med">
+                    <div class="f">
+                        <div><span class="grey">提现人：</span>张三</div>
+                        <div><span class="grey">提现申请金额：</span>￥600</div>
+                        <div><span class="grey">提现申请时间：</span>2017-8-9 12:15:50</div>
+                    </div>
+                    <div><span class="ui-label">待处理</span></div>
+                </li>
+                <li class="med">
+                    <div class="f">
+                        <div><span class="grey">提现人：</span>张三</div>
+                        <div><span class="grey">提现申请金额：</span>￥600</div>
+                        <div><span class="grey">提现申请时间：</span>2017-8-9 12:15:50</div>
+                    </div>
+                    <div><span class="ui-label active">已同意</span></div>
+                </li>
+            </ul>
+            <div class="space"></div>
+            <div class="btn-wrap">
+                <div class="btn-fixed">
+                    <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="onTixian">申请提现</button>
                 </div>
-                <div><span class="ui-label">待处理</span></div>
-            </li>
-            <li class="med">
-                <div class="f">
-                    <div><span class="grey">提现人：</span>张三</div>
-                    <div><span class="grey">提现申请金额：</span>￥600</div>
-                    <div><span class="grey">提现申请时间：</span>2017-8-9 12:15:50</div>
-                </div>
-                <div><span class="ui-label active">已同意</span></div>
-            </li>
-        </ul>
-        <div class="space"></div>
-        <div class="btn-wrap">
-            <div class="btn-fixed">
-                <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="onTixian">申请提现</button>
             </div>
+        </div>
+        <div class="nodata" v-if="list.length < 1 && loading == false">
+            <i class="iconfont icon-tongyongmeiyoushuju"></i>
+            <div>您还没有提现记录~</div>
         </div>
 
         <div class="dialog" v-if="dialog">
@@ -33,7 +39,7 @@
                     </div>
                     <div class="mint-msgbox-content">
                         <div class="mint-msgbox-message">{{d.message}}</div>
-                        <div class="mint-msgbox-input"><input :placeholder="d.inputPlaceholder" v-focusd v-model="d.inputValue" type="number" >
+                        <div class="mint-msgbox-input"><input :placeholder="d.inputPlaceholder" v-focusd v-model="d.inputValue" type="number">
                         </div>
                         <div class="space"></div>
                     </div>
@@ -85,7 +91,6 @@
         mounted() {
             this.setTitle('佣金提现')
             // this.get_list();
-    
         }
     }
 </script>
