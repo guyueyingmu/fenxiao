@@ -207,7 +207,7 @@ export default {
             })
         }
     },
-    mounted() {
+    created() {
         this.setTitle('商品详情')
         this.good_id = this.$route.params.id;
         this.get_info(this.good_id);

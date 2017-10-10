@@ -35,7 +35,7 @@ export default {
             }
         }
     },
-    mounted() {
+    created() {
         this.v = this.value;
 
 

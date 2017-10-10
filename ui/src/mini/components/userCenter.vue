@@ -104,7 +104,7 @@ export default {
             })
         },
     },
-    mounted() {
+    created() {
         this.setTitle('会员中心')
         this.get_info();
     },
