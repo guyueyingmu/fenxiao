@@ -51,12 +51,12 @@
         <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
 
             <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d1.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d2.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d3.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d4.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d5.jpg">
-                                                                        <img src="static/mini/img/demo/detail/d6.jpg"> -->
+                                                                                <img src="static/mini/img/demo/detail/d1.jpg">
+                                                                                <img src="static/mini/img/demo/detail/d2.jpg">
+                                                                                <img src="static/mini/img/demo/detail/d3.jpg">
+                                                                                <img src="static/mini/img/demo/detail/d4.jpg">
+                                                                                <img src="static/mini/img/demo/detail/d5.jpg">
+                                                                                <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
         <div class="comment-list minHeight200" v-show="tagActive == 1">
@@ -175,8 +175,9 @@ export default {
                     olddata.splice(0, 0, data);
                 }
 
-
-                window.localStorage.setItem("__history__", JSON.stringify(olddata))
+                if (olddata.length < 10) {
+                    window.localStorage.setItem("__history__", JSON.stringify(olddata))
+                }
             }
 
         },
