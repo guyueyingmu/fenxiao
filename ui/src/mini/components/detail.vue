@@ -43,7 +43,7 @@
         <div class="tags">
             <span :class="{'active':tagActive == 0}" @click="switchTags(0)">商品介绍</span>
             <span class="a-line"></span>
-            <span :class="{'active':tagActive == 1}" @click="switchTags(1)">用户评论({{comment_pages.total}})</span>
+            <span :class="{'active':tagActive == 1}" @click="switchTags(1)">用户评论({{good_info.comment_total}})</span>
         </div>
 
         <div class="content minHeight200" v-show="tagActive == 0">
@@ -59,14 +59,14 @@
 
         <div class="comment-list minHeight200" v-show="tagActive == 1"  v-loading.full="loadComment">
 
-            <div class="main" v-if="comment_list.length > 0">
+            <div class="main">
                 <div class="tagsLabel">
-                    <span class="active">全部</span>
-                    <span>好评</span>
-                    <span>中评</span>
-                    <span>差评</span>
+                    <span :class="{'active':search.keyword == 0}" @click="onSearch(0)">全部</span>
+                    <span :class="{'active':search.keyword == 1}" @click="onSearch(1)">好评</span>
+                    <span :class="{'active':search.keyword == 2}" @click="onSearch(2)">中评</span>
+                    <span :class="{'active':search.keyword == 3}" @click="onSearch(3)">差评</span>
                 </div>
-                <ul class="ui-comment" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                <ul class="ui-comment" v-if="comment_list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
                     <li v-for="(item,idx) in comment_list" :key="idx">
                         <div class="row">
                             <div class="pic"><img :src="item.img_url"> </div>
@@ -83,11 +83,11 @@
                         </div>
                     </li>
                 </ul>
+                <div class="noComment" v-else>
+                    <i class="iconfont icon-zanwuxinxi"></i>
+                    暂无评论
+                </div>
               
-            </div>
-            <div class="noComment" v-else>
-                <i class="iconfont icon-zanwuxinxi"></i>
-                暂无评论
             </div>
 
         </div>
@@ -136,6 +136,9 @@ export default {
             comment_pages: {},
             good_info: {},
             good_id: 0,
+            search: {
+                keyword: 0,
+            }
         }
     },
     methods: {
@@ -198,19 +201,19 @@ export default {
             })
         },
         loadMore(){
-            let page = this.comment_pages.current_page + 1;
+            let page = parseInt(this.comment_pages.current_page) + 1;
             if(page > this.comment_pages.total_page){
                 return false;
             }else{
                 if(this.comment_pages.current_page > 1){
-
                     this.get_comment(page);
                 }
             }            
         },
         //搜索
-        onSearch() {
-            let searchData = this.formInline
+        onSearch(keyword) {
+            this.search.keyword = keyword;
+            let searchData = {keyword: this.search.keyword}
             this.get_comment(1, searchData)
         },
         //获取评论信息

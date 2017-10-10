@@ -84,6 +84,12 @@ class Good extends Base
         //购物车数量
         $info['cart_total'] = db('goods_cart')->where('user_id', session('mini.uid'))->sum('total');
         
+        //评论总数
+        $where = 'gc.good_id = '.$id.' AND gc.delete_time IS NULL';
+        $info['comment_total'] = db('goods_comments')->alias('gc')
+                ->join('__USERS__ u', 'u.id=gc.user_id', 'LEFT')
+                ->where($where)->count();
+        
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
     }
