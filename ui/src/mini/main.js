@@ -107,7 +107,8 @@ Vue.prototype.$alert = function (msg, cb) {
 
 //全局的 before 钩子
 router.beforeEach((to, from, next) => {
-  next()
+    next()
+    // window.document.body.scrollTop = 0
 })
 
 

@@ -1,6 +1,7 @@
+
 <template>
     <div class="rate">
-        <i class="iconfont icon-11" @click="select(i)" :class="{'active':v >= i }" v-for="i in 5" :key="i"></i> <span v-if="text"> {{label}}</span>
+        <i class="iconfont icon-11" :style="{'font-size':size+'px'}" @click="select(i)" :class="{'active':v >= i }" v-for="i in 5" :key="i"></i> <span v-if="text"> {{label}}</span>
     </div>
 </template>
 <script>
@@ -15,6 +16,10 @@ export default {
         },
         text:{
             type:Boolean
+        },
+         size:{
+            type:Number,
+            default:24
         }
     },
     data() {

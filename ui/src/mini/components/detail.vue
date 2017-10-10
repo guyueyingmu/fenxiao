@@ -45,8 +45,7 @@
             <span :class="{'active':tagActive == 1}" @click="switchTags(1)">用户评论({{good_info.comment_total}})</span>
         </div>
 
-        <div class="content minHeight200" v-show="tagActive == 0">
-            {{good_info.detail}}
+        <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
         </div>
 
         <div class="comment-list minHeight200" v-show="tagActive == 1" v-loading="loadComment">

@@ -33,24 +33,29 @@ const success = () =>
   import ( /* webpackChunkName: "success" */ '@/components/paySuccess')
 const fail = () =>
   import ( /* webpackChunkName: "fail" */ '@/components/payfail')
-  const talk = () =>
+const talk = () =>
   import ( /* webpackChunkName: "talk" */ '@/components/talk')
 
 const tixian = () =>
   import ( /* webpackChunkName: "tixian" */ '@/components/tixian')
 
 
-  const favorite = () =>
+const favorite = () =>
   import ( /* webpackChunkName: "favorite" */ '@/components/favorite')
 
-  const history = () =>
+const history = () =>
   import ( /* webpackChunkName: "history" */ '@/components/history')
-  const order = () =>
+const order = () =>
   import ( /* webpackChunkName: "order" */ '@/components/order')
 
-  const noFound = () =>
-  import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
 
+const orderDetail = () =>
+  import ( /* webpackChunkName: "orderDetail" */ '@/components/order-detail')
+const start = () =>
+  import ( /* webpackChunkName: "start" */ '@/components/start')
+
+const noFound = () =>
+  import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
 
 Vue.use(Router)
 const router = new Router({
@@ -135,25 +140,35 @@ const router = new Router({
       component: talk,
     },
     {
-        path: '/tixian',
-        name: 'tixian',
-        component: tixian,
-      },
+      path: '/tixian',
+      name: 'tixian',
+      component: tixian,
+    },
     {
-        path: '/history',
-        name: 'history',
-        component: history,
-      },
+      path: '/history',
+      name: 'history',
+      component: history,
+    },
     {
-        path: '/favorite',
-        name: 'favorite',
-        component: favorite,
-      },
+      path: '/favorite',
+      name: 'favorite',
+      component: favorite,
+    },
     {
-        path: '/order',
-        name: 'order',
-        component: order,
-      },
+      path: '/order',
+      name: 'order',
+      component: order,
+    },
+    {
+      path: '/order_detail',
+      name: 'orderDetail',
+      component: orderDetail,
+    },
+    {
+      path: '/start',
+      name: 'start',
+      component: start,
+    },
     {
       path: '*',
       name: '404',
