@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.4;
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
     background: #eee;
@@ -165,7 +165,7 @@ img {
     color: #f00;
     font-size: 14px;
     em {
-        font-size: 18px;
+        font-size: 16px;
     }
 }
 
@@ -606,6 +606,8 @@ img {
         font-size: 14px;
         vertical-align: middle;
         color: #888;
+        display: inline-block;
+        min-width: 28px;
     }
     .iconfont {
         vertical-align: middle;
@@ -1067,5 +1069,34 @@ img {
             }
         }
 
+    }
+}
+.ui-cart{
+    padding: 13px;
+    background: #fff;
+    color: #444;
+}
+.space15{
+    height: 15px;;
+}
+.thumb-rate{
+    display: flex;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    li{
+        display:block;
+        flex-basis: 25%;
+        padding-top: 25%;
+        position: relative;
+        overflow: hidden;
+      
+        img{
+            position: absolute;
+            left: 2px;
+            top:2px;
+            width: 90%;
+            height: 90%;
+            border: solid 1px #ddd;
+        }
     }
 }
