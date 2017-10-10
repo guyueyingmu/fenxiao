@@ -104,8 +104,11 @@ const apiMethods = {
     },
     //统一异常处理
     handleError(res) {
-      if (res.msg == '请登录后操作') {
-        // this.$store.state.LoginDialogVisible = true
+        let vm = this;
+      if (/数据不存在/.test(res.msg)) {
+        this.$alert(res.msg,function(){
+           vm.goto('/')
+        });
 
       } else {
         // this.$message.error(res.msg);

@@ -163,6 +163,7 @@ export default {
                             }
                         }
                         if (_canPush) {
+                            console.log(olddata.length)
                             if (olddata.length < 10) {
                                 olddata.splice(0, 0, data);
                             }
@@ -175,9 +176,9 @@ export default {
                     olddata.splice(0, 0, data);
                 }
 
-                if (olddata.length < 10) {
+                //if (olddata.length < 10) {
                     window.localStorage.setItem("__history__", JSON.stringify(olddata))
-                }
+               // }
             }
 
         },
