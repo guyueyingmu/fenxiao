@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <!--商品图片尺寸  660 * 520-->
-        <swiper :options="swiperOption">
+        <swiper :options="swiperOption" :style="{height:setHeight}">
             <swiper-slide v-for="(slide,idx) in good_info.banner" :key="idx">
                 <img :src="slide.img_url">
             </swiper-slide>
@@ -24,10 +24,9 @@
                 <em>在线客服</em>
             </div>
             <div class="item btn">
-                 <!-- 收藏成功 -->
-                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1" @click="del_collect(good_info.id)"></i>  
+                <!-- 收藏成功 -->
+                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1" @click="del_collect(good_info.id)"></i>
                 <i v-else class="iconfont icon-xin" @click="add_collect(good_info.id)"></i>
-                
                 <em>收藏</em>
             </div>
             <div class="item btn myCart" @click="goto('/cart')">
@@ -48,16 +47,9 @@
 
         <div class="content minHeight200" v-show="tagActive == 0">
             {{good_info.detail}}
-            <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-                <img src="static/mini/img/demo/detail/d1.jpg">
-                <img src="static/mini/img/demo/detail/d2.jpg">
-                <img src="static/mini/img/demo/detail/d3.jpg">
-                <img src="static/mini/img/demo/detail/d4.jpg">
-                <img src="static/mini/img/demo/detail/d5.jpg">
-                <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
-        <div class="comment-list minHeight200" v-show="tagActive == 1"  v-loading.full="loadComment">
+        <div class="comment-list minHeight200" v-show="tagActive == 1" v-loading="loadComment">
 
             <div class="main">
                 <div class="tagsLabel">
@@ -66,7 +58,7 @@
                     <span :class="{'active':search.keyword == 2}" @click="onSearch(2)">中评</span>
                     <span :class="{'active':search.keyword == 3}" @click="onSearch(3)">差评</span>
                 </div>
-                <ul class="ui-comment" v-if="comment_list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
+                <ul class="ui-comment" v-if="comment_list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loadComment" :infinite-scroll-immediate-check="false" infinite-scroll-distance="10">
                     <li v-for="(item,idx) in comment_list" :key="idx">
                         <div class="row">
                             <div class="pic"><img :src="item.img_url"> </div>
@@ -87,11 +79,11 @@
                     <i class="iconfont icon-zanwuxinxi"></i>
                     暂无评论
                 </div>
-              
+
             </div>
 
         </div>
-        <div style="height:80px;background:#fff"></div>
+        <div style="height:100px;background:#fff"></div>
 
     </div>
 </template>
@@ -111,7 +103,12 @@ export default {
         swiperSlide,
         Rate
     },
-  
+    computed: {
+        setHeight() {
+            return window.innerWidth / 1.269 + 'px'
+        }
+    },
+
     data() {
         return {
             swiperOption: {
@@ -132,25 +129,24 @@ export default {
             // ],
             tagActive: 0,
             loadComment: false,
-            comment_list:[],
+            comment_list: [],
             comment_pages: {},
             good_info: {},
             good_id: 0,
             search: {
                 keyword: 0,
-            }
+            },
+            timer: null
         }
     },
     methods: {
         switchTags(idx) {
             this.tagActive = idx;
-            if(idx == 1 && this.comment_list.length < 1){
-                   this.loadComment = true;
-                   let vm  = this;
-                   vm.get_comment(1);
-                   setTimeout(()=>{
-                       vm.loadComment = false
-                   },1000)
+            if (idx == 1 && this.comment_list.length < 1) {
+
+                let vm = this;
+                vm.get_comment(1);
+
             }
         },
         //我的足迹  保存
@@ -182,21 +178,21 @@ export default {
                     olddata.splice(0, 0, data);
                 }
 
-                //if (olddata.length < 10) {
-                    window.localStorage.setItem("__history__", JSON.stringify(olddata))
-               // }
+
+                window.localStorage.setItem("__history__", JSON.stringify(olddata))
+
             }
 
         },
         //立即购买
-        go_buy(good_id){
-            let params = [{good_id:good_id, good_count:1}]
+        go_buy(good_id) {
+            let params = [{ good_id: good_id, good_count: 1 }]
             this.setCart(params)
             this.goto('/confirm');
         },
         //加入购物车
-        add_cart(good_id){
-            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+        add_cart(good_id) {
+            let url = '/mini/Cart/add', vm = this, data = { good_id: good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.good_info.cart_total = parseInt(vm.good_info.cart_total) + 1;
@@ -207,8 +203,8 @@ export default {
             })
         },
         //加入收藏
-        add_collect(good_id){
-            let url = '/mini/Collect/add', vm = this, data = {good_id: good_id};
+        add_collect(good_id) {
+            let url = '/mini/Collect/add', vm = this, data = { good_id: good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.good_info.is_collect = 1;
@@ -219,8 +215,8 @@ export default {
             })
         },
         //取消收藏
-        del_collect(good_id){
-            let url = '/mini/Collect/del', vm = this, data = {good_id: good_id};
+        del_collect(good_id) {
+            let url = '/mini/Collect/del', vm = this, data = { good_id: good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.good_info.is_collect = 0;
@@ -231,8 +227,8 @@ export default {
             })
         },
         //获取商品信息
-        get_info(id){
-            let url = '/mini/Good/detail?id='+id,
+        get_info(id) {
+            let url = '/mini/Good/detail?id=' + id,
                 vm = this;
 
             this.apiGet(url, {}).then(function(res) {
@@ -243,43 +239,43 @@ export default {
                 }
             })
         },
-        loadMore(){
-            let page = parseInt(this.comment_pages.current_page) + 1;
-            if(page > this.comment_pages.total_page){
-                return false;
-            }else{
-                if(this.comment_pages.current_page > 1){
-                    this.get_comment(page);
+        loadMore() {
+            let page = parseInt(this.comment_pages.current_page, 10);
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+                if (page < this.comment_pages.total_page) {
+                    this.get_comment(page + 1);
                 }
-            }            
+            }, 500)
+
+
         },
         //搜索
         onSearch(keyword) {
             this.search.keyword = keyword;
-            let searchData = {keyword: this.search.keyword}
+            let searchData = { keyword: this.search.keyword }
             this.get_comment(1, searchData)
         },
         //获取评论信息
-        get_comment(page, searchData){
+        get_comment(page, searchData) {
+            this.loadComment = true;
             page = page || 1;
             let url = '/mini/Comment/get_list?good_id=' + this.good_id + '&page=' + page,
                 vm = this;
 
             this.apiGet(url, searchData).then(function(res) {
-     
+                vm.loadComment = false;
                 if (res.code) {
-                    if(page < 2){
-                       vm.comment_list = res.data.list;
-                                 console.log(JSON.stringify(res.data.list,null,4))
-                    }else{
+                       vm.comment_pages = res.data.pages;
+                    if (page < 2) {
+                        vm.comment_list = res.data.list;
+
+                    } else {
+                        let _list = vm.comment_list;
+                        _list = _list.concat(res.data.list)
+                        vm.comment_list = _list;
+                    }
                  
-                        
-                       let _list = vm.comment_list;
-                       _list.concat(res.data.list)
-                       console.log(JSON.stringify(_list,null,4))
-                      vm.comment_list = _list;
-                    }                    
-                    vm.comment_pages = res.data.pages;
                 } else {
                     vm.handleError(res)
                 }
@@ -290,7 +286,7 @@ export default {
         this.setTitle('商品详情')
         this.good_id = this.$route.params.id;
         this.get_info(this.good_id);
-      //  this.get_comment(1);
+        //  this.get_comment(1);
     },
 }
 
