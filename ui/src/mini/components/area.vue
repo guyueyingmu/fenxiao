@@ -116,18 +116,10 @@ export default {
                         vm.start =false;
                         break;
                     }
-
                 }
-
-
             }
         }
-
-
     },
-
-
-
 }
 
 </script>
