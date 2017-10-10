@@ -24,7 +24,7 @@ class Order extends Base
      * ]
      */
     public function check_order(){
-        $data = input('param.data', '', 'trim');
+        $data = input('param.', '', 'trim'); //print_r($data);exit;
 //        $data = [
 //            [
 //                'good_id'=>4,
