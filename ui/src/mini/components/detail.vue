@@ -51,12 +51,12 @@
         <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
 
             <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-                                                            <img src="static/mini/img/demo/detail/d1.jpg">
-                                                            <img src="static/mini/img/demo/detail/d2.jpg">
-                                                            <img src="static/mini/img/demo/detail/d3.jpg">
-                                                            <img src="static/mini/img/demo/detail/d4.jpg">
-                                                            <img src="static/mini/img/demo/detail/d5.jpg">
-                                                            <img src="static/mini/img/demo/detail/d6.jpg"> -->
+                                                                    <img src="static/mini/img/demo/detail/d1.jpg">
+                                                                    <img src="static/mini/img/demo/detail/d2.jpg">
+                                                                    <img src="static/mini/img/demo/detail/d3.jpg">
+                                                                    <img src="static/mini/img/demo/detail/d4.jpg">
+                                                                    <img src="static/mini/img/demo/detail/d5.jpg">
+                                                                    <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
         <div class="comment-list minHeight200" v-show="tagActive == 1">
@@ -147,14 +147,51 @@ export default {
 
             }
         },
+        //我的足迹  保存
+        setHistory(data) {
+            let _canPush = true;
+            if (data) {
+
+                let olddata = window.localStorage.getItem("__history__")
+                if (olddata) {
+                    olddata = JSON.parse(olddata)
+                    if (olddata) {
+                        for (let item of olddata) {
+                            if (item.id == data.id) {
+                                _canPush = false;
+                                break;
+                            }
+                        }
+                        if (_canPush) {
+                            olddata.push(data);
+                        }
+                    }
+
+                } else {
+                    olddata = []
+                    olddata.push(data);
+                }
+
+
+                window.localStorage.setItem("__history__", JSON.stringify(olddata))
+            }
+
+        },
         //获取商品信息
         get_info(id) {
             let url = '/mini/Good/detail?id=' + id,
                 vm = this;
-
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
                     vm.good_info = res.data;
+                    let _obj = {
+                        id: res.data.id,
+                        good_img: res.data.good_img,
+                        good_title: res.data.good_title,
+                        price: res.data.price,
+                    }
+                    vm.setHistory(_obj)
+
                 } else {
                     vm.handleError(res)
                 }
@@ -209,6 +246,7 @@ export default {
         this.good_id = this.$route.params.id;
         this.get_info(this.good_id);
         //  this.get_comment(1);
+
     },
 }
 
