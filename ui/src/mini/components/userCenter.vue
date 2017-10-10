@@ -43,7 +43,7 @@
         </div>
 
         <ul class="ui-links l-t userServer-list">
-            <li >
+            <li @click="goto('/order')">
                 
                 <div class="title"><i class="iconfont icon-dingdan"></i> 我的订单</div>
                 <div class="des">
