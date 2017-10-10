@@ -51,12 +51,12 @@
         <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
 
             <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-                                                        <img src="static/mini/img/demo/detail/d1.jpg">
-                                                        <img src="static/mini/img/demo/detail/d2.jpg">
-                                                        <img src="static/mini/img/demo/detail/d3.jpg">
-                                                        <img src="static/mini/img/demo/detail/d4.jpg">
-                                                        <img src="static/mini/img/demo/detail/d5.jpg">
-                                                        <img src="static/mini/img/demo/detail/d6.jpg"> -->
+                                                            <img src="static/mini/img/demo/detail/d1.jpg">
+                                                            <img src="static/mini/img/demo/detail/d2.jpg">
+                                                            <img src="static/mini/img/demo/detail/d3.jpg">
+                                                            <img src="static/mini/img/demo/detail/d4.jpg">
+                                                            <img src="static/mini/img/demo/detail/d5.jpg">
+                                                            <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
         <div class="comment-list minHeight200" v-show="tagActive == 1">
@@ -166,14 +166,18 @@ export default {
             let vm = this;
             clearTimeout(this.timer);
             this.timer = setTimeout(() => {
-                console.log('infinite load page:',page)
+                console.log('infinite load page:', page)
                 if (page < vm.comment_pages.total_page) {
                     vm.get_comment(page + 1);
                 }
             }, 1000)
         },
-        
-  
+        //评论过滤
+        onSearch() {
+            let searchData = this.formInline
+            this.get_comment(1, searchData)
+        },
+
 
         //获取评论信息
         get_comment(page, searchData) {
