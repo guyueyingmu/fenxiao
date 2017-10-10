@@ -43,7 +43,7 @@
         </div>
 
         <ul class="ui-links l-t userServer-list">
-            <li >
+            <li @click="goto('/order')">
                 
                 <div class="title"><i class="iconfont icon-dingdan"></i> 我的订单</div>
                 <div class="des">
@@ -62,7 +62,7 @@
             <li @click="goto('/favorite')">
                 <div class="title"><i class="iconfont icon-wodeshoucang"></i> 我的收藏</div>
             </li>
-            <li>
+            <li @click="goto('/history')">
                 <div class="title"><i class="iconfont icon-wodezujiline"></i> 我的足迹</div>
             </li>
             <li v-if="info.distribution_level == 0">

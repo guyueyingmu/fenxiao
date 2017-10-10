@@ -981,3 +981,29 @@ img {
         color: #fff;
     }
 }
+
+.ui-tags{
+    width: 70%;
+    margin: 15px auto;
+    display: flex;
+    border:solid 1px @skin2;
+    border-radius: 5px;
+    overflow: hidden;
+    span{
+        display: block;
+        text-align: center;
+        flex: 1;
+        background: @skin2;
+        color: #fff;
+        line-height: 2;
+        font-size: 14px;
+        &:last-child{
+            border-radius: 0 3px 3px 0;
+        }
+        &.active{
+            background: #fff;
+            color: @skin2;
+        }
+    }
+    
+}

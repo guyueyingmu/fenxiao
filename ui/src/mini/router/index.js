@@ -45,6 +45,9 @@ const tixian = () =>
 
   const history = () =>
   import ( /* webpackChunkName: "history" */ '@/components/history')
+  const order = () =>
+  import ( /* webpackChunkName: "order" */ '@/components/order')
+
   const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
 
@@ -145,6 +148,11 @@ const router = new Router({
         path: '/favorite',
         name: 'favorite',
         component: favorite,
+      },
+    {
+        path: '/order',
+        name: 'order',
+        component: order,
       },
     {
       path: '*',
