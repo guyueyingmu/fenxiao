@@ -49,12 +49,12 @@
         <div class="content minHeight200" v-show="tagActive == 0">
             {{good_info.detail}}
             <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-            <img src="static/mini/img/demo/detail/d1.jpg">
-            <img src="static/mini/img/demo/detail/d2.jpg">
-            <img src="static/mini/img/demo/detail/d3.jpg">
-            <img src="static/mini/img/demo/detail/d4.jpg">
-            <img src="static/mini/img/demo/detail/d5.jpg">
-            <img src="static/mini/img/demo/detail/d6.jpg"> -->
+                <img src="static/mini/img/demo/detail/d1.jpg">
+                <img src="static/mini/img/demo/detail/d2.jpg">
+                <img src="static/mini/img/demo/detail/d3.jpg">
+                <img src="static/mini/img/demo/detail/d4.jpg">
+                <img src="static/mini/img/demo/detail/d5.jpg">
+                <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
         <div class="comment-list minHeight200" v-show="tagActive == 1"  v-loading.full="loadComment">
@@ -149,6 +149,40 @@ export default {
                        vm.loadComment = false
                    },1000)
             }
+        },
+        //我的足迹  保存
+        setHistory(data) {
+            let _canPush = true;
+            if (data) {
+
+                let olddata = window.localStorage.getItem("__history__")
+                if (olddata) {
+                    olddata = JSON.parse(olddata)
+                    if (olddata) {
+                        for (let item of olddata) {
+                            if (item.id == data.id) {
+                                _canPush = false;
+                                break;
+                            }
+                        }
+                        if (_canPush) {
+                            if (olddata.length < 10) {
+                                olddata.splice(0, 0, data);
+                            }
+
+                        }
+                    }
+
+                } else {
+                    olddata = []
+                    olddata.splice(0, 0, data);
+                }
+
+                if (olddata.length < 10) {
+                    window.localStorage.setItem("__history__", JSON.stringify(olddata))
+                }
+            }
+
         },
         //获取商品信息
         get_info(id){
