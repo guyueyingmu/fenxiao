@@ -34,22 +34,22 @@ export default {
                 c: 0,
                 cc: 0,
             },
-            temp: {}
+            temp: {},
+            start: true
         }
     },
-    mounted() {
+    created() {
 
         this.pro = this.data;
-        if (!this.value) {
-            this.city = this.pro[0]['child'];
-            this.county = this.city[0]['child'];
-        }
-
+        this.city = this.pro[0]['child'];
+        this.county = this.city[0]['child'];
 
     },
     beforeUpdate() {
-       this.init();
+        console.log(22)
+        this.init()
     },
+
     methods: {
         selpro: function() {
             this.city = this.pro[this.f.p]['child'];
@@ -65,12 +65,15 @@ export default {
         },
         result: function() {
             var re = {
-                province: this.pro[this.f.p].name ,
-                city:  this.city[this.f.c].name ,
-                area: this.county[this.f.cc].name ,
+                province: this.pro[this.f.p].name,
+                city: this.city[this.f.c].name,
+                area: this.county[this.f.cc].name,
                 str: this.pro[this.f.p].name + ' ' + this.city[this.f.c].name + ' ' + this.county[this.f.cc].name
             };
+      
+
             this.$emit("input", re);
+
         },
         init: function() {
             let n = this.value;
@@ -81,7 +84,7 @@ export default {
                 if (_d[i].name == n.province) {
                     vm.f.p = i;
                     city_cb(i);
-                    continue;
+                    break;
                 }
             }
 
@@ -93,7 +96,7 @@ export default {
                     if (_d[i].name == n.city) {
                         vm.f.c = i;
                         cc_cb(i)
-                        continue;
+                        break;
                     }
                 }
             }
@@ -102,12 +105,14 @@ export default {
                 vm.county = vm.city[ii]['child'];
                 var _d = vm.county;
                 for (var i = 0; i < _d.length; i++) {
+                    console.log(_d[i].name, n.area)
                     if (_d[i].name == n.area) {
-
                         vm.f.cc = i;
-                        continue;
+                        break;
                     }
+
                 }
+
 
             }
         }

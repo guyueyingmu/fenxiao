@@ -79,7 +79,7 @@ export default {
             this.apiGet(url).then(function(res) {
                 if (res.code) {
                     vm.save_data = res.data;
-                    console.log(res.data)
+                  
                     vm.area = {
                         province : res.data.province,
                         city : res.data.city,
@@ -90,7 +90,7 @@ export default {
             })
         }
     },
-    mounted() {
+    created() {
         this.setTitle('添加地址')
 
         if (this.$route.name == 'editAddress') {
