@@ -18,9 +18,9 @@ class Comment extends Base
         }
         
         $page = input('param.page', 1, 'intval');
-        $limit = config('mini_page_limit');
+        $limit = 2;//config('mini_page_limit');
         
-        $where = 'gc.good_id = '.$good_id.' AND gc.delete_time IS NOT NULL';
+        $where = 'gc.good_id = '.$good_id.' AND gc.delete_time IS NULL';
         $keyword = input('param.keyword', '', 'trim');
         if($keyword == 1){
             $where .= ' AND gc.stars=5';
@@ -41,7 +41,9 @@ class Comment extends Base
         
         if($list){
             foreach($list as $k=>$v){
-                $list[$k]['imgs'] = json_decode($v['imgs'],true);
+                if($v['imgs']){
+                    $list[$k]['imgs'] = json_decode($v['imgs'],true);
+                }
             }
         }
         

@@ -59,7 +59,7 @@
             <li @click="goto('/address')">
                 <div class="title"><i class="iconfont icon-dizhi"></i> 收货地址</div>
             </li>
-            <li>
+            <li @click="goto('/favorite')">
                 <div class="title"><i class="iconfont icon-wodeshoucang"></i> 我的收藏</div>
             </li>
             <li>

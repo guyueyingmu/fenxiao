@@ -39,6 +39,9 @@ Vue.config.devtools = true
 import style from './assets/css/style.less'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
+import { InfiniteScroll } from 'mint-ui';
+
+Vue.use(InfiniteScroll);
 
 const IS = {}
 IS.IPhone = /iPhone/.test(navigator.userAgent);

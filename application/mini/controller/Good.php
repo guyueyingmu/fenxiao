@@ -69,7 +69,8 @@ class Good extends Base
         }
         
         //记录用户足迹
-        Footmark::add($info);
+        $footmark = new Footmark();
+        $footmark->add($info);
         
         //轮播图
         $info['banner'] = db('goods_banner')->where('good_id', $id)->order('id DESC')->select();
@@ -81,9 +82,7 @@ class Good extends Base
             $info['is_collect'] = 1;
         }
         //购物车数量
-        if($info['good_type'] == 1){
-            $info['cart_total'] = db('goods_cart')->where('user_id', session('mini.uid'))->sum('total');
-        }
+        $info['cart_total'] = db('goods_cart')->where('user_id', session('mini.uid'))->sum('total');
         
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
