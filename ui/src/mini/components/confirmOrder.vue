@@ -18,7 +18,7 @@
                 </div>
                 <i class="iconfont icon-arrow"></i>
             </li>
-              <li class="noactive">
+              <!-- <li class="noactive">
                 <div class="title add_info">
                     <div class="flex">
                         <span>收货人：</span>
@@ -33,7 +33,7 @@
                         <i>广东省 广州市 海珠区 丽影广场a座801 丽影广场a座801</i>
                     </div>
                 </div>
-            </li>
+            </li> -->
             <li class="noAdd" @click="goto('/address')">
                 <div class="title">
                     <div>
@@ -82,14 +82,28 @@ export default {
     mixins: [http],
     data() {
         return {
-            list: []
+            list: [],
+            good_list: [],
         }
+    },
+    method: {
+        get_good_info(){
+            let url = '/mini/Good/detail?id='+id,
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.good_info = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
     },
     created() {
         this.setTitle('确认订单')
         let _list = this.$store.state.cart;
-        this.list = _list;
-
+        this.good_list = _list;
     }
 
 

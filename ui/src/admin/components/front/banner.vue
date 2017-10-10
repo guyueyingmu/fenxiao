@@ -194,7 +194,7 @@ export default {
         //删除
         removeData(index, cb) {
             let _data = this.list[index]
-            let url = '/admin/goodscat/del?id=' + _data.id,
+            let url = '/admin/banner/del?id=' + _data.id,
                 vm = this;
             vm.loading = true;
             this.apiGet(url).then(function(res) {
