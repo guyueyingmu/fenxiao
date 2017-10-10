@@ -174,7 +174,7 @@ export default {
 
         }
     },
-    mounted() {
+    created() {
         this.setTitle('商品详情')
 
     },

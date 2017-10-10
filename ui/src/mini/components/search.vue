@@ -144,7 +144,7 @@ export default {
 
 
     },
-    mounted() {
+    created() {
         this.init();
         this.setTitle('搜索')
 

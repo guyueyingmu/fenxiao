@@ -33,7 +33,7 @@ export default {
             })
         },
     },
-    mounted() {
+    created() {
         this.setTitle('商品分类')
 
         this.get_cat();

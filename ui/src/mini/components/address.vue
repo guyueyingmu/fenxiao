@@ -110,7 +110,7 @@ export default {
         },
 
     },
-    mounted() {
+    created() {
         this.setTitle('收货地址')
         this.get_list();
 

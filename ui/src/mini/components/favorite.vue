@@ -48,7 +48,7 @@
             ondel() {
             },
         },
-        mounted() {
+        created() {
             this.setTitle('我的收藏')
              this.get_list();
         }

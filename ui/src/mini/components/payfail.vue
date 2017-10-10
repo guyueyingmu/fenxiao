@@ -17,7 +17,7 @@ import http from '@/assets/js/http'
 export default {
     name: 'class',
     mixins: [http],
-    mounted() {
+    created() {
         this.setTitle('支付失败')
 
     }

@@ -181,7 +181,7 @@ export default {
         },
     },
 
-    mounted() {
+    created() {
         this.setTitle('首页')
 
         this.get_banner();

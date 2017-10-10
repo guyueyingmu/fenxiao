@@ -121,7 +121,7 @@ export default {
         },
 
     },
-    mounted() {
+    created() {
         this.setTitle('我的购物车')
         this.get_list();
     },

@@ -44,7 +44,7 @@ export default {
                 }
         }
     },
-    mounted() {
+    created() {
         this.v = this.value ? parseInt(this.value) : 0;
         this.setLabel(this.v)
 

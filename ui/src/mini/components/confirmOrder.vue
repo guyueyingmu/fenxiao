@@ -102,7 +102,7 @@ export default {
             ]
         }
     },
-    mounted() {
+    created() {
         this.setTitle('确认订单')
 
     }

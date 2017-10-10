@@ -88,7 +88,7 @@
                 this.dialog = false;
             }
         },
-        mounted() {
+        created() {
             this.setTitle('佣金提现')
             // this.get_list();
         }
