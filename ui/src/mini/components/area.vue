@@ -39,17 +39,17 @@ export default {
         }
     },
     created() {
-
         this.pro = this.data;
         this.city = this.pro[0]['child'];
         this.county = this.city[0]['child'];
 
     },
-    beforeUpdate() {
-        console.log(22)
-        this.init()
-    },
+    watch: {
+        value(n, o) {
+            this.init()
 
+        }
+    },
     methods: {
         selpro: function() {
             this.city = this.pro[this.f.p]['child'];
@@ -57,6 +57,7 @@ export default {
             this.f.c = 0;
             this.f.cc = 0;
             this.result();
+
         },
         selcity: function() {
             this.county = this.city[this.f.c]['child'];
@@ -64,16 +65,17 @@ export default {
             this.result();
         },
         result: function() {
+
+
             var re = {
                 province: this.pro[this.f.p].name,
                 city: this.city[this.f.c].name,
                 area: this.county[this.f.cc].name,
                 str: this.pro[this.f.p].name + ' ' + this.city[this.f.c].name + ' ' + this.county[this.f.cc].name
             };
-      
-
-            this.$emit("input", re);
-
+            if(!this.start){
+                this.$emit("input", re);
+            }
         },
         init: function() {
             let n = this.value;
@@ -95,7 +97,9 @@ export default {
 
                     if (_d[i].name == n.city) {
                         vm.f.c = i;
-                        cc_cb(i)
+                      setTimeout(()=>{
+                          cc_cb(i)
+                      },0)
                         break;
                     }
                 }
@@ -104,10 +108,12 @@ export default {
             function cc_cb(ii) {
                 vm.county = vm.city[ii]['child'];
                 var _d = vm.county;
+
                 for (var i = 0; i < _d.length; i++) {
-                    console.log(_d[i].name, n.area)
+
                     if (_d[i].name == n.area) {
                         vm.f.cc = i;
+                        vm.start =false;
                         break;
                     }
 
