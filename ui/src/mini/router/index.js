@@ -51,8 +51,14 @@ const order = () =>
 
 const orderDetail = () =>
   import ( /* webpackChunkName: "orderDetail" */ '@/components/order-detail')
+
 const start = () =>
   import ( /* webpackChunkName: "start" */ '@/components/start')
+
+
+
+const shouhou = () =>
+  import ( /* webpackChunkName: "shouhou" */ '@/components/shouhou')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -163,6 +169,11 @@ const router = new Router({
       path: '/order_detail',
       name: 'orderDetail',
       component: orderDetail,
+    },
+    {
+      path: '/shouhou',
+      name: 'shouhou',
+      component: shouhou,
     },
     {
       path: '/start',

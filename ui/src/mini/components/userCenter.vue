@@ -52,7 +52,7 @@
                 </div>
             </li>
 
-            <li>
+            <li @click="goto('/shouhou')">
                 <div class="title"><i class="iconfont icon-shouhoufuwu"></i> 售后记录</div>
             </li>
 
