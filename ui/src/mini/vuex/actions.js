@@ -8,7 +8,10 @@ const actions ={
       },
       setHList({commit},val){
           commit('hList',val)
-      }
+      },
+      setCart({commit},val){
+        commit('setCart',val)
+    }
     
 }
 

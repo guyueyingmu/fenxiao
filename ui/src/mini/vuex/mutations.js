@@ -9,6 +9,9 @@ const mutations = {
   },
   hList(state, str) {
     state.hList= str;
+  },
+  setCart(state, str) {
+    state.cart= str;
   }
 }
 

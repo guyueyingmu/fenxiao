@@ -39,6 +39,7 @@ const apiMethods = {
     ...mapActions({
       setTitle: "setTitle",
       sethList: "setHList",
+      setCart: "setCart",
     }),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {

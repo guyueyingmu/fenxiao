@@ -82,28 +82,13 @@ export default {
     mixins: [http],
     data() {
         return {
-            list: [
-                {
-                    id: 1,
-                    thumb: 'static/mini/img/demo/3.png',
-                    title: 'SK-II"神仙水"晶透修护礼盒（神仙水230ml+洁面霜20g+清莹露30ml+微肌因修护精华霜15g）（护肤套装）',
-                    price: '390.99',
-                    total: 1,
-                    selected: false
-                },
-                {
-                    id: 2,
-                    thumb: 'static/mini/img/demo/1.png',
-                    title: '兰蔻（LANCOME）新精华肌底液30ml（小黑瓶 精华液 补水保湿提拉紧致 新老品随机发货）',
-                    price: '649.00',
-                    total: 1,
-                    selected: false
-                },
-            ]
+            list: []
         }
     },
     created() {
         this.setTitle('确认订单')
+        let _list = this.$store.state.cart;
+        this.list = _list;
 
     }
 

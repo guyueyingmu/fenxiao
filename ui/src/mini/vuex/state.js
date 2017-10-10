@@ -3,6 +3,7 @@ const state ={
     ShowNav:true,
     keyword:'',
     hList:[],
-    title:'首页'
+    title:'首页',
+    cart:[]
 }
 export default state;

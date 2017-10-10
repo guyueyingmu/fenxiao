@@ -36,7 +36,7 @@
                 <i class="num">{{good_info.cart_total}}</i>
             </div>
             <div class="item add" @click="add_cart(good_info.id);">加入购物车</div>
-            <div class="item buy" @click="goto('/confirm')">立即购买</div>
+            <div class="item buy" @click="go_buy(good_info.id)">立即购买</div>
 
         </div>
 
@@ -187,6 +187,12 @@ export default {
                // }
             }
 
+        },
+        //立即购买
+        go_buy(good_id){
+            let params = [{good_id:good_id, good_count:1}]
+            this.setCart(params)
+            this.goto('/confirm');
         },
         //加入购物车
         add_cart(good_id){
