@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <!--商品图片尺寸  660 * 520-->
-        <swiper :options="swiperOption">
+        <swiper :options="swiperOption" :style="{height:`296px`}">
             <swiper-slide v-for="(slide,idx) in good_info.banner" :key="idx">
                 <img :src="slide.img_url">
             </swiper-slide>
@@ -25,9 +25,9 @@
             </div>
             <div class="item btn">
                 <i class="iconfont icon-xin"></i>
-                 <!-- 收藏成功 -->
-                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1"></i>  
-                
+                <!-- 收藏成功 -->
+                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1"></i>
+
                 <em v-else>收藏</em>
             </div>
             <div class="item btn myCart" @click="goto('/cart')">
@@ -43,21 +43,23 @@
         <div class="tags">
             <span :class="{'active':tagActive == 0}" @click="switchTags(0)">商品介绍</span>
             <span class="a-line"></span>
-            <span :class="{'active':tagActive == 1}" @click="switchTags(1)">用户评论({{comment_pages.total}})</span>
+            <span :class="{'active':tagActive == 1}" @click="switchTags(1)">用户评论
+                <i v-if="comment_pages.total">({{comment_pages.total}})</i>
+            </span>
         </div>
 
-        <div class="content minHeight200" v-show="tagActive == 0">
-            {{good_info.detail}}
+        <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
+
             <!-- <img src="static/mini/img/demo/detail/d0.jpg">
-            <img src="static/mini/img/demo/detail/d1.jpg">
-            <img src="static/mini/img/demo/detail/d2.jpg">
-            <img src="static/mini/img/demo/detail/d3.jpg">
-            <img src="static/mini/img/demo/detail/d4.jpg">
-            <img src="static/mini/img/demo/detail/d5.jpg">
-            <img src="static/mini/img/demo/detail/d6.jpg"> -->
+                                                        <img src="static/mini/img/demo/detail/d1.jpg">
+                                                        <img src="static/mini/img/demo/detail/d2.jpg">
+                                                        <img src="static/mini/img/demo/detail/d3.jpg">
+                                                        <img src="static/mini/img/demo/detail/d4.jpg">
+                                                        <img src="static/mini/img/demo/detail/d5.jpg">
+                                                        <img src="static/mini/img/demo/detail/d6.jpg"> -->
         </div>
 
-        <div class="comment-list minHeight200" v-show="tagActive == 1"  v-loading.full="loadComment">
+        <div class="comment-list minHeight200" v-show="tagActive == 1">
 
             <div class="main" v-if="comment_list.length > 0">
                 <div class="tagsLabel">
@@ -66,8 +68,8 @@
                     <span>中评</span>
                     <span>差评</span>
                 </div>
-                <ul class="ui-comment" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-                    <li v-for="(item,idx) in comment_list" :key="idx">
+                <ul class="ui-comment" v-loading="loadComment">
+                    <li v-for="(item,idx) in comment_list" :key="idx" v-infinite-scroll="loadMore" :infinite-scroll-immediate-check="false" infinite-scroll-disabled="loadComment" infinite-scroll-distance="50">
                         <div class="row">
                             <div class="pic"><img :src="item.img_url"> </div>
                             <div class="name">{{item.nickname}}</div>
@@ -82,8 +84,9 @@
                             <img v-for="img in item.imgs" :key="img" :src="img">
                         </div>
                     </li>
+
                 </ul>
-              
+
             </div>
             <div class="noComment" v-else>
                 <i class="iconfont icon-zanwuxinxi"></i>
@@ -111,7 +114,7 @@ export default {
         swiperSlide,
         Rate
     },
-  
+
     data() {
         return {
             swiperOption: {
@@ -122,37 +125,31 @@ export default {
                 paginationClickable: true,
                 mousewheelControl: true,
                 observeParents: true,
-                autoHeight: true,
+
 
             },
-            // swiperSlides: [
-            //     'static/mini/img/demo/detail/2.png',
-            //     'static/mini/img/demo/detail/1.png',
-            //     'static/mini/img/demo/detail/3.png',
-            // ],
             tagActive: 0,
             loadComment: false,
-            comment_list:[],
+            comment_list: [],
             comment_pages: {},
             good_info: {},
             good_id: 0,
+            timer: null
         }
     },
     methods: {
         switchTags(idx) {
             this.tagActive = idx;
-            if(idx == 1 && this.comment_list.length < 1){
-                   this.loadComment = true;
-                   let vm  = this;
-                   vm.get_comment(1);
-                   setTimeout(()=>{
-                       vm.loadComment = false
-                   },1000)
+            if (idx == 1 && this.comment_list.length < 1) {
+                this.loadComment = true;
+                let vm = this;
+                vm.get_comment(1);
+
             }
         },
         //获取商品信息
-        get_info(id){
-            let url = '/mini/Good/detail?id='+id,
+        get_info(id) {
+            let url = '/mini/Good/detail?id=' + id,
                 vm = this;
 
             this.apiGet(url, {}).then(function(res) {
@@ -163,44 +160,40 @@ export default {
                 }
             })
         },
-        loadMore(){
-                  console.log(2222222)
-            let page = this.comment_pages.current_page + 1;
-            if(page > this.comment_pages.total_page){
-                return false;
-            }else{
-                if(this.comment_pages.current_page > 1){
+        loadMore() {
 
-                    this.get_comment(page);
+            let page = parseInt(this.comment_pages.current_page, 10);
+            let vm = this;
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                console.log('infinite load page:',page)
+                if (page < vm.comment_pages.total_page) {
+                    vm.get_comment(page + 1);
                 }
-            }            
+            }, 1000)
         },
-        //搜索
-        onSearch() {
-            let searchData = this.formInline
-            this.get_comment(1, searchData)
-        },
+        
+  
+
         //获取评论信息
-        get_comment(page, searchData){
+        get_comment(page, searchData) {
             page = page || 1;
+            this.loadComment = true;
             let url = '/mini/Comment/get_list?good_id=' + this.good_id + '&page=' + page,
                 vm = this;
 
             this.apiGet(url, searchData).then(function(res) {
-     
+                vm.loadComment = false
                 if (res.code) {
-                    if(page < 2){
-                       vm.comment_list = res.data.list;
-                                 console.log(JSON.stringify(res.data.list,null,4))
-                    }else{
-                 
-                        
-                       let _list = vm.comment_list;
-                       _list.concat(res.data.list)
-                       console.log(JSON.stringify(_list,null,4))
-                      vm.comment_list = _list;
-                    }                    
                     vm.comment_pages = res.data.pages;
+                    if (page < 2) {
+                        vm.comment_list = res.data.list;
+                    } else {
+                        let _list = vm.comment_list;
+                        _list = _list.concat(res.data.list)
+                        vm.comment_list = _list;
+                    }
+
                 } else {
                     vm.handleError(res)
                 }
@@ -211,7 +204,7 @@ export default {
         this.setTitle('商品详情')
         this.good_id = this.$route.params.id;
         this.get_info(this.good_id);
-      //  this.get_comment(1);
+        //  this.get_comment(1);
     },
 }
 
