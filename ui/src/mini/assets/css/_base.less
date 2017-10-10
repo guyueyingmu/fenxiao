@@ -544,7 +544,6 @@ img {
 .ui-comment {
     background-color: #Fff;
     padding: 0 15px;
-
     li {
         padding: 18px 0;
         font-size: 14px;
@@ -982,28 +981,91 @@ img {
     }
 }
 
-.ui-tags{
-    width: 70%;
-    margin: 15px auto;
+.ui-tags {
     display: flex;
-    border:solid 1px @skin2;
-    border-radius: 5px;
-    overflow: hidden;
-    span{
+    border-bottom: solid 1px #ddd;
+    span {
         display: block;
         text-align: center;
         flex: 1;
-        background: @skin2;
-        color: #fff;
-        line-height: 2;
-        font-size: 14px;
-        &:last-child{
+        background: #fff;
+        color: #666;
+        line-height: 3;
+        font-size: 16px;
+        &:last-child {
             border-radius: 0 3px 3px 0;
         }
-        &.active{
+        &.active {
             background: #fff;
-            color: @skin2;
+            color: @orange;
+            position: relative;
+            &:after{
+                content: '';
+                z-index: 3;
+                border-bottom: solid 2px @orange;
+                position: absolute;
+                display: block;
+                bottom: -1px;
+                left: 0;
+                right: 0;
+            }
         }
     }
-    
+}
+
+.order-list {
+    li {
+        background: #fff;
+        margin-bottom: 13px;;
+        .l-b;
+        .h,
+        .b {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            &>* {
+                display: block;
+            }
+        }
+        .status{
+            color:@orange;
+        }  
+      
+        .m {
+            display: flex;
+            padding: 13px;
+            background: #f8f8f8;
+            
+            .info {
+                flex: 1;
+                color: #666;
+                margin: 0 .8em
+            }
+            .tool {
+                text-align: right;
+                  
+            }
+            .title {
+                .line(2);
+                font-size: 14px;
+            
+            }
+            .l-b;
+        }
+        .ui-btn{
+            border-radius: 44px;
+            padding: 4px 15px;
+            background: #fff;
+            color: #666;
+            border:solid 1px #666;
+            &.active{
+                border:solid 1px  @orange;
+                color: @orange;
+                background: #fff;
+            }
+        }
+
+    }
 }

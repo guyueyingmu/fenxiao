@@ -8,19 +8,105 @@
             <span :class="{'active':tagsIdx == 4}" @click="tagsIdx = 4">已取消</span>
 
         </div>
-        <ul class="thumb-list" v-if="loading == false && list.length > 0">
-
-            <li v-for="(item,idx) in list" :key="item.id">
-                <img :src="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.id)">
-                <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.id)">
-                    <div class="title">{{item.good_title}}</div>
+        <ul class="order-list">
+            <li>
+                <div class="h">订单号：162208000112
+                    <span class="status">已发货</span>
+                </div>
+                <div class="m">
+                    <img src="" width="50" height="50">
+                    <div class="info">
+                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠</div>
+                    </div>
                     <div class="tool">
-                        <span class="price">￥
-                            <em>{{item.price}}</em>
-                        </span>
+                        <div>￥198.00</div>
+                        <div>x 1</div>
                     </div>
                 </div>
-                <i class="iconfont icon-shanchu " @click="ondel(idx);"></i>
+                <div class="m">
+                    <img src="" width="50" height="50">
+                    <div class="info">
+                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美</div>
+                    </div>
+                    <div class="tool">
+                        <div>￥198.00</div>
+                        <div>x 1</div>
+                    </div>
+                </div>
+                <div class="b">
+                    <div>订单总额:￥198.00</div>
+                    <div>
+                        <button type="button" class="ui-btn">退款</button>
+                        <button type="button" class="ui-btn active">换货</button>
+                    </div>
+                </div>
+            </li>
+             <li>
+                <div class="h">订单号：162208000112
+                    <span class="status">已完成</span>
+                </div>
+                <div class="m">
+                    <img src="" width="50" height="50">
+                    <div class="info">
+                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠</div>
+                    </div>
+                    <div class="tool">
+                        <div>￥198.00</div>
+                        <div>x 1</div>
+                    </div>
+                </div>
+                
+                <div class="b">
+                    <div>订单总额:￥198.00</div>
+                    <div>
+                        <button type="button" class="ui-btn active">评价</button>
+                    </div>
+                </div>
+            </li>
+             <li>
+                <div class="h">订单号：162208000112
+                    <span class="status">待处理</span>
+                </div>
+                <div class="m">
+                    <img src="" width="50" height="50">
+                    <div class="info">
+                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠</div>
+                    </div>
+                    <div class="tool">
+                        <div>￥198.00</div>
+                        <div>x 1</div>
+                    </div>
+                </div>
+                
+                <div class="b">
+                    <div>订单总额:￥198.00</div>
+                    <div>
+                     
+                        <button type="button" class="ui-btn active">付款</button>
+                    </div>
+                </div>
+            </li>
+               <li>
+                <div class="h">订单号：162208000112
+                    <span class="status">已服务</span>
+                </div>
+                <div class="m">
+                    <img src="" width="50" height="50">
+                    <div class="info">
+                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠</div>
+                    </div>
+                    <div class="tool">
+                        <div>积分198</div>
+                        <div>x 1</div>
+                    </div>
+                </div>
+                
+                <div class="b">
+                    <div>订单总额:积分198</div>
+                    <div>
+                        <!-- <button type="button" class="ui-btn active">付款</button> -->
+                    </div>
+                </div>
             </li>
         </ul>
 
@@ -38,7 +124,7 @@ export default {
     data() {
         return {
             list: [],
-            tagsIdx:0
+            tagsIdx: 0
         }
     },
     methods: {
