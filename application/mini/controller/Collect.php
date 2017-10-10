@@ -65,9 +65,9 @@ class Collect extends Base
         $add_data['add_time'] = date('Y-m-d H:i:s');
         $res = db('goods_collect')->insert($add_data);
         if($res){
-            $this->success('添加成功');
+            $this->success('收藏成功');
         }else{
-            $this->error('添加失败');
+            $this->error('收藏失败');
         }
     }
     /**
@@ -80,9 +80,9 @@ class Collect extends Base
         }
         $res = db('goods_collect')->where('good_id', $good_id)->where('user_id', session('mini.uid'))->delete();
         if($res){
-            $this->success('删除成功');
+            $this->success('取消收藏成功');
         }else{
-            $this->error('删除失败');
+            $this->error('取消收藏失败');
         }
     }
 }

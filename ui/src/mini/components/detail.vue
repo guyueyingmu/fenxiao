@@ -24,19 +24,19 @@
                 <em>在线客服</em>
             </div>
             <div class="item btn">
-                <i class="iconfont icon-xin"></i>
                  <!-- 收藏成功 -->
-                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1"></i>  
+                <i class="iconfont icon-shoucang-on" v-if="good_info.is_collect == 1" @click="del_collect(good_info.id)"></i>  
+                <i v-else class="iconfont icon-xin" @click="add_collect(good_info.id)"></i>
                 
-                <em v-else>收藏</em>
+                <em>收藏</em>
             </div>
             <div class="item btn myCart" @click="goto('/cart')">
                 <i class="iconfont icon-gouwuche"></i>
                 <em>购物车</em>
                 <i class="num">{{good_info.cart_total}}</i>
             </div>
-            <div class="item add">加入购物车</div>
-            <div class="item buy" @click="goto('confirm')">立即购买</div>
+            <div class="item add" @click="add_cart(good_info.id);">加入购物车</div>
+            <div class="item buy" @click="goto('/confirm')">立即购买</div>
 
         </div>
 
@@ -187,6 +187,42 @@ export default {
                // }
             }
 
+        },
+        //加入购物车
+        add_cart(good_id){
+            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.good_info.cart_total = parseInt(vm.good_info.cart_total) + 1;
+                    vm.$msg(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        //加入收藏
+        add_collect(good_id){
+            let url = '/mini/Collect/add', vm = this, data = {good_id: good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.good_info.is_collect = 1;
+                    vm.$msg(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        //取消收藏
+        del_collect(good_id){
+            let url = '/mini/Collect/del', vm = this, data = {good_id: good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.good_info.is_collect = 0;
+                    vm.$msg(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
         //获取商品信息
         get_info(id){
