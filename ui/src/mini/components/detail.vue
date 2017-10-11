@@ -149,40 +149,40 @@ export default {
             }
         },
         //我的足迹  保存
-        setHistory(data) {
-            let _canPush = true;
-            if (data) {
+        // setHistory(data) {
+        //     let _canPush = true;
+        //     if (data) {
 
-                let olddata = window.localStorage.getItem("__history__")
-                if (olddata) {
-                    olddata = JSON.parse(olddata)
-                    if (olddata) {
-                        for (let item of olddata) {
-                            if (item.id == data.id) {
-                                _canPush = false;
-                                break;
-                            }
-                        }
-                        if (_canPush) {
-                            console.log(olddata.length)
-                            if (olddata.length < 10) {
-                                olddata.splice(0, 0, data);
-                            }
+        //         let olddata = window.localStorage.getItem("__history__")
+        //         if (olddata) {
+        //             olddata = JSON.parse(olddata)
+        //             if (olddata) {
+        //                 for (let item of olddata) {
+        //                     if (item.id == data.id) {
+        //                         _canPush = false;
+        //                         break;
+        //                     }
+        //                 }
+        //                 if (_canPush) {
+        //                     console.log(olddata.length)
+        //                     if (olddata.length < 10) {
+        //                         olddata.splice(0, 0, data);
+        //                     }
 
-                        }
-                    }
+        //                 }
+        //             }
 
-                } else {
-                    olddata = []
-                    olddata.splice(0, 0, data);
-                }
+        //         } else {
+        //             olddata = []
+        //             olddata.splice(0, 0, data);
+        //         }
 
 
-                window.localStorage.setItem("__history__", JSON.stringify(olddata))
+        //         window.localStorage.setItem("__history__", JSON.stringify(olddata))
 
-            }
+        //     }
 
-        },
+        // },
         //立即购买
         go_buy(good_id) {
             let params = [{ good_id: good_id, good_count: 1 }]

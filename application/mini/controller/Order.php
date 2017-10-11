@@ -10,6 +10,9 @@ use app\admin\model\Users;
  */
 class Order extends Base
 {
+    
+    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
+    
     /**
      * 确认订单
      * [
@@ -273,8 +276,9 @@ class Order extends Base
         if($list){
             $list = json_decode(json_encode($list),true);
             foreach($list as $k=>$v){
+                $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
                 if($v['order_status'] == 5){
-                    foreach($list[$k]['orders_goods'] as $gk=>$gv){                        
+                    foreach($list[$k]['orders_goods'] as $gk=>$gv){
                         $list[$k]['orders_goods'][$gk]['comment_status'] = 0;//未评价
                         $comment = db('goods_comments')->where('good_id', $gv['good_id'])->where('order_id', $v['id'])->where('user_id', session('mini.uid'))->count();
                         if($comment){

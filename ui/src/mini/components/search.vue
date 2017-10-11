@@ -13,14 +13,14 @@
         <div class="header-sort">
             <div class="item" @click="showCat = !showCat" :class="{'active':showCat || cat_id }">
                 <i class="iconfont icon-fenlei"></i> {{cat_id?cat_list[cat_idx].cat_name:'分类'}}</div>
-            <div class="item sort" :class="{'active':sort}" @click="onSort">
-                <i class="iconfont icon-paixu"></i> 排序</div>
+            <div class="item sort" :class="{'active':$store.state.sort,'skin':sort}" @click="onSort">
+                <i class="iconfont icon-paixu"></i> 价格</div>
             <transition name="cat">
                 <div class="class-dialog" v-show="showCat">
                     <div class="scroll">
                         <scroller>
                             <span v-for="(i,cat_idx) in cat_list" :key="i.id" :class="{'active':cat_id == i.id}" @click="selectCat(i.id,cat_idx)">{{i.cat_name}}
-                                <i  class="iconfont icon-dagou" v-if="cat_id == i.id"></i>
+                                <i class="iconfont icon-dagou" v-if="cat_id == i.id"></i>
                             </span>
                         </scroller>
 
@@ -85,9 +85,9 @@ export default {
         }
     },
     methods: {
-           //加入购物车
-        add_cart(good_id){
-            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+        //加入购物车
+        add_cart(good_id) {
+            let url = '/mini/Cart/add', vm = this, data = { good_id: good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
@@ -97,17 +97,30 @@ export default {
             })
         },
         onSort() {
-            this.sort = !this.sort
+            this.sort = true;
+            this.$store.state.sort = !this.$store.state.sort;
+            let obj = document.getElementById('keyword')
+            let keyword = obj.value;
+            if (keyword) {
+                this.getSearch(keyword)
+            }
+
         },
         closeDialog() {
             this.showCat = false
-             let obj = document.getElementById('keyword')
-            let  keyword = obj.value;
-            this.getSearch(keyword)
+            let obj = document.getElementById('keyword')
+            let keyword = obj.value;
+            if (keyword) {
+                this.getSearch(keyword)
+            }
         },
         selectCat(id, cat_idx) {
             this.cat_id = id;
-            this.cat_idx = cat_idx
+            this.cat_idx = cat_idx;
+            let vm = this
+            setTimeout(()=>{
+                vm.closeDialog()
+            },300)
         },
         clear() {
             window.localStorage.removeItem('__SearchHistory__');
@@ -144,21 +157,28 @@ export default {
                 vm = this, data = {
                     keyword: keyword
                 };
-                if(this.cat_id){
-                    data.cat_id = this.cat_id
+            if (this.cat_id) {
+                data.cat_id = this.cat_id
+            }
+            if (this.sort) {
+                if (this.$store.state.sort == false) {
+                    data.price_order = 'desc'
+                } else {
+                    data.price_order = 'asc'
                 }
+            }
             let obj = document.getElementById('keyword')
             obj.value = keyword;
-               vm.$store.state.search.loading = true;
+            vm.$store.state.search.loading = true;
             this.apiGet(url, data).then(function(res) {
                 if (res.code) {
                     vm.setSearchList(res.data.list)
                 } else {
                     vm.handleError(res)
                 }
-                   setTimeout(()=>{
-                       vm.$store.state.search.loading = false;
-                   },400)
+                setTimeout(() => {
+                    vm.$store.state.search.loading = false;
+                }, 400)
             })
         }
 

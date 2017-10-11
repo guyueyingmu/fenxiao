@@ -17,7 +17,6 @@ class Good extends Base
         $limit = config('mini_page_limit');
         
         $where = 'status=1';
-        $sort = 'sort DESC';
         $list_type = input('param.list_type', '', 'intval');
         if($list_type == 1){
             $where .= ' AND good_type IN (4,5)';
@@ -32,7 +31,12 @@ class Good extends Base
         }
         $price_order = input('param.price_order', '', 'trim');
         if(in_array($price_order, ['asc', 'desc'])){
-            $sort .= ',price '.$price_order;
+            $sort = 'price '.$price_order;
+        }
+        if(isset($sort)){
+            $sort .= ',sort DESC';
+        }else{
+            $sort = 'sort DESC';
         }
         
         $list = db('goods')->where($where)->order($sort)->page($page, $limit)

@@ -3,12 +3,14 @@ const state ={
     ShowNav:true,
     search:{
         keyword:'',
-        loading:false
+        loading:false,
+        sort:true
     },
     list:[],
     hList:[],
     title:'首页',
     cart:[],
     checked_address:{},
+    
 }
 export default state;
