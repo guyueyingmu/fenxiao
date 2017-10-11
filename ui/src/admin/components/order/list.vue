@@ -219,8 +219,8 @@
                         </el-col>
                     </el-row>
                 </div>
-                <h4 class="dialog_order_title">收货人信息</h4>
-                <div class="dialog_order_info">
+                <h4 class="dialog_order_title" v-if="dialog_temp.consignee_name">收货人信息</h4>
+                <div class="dialog_order_info" v-if="dialog_temp.consignee_name">
                     <el-row>
                         <el-col :span="12">
                             收货人：
