@@ -277,12 +277,33 @@ class Order extends Base
             $list = json_decode(json_encode($list),true);
             foreach($list as $k=>$v){
                 $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
+                $list[$k]['comment_status'] = 0;//不可以评价
                 if($v['order_status'] == 5){
-                    $list[$k]['comment_status'] = 0;//未评价
+                    $list[$k]['comment_status'] = 1;//可以评价
                     $comment = db('goods_comments')->where('good_id', $v['orders_goods'][0]['good_id'])->where('order_id', $v['id'])->where('user_id', session('mini.uid'))->count();
                     if($comment){
-                        $list[$k]['comment_status'] = 1;//已评价
+                        $list[$k]['comment_status'] = 0;//不可以评价
                     }
+                }
+                $list[$k]['refund'] = 0;//不可以申请退款
+                if($v['pay_method'] == 1 && $v['pay_status'] == 2 && in_array($v['order_status'], [1, 2, 3])){ //可申请退款，查看是否已有申请
+                    $list[$k]['refund'] = 1;//可以申请退款
+                    $refund = db('orders_refund_apply')->where('order_id', $v['id'])->count();
+                    if($refund){
+                        $list[$k]['refund'] = 0;//不可以申请退款
+                    }
+                }
+                $list[$k]['exchange'] = 0;//不可以申请换货
+                if($v['order_status'] == 2){
+                    $list[$k]['exchange'] = 1;//可以申请换货
+                    $exchange = db('orders_exchange_apply')->where('order_id', $v['id'])->count();
+                    if($exchange){
+                        $list[$k]['exchange'] = 0;//不可以申请换货
+                    }
+                }
+                if($list[$k]['refund'] == 0 || $list[$k]['exchange'] == 0){
+                    $list[$k]['refund'] = 0;
+                    $list[$k]['exchange'] = 0;
                 }
             }
         }

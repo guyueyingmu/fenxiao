@@ -51,7 +51,7 @@ class Refund extends Base
         if(!$order_id){
             $this->error('参数错误');
         }
-        $info = db('Orders')->where('id', $order_id)->where('user_id', session('mini.uid'))->field('id,user_id,order_status,pay_status,')->find();
+        $info = db('Orders')->where('id', $order_id)->where('user_id', session('mini.uid'))->field('id,user_id,order_status,pay_status,pay_method')->find();
         if(!$info){
             $this->error('订单不存在');
         }
@@ -62,7 +62,7 @@ class Refund extends Base
             $this->error('微信支付的订单才能退款');
         }
         //是否已申请退款
-        $exist = db('orders_refund_apply')->where('user_id', session('mini.uid'))->where('order_id', $order_id)->where('status', '!=', '3')->count();
+        $exist = db('orders_refund_apply')->where('user_id', session('mini.uid'))->where('order_id', $order_id)->where('status', '<>', '3')->count();
         if($exist){
             $this->success('您的申请正在处理');
         }

@@ -186,7 +186,7 @@ const router = new Router({
       component: shouhou,
     },
     {
-      path: '/start',
+      path: '/start/order_id/:order_id',
       name: 'start',
       component: start,
     },
