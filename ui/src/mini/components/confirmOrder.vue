@@ -1,7 +1,7 @@
 <template>
     <div class="order">
-        <ul class="ui-links">
-            <li  @click="goto('/address/is_use/1')" v-if="list.address">
+        <ul class="ui-links" v-if="list.show_address">
+            <li  @click="goto('/address/is_use/1')" v-if="list.address.length">
                 <div class="title add_info">
                     <div class="flex">
                         <span>收货人：</span>
@@ -21,22 +21,6 @@
                 </div>
                 <i class="iconfont icon-arrow"></i>
             </li>
-              <!-- <li class="noactive">
-                <div class="title add_info">
-                    <div class="flex">
-                        <span>收货人：</span>
-                        <i>李四</i>
-                    </div>
-                    <div class="flex">
-                        <span>手机号：</span>
-                        <i>18520128255</i>
-                    </div>
-                    <div class="flex">
-                        <span>配送至：</span>
-                        <i>广东省 广州市 海珠区 丽影广场a座801 丽影广场a座801</i>
-                    </div>
-                </div>
-            </li> -->
             <li class="noAdd" @click="goto('/address/is_use/1')" v-else>
                 <div class="title">
                     <div>
@@ -47,7 +31,7 @@
             </li>
 
         </ul>
-        <div style="height:10px;"></div>
+        <div style="height:10px;" v-if="list.show_address"></div>
         <ul class="thumb-list l-t">
             <li v-for="(item,idx) in list.good_list" :key="item.id">
                 <img :src="item.good_img" width="70" height="70">
@@ -55,7 +39,8 @@
                     <div class="title">{{item.good_title}}</div>
                     <div class="tool">
                         <span class="grey">x {{item.good_count}}</span>
-                        <span class="red">￥<em>{{item.price}}</em></span>
+                        <span class="red" v-if="item.good_type == 4 || item.good_type == 5">积分 <em>{{item.credits}}</em></span>
+                        <span class="red" v-else>￥<em>{{item.price}}</em></span>
                     </div>
                 </div>
             </li>
@@ -63,11 +48,13 @@
         <ul class="ui-fixd">
             <li>
                 <div class="m">商品总计</div>
-                <div class="r">￥{{list.total_amount}}</div>
+                <div class="r" v-if="list.good_list[0].good_type == 4 || list.good_list[0].good_type == 5">积分 {{list.total_credits}}</div>
+                <div class="r" v-else>￥{{list.total_amount}}</div>
             </li>
               <li>
                 <div class="m">应付总额</div>
-                <div class="r"><span class="price">￥<em>{{list.total_amount}}</em></span></div>
+                <div class="r" v-if="list.good_list[0].good_type == 4 || list.good_list[0].good_type == 5"><span class="price">积分 <em>{{list.total_credits}}</em></span></div>
+                <div class="r" v-else><span class="price">￥<em>{{list.total_amount}}</em></span></div>
             </li>
         </ul>
         <div class="btn-wrap">
@@ -111,7 +98,11 @@ export default {
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
-                    vm.goto('/pay/order_id/'+res.data.order_id);
+                    if(res.data.pay_method == 2){
+                        vm.goto('/success/order_id/'+res.data.order_id);
+                    }else{
+                        vm.goto('/pay/order_id/'+res.data.order_id);
+                    }                    
                 } else {
                     vm.handleError(res)
                 }

@@ -61,15 +61,18 @@ class Order extends Base
             $total_credits += $v['credits']*$good_list[$k]['good_count'];
         }
         
+        $address = []; $show_address = 0;
         if(in_array($good_list[0]['good_type'],[1, 4])){
             //默认收货地址
             $address = db('consignee_info')->where('user_id', session('mini.uid'))->where('is_default', 1)->find();
+            $show_address = 1;
         }
         
         $result['total_amount'] = sprintf('%.2f',$total_amount);
         $result['total_credits'] = $total_credits;
         $result['good_list'] = $good_list;
-        $result['address'] = $address ? $address : [];
+        $result['address'] = $address;
+        $result['show_address'] = $show_address;
 //        exit(json_encode($result));
         $this->success('成功', '', $result);
     }
@@ -143,6 +146,14 @@ class Order extends Base
             }
         }
         
+        if(in_array($good_list[0]['good_type'], [1, 2])){
+            $pay_method = 1;
+        }elseif($good_list[0]['good_type'] == 3){
+            $pay_method = 2;
+        }elseif(in_array($good_list[0]['good_type'], [4, 5])){
+            $pay_method = 3;
+        }
+        
         Db::startTrans();
         try{
             $order_number = db('orders_number')->insertGetId(['add_time' => time()]);
@@ -154,9 +165,10 @@ class Order extends Base
                 'order_from' => 1,
                 'user_id' => session('mini.uid'),
                 'add_time' => date('Y-m-d H:i:s'),
-                'consignee_name' => $address_info['user_name'],
-                'consignee_address' => $address_detail,
-                'consignee_phone' => $address_info['phone'],
+                'pay_method' => $pay_method,
+                'consignee_name' => isset($address_info['user_name']) ? $address_info['user_name'] : '',
+                'consignee_address' => isset($address_detail) ? $address_detail : '',
+                'consignee_phone' => isset($address_info['phone']) ? $address_info['phone'] : '',
             ]);
             foreach($good_list as $k=>$v){
                 $good_list[$k]['order_id'] = $order->id;
@@ -175,6 +187,7 @@ class Order extends Base
             $this->error($e->getMessage());
         }
         $result['order_id'] = $order->id;
+        $result['pay_method'] = $pay_method;
 //        exit(json_encode($result));
         $this->success('提交订单成功', '', $result);
     }
@@ -201,7 +214,7 @@ class Order extends Base
         if(!in_array($order_info['orders_goods'][0]['good_type'],[4, 5])){
             $this->error('非积分类商品，不能用积分支付');
         }
-        $user_info = Users::field('id,credits')->get(session('mini.uid'));
+        $user_info = Users::field('id,credits')->find(session('mini.uid'));
         if($user_info['credits'] < $order_info['minus_credits']){
             $this->error('积分不足');
         }
@@ -218,7 +231,7 @@ class Order extends Base
             //修改用户表积分字段
             db('Users')->where('id', session('mini.uid'))->setDec('credits', $order_info['minus_credits']);
             //修改订单表支付状态
-            Orders::update(['pay_status' => 2, 'pay_method' => 3, 'pay_time' => date('Y-m-d H:i:s')]);
+            Orders::update(['id' => $order_id, 'pay_status' => 2, 'pay_method' => 3, 'pay_time' => date('Y-m-d H:i:s')]);
             
             // 提交事务
             Db::commit();  
@@ -298,7 +311,7 @@ class Order extends Base
             $this->error('参数错误');
         }
         $info = Orders::with('ordersGoods')->where('id', $order_id)->where('user_id', session('mini.uid'))
-                ->field('id,order_status,order_number,pay_status,total_amount,add_time,consignee_name,consignee_address,consignee_phone')->find();
+                ->field('id,order_status,order_number,pay_status,pay_method,total_amount,minus_credits,add_time,consignee_name,consignee_address,consignee_phone')->find();
         if(!$info){
             $this->error('订单不存在');
         }

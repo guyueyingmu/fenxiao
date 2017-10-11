@@ -139,7 +139,7 @@ const router = new Router({
       component: addAddress,
     },
     {
-      path: '/success',
+      path: '/success/order_id/:order_id',
       name: 'success',
       component: success,
     },
@@ -174,7 +174,7 @@ const router = new Router({
       component: order,
     },
     {
-      path: '/order_detail',
+      path: '/order_detail/order_id/:order_id',
       name: 'orderDetail',
       component: orderDetail,
     },
