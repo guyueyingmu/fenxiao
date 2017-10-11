@@ -35,17 +35,21 @@ export default {
                 cc: 0,
             },
             temp: {},
-            start: true
+            start: false
         }
     },
     created() {
+        // console.log(JSON.stringify(this.value,null,2))
         this.pro = this.data;
         this.city = this.pro[0]['child'];
         this.county = this.city[0]['child'];
-
+        this.result();
+        
     },
     watch: {
         value(n, o) {
+            this.start = true;
+            console.log('has value')
             this.init()
 
         }
@@ -73,7 +77,7 @@ export default {
                 area: this.county[this.f.cc].name,
                 str: this.pro[this.f.p].name + ' ' + this.city[this.f.c].name + ' ' + this.county[this.f.cc].name
             };
-            if(!this.start){
+            if (this.start == false) {
                 this.$emit("input", re);
             }
         },
@@ -81,6 +85,7 @@ export default {
             let n = this.value;
             var vm = this;
             var _d = vm.pro;
+            vm.start = false;
             for (var i = 0; i < _d.length; i++) {
 
                 if (_d[i].name == n.province) {
@@ -97,9 +102,9 @@ export default {
 
                     if (_d[i].name == n.city) {
                         vm.f.c = i;
-                      setTimeout(()=>{
-                          cc_cb(i)
-                      },0)
+                        setTimeout(() => {
+                            cc_cb(i)
+                        }, 0)
                         break;
                     }
                 }
@@ -113,11 +118,13 @@ export default {
 
                     if (_d[i].name == n.area) {
                         vm.f.cc = i;
-                        vm.start =false;
+
                         break;
                     }
                 }
+
             }
+
         }
     },
 }

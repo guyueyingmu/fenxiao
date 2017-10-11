@@ -2,7 +2,7 @@
     <div class="address">
         <ul class="ui-links">
             <li v-for="(item, idx) in list" :key="idx">
-                <div style="margin-right:10px;" v-if="is_use == 1"><input type="checkbox" class="ui-checkbox"> </div>
+                <div style="margin-right:10px;" v-if="is_use == 1"><input type="radio" name="address" class="ui-checkbox" :value="item.id" v-model="checked"> </div>
                 <div class="info f">
                     <div class="title">
                         <div class="flex">
@@ -43,7 +43,7 @@
         <div class="space"></div>
         <div class="btn-wrap" v-if="is_use == 1">
             <div class="btn-fixed">
-                <button type="button" class="ui-btn ui-btn-block ui-btn-l2">选择并使用</button>
+                <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="do_use()">选择并使用</button>
             </div>
         </div>
 
@@ -58,9 +58,14 @@ export default {
         return {
             list: [],
             is_use: 0,
+            checked:''
         }
     },
     methods: {
+        //选择并使用
+        do_use(){
+
+        },
         //设为默认
         set_default(index){
             let url = '/mini/Address/setdefault', vm = this, data = {id: this.list[index].id};
@@ -101,7 +106,9 @@ export default {
             vm.loading = true;
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
+                
                     vm.list = res.data;
+                    
                 } else {
                     vm.handleError(res)
                 }
