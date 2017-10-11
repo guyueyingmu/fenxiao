@@ -34,9 +34,9 @@ class Good extends Base
             $sort = 'price '.$price_order;
         }
         if(isset($sort)){
-            $sort .= ',sort DESC';
+            $sort .= ',add_time DESC';
         }else{
-            $sort = 'sort DESC';
+            $sort = 'add_time DESC';
         }
         
         $list = db('goods')->where($where)->order($sort)->page($page, $limit)

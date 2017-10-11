@@ -268,7 +268,7 @@ class Order extends Base
         
         $list = Orders::with("ordersGoods")
                 ->where($where)
-                ->field("id,order_number,order_status,pay_status,total_amount")
+                ->field("id,order_number,order_status,pay_status,total_amount,pay_method")
                 ->page($page,$limit)
                 ->order('id DESC')
                 ->select();
@@ -278,12 +278,10 @@ class Order extends Base
             foreach($list as $k=>$v){
                 $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
                 if($v['order_status'] == 5){
-                    foreach($list[$k]['orders_goods'] as $gk=>$gv){
-                        $list[$k]['orders_goods'][$gk]['comment_status'] = 0;//未评价
-                        $comment = db('goods_comments')->where('good_id', $gv['good_id'])->where('order_id', $v['id'])->where('user_id', session('mini.uid'))->count();
-                        if($comment){
-                            $list[$k]['orders_goods'][$gk]['comment_status'] = 1;//已评价
-                        }
+                    $list[$k]['comment_status'] = 0;//未评价
+                    $comment = db('goods_comments')->where('good_id', $v['orders_goods'][0]['good_id'])->where('order_id', $v['id'])->where('user_id', session('mini.uid'))->count();
+                    if($comment){
+                        $list[$k]['comment_status'] = 1;//已评价
                     }
                 }
             }

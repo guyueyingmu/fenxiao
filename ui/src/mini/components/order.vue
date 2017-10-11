@@ -26,9 +26,9 @@
                 <div class="b">
                     <div>订单总额:￥{{item.total_amount}}</div>
                     <div>
-                        <button type="button" class="ui-btn active" v-if="item.pay_status == 1">付款</button>
-                        <button type="button" class="ui-btn active" v-if="item.order_status == 5">评价</button>
-                        <button type="button" class="ui-btn active" v-if="item.order">退款</button>
+                        <button type="button" class="ui-btn active" v-if="item.pay_status == 1 && item.pay_method != 2" @click="goto('/pay/order_id/'+item.id)">付款</button>
+                        <button type="button" class="ui-btn active" v-if="item.order_status == 5 && item.comment_status == 0">评价</button>
+                        <button type="button" class="ui-btn active" v-if="item.pay_method == 1 && item.pay_status == 2 && (item.order_status == 1 || item.order_status == 2 || item.order_status == 3)">退款</button>
                         <button type="button" class="ui-btn active" v-if="item.order_status == 2">换货</button>
                     </div>
                 </div>
