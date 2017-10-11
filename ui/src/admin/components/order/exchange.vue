@@ -2,9 +2,9 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
-                <el-tab-pane label="换货申请" name="0"></el-tab-pane>
-                <el-tab-pane label="已换货" name="1"></el-tab-pane>
-                <el-tab-pane label="已拒绝" name="2"></el-tab-pane>
+                <el-tab-pane label="换货申请" name="1"></el-tab-pane>
+                <el-tab-pane label="已换货" name="2"></el-tab-pane>
+                <el-tab-pane label="已拒绝" name="3"></el-tab-pane>
             </el-tabs>
         </div>
 
@@ -37,8 +37,8 @@
             <el-table-column prop="handle_user" label="处理员" width="100"> </el-table-column>
             <el-table-column prop="status" label="处理状态" width="100">
                 <template scope="scope">
-                    <span v-if="scope.row.status === 0">未处理</span>
-                    <span v-else-if="scope.row.status === 1">同意</span>
+                    <span v-if="scope.row.status === 1">未处理</span>
+                    <span v-else-if="scope.row.status === 2">同意</span>
                     <span v-else>拒绝</span>
                 </template>
             </el-table-column>
@@ -46,7 +46,7 @@
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template scope="scope">
-                    <el-button type="text" v-if="scope.row.status === 0 " size="small" @click="onExchange(scope.row,scope.row.$index)">立即处理</el-button>
+                    <el-button type="text" v-if="scope.row.status === 1 " size="small" @click="onExchange(scope.row,scope.row.$index)">立即处理</el-button>
                 </template>
             </el-table-column>
         </el-table>
