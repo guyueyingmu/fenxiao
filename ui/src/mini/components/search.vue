@@ -129,7 +129,6 @@ export default {
                 _list = JSON.parse(_list);
                 this.sethList(_list)
             }
-
         },
         get_cat() {
             let url = '/mini/Home/get_cat_list?page=1',
