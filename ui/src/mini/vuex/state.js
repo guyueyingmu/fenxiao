@@ -4,6 +4,7 @@ const state ={
     keyword:'',
     hList:[],
     title:'首页',
-    cart:[]
+    cart:[],
+    checked_address:{},
 }
 export default state;

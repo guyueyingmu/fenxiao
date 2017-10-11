@@ -40,6 +40,7 @@ const apiMethods = {
       setTitle: "setTitle",
       sethList: "setHList",
       setCart: "setCart",
+      setAddress: "setAddress",
     }),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {

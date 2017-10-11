@@ -33,7 +33,7 @@
                     <em>{{total.toFixed(2)}}</em>
                 </span>
             </div>
-            <button type="button" class="ui-jiesuan">去结算</button>
+            <button type="button" class="ui-jiesuan" @click="go_buy()">去结算</button>
         </div>
     </div>
 </template>
@@ -73,6 +73,17 @@ export default {
         }
     },
     methods: {
+        //结算
+        go_buy() {
+            let _d = this.list, params = [];
+            for (let item of _d) {
+                if(item.selected){
+                    params.push({good_id: item.good_id, good_count: item.total});
+                }
+            }
+            this.setCart(params)
+            this.goto('/confirm');
+        },
         ondel(index){
             let vm = this;
             this.$confirm({

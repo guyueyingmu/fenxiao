@@ -24,6 +24,9 @@ const reg = () =>
 
 const confirm = () =>
   import ( /* webpackChunkName: "confirm" */ '@/components/confirmOrder')
+  
+  const pay = () =>
+    import ( /* webpackChunkName: "pay" */ '@/components/payOrder')
 
 const address = () =>
   import ( /* webpackChunkName: "address" */ '@/components/address')
@@ -104,6 +107,11 @@ const router = new Router({
       path: '/confirm',
       name: 'confirm',
       component: confirm,
+    },
+    {
+      path: '/pay/order_id/:order_id',
+      name: 'pay',
+      component: pay,
     },
     {
       path: '/reg',

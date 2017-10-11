@@ -2,7 +2,7 @@
     <div class="address">
         <ul class="ui-links">
             <li v-for="(item, idx) in list" :key="idx">
-                <div style="margin-right:10px;" v-if="is_use == 1"><input type="radio" name="address" class="ui-checkbox" :value="item.id" v-model="checked"> </div>
+                <div style="margin-right:10px;" v-if="is_use == 1"><input type="radio" name="address" class="ui-checkbox" :value="idx" v-model="checked"> </div>
                 <div class="info f">
                     <div class="title">
                         <div class="flex">
@@ -64,7 +64,12 @@ export default {
     methods: {
         //选择并使用
         do_use(){
-
+            if(this.checked === ''){
+                this.$msg('请选择地址');
+                return false;
+            }
+            this.setAddress(this.list[this.checked]);
+            history.go(-1);
         },
         //设为默认
         set_default(index){

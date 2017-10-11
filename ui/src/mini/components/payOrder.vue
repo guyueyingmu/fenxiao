@@ -1,25 +1,24 @@
 <template>
     <div class="order">
         <ul class="ui-links">
-            <li  @click="goto('/address/is_use/1')" v-if="list.address">
+            <li>
                 <div class="title add_info">
                     <div class="flex">
                         <span>收货人：</span>
-                        <i>{{list.address.user_name}}</i>
+                        <i>{{list.consignee_name}}</i>
                     </div>
                     <div class="flex">
                         <span>手机号：</span>
-                        <i>{{list.address.phone}}</i>
+                        <i>{{list.consignee_phone}}</i>
                     </div>
                     <div class="flex">
                         <span>配送至：</span>
-                        <i v-if="list.address.province == list.address.city">
-                            {{list.address.city}}市 {{list.address.area}} {{list.address.address}}
+                        <i>
+                            {{list.consignee_address}}
                         </i>
-                        <i v-else>{{list.address.province}}省 {{list.address.city}}市 {{list.address.area}} {{list.address.address}}</i>
                     </div>
                 </div>
-                <i class="iconfont icon-arrow"></i>
+                <!-- <i class="iconfont icon-arrow"></i> -->
             </li>
               <!-- <li class="noactive">
                 <div class="title add_info">
@@ -37,24 +36,24 @@
                     </div>
                 </div>
             </li> -->
-            <li class="noAdd" @click="goto('/address/is_use/1')" v-else>
+            <!-- <li class="noAdd" @click="goto('/address/is_use/1')" v-else>
                 <div class="title">
                     <div>
                         <i class="iconfont icon-tanhao"></i>
                     </div>
                     <div> 还没有添加收货人信息~ 点击添加</div>
                 </div>
-            </li>
+            </li> -->
 
         </ul>
         <div style="height:10px;"></div>
         <ul class="thumb-list l-t">
-            <li v-for="(item,idx) in list.good_list" :key="item.id">
+            <li v-for="(item,idx) in list.orders_goods" :key="item.id">
                 <img :src="item.good_img" width="70" height="70">
                 <div class="info">
                     <div class="title">{{item.good_title}}</div>
                     <div class="tool">
-                        <span class="grey">x {{item.good_count}}</span>
+                        <span class="grey">x {{item.buy_num}}</span>
                         <span class="red">￥<em>{{item.price}}</em></span>
                     </div>
                 </div>
@@ -72,7 +71,7 @@
         </ul>
         <div class="btn-wrap">
             <div class="btn-fixed">
-                <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="save_data()">提交</button>
+                <button type="button" class="ui-btn ui-btn-block ui-btn-l2">确定支付</button>
             </div>
         </div>
 
@@ -86,43 +85,42 @@ export default {
     data() {
         return {
             list: [],
-            good_list: [],
+            order_id: 0,
+            jsApiParameters: {},
         }
     },
     methods: {
-        get_good_info(){
-            let url = '/mini/Order/check_order',
+        //获取订单信息
+        get_order_info(){
+            let url = '/mini/Order/detail',
                 vm = this;
 
-            this.apiGet(url, this.good_list).then(function(res) {
+            this.apiGet(url, {order_id: this.order_id}).then(function(res) {
                 if (res.code) {
                     vm.list = res.data;
-                    if(vm.$store.state.checked_address.id){
-                        vm.list.address = vm.$store.state.checked_address;
-                        vm.setAddress({});
-                    }
                 } else {
                     vm.handleError(res)
                 }
             })
         },
-        save_data(){
-            let url = '/mini/Order/add_order', vm = this, data = { good_info: JSON.stringify(this.good_list), address_id: this.list.address.id };
-            this.apiPost(url, data).then(function(res) {
+        //获取支付信息
+        get_pay_info(){
+            let url = '/mini/Payment/index',
+                vm = this;
+
+            this.apiGet(url, {order_id: this.order_id}).then(function(res) {
                 if (res.code) {
-                    vm.$msg(res.msg);
-                    vm.goto('/pay/order_id/'+res.data.order_id);
+                    vm.jsApiParameters = res.data.jsApiParameters;
                 } else {
                     vm.handleError(res)
                 }
             })
-        }
+        },
     },
     created() {
-        this.setTitle('确认订单')
-        let _list = this.$store.state.cart;
-        this.good_list = _list;
-        this.get_good_info();
+        this.setTitle('支付订单')
+        this.order_id = this.$route.params.order_id;
+        this.get_order_info();
     }
 
 

@@ -91,6 +91,7 @@ class Order extends Base
      */
     public function add_order(){
         $goods = input('param.good_info', '', 'trim');
+        $goods = json_decode($goods,true);
 //        $goods = [
 //            [
 //                'good_id'=>4,
@@ -135,6 +136,11 @@ class Order extends Base
                 $this->error('请选择收货地址');
             }
             $address_info = db('consignee_info')->where('id', $address_id)->where('user_id', session('mini.uid'))->find();
+            if($address_info['province'] == $address_info['city']){
+                $address_detail = $address_info['city']."市 ".$address_info['area']." ".$address_info['address'];
+            }else{
+                $address_detail = $address_info['province']."省 ".$address_info['city']."市 ".$address_info['area']." ".$address_info['address'];
+            }
         }
         
         Db::startTrans();
@@ -149,7 +155,7 @@ class Order extends Base
                 'user_id' => session('mini.uid'),
                 'add_time' => date('Y-m-d H:i:s'),
                 'consignee_name' => $address_info['user_name'],
-                'consignee_address' => $address_info['province'].$address_info['city'].$address_info['area'].$address_info['address'],
+                'consignee_address' => $address_detail,
                 'consignee_phone' => $address_info['phone'],
             ]);
             foreach($good_list as $k=>$v){

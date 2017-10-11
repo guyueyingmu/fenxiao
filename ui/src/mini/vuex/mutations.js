@@ -12,6 +12,9 @@ const mutations = {
   },
   setCart(state, str) {
     state.cart= str;
+  },
+  setAddress(state, str) {
+    state.checked_address= str;
   }
 }
 
