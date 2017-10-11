@@ -4,7 +4,9 @@ const state ={
     search:{
         keyword:'',
         loading:false,
-        sort:true
+        sort:true,
+        cat_idx:0,
+        
     },
     list:[],
     hList:[],
