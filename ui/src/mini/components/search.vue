@@ -1,26 +1,26 @@
 <template>
     <div class="search-page">
         <div class="search-history">
-            <div class="header">
+            <div class="header" v-if="$store.state.hList.length > 0">
                 <span class="title">最近搜索：</span>
-                <a herf="javascript:;" @click="clear" v-if="$store.state.hList.length > 0">清空历史</a>
+                <a herf="javascript:;" @click="clear">清空历史</a>
             </div>
-            <div class="h-list">
-                <span class="label" v-for="item in $store.state.hList" :key="item" @click="search(item)">{{item}}</span>
+            <div class="h-list" v-if="$store.state.hList.length > 0">
+                <span class="label" v-for="item in $store.state.hList" :key="item" @click="getSearch(item)">{{item}}</span>
             </div>
         </div>
         <div class="header-sort-mask" @click="closeDialog" v-if="showCat ==true"></div>
         <div class="header-sort">
             <div class="item" @click="showCat = !showCat" :class="{'active':showCat || cat_id }">
-                <i class="iconfont icon-fenlei"></i> {{cat_id?cat_list[cat_id].cat_name:'分类'}}</div>
+                <i class="iconfont icon-fenlei"></i> {{cat_id?cat_list[cat_idx].cat_name:'分类'}}</div>
             <div class="item sort" :class="{'active':sort}" @click="onSort">
                 <i class="iconfont icon-paixu"></i> 排序</div>
             <transition name="cat">
                 <div class="class-dialog" v-show="showCat">
                     <div class="scroll">
                         <scroller>
-                            <span v-for="i in cat_list" :key="i.id" :class="{'active':cat_id == i.id}" @click="selectCat(i.id)">{{i.cat_name}}
-                                <i class="iconfont icon-dagou" v-if="cat_id == i.id"></i>
+                            <span v-for="(i,cat_idx) in cat_list" :key="i.id" :class="{'active':cat_id == i.id}" @click="selectCat(i.id,cat_idx)">{{i.cat_name}}
+                                <i  class="iconfont icon-dagou" v-if="cat_id == i.id"></i>
                             </span>
                         </scroller>
 
@@ -28,56 +28,29 @@
                 </div>
             </transition>
         </div>
+        <div v-if="$store.state.list.length > 0  && $store.state.search.loading == false ">
 
-     
-        <ul class="thumb-box">
-            <li>
-                <div class="thumb"  @click="goto('/detail')"><img src="static/mini/img/demo/2.png"></div>
-                <div class="title"  @click="goto('/detail')">
-                    诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通诺基亚6 (Nokia6) 4GB+64GB 黑色 全网通 双卡双待 移动联通
-                </div>
-                <div class="info">
-                    <span class="price">￥<em>390.00</em></span>
-                    <i class="iconfont icon-gouwuche1"></i>
-                </div>
-            </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/1.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    德国 进口牛奶 欧德堡（Oldenburger）超高温处理全脂纯牛奶超高温处理全脂纯牛奶
-                </div>
-                <div class="info">
-                    <span class="jifen">积分 390</span>
-                </div>
-            </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/3.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售
-                </div>
-                <div class="info">
-                    <span class="price">￥<em>390.00</em></span>
-                    <i class="iconfont icon-gouwuche1"></i>
-                </div>
-            </li>
-            <li>
-                <div class="thumb" @click="goto('/detail')"><img src="static/mini/img/demo/4.png"></div>
-                <div class="title" @click="goto('/detail')">
-                    联想(Lenovo)小新潮7000 13.3英寸超轻薄窄边框笔记本电脑(i
-                </div>
-                <div class="info">
-                    <span class="price">￥<em>5999.00</em></span>
-                    <i class="iconfont icon-gouwuche1"></i>
-                </div>
-            </li>
+            <ul class="thumb-box">
+                <li v-for="item in $store.state.list" :key="item.id">
+                    <div class="thumb" @click="goto('/detail/id/'+item.id)"><img :src="item.good_img||'static/mini/img/grey.gif'" onerror="this.src=`static/mini/img/grey.gif`;this.error=null"></div>
+                    <div class="title" @click="goto('/detail/id/'+item.id)">
+                        {{item.good_title}}
+                    </div>
+                    <div class="info">
+                        <span class="price">￥
+                            <em>{{item.price}}</em>
+                        </span>
+                        <i v-if="item.good_type == 1" class="iconfont icon-gouwuche1" @click="add_cart(item.id);"></i>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div style="padding:1em 0" v-loading="$store.state.search.loading"></div>
 
-        </ul>
-
-          <div class="nodata">
+        <div class="nodata" v-if="$store.state.list.length < 1 && $store.state.search.loading == false ">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
             <div>没有找到数据</div>
         </div>
-
 
     </div>
 </template>
@@ -86,12 +59,17 @@ import http from '@/assets/js/http'
 
 export default {
     name: 'search',
-
     mixins: [http],
     watch: {
         '$route'() {
             this.init();
 
+        },
+        '$store.state.list'(n, o) {
+            if (o != n) {
+                var obj = document.getElementById('keyword')
+                obj.blur();
+            }
         }
     },
     data() {
@@ -99,30 +77,37 @@ export default {
             showCat: false,
             list: [],
             cat_id: '',
+            cat_idx: 0,
             sort: false,
             cat_list: [
-                { cat_name: '全部', id: 0 },
-                { cat_name: '美白', id: 1 },
-                { cat_name: '保养', id: 2 },
-                { cat_name: '补水', id: 3 },
-                { cat_name: '去角质', id: 4 },
-                { cat_name: '精华素', id: 5 },
-                { cat_name: '分类6', id: 6 },
-                { cat_name: '分类7', id: 7 },
-                { cat_name: '分类7', id: 8 },
-                { cat_name: '分类7', id: 9 },
+                { cat_name: '全部', id: 0 }
             ]
         }
     },
     methods: {
+           //加入购物车
+        add_cart(good_id){
+            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$msg(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
         onSort() {
             this.sort = !this.sort
         },
         closeDialog() {
             this.showCat = false
+             let obj = document.getElementById('keyword')
+            let  keyword = obj.value;
+            this.getSearch(keyword)
         },
-        selectCat(id) {
+        selectCat(id, cat_idx) {
             this.cat_id = id;
+            this.cat_idx = cat_idx
         },
         clear() {
             window.localStorage.removeItem('__SearchHistory__');
@@ -140,13 +125,49 @@ export default {
                 _list = JSON.parse(_list);
                 this.sethList(_list)
             }
+
         },
+        get_cat() {
+            let url = '/mini/Home/get_cat_list?page=1',
+                vm = this;
+
+            this.apiGet(url, { limit: 7 }).then(function(res) {
+                if (res.code) {
+                    vm.cat_list = vm.cat_list.concat(res.data);
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
+        getSearch(keyword) {
+            let url = '/mini/Good/get_list?page=1',
+                vm = this, data = {
+                    keyword: keyword
+                };
+                if(this.cat_id){
+                    data.cat_id = this.cat_id
+                }
+            let obj = document.getElementById('keyword')
+            obj.value = keyword;
+               vm.$store.state.search.loading = true;
+            this.apiGet(url, data).then(function(res) {
+                if (res.code) {
+                    vm.setSearchList(res.data.list)
+                } else {
+                    vm.handleError(res)
+                }
+                   setTimeout(()=>{
+                       vm.$store.state.search.loading = false;
+                   },400)
+            })
+        }
 
 
     },
     created() {
         this.init();
         this.setTitle('搜索')
+        this.get_cat()
 
     }
 

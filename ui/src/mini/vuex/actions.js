@@ -3,6 +3,9 @@ const actions = {
     setTitle({ commit }, val) {
         commit('setTitle', val)
     },
+    setKeyword({ commit }, val) {
+        commit('setKeyword', val)
+    },
     ShowNav({ commit }, val) {
         commit('ShowNav', val)
     },
@@ -14,7 +17,11 @@ const actions = {
     },
     setAddress({ commit }, val) {
         commit('setAddress', val)
-    }
+    },
+    setSearchList({ commit }, val) {
+        commit('setSearchList', val)
+    },
+    
 
 }
 

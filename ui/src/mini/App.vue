@@ -9,11 +9,10 @@
         <div class="search" :class="{'show':showSearch}" v-if="$route.name == 'home' || $route.name == 'search'">
             <div class="search-p" @click="onSearch" v-if="showSearch == false">
                 <i class="iconfont icon-sousuo"></i>请输入关键词搜索</div>
-            <!-- <div style="height:50px;" v-if="showSearch == true"></div> -->
             <div class="search-box" v-if="showSearch == true">
 
-                <input type="text" placeholder="请输入关键词搜索" class="ui-input" @keyup.enter="search" v-model="searchForm.keyword" v-focus="showSearch">
-                <i class="iconfont icon-chuyidong" v-if="searchForm.keyword.length > 0" @click="searchForm.keyword = ''"></i>
+                <input type="text" id="keyword" placeholder="请输入关键词搜索" class="ui-input" @keyup.enter="search" v-model="keyword" v-focus="showSearch">
+                <i class="iconfont icon-chuyidong" v-if="keyword.length > 0" @click="keyword = ''"></i>
                 <span class="ui-btn ui-btn-search" @click="search">
                     <i class="iconfont icon-sousuo"></i>搜索</span>
             </div>
@@ -74,15 +73,17 @@ export default {
             } else {
                 this.showSearch = false
             }
+        },
+        'keyword'(n, o) {
+            this.setKeyword(n)
+
         }
     },
     data() {
         return {
             transitionName: 'slide-left',
             showSearch: false,
-            searchForm: {
-                keyword: ''
-            },
+            keyword: "",
             gotoTop: false
 
         }
@@ -106,15 +107,15 @@ export default {
             this.goto('/search')
         },
         search() {
-            if (!this.searchForm.keyword) {
+            if (!this.keyword) {
                 return
             }
             let _list = this.$store.state.hList;
-            if (this.$store.state.hList.indexOf(this.searchForm.keyword) == -1) {
+            if (this.$store.state.hList.indexOf(this.keyword) == -1) {
                 if (_list.length >= 10) {
                     _list.shift()
                 }
-                _list.push(this.searchForm.keyword)
+                _list.push(this.keyword)
 
                 if (_list) {
                     _list = JSON.stringify(_list);
@@ -122,19 +123,28 @@ export default {
                 }
             }
 
+            let url = '/mini/Good/get_list?page=1',
+                vm = this, data = {
+                    keyword: this.keyword
+                };
+            vm.$store.state.search.loading = true;
+            this.apiGet(url, data).then(function(res) {
+                if (res.code) {
+                    vm.setSearchList(res.data.list)
 
-        }
+                } else {
+                    vm.handleError(res)
+                }
+             setTimeout(()=>{
+                       vm.$store.state.search.loading = false;
+                   },400)
+            })
+
+
+        },
     },
     mounted() {
         let vm = this;
-        // this.$confirm({ 
-        //         title:'提示',
-        //         msg: 'sss', 
-        //         yes: function() {},
-        //         no:function(){},
-        //     })
-        //   this.$alert('内容',function(){console.log(233)})
-
         var fn = function(event) {
             var top = document.body.scrollTop;
 

@@ -1,7 +1,11 @@
 const state ={
     DEV : window.location.port == '8080',
     ShowNav:true,
-    keyword:'',
+    search:{
+        keyword:'',
+        loading:false
+    },
+    list:[],
     hList:[],
     title:'首页',
     cart:[],
