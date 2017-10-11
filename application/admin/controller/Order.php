@@ -284,9 +284,13 @@ class Order extends Base
         Db::startTrans();
         try{
             //保存服务记录
-            $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = date("Y-m-d H:i:s");
-            db('OrderService')->insert($data);
+            $service_data['order_id'] = $data['order_id'];
+            $service_data['service_user'] = $data['service_user'];
+            $service_data['service_time'] = $data['service_time'];
+            $service_data['note'] = $data['note'];
+            $service_data['admin_user_id'] = session("admin.uid");
+            $service_data['add_time'] = date("Y-m-d H:i:s");
+            db('OrderService')->insert($service_data);
             
             //修改订单状态为已服务，订单分成处理改为已处理
             $order_edit = ['id' => $data['order_id'], 'order_status' => 3, 'distribution_status' => 2];
