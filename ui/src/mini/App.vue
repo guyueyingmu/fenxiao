@@ -11,8 +11,8 @@
                 <i class="iconfont icon-sousuo"></i>请输入关键词搜索</div>
             <div class="search-box" v-if="showSearch == true">
 
-                <input type="text" id="keyword" placeholder="请输入关键词搜索" class="ui-input" @keyup.enter="search" v-model="keyword" v-focus="showSearch">
-                <i class="iconfont icon-chuyidong" v-if="keyword.length > 0" @click="keyword = ''"></i>
+                <input type="text" id="keyword" placeholder="请输入关键词搜索" class="ui-input" @keyup.enter="search" v-model="$store.state.search.keyword" v-focus="showSearch">
+                <i class="iconfont icon-chuyidong" v-if="$store.state.search.keyword.length > 0" @click="$store.state.search.keyword = ''"></i>
                 <span class="ui-btn ui-btn-search" @click="search">
                     <i class="iconfont icon-sousuo"></i>搜索</span>
             </div>
@@ -107,15 +107,17 @@ export default {
             this.goto('/search')
         },
         search() {
-            if (!this.keyword) {
+            if (!this.$store.state.search.keyword) {
                 return
             }
+            var obj = document.getElementById('keyword')
+            obj.blur();
             let _list = this.$store.state.hList;
-            if (this.$store.state.hList.indexOf(this.keyword) == -1) {
+            if (this.$store.state.hList.indexOf(this.$store.state.search.keyword) == -1) {
                 if (_list.length >= 10) {
                     _list.shift()
                 }
-                _list.push(this.keyword)
+                _list.push(this.$store.state.search.keyword)
 
                 if (_list) {
                     _list = JSON.stringify(_list);
@@ -125,7 +127,7 @@ export default {
 
             let url = '/mini/Good/get_list?page=1',
                 vm = this, data = {
-                    keyword: this.keyword
+                    keyword: this.$store.state.search.keyword
                 };
             vm.$store.state.search.loading = true;
             this.apiGet(url, data).then(function(res) {
@@ -135,9 +137,9 @@ export default {
                 } else {
                     vm.handleError(res)
                 }
-             setTimeout(()=>{
-                       vm.$store.state.search.loading = false;
-                   },400)
+                setTimeout(() => {
+                    vm.$store.state.search.loading = false;
+                }, 400)
             })
 
 
