@@ -10,21 +10,23 @@
         </div>
         <ul class="order-list" v-if="list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loadComment" :infinite-scroll-immediate-check="false" infinite-scroll-distance="10">
             <li v-for="(item,idx) in list" :key="idx">
-                <div class="h">订单号：{{item.order_number}}
+                <div class="h" @click="goto('/order_detail/order_id/'+item.id)">订单号：{{item.order_number}}
                     <span class="status">{{item.order_status_txt}}</span>
                 </div>
-                <div class="m" v-for="(good,key) in item.orders_goods" :key="key">
+                <div class="m" @click="goto('/order_detail/order_id/'+item.id)" v-for="(good,key) in item.orders_goods" :key="key">
                     <img :src="good.good_img" width="50" height="50">
                     <div class="info">
                         <div class="title">{{good.good_title}}</div>
                     </div>
                     <div class="tool">
-                        <div>￥{{good.price}}</div>
+                        <div v-if="item.pay_method == 3">积分 {{good.credits}}</div>
+                        <div v-else>￥{{good.price}}</div>
                         <div>x {{good.buy_num}}</div>
                     </div>
                 </div>
                 <div class="b">
-                    <div>订单总额:￥{{item.total_amount}}</div>
+                    <div v-if="item.pay_method == 3">订单总额：积分 {{item.minus_credits}}</div>
+                    <div v-else>订单总额：￥{{item.total_amount}}</div>
                     <div>
                         <button type="button" class="ui-btn active" v-if="item.pay_status == 1 && item.pay_method != 2" @click="goto('/pay/order_id/'+item.id)">付款</button>
                         <button type="button" class="ui-btn active" v-if="item.comment_status == 1" @click="goto('/start/order_id/'+item.id)">评价</button>
@@ -57,30 +59,42 @@ export default {
     },
     methods: {
         //换货
-        exchange(index){
+        exchange(index) {
             let url = '/mini/Exchange/add', vm = this, data = { order_id: this.list[index].id };
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.list[index].exchange = 0;
-                    vm.list[index].refund = 0;
-                    vm.$msg(res.msg);
-                } else {
-                    vm.handleError(res)
+            this.$confirm({
+                msg: '确定申请换货？<br />申请换货后将有客服人员跟进处理！',
+                yes: function() {
+                    vm.apiPost(url, data).then(function(res) {
+                        if (res.code) {
+                            vm.list[index].exchange = 0;
+                            vm.list[index].refund = 0;
+                            vm.$msg(res.msg);
+                        } else {
+                            vm.handleError(res)
+                        }
+                    })
                 }
             })
+
         },
         //退款
-        refund(index){
+        refund(index) {
             let url = '/mini/Refund/add', vm = this, data = { order_id: this.list[index].id };
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.list[index].refund = 0;
-                    vm.list[index].exchange = 0;
-                    vm.$msg(res.msg);
-                } else {
-                    vm.handleError(res)
+            this.$confirm({
+                msg: '确定申请退款？<br />申请换货后将有客服人员跟进处理！',
+                yes: function() {
+                    vm.apiPost(url, data).then(function(res) {
+                        if (res.code) {
+                            vm.list[index].refund = 0;
+                            vm.list[index].exchange = 0;
+                            vm.$msg(res.msg);
+                        } else {
+                            vm.handleError(res)
+                        }
+                    })
                 }
             })
+
         },
         //加载更多
         loadMore() {
@@ -116,7 +130,7 @@ export default {
                         _list = _list.concat(res.data.list)
                         vm.list = _list;
                     }
-                 
+
                 } else {
                     vm.handleError(res)
                 }

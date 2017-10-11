@@ -12,6 +12,7 @@ class Order extends Base
 {
     
     private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
+    private static $pay_status = ['', '未支付', '已支付', '已退款', '支付失败', '退款失败'];//支付状态
     
     /**
      * 确认订单
@@ -268,7 +269,7 @@ class Order extends Base
         
         $list = Orders::with("ordersGoods")
                 ->where($where)
-                ->field("id,order_number,order_status,pay_status,total_amount,pay_method")
+                ->field("id,order_number,order_status,pay_status,total_amount,pay_method,minus_credits")
                 ->page($page,$limit)
                 ->order('id DESC')
                 ->select();
@@ -348,6 +349,8 @@ class Order extends Base
                 }
             }
         }
+        $info['order_status_txt'] = self::$order_status[$info['order_status']];
+        $info['pay_status_txt'] = self::$pay_status[$info['pay_status']];
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
     }
