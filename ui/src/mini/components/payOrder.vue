@@ -107,7 +107,7 @@ export default {
             let url = '/mini/Order/credits_exchange', vm = this, data = { order_id: this.order_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    vm.$msg(res.msg);
+                    // vm.$msg(res.msg);
                     vm.goto('/success/order_id/'+vm.order_id);
                 } else {
                     vm.handleError(res)
