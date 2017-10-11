@@ -62,6 +62,8 @@ const start = () =>
 
 const shouhou = () =>
   import ( /* webpackChunkName: "shouhou" */ '@/components/shouhou')
+const daili = () =>
+  import ( /* webpackChunkName: "daili" */ '@/components/daili')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -188,6 +190,11 @@ const router = new Router({
       name: 'start',
       component: start,
     },
+    {
+        path: '/daili',
+        name: 'daili',
+        component: daili,
+      },
     {
       path: '*',
       name: '404',
