@@ -63,8 +63,8 @@
                                 <col width="100">
                                 <col width="100">
                                 <col　width="160">
-                                <col >
-                                <col width="220">
+                                    <col>
+                                    <col width="220">
                             </colgroup>
                             <thead>
                                 <tr>
@@ -96,7 +96,7 @@
                                     <td>{{item.pay_method_txt }}</td>
                                     <td>{{item.finish_time}}</td>
                                     <td class="center tool_no_border">
-                                        <el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button> 　
+                                        <el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button>
                                         <el-button type="text" size="small" v-if="item.order_status == 1" @click="OnCannelOrder(idx)">取消订单</el-button>
                                     </td>
                                 </tr>
@@ -180,11 +180,17 @@
                         <el-option label="其他" :value="3"></el-option>
                     </el-select>
                 </el-form-item>
+             
                 <el-form-item class="is-required" label="快递编号" label-width="100px" v-if="dialogForm.deliver_method === 2">
                     <el-input v-model="dialogForm.tracking_number" auto-complete="off" placeholder="快递编号">
 
                     </el-input>
                 </el-form-item>
+                  
+                    <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type === 3">
+                        <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
+                    </el-form-item>
+                
             </el-form>
 
             <!-- 要服务 2 5 -->
@@ -192,7 +198,6 @@
                 <el-form-item label="服务员" label-width="100px">
                     <el-input v-model="dialogForm.service_user" auto-complete="off" placeholder="发货员"></el-input>
                 </el-form-item>
-
                 <el-form-item label="服务时间" label-width="100px">
                     <el-date-picker v-model="dialogForm.service_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
                 </el-form-item>
@@ -201,6 +206,7 @@
                     <el-input v-model="dialogForm.note" auto-complete="off" placeholder="备注">
                     </el-input>
                 </el-form-item>
+
             </el-form>
 
             <div class="dialog_main">
@@ -276,6 +282,7 @@ export default {
                 good_type: '',
                 service_user: '',
                 service_time: '',
+                total_amount: '',
                 note: ''
 
             },
@@ -449,7 +456,7 @@ export default {
     created() {
         this.get_list();
         this.setBreadcrumb(['订单', '订单列表'])
-        
+
     }
 
 }
