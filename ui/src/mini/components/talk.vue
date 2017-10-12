@@ -1,8 +1,9 @@
 <template>
     <div class="talk">
+        <div  v-loading.win="serverInit"></div>
         <div class="reply_list_box" :style="{'top':$is.WeiXin == false?'68px':'10px'}">
             <div class="reply_list_content" id="reply_list_content">
-                <div class="sd-scroller" v-loading="loading">
+                <div class="sd-scroller" >
                     <scroller ref="ss">
                         <div class="item" v-for="(item,idx) in list" :key="idx">
                             <div class="item-box" :class="{'self':item.send_user == 2}">
@@ -25,7 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="time">{{item.add_time}}</div>
+                        <div class="time">{{item.add_time}}</div>
                         </div>
                     </scroller>
                 </div>
@@ -64,9 +65,9 @@ export default {
         setTimeout(function() {
             var input = document.getElementById('input-key');
             input.addEventListener('focus', function() {
-                  vm.$refs['ss'].scrollTo(0, 999, 0);
+                vm.$refs['ss'].scrollTo(0, 999, 0);
                 setTimeout(function() {
-                  
+
                     document.body.scrollTop = 99999
                 }, 200)
             }, false)
@@ -74,6 +75,7 @@ export default {
     },
     data() {
         return {
+            serverInit:true,
             reqopts: {
                 formData: {
                     image_type: 'message_img'
@@ -85,7 +87,7 @@ export default {
                 { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
                 { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
                 { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2,add_time:"2012-12-12 18:12:12" },
                 { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
                 { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
                 { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
@@ -132,8 +134,34 @@ export default {
         },
         onSend() {
 
-        }
-
+        },
+    },
+    created() {
+      const  ws = new WebSocket("ws://127.0.0.1:8282");
+      let vm = this;
+        ws.onmessage = function(e) {
+            // json数据转换成js对象
+            var data = eval("(" + e.data + ")");
+            var type = data.type || '';
+            switch (type) {
+                // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
+                case 'init':
+                    // console.log(data);
+                    // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
+                    //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
+                    let url = '/mini/Message/bind'
+                    vm.apiPost(url,data).then(res=>{
+                        console.log(res)
+                        if(res.code){
+                            vm.serverInit = false
+                        }
+                    })
+                    break;
+                // 当mvc框架调用GatewayClient发消息时直接alert出来
+                default:
+                //                alert(e.data);
+            }
+        };
     }
 
 
