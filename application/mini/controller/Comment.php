@@ -1,6 +1,7 @@
 <?php
 namespace app\mini\controller;
 
+use think\Db;
 /**
  * 评论
  */
@@ -62,63 +63,103 @@ class Comment extends Base
         $this->success('成功', '', $result);
     }
     
+    //验证数据
+    
     /**
      * 添加评论
+     * @param int $order_id 订单id
+     * @param string $good_info 商品评论信息 json字符串
+     * good_info包含
+     * [
+     *      {
+     *          good_id:1,//必填
+     *          content:'',//非必填
+     *          stars:5,//必填
+     *          imgs:['www.baidu.com','www.google.com'],//非必填
+     *      }
+     * ]
      */
     public function add(){
-        $data = [
-            'good_id' => input('param.good_id', '', 'trim'),
-            'order_id' => input('param.order_id', '', 'trim'),
-            'content' => input('param.content', '', 'trim'),
-            'stars' => input('param.stars', '', 'trim'),
-            'imgs' => input('param.imgs', '', 'trim'),
-        ];
-                
-        $validate_res = $this->validate($data,[
-            'good_id'  => 'require',
-            'order_id' => 'require',
-            'content' => 'require|max:1000',
-            'stars' => 'require|in:1,2,3,4,5',
-            'imgs' => 'array',
-        ],[
-            'good_id.require' => '参数错误',
-            'order_id.require' => '参数错误',
-            'content.require' => '请输入评论内容',
-            'content.max' => '评论内容长度不能超过1000',
-            'stars.require' => '请选择评价星级',
-            'stars.in' => '评价星级数据不正确',
-            'imgs.array' => '图片格式不正确',
-        ]); 
-        if ($validate_res !== true) {
-            $this->error($validate_res);
+//        $data = [
+//            ['good_id'=>4,'content'=>'bbb','stars'=>4,'imgs'=>['baidu1','google1']],
+//            ['good_id'=>3,'content'=>'aaa','stars'=>5,'imgs'=>['baidu','google']],
+//        ];
+//                exit(json_encode($data));
+        $order_id = input('param.order_id', '', 'trim');
+        if(!$order_id){
+            $this->error('参数错误');
+        }
+        $good_info = input('param.good_info', '', 'trim');
+        $good_info = json_decode($good_info, true);
+        if(!is_array($good_info)){
+            $this->error('数据格式不正确');
+        }
+        $comment_good_id = [];
+        $add_data_all = [];
+        foreach($good_info as $k=>$v){
+            $data = [
+                'good_id' => $v['good_id'],
+                'content' => $v['content'] ? $v['content'] : '好评',
+                'stars' => $v['stars'],
+                'imgs' => $v['imgs'],
+            ];
+            $validate_res = $this->validate($data,[
+                'good_id'  => 'require',
+                'content' => 'require|max:1000',
+                'stars' => 'require|in:1,2,3,4,5',
+                'imgs' => 'array',
+            ],[
+                'good_id.require' => '缺少商品id',
+                'content.require' => '请输入评论内容',
+                'content.max' => '评论内容长度不能超过1000',
+                'stars.require' => '请选择评价星级',
+                'stars.in' => '评价星级数据不正确',
+                'imgs.array' => '图片格式不正确',
+            ]); 
+            if ($validate_res !== true) {
+                $this->error($validate_res);
+            }
+            $comment_good_id[] = $v['good_id'];
+            
+            $data['order_id'] = $order_id;
+            $data['user_id'] = session('mini.uid');
+            $data['add_time'] = date('Y-m-d H:i:s');
+            $data['imgs'] = $data['imgs'] ? json_encode($data['imgs']) : '';
+            
+            $add_data_all[] = $data;
         }
         
-        $info = db('orders_goods')->alias('og')
+        $order_goods = db('orders_goods')->alias('og')
                 ->join('__ORDERS__ o', 'o.id=og.order_id', 'LEFT')
-                ->where('og.order_id', $data['order_id'])
-                ->where('og.good_id', $data['good_id'])
+                ->where('og.order_id', $order_id)
                 ->where('o.user_id', session('mini.uid'))
                 ->where('o.order_status', 5)
-                ->field('og.good_id,og.order_id')
-                ->find();
-        if(!$info){
-            $this->error('只能评价自己购买完成的商品');
+                ->column('og.good_id');
+        
+        if(array_diff($order_goods, $comment_good_id)){
+            $this->error('商品数据和订单内的商品信息不吻合');
         }
         
         //是否已评价
-        $exist = db('goods_comments')->where('good_id', $data['good_id'])->where('order_id', $data['order_id'])->where('user_id', session('mini.uid'))->find();
+        $exist = db('goods_comments')->where('order_id', $order_id)->where('user_id', session('mini.uid'))->count();
         if($exist){
             $this->error('不能重复评论');
         }
         
-        $data['user_id'] = session('mini.uid');
-        $data['add_time'] = date('Y-m-d H:i:s');
-        $data['imgs'] = $data['imgs'] ? json_encode($data['imgs']) : '';
-        $res = db('goods_comments')->insert($data);
-        if($res){
-            $this->success('评价成功');
-        }else{
-            $this->error('评价失败');
+        Db::startTrans();
+        try{
+            
+            db('goods_comments')->insertAll($add_data_all);
+            
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error($e->getMessage());
         }
+        
+        $this->success('评价成功');
+        
     }
 }
