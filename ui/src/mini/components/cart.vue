@@ -3,7 +3,7 @@
         <ul class="thumb-list">
             <li v-for="(item,idx) in list" :key="item.good_id">
                 <input type="checkbox" class="ui-checkbox" v-model="item.selected" @change="onChange">
-                <img :src="item.good_img" width="70" height="70">
+                <img v-lazy="item.good_img" width="70" height="70">
                 <div class="info">
                     <div class="title">{{item.good_title}}</div>
                     <div class="tool">

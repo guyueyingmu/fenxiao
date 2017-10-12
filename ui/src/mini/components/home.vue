@@ -4,7 +4,7 @@
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption" :style="setbannerHeight">
             <swiper-slide v-for="(slide,k) in swiperSlides" :key="k" >
-                <img :src="slide.img_url">
+                <img v-lazy="slide.img_url">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -14,7 +14,7 @@
             <ul>
                 <li v-for="(cat, k) in cat_list" :key="k">
                     <a href="javascript:;" @click="goto('/search/cat_id/'+cat.id)">
-                        <i class="nav-icon item-1"><img :src="cat.cat_img" width="100%"></i>
+                        <i class="nav-icon item-1"><img v-lazy="cat.cat_img" width="100%"></i>
                         <span>{{cat.cat_name}}</span>
                     </a>
                 </li>
@@ -76,7 +76,7 @@
         </div>
         <ul class="thumb-box">
             <li v-for="(good,k) in good_list" :key="k">
-                <div class="thumb" @click="goto('/detail/id/'+good.id)"><img :src="good.good_img"></div>
+                <div class="thumb" @click="goto('/detail/id/'+good.id)"><img v-lazy="good.good_img"></div>
                 <div class="title" @click="goto('/detail/id/'+good.id)">
                     {{good.good_title}}
                 </div>

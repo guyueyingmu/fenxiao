@@ -2,7 +2,7 @@
     <div>
         <ul class="ui-links">
             <li v-for="(cat, k) in cat_list" :key="k" @click="goto('/search/cat_id/'+cat.id)">
-                <img :src="cat.cat_img" width="50" height="50">
+                <img v-lazy="cat.cat_img" width="50" height="50">
                 <span class="title">{{cat.cat_name}}</span>
                 <i class="iconfont icon-arrow"></i>
             </li>
