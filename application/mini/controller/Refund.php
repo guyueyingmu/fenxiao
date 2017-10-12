@@ -20,7 +20,7 @@ class Refund extends Base
         $list = Orders::with('ordersGoods')->alias('o')
                 ->join('__ORDERS_REFUND_APPLY__ r', 'r.order_id=o.id', 'LEFT')
                 ->where($where)
-                ->field('o.id,o.order_number,r.status')
+                ->field('o.id,o.order_number,r.status,o.pay_method')
                 ->order('r.id DESC')->page($page, $limit)
                 ->select();
         
