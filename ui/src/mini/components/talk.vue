@@ -6,7 +6,7 @@
                 <div class="sd-scroller" >
                     <scroller ref="ss">
                         <div class="item" v-for="(item,idx) in list" :key="idx">
-                            <div class="item-box" :class="{'self':item.send_user == 2}">
+                            <div class="item-box" :class="{'self':item.send_user == 1}">
                                 <div class="avt"><img src="static/mini/img/demo/avt.jpg" width="40" height="40">
                                     <span class="name">{{item.user_name}}</span>
                                 </div>
@@ -41,7 +41,7 @@
                         <input type="text" class="ui-input" id="input-key" autocomplete="off" placeholder="请输入内容" v-model="info.content"> </input>
                     </div>
                     <div style="width:60px;margin-left:10px;">
-                        <button type="button" class="ui-btn ui-btn-send" @click="onSend()">发送</button>
+                        <button type="button" class="ui-btn ui-btn-send" @click="onSend(1, info.content)">发送</button>
                     </div>
                 </div>
 
@@ -72,6 +72,13 @@ export default {
                 }, 200)
             }, false)
         }, 100)
+
+        //新增商品消息
+        this.onSend(3, this.$route.params.good_id);
+        setTimeout(function(){
+            vm.get_list();
+        },500)
+        
     },
     data() {
         return {
@@ -84,20 +91,21 @@ export default {
                 withCredentials: false
             },
             list: [
-                { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2,add_time:"2012-12-12 18:12:12" },
-                { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                { send_user: 2, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
-                { send_user: 1, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
-                { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                { send_user: 2, user_name: '李明', content: '你好职b', type: 1 },
+                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
+                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
+                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2,add_time:"2012-12-12 18:12:12" },
+                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
+                // { send_user: 2, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
+                // { send_user: 1, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
+                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
+                // { send_user: 2, user_name: '李明', content: '你好职b', type: 1 },
             ],
+            list_pages: {},
             info: {
                 content: ''
             },
@@ -118,23 +126,44 @@ export default {
         },
         success(res) {
             if (res.code) {
-                let _d = {};
-                _d.user_id = this.info.user_id
-                _d.type = 2;
-                _d.send_user = 2;
-                _d.user_name = this.info.nickname
-                _d.content = res.data.img_path
-                _d.content2 = {}
-                _d.content2 = {
-                    thumb_img_url: res.data.img_path,
-                    img_url: res.data.big_img_path
-                }
-                //  this.send(_d)
+                this.onSend(2, res.data.img_path);
             }
         },
-        onSend() {
-
+        //发送消息
+        onSend(type, content) {
+            let url = '/mini/Message/send_msg', vm = this, data = {type: type, content: content};
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    if(type != 3){
+                        vm.$msg(res.msg);
+                    }      
+                    vm.info.content = '';              
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
+        get_list(page){
+            page = page || 1;
+            let url = '/mini/Message/chat_list?page=' + page,
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.list_pages = res.data.pages;
+                    if (page < 2) {
+                        vm.list = res.data.list;
+                    } else {
+                        let _list = vm.list, _new_list = res.data.list;
+                        _list = _new_list.concat(_list);
+                        vm.list = _list;
+                    }
+                 
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        }
     },
     created() {
       const  ws = new WebSocket("ws://127.0.0.1:8282");
@@ -156,6 +185,9 @@ export default {
                             vm.serverInit = false
                         }
                     })
+                    break;
+                case 'msg':
+                    vm.list.push(data.content);
                     break;
                 // 当mvc框架调用GatewayClient发消息时直接alert出来
                 default:

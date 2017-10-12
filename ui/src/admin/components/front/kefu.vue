@@ -121,7 +121,9 @@ export default {
 
             },
             list: [],
-            reply_show: false
+            reply_show: false,
+            current_user_id: 0,
+            current_client_id: '',
         }
     },
     methods: {
@@ -132,28 +134,68 @@ export default {
             this.dialog.info.content = '';
             this.reply_show = true;
             this.replyLoading = true;
-            document.body.style.overflow = 'hidden'
-            this.get_talk_list(item.user_id);
+            document.body.style.overflow = 'hidden';
+            this.bind_ws(item.user_id);
+            this.current_user_id = item.user_id;
+            this.get_talk_list(item.message_group_id);
+        },
+        bind_ws(user_id){
+            const  ws = new WebSocket("ws://127.0.0.1:8282");
+            let vm = this;
+            ws.onmessage = function(e) {
+                // json数据转换成js对象
+                var data = eval("(" + e.data + ")");
+                var type = data.type || '';
+                switch (type) {
+                    // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
+                    case 'init':
+                        // console.log(data);
+                        // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
+                        //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
+                        let url = '/admin/Kefu/bind';
+                        vm.current_client_id = data.client_id;
+                        vm.apiPost(url,{client_id: data.client_id, user_id: user_id}).then(res=>{
+                            console.log(res)
+                            if(res.code){
+                                // vm.serverInit = false
+                            }
+                        })
+                        break;
+                    case 'msg': console.log(1,data.content);
+                        vm.dialog.list.push(data.content);
+                        setTimeout(() => {
+                            IScroll1.refresh();
+                        }, 200)
+                        setTimeout(() => {
+                            IScroll1.scrollTo(0, IScroll1.maxScrollY, 200)
+                        }, 300)
+                        break;
+                    // 当mvc框架调用GatewayClient发消息时直接alert出来
+                    default:
+                    //                alert(e.data);
+                }
+            };
         },
         close_reply() {
             this.reply_show = false;
             document.body.style.overflow = 'auto'
             IScroll1.disable();
+
+            let user_id = this.current_user_id;
+            this.current_user_id = 0;
+            //退出聊天分组
+            let url = '/admin/Kefu/leave_group'
+            this.apiPost(url,{client_id: this.current_client_id, user_id: user_id}).then(res=>{
+                console.log(res)
+            })
         },
         //小图上传成功
         messageImgSuccess(res, file) {
             if (res.code) {
                 let _d = {};
-                _d.user_id = this.dialog.info.user_id
+                _d.message_group_id = this.dialog.info.message_group_id
                 _d.type = 2;
-                _d.send_user = 2;
-                _d.user_name = this.dialog.info.nickname
                 _d.content = res.data.img_path
-                _d.content2 = {}
-                _d.content2 = {
-                    thumb_img_url: res.data.img_path,
-                    img_url: res.data.big_img_path
-                }
                 this.send(_d)
             }
         },
@@ -176,8 +218,8 @@ export default {
             return isLt2M && isTypeOk;
         },
         //取对话数据
-        get_talk_list(user_id) {
-            let url = '/admin/Kefu/detail?user_id=' + user_id, vm = this;
+        get_talk_list(message_group_id) {
+            let url = '/admin/Kefu/detail?message_group_id=' + message_group_id, vm = this;
             this.apiGet(url).then((res) => {
                 if (res.code) {
                     vm.dialog.list = res.data.list;
@@ -203,10 +245,8 @@ export default {
         },
         onSend() {
             let _d = {};
-            _d.user_id = this.dialog.info.user_id
+            _d.message_group_id = this.dialog.info.message_group_id
             _d.type = 1;
-            _d.send_user = 2;
-            _d.user_name = this.dialog.info.nickname
             _d.content = this.dialog.info.content;
             this.send(_d)
             this.dialog.info.content = ''
@@ -219,18 +259,7 @@ export default {
 
             this.apiPost(url, _d).then((res) => {
                 if (res.code) {
-                    if (_d.type == 2) {
-                        data.content = _d.content2;
-                    } else {
-                        _d.content2 = null
-                    }
-                    vm.dialog.list.push(data)
-                    setTimeout(() => {
-                        IScroll1.refresh();
-                    }, 200)
-                    setTimeout(() => {
-                        IScroll1.scrollTo(0, IScroll1.maxScrollY, 200)
-                    }, 300)
+                    this.$msg(res.msg);
                 } else {
                     vm.handleError(res)
                 }
@@ -285,7 +314,6 @@ export default {
         setTimeout(() => {
             window.IScroll1 = new IScroll('#reply_list_content', { mouseWheel: true, scrollbars: true });
         }, 500)
-
 
     }, beforeRouteEnter(to, from, next) {
         next(vm => {

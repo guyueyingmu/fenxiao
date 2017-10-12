@@ -1,6 +1,7 @@
 <?php
 namespace app\mini\controller;
 
+use think\Db;
 use GatewayClient\Gateway;
 
 class Message extends Base
@@ -26,7 +27,7 @@ class Message extends Base
         // 加入某个群组（可调用多次加入多个群组）
         $res2 = Gateway::joinGroup($client_id, $group_id);
         if($res && $res2){
-            $this->success('成功');
+            $this->success('连接成功');
         }else{
             $this->error('连接失败');
         }
@@ -68,24 +69,39 @@ class Message extends Base
             'content' => $content,
             'read_status' => 1,
             'add_time' => date('Y-m-d H:i:s'),
-            'type' => $type,
+            'type' => intval($type),
         ];
-        $res = db('message')->insert($add_message);
         
-        if($res){
+        Db::startTrans();
+        try{
+            db('message')->insert($add_message);
+            
+            if($type == 3){
+                $add_message['content'] = json_decode($content, true);
+            }elseif($type == 2){
+                $add_message['content'] = ['img_url' => getThumbUrl($content, 1), 'thumb_img_url' => $content];                            
+            }
+            $add_message['user_name'] = session('mini.nickname');
+            $add_message['head_img'] = session('mini.img_url');
+            
             //推送消息
             $group = get_group_id($uid);
-            $exclude_user = Gateway::getClientIdByUid($uid);
+//            $exclude_user = Gateway::getClientIdByUid($uid);
             // 向任意群组的网站页面发送数据
             Gateway::sendToGroup($group, json_encode(array(
                 'type'      => 'msg',
                 'content' => $add_message
-            )), [$exclude_user]);
+            )));//, [$exclude_user]
             
-            $this->success('发送成功');
-        }else{
-            $this->error('发送失败');
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            $this->error($e->getMessage());
         }
+        
+        $this->success('发送成功');
     }
     
     /**
@@ -110,7 +126,7 @@ class Message extends Base
         $where = 'message_group_id='. $group['id'];
         $list = db('message')
                 ->where($where)
-                ->field("send_user_id,send_user,content,read_status,add_time,type")
+                ->field("id,send_user_id,send_user,content,read_status,add_time,type")
                 ->page($page,$limit)
                 ->order('id DESC')
                 ->select();
@@ -118,7 +134,7 @@ class Message extends Base
                 ->where($where)
                 ->count();
         if($list){
-            krsort($list);
+            $id_arr = [];
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
                     $list[$k]['content'] = json_decode($v['content'], true);
@@ -132,7 +148,9 @@ class Message extends Base
                     $list[$k]['user_name'] = '客服';
                     $list[$k]['head_img'] = '';
                 }
+                $id_arr[] = $v['id'];
             }
+            array_multisort($id_arr, SORT_ASC, $list);
         }
         
         $total_page = ceil($total/$limit);

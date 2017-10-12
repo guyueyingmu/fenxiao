@@ -19,7 +19,7 @@
         </div>
 
         <div class="tool">
-            <div class="item btn" @click="goto('/talk')">
+            <div class="item btn" @click="goto('/talk/good_id/'+good_info.id)">
                 <i class="iconfont icon-kefu2"></i>
                 <em>在线客服</em>
             </div>

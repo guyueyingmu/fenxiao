@@ -1,10 +1,11 @@
 <?php
 namespace app\admin\controller;
 
+use \think\Controller;
 /**
  * 文件处理
  */
-class Asset extends Base
+class Asset extends Controller
 {    
     /**
      * 上传文件

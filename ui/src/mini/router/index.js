@@ -151,7 +151,7 @@ const router = new Router({
       component: fail,
     },
     {
-      path: '/talk',
+      path: '/talk/good_id/:good_id',
       name: 'talk',
       component: talk,
     },

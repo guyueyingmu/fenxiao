@@ -34,9 +34,22 @@ class Kefu extends Base
         $uid      = 'admin'. session("admin.uid");
         $group_id = get_group_id($user_id);
         // client_id与uid绑定
-        Gateway::bindUid($client_id, $uid);
+        $res = Gateway::bindUid($client_id, $uid);
         // 加入某个群组（可调用多次加入多个群组）
-        Gateway::joinGroup($client_id, $group_id);
+        $res2 = Gateway::joinGroup($client_id, $group_id);
+        if($res && $res2){
+            $this->success('连接成功');
+        }else{
+            $this->error('连接失败');
+        }
+    }
+    //关闭聊天窗口，离开分组
+    public function leave_group(){
+        $user_id = input("param.user_id", "", "intval");
+        $client_id = input("param.client_id", "", "trim");
+        $group_id = get_group_id($user_id);
+        Gateway::leaveGroup($client_id, $group_id);
+        $this->success('成功');
     }
     
     /**
@@ -63,7 +76,7 @@ class Kefu extends Base
         $list = Db::table($subQuery." m")
                 ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
                 ->where($where)
-                ->field("m.user_id,u.nickname,m.content,m.read_status,m.add_time,m.type")
+                ->field("m.user_id,u.nickname,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
                 ->page($page,$limit)
                 ->order('m.read_status ASC,m.id ASC')
                 ->select();
@@ -116,15 +129,16 @@ class Kefu extends Base
         $where = 'message_group_id='. $message_group_id;
         $list = db('message')
                 ->where($where)
-                ->field("content,read_status,add_time,send_user_id,type,send_user")
+                ->field("id,content,read_status,add_time,send_user_id,type,send_user")
                 ->page($page,$limit)
-                ->order('id ASC')
+                ->order('id DESC')
                 ->select();
         $total = db('message')
                 ->where($where)
                 ->count();
         if($list){
             $admin_user_info = [];
+            $id_arr = [];
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
                     $list[$k]['content'] = json_decode($v['content'], true);
@@ -141,7 +155,9 @@ class Kefu extends Base
                     $list[$k]['user_name'] = $admin_user_info[$v['send_user_id']]['nickname'];
                     $list[$k]['img_url'] = '';
                 }
+                $id_arr[] = $v['id'];
             }
+            array_multisort($id_arr, SORT_ASC, $list);
         }
         
         $total_page = ceil($total/$limit);
@@ -172,6 +188,7 @@ class Kefu extends Base
             'message_group_id'  => input("message_group_id","","trim"),
             'type'  => input("type","","trim"),
         ];
+        $data['type'] = intval($data['type']);
         
         $validate_res = $this->validate($data,[
             'message_group_id'  => 'require|number',
@@ -198,9 +215,19 @@ class Kefu extends Base
             //推送消息
             $uid = db('message_group')->where('id', $data['message_group_id'])->value('user_id');
             $group = get_group_id($uid);
-            $exclude_user = Gateway::getClientIdByUid('admin'. session('admin.uid'));
+//            $exclude_user = Gateway::getClientIdByUid('admin'. session('admin.uid'));
+            
+            if($data['type'] == 2){
+                $data['content'] = ['img_url' => getThumbUrl($data['content'], 1), 'thumb_img_url' => $data['content']];                            
+            }
+            $data['user_name'] = session('admin.nickname');
+            $data['head_img'] = '';
+            
             // 向任意群组的网站页面发送数据
-            Gateway::sendToGroup($group, $data['content'], [$exclude_user]);
+            Gateway::sendToGroup($group, json_encode(array(
+                'type'      => 'msg',
+                'content' => $data
+            )));//, [$exclude_user]
             
             //写日志
             $this->add_log($this->menu_id,['title' => '添加客服消息', 'data' => $data]);
