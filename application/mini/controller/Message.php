@@ -61,21 +61,26 @@ class Message extends Base
         }
         
         //保存到数据库
-        $res = db('message')->insert([
+        $add_message = [
             'message_group_id' => $group_info['id'],
             'send_user_id' => $uid,
             'send_user' => 1,
             'content' => $content,
+            'read_status' => 1,
             'add_time' => date('Y-m-d H:i:s'),
             'type' => $type,
-        ]);
+        ];
+        $res = db('message')->insert($add_message);
         
         if($res){
             //推送消息
             $group = get_group_id($uid);
             $exclude_user = Gateway::getClientIdByUid($uid);
             // 向任意群组的网站页面发送数据
-            Gateway::sendToGroup($group, $content, [$exclude_user]);
+            Gateway::sendToGroup($group, json_encode(array(
+                'type'      => 'msg',
+                'content' => $add_message
+            )), [$exclude_user]);
             
             $this->success('发送成功');
         }else{
@@ -107,12 +112,13 @@ class Message extends Base
                 ->where($where)
                 ->field("send_user_id,send_user,content,read_status,add_time,type")
                 ->page($page,$limit)
-                ->order('id ASC')
+                ->order('id DESC')
                 ->select();
         $total = db('message')
                 ->where($where)
                 ->count();
         if($list){
+            krsort($list);
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
                     $list[$k]['content'] = json_decode($v['content'], true);
