@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading">
-        <ul class="thumb-list" v-if="loading == false && list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" :infinite-scroll-immediate-check="false" infinite-scroll-distance="10">
+        <ul class="thumb-list" v-show="list.length > 0" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10">
             <li v-for="(item,idx) in list" :key="item.id">
                 <img :src="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.good_id)">
                 <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.good_id)">
@@ -30,10 +30,11 @@ export default {
         return {
             list: [],
             pages: {},
-            timer: null
+            sloading: false
         }
     },
     methods: {
+
         ondel(index) {
             let url = '/mini/Footmark/del', vm = this, data = { id: this.list[index].id };
             this.$confirm({
@@ -52,27 +53,27 @@ export default {
 
         },
         loadMore() {
-            let page = parseInt(this.pages.current_page, 10);
-            clearTimeout(this.timer)
-            this.timer = setTimeout(() => {
-                if (page < this.pages.total_page) {
-                    this.get_list(page + 1);
-                }
-            }, 500)
-
+            if (this.sloading) { return }
+            let page = parseInt(this.pages.current_page, 10) || 1;
+            if (page < this.pages.total_page) {
+                this.get_list(page + 1);
+            }
 
         },
         get_list(page) {
-            this.loading = true
+            this.sloading = true
             page = page || 1;
             let url = '/mini/Footmark/get_list?page=' + page,
                 vm = this;
             this.apiGet(url, {}).then(function(res) {
-                vm.loading = false;
+
                 if (res.code) {
                     vm.pages = res.data.pages;
                     if (page < 2) {
                         vm.list = res.data.list;
+                        setTimeout(() => {
+                            vm.loadMore()
+                        }, 250)
                     } else {
                         let _list = vm.list;
                         _list = _list.concat(res.data.list)
@@ -81,6 +82,9 @@ export default {
                 } else {
                     vm.handleError(res)
                 }
+                setTimeout(() => {
+                    vm.sloading = false;
+                }, 200)
 
             })
         }

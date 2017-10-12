@@ -6,7 +6,7 @@
             <span :class="{'active':tagsIdx == 2}" @click="tagsIdx = 2">换货记录</span>
 
         </div>
-        <ul class="order-list">
+        <ul class="order-list" v-show="list.length > 0" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10">
             <li v-for="item in list" :key="item.id">
                 <div class="h">订单号：{{item.order_number}}</div>
                 <div class="m" v-for="good in item.orders_goods" :key="good.id">
@@ -47,6 +47,9 @@ export default {
             refund_list: [],
             exchange_list: [],
             tagsIdx: 1,
+            sloading: false,
+            r_pages: {},
+            e_pages: {}
 
         }
     },
@@ -61,17 +64,36 @@ export default {
 
     },
     methods: {
+        loadMore() {
+            if (this.sloading) { return }
+            if (this.tagsIdx == 1) {
+                let page = parseInt(this.r_pages.current_page, 10) || 1;
+                
+                if (page < this.r_pages.total_page) {
+                    this.get_list(page + 1);
+                }
+            } else {
+                let page = parseInt(this.e_pages.current_page, 10) || 1;
+                if (page < this.e_pages.total_page) {
+                    this.get_list(page + 1);
+                }
+              
+            }
+
+
+        },
         status(idx) {
             let r = ['未处理', '已同意', '已拒绝']
             let _idx = parseInt(idx, 10)
             return r[_idx - 1]
         },
         //换货
-        exchange() {
-            let url = '/mini/Exchange/get_list', vm = this;
+        exchange(page) {
+            let url = '/mini/Exchange/get_list?page=' + (page || 1), vm = this;
             vm.apiGet(url).then(function(res) {
                 if (res.code) {
                     vm.exchange_list = res.data.list;
+                    vm.e_pages = res.data.pages
                 } else {
                     vm.handleError(res)
                 }
@@ -79,19 +101,26 @@ export default {
 
         },
         //退款
-        refund() {
-            let url = '/mini/Refund/get_list', vm = this;
+        refund(page) {
+            let url = '/mini/Refund/get_list?page=' + (page || 1), vm = this;
 
             vm.apiGet(url).then(function(res) {
                 if (res.code) {
                     vm.refund_list = res.data.list;
+                    vm.r_pages = res.data.pages
                 } else {
                     vm.handleError(res)
                 }
             })
-
-
         },
+        get_list(page) {
+            if (this.tagsIdx == 1) {
+                this.refund(page)
+
+            } else {
+                this.exchange(page)
+            }
+        }
     },
     created() {
         this.setTitle('售后记录')

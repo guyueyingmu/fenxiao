@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <ul class="thumb-list" v-show="list.length > 0" v-infinite-scroll="loadMore" :infinite-scroll-disabled="!sloading" :infinite-scroll-distance="10">
+        <ul class="thumb-list" v-show="list.length > 0" ref="ss" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-distance="10">
             <li v-for="(item,idx) in list" :key="idx">
                 <img v-lazy="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.good_id)">
                 <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.good_id)">
@@ -40,14 +40,13 @@ export default {
         }
     },
     methods: {
+
         loadMore() {
+            if (this.sloading) { return }
             let page = parseInt(this.pages.current_page, 10) || 1;
-            // console.log('load', this.sloading,page,this.pages.total_page)
             if (page < this.pages.total_page) {
                 this.get_list(page + 1);
             }
-
-
 
         },
         get_list(page) {
@@ -58,17 +57,25 @@ export default {
             this.apiGet(url).then(function(res) {
 
                 if (res.code) {
+
                     vm.pages = res.data.pages;
                     if (vm.list.length == 0) {
                         vm.list = res.data.list;
-                        vm.loadMore();
+                        setTimeout(() => {
+                            vm.loadMore()
+                        }, 250)
                     } else {
                         let _list = vm.list;
                         vm.list = _list.concat(res.data.list)
-                        setTimeout(() => {
-                            vm.sloading = false
-                        }, 500)
+
+
                     }
+                    setTimeout(() => {
+                        vm.sloading = false;
+                    }, 200)
+
+
+
                 } else {
                     vm.handleError(res)
                 }
@@ -96,6 +103,7 @@ export default {
     created() {
         this.setTitle('我的收藏')
         this.get_list();
-    }
+    },
+
 }
 </script>
