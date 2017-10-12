@@ -46,29 +46,24 @@ export default {
             refund_list: [],
             exchange_list: [],
             tagsIdx: 1,
-            
+
         }
     },
-    computed:{
-        list(){
-            if(this.tagsIdx == 1){
+    computed: {
+        list() {
+            if (this.tagsIdx == 1) {
                 return this.refund_list
-            }else{
+            } else {
                 return this.exchange_list
             }
         },
-      
+
     },
     methods: {
-          status(idx){
-            let r = ['待处理','已发货','已服务','已取消','已完成']
-            let e = ['待处理','已发货','已服务','已取消','已完成']
-            let _idx= parseInt(idx,10)
-            if(this.tagsIdx == 1){
-              return r[_idx -1]   
-            }else{
-                 return e[_idx -1]
-            }
+        status(idx) {
+            let r = ['未处理', '同意', '拒绝']
+            let _idx = parseInt(idx, 10)
+            return r[_idx - 1]
         },
         //换货
         exchange() {
