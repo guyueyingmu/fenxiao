@@ -12,11 +12,11 @@ class Collect extends Base
      */
     public function get_list(){
         $page = input('param.page', 1, 'intval');
-        $limit = config('mini_page_limit');
+        $limit = 4;//config('mini_page_limit');
         
         $list = db('goods_collect')->alias('gc')
                 ->join('__GOODS__ g', 'g.id = gc.good_id', 'LEFT')
-                ->where('g.user_id', session('mini.uid'))
+                ->where('gc.user_id', session('mini.uid'))
                 ->order('gc.id DESC')
                 ->page($page, $limit)
                 ->field('gc.good_id,g.good_title,g.good_img,g.price,g.credits,g.good_type')
@@ -24,7 +24,7 @@ class Collect extends Base
         
         $total = db('goods_collect')->alias('gc')
                 ->join('__GOODS__ g', 'g.id = gc.good_id', 'LEFT')
-                ->where('g.user_id', session('mini.uid'))
+                ->where('gc.user_id', session('mini.uid'))
                 ->count();
         
         $total_page = ceil($total/$limit);
