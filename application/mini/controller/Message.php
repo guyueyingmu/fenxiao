@@ -107,12 +107,13 @@ class Message extends Base
                 ->where($where)
                 ->field("send_user_id,send_user,content,read_status,add_time,type")
                 ->page($page,$limit)
-                ->order('id ASC')
+                ->order('id DESC')
                 ->select();
         $total = db('message')
                 ->where($where)
                 ->count();
         if($list){
+            krsort($list);
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
                     $list[$k]['content'] = json_decode($v['content'], true);
