@@ -39,9 +39,10 @@ Vue.config.devtools = true
 import style from './assets/css/style.less'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
-import { InfiniteScroll } from 'mint-ui';
-
+import { InfiniteScroll,Lazyload,Spinner} from 'mint-ui';
+Vue.use(Lazyload);
 Vue.use(InfiniteScroll);
+Vue.component(Spinner.name, Spinner);
 
 const IS = {}
 IS.IPhone = /iPhone/.test(navigator.userAgent);

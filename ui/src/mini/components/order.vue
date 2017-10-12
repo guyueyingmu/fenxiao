@@ -14,7 +14,7 @@
                     <span class="status">{{item.order_status_txt}}</span>
                 </div>
                 <div class="m" @click="goto('/order_detail/order_id/'+item.id)" v-for="(good,key) in item.orders_goods" :key="key">
-                    <img :src="good.good_img" width="50" height="50">
+                    <img v-lazy="good.good_img" width="50" height="50">
                     <div class="info">
                         <div class="title">{{good.good_title}}</div>
                     </div>
