@@ -7,51 +7,19 @@ use think\Controller;
  */
 class Sms extends Controller
 {
-    protected $url = 'http://106.ihuyi.cn/webservice/sms.php';//http://106.ihuyi.cn/webservice/sms.php?method=Submit
-    protected $account = 'cf_koude';
-    protected $password = '978be5cf27106e82d07cbf0696670ec0';
-
-    function send_sms($phone, $msg) {
-        $method = 'get';
-        if ($method == 'get') {//get
-            $url = $this->url . "?method=Submit&account=" . $this->account . "&password=" . $this->password . "&mobile=" . $phone . "&content=" . $msg;
-            $result = xml_to_array(curl_url_get($url));
-        } else {//post
-            $url = $this->url . "?method=Submit";
-            $data = array(
-                'account' => $this->account,
-                'password' => $this->password,
-                'mobile' => $phone,
-                'content' => $msg
-            );
-            $result = xml_to_array(curl_url_post($url, $data));
-        }
-        //生成发送日志
-        if ($result['SubmitResult']['code'] == 2) {
-            $return_data['code'] = 40000;
-            $return_data['msg'] = "发送成功";
-        } else {
-            $return_data['code'] = $result['SubmitResult']['code'];
-            $return_data['msg'] = $result['SubmitResult']['msg'];
-        }
-
-
-        return $return_data;
-    }
-
-    public function get_code($phone) {
+    
+    protected $AccessKeyId = 'LTAIgujKFdFpKVlk';
+    protected $AccessKeySecret = 'HUMcYYStftdUnHPEebvzBHFufufAUP';
+    protected $sign = '爱悦妍';    
+    
+    //发送验证码
+    public function send_sms($phone) {
         if(!$phone){
             return false;
         }
         $verify = mt_rand(1000, 9999); //获取随机验证码		
-//        $msg = "您的本次操作的验证码为：" . $verify . "。请在页面中完成验证，三十分钟内有效。";
-        $msg = "您的验证码是：" . $verify . "。请不要把验证码泄露给其他人。";
-
-        $return_data = $this->send($phone, $verify, $msg);
-        return $return_data;
-    }
-
-    public function send($phone, $verify, $msg) {
+        $msg = "您的验证码为" . $verify . "，本次验证码1分钟内有效，如非本人，请忽略！";
+        
         if( !is_numeric($phone) || !preg_match("/1[3-9]{1}\d{9}$/",$phone) ) {
             $return_data = array(
                 'code' => 40001,
@@ -81,17 +49,24 @@ class Sms extends Controller
             );
             return $return_data;
         }
-
-
-//        $res = ["code"=>40000];
-        $res = $this->send_sms($phone, $msg);
-            //添加发送记录
-            $sms_data['phone_number'] = $phone;
-            $sms_data['verify_code'] = $verify;   //验证码
-            $sms_data['content'] = $msg;
-            $sms_data['create_time'] = time();
-            $sms_data['ip'] = $ip;
-        if ($res['code'] == 40000) {
+        
+        $sms = new \Sms\Smsapi($this->AccessKeyId, $this->AccessKeySecret);
+        $res = $sms->sendSms(
+            $this->sign, // 短信签名
+            "SMS_99140065", // 短信模板编号
+            $phone, // 短信接收者
+            Array(  // 短信模板中字段的值
+                "code"=>$verify
+            )
+        );
+        
+        //添加发送记录
+        $sms_data['phone_number'] = $phone;
+        $sms_data['verify_code'] = $verify;   //验证码
+        $sms_data['content'] = $msg;
+        $sms_data['create_time'] = time();
+        $sms_data['ip'] = $ip;
+        if ($res['Code'] == 'OK') {
             $sms_data['status_send'] = 1;
             $return_data = array(
                 'code' => 40000,
@@ -102,7 +77,7 @@ class Sms extends Controller
             $sms_data['status_send'] = 0;
             $return_data = array(
                 'code' => 40010,
-                'msg' => '发送失败,原因:' . $res['msg'],
+                'msg' => '发送失败,原因:' . $res['Message'],
             );
         }
         $save_res = db("sms_cache")->insert($sms_data);
