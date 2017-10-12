@@ -1,9 +1,9 @@
 <template>
     <div v-loading="loading">
-        <ul class="thumb-list" v-if="loading == false && list.length > 0">
+        <ul class="thumb-list" v-if="loading == false && list.length > 0" v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" :infinite-scroll-immediate-check="false" infinite-scroll-distance="10">
             <li v-for="(item,idx) in list" :key="item.id">
-                <img :src="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.id)">
-                <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.id)">
+                <img :src="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.good_id)">
+                <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.good_id)">
                     <div class="title">{{item.good_title}}</div>
                     <div class="tool">
                         <span class="price">￥
@@ -29,22 +29,60 @@ export default {
     data() {
         return {
             list: [],
+            pages: {},
+            timer: null
         }
     },
     methods: {
-        ondel(idx) {
+        ondel(index) {
+            let url = '/mini/Footmark/del', vm = this, data = { id: this.list[index].id };
+            this.$confirm({
+                msg: '确定删除此足迹？',
+                yes: function() {
+                    vm.apiPost(url, data).then(function(res) {
+                        if (res.code) {
+                            vm.$msg(res.msg);
+                            vm.list.splice(index, 1);
+                        } else {
+                            vm.handleError(res)
+                        }
+                    })
+                }
+            })
 
-            this.list.splice(idx, 1);
-            window.localStorage.setItem("__history__", JSON.stringify(this.list));
         },
-        get_list() {
-            this.loading = true
-            let _a = window.localStorage.getItem("__history__");
-            if (_a) {
+        loadMore() {
+            let page = parseInt(this.pages.current_page, 10);
+            clearTimeout(this.timer)
+            this.timer = setTimeout(() => {
+                if (page < this.pages.total_page) {
+                    this.get_list(page + 1);
+                }
+            }, 500)
 
-                this.loading = false
-                this.list = JSON.parse(_a)
-            }
+
+        },
+        get_list(page) {
+            this.loading = true
+            page = page || 1;
+            let url = '/mini/Footmark/get_list?page=' + page,
+                vm = this;
+            this.apiGet(url, {}).then(function(res) {
+                vm.loading = false;
+                if (res.code) {
+                    vm.pages = res.data.pages;
+                    if (page < 2) {
+                        vm.list = res.data.list;
+                    } else {
+                        let _list = vm.list;
+                        _list = _list.concat(res.data.list)
+                        vm.list = _list;
+                    }
+                } else {
+                    vm.handleError(res)
+                }
+
+            })
         }
     },
     created() {

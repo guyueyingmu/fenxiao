@@ -15,12 +15,13 @@
                         <div class="title">{{good.good_title}}</div>
                     </div>
                     <div class="tool">
-                        <div>￥{{good.price}}</div>
+                        <div v-if="item.pay_method == 3">积分 {{good.credits}}</div>
+                        <div v-else>￥{{good.price}}</div>
                         <div>x {{good.buy_num}}</div>
                     </div>
                 </div>
                 <div class="b">
-                    <div>订单总额:￥</div>
+                    <!-- <div>订单总额:￥{{item.total_amount}}</div> -->
                     <div>
                         售后进度：
                         <span class="status">{{status(item.status)}}</span>
@@ -61,7 +62,7 @@ export default {
     },
     methods: {
         status(idx) {
-            let r = ['未处理', '同意', '拒绝']
+            let r = ['未处理', '已同意', '已拒绝']
             let _idx = parseInt(idx, 10)
             return r[_idx - 1]
         },
