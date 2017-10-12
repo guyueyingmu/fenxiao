@@ -1,21 +1,58 @@
 <template>
-    <div style="padding:15px">
+    <div>
         <div class="rate-warp">
-            <div style="text-align: center;padding:15px">
-                <rate :value="stars" :text="true" :size="30"></rate>
+            <div class="rate-list">
+                <div class="li">
+                    <ul class="thumb-list">
+                        <li>
+                            <img src="item.good_img" width="40" height="40">
+                            <div class="info">
+                                <div class="title">item.good_title</div>
 
-            </div>
-            <div>
-                <textarea class="ui-input" style="min-height:120px;" placeholder="请输入您的内容" maxlength="200"></textarea>
-            </div>
-            <div class="thumb-rate">
-                <li v-for="item in files">
-                    <img :src="item">
-                </li>
-            </div>
-            <div>
-                <vue-file-upload label="上传" icon="iconfont icon-tupian" :max="4" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="m">
+                        商品评分：
+                        <rate :value="stars" :text="true" :size="26"></rate>
+                        <textarea class="ui-input" style="min-height:80px;" placeholder="请输入您的内容" maxlength="200"></textarea>
 
+                        <div class="thumb-rate">
+                            <li v-for="item in files" :key="item.id">
+                                <img :src="item" width="100%" height="100%">
+                            </li>
+                            <li v-if="files.length < 4">
+                                <vue-file-upload label="上传" icon="iconfont icon-tupian" :max="4" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                            </li>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="li">
+                    <ul class="thumb-list">
+                        <li>
+                            <img src="item.good_img" width="40" height="40">
+                            <div class="info">
+                                <div class="title">item.good_title</div>
+
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="m">
+                        商品评分：
+                        <rate :value="stars" :text="true" :size="26"></rate>
+                        <textarea class="ui-input" style="min-height:120px;" placeholder="请输入您的内容" maxlength="200"></textarea>
+
+                        <div class="thumb-rate">
+                            <li v-for="item in files" :key="item.id">
+                                <img :src="item">
+                            </li>
+                             <li  v-if="files.length < 4">
+                                <vue-file-upload label="上传" icon="iconfont icon-tupian" :max="4" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                            </li>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div style="padding-top:15px;">
                 <button class="ui-btn ui-btn-block" type="button">发表</button>
@@ -37,14 +74,18 @@ export default {
     },
     data() {
         return {
-             reqopts: {
+            reqopts: {
                 formData: {
                     image_type: 'message_img'
                 },
                 responseType: 'json',
                 withCredentials: false
             },
-            files: [],
+            files: [
+                {},
+                {},
+                {}
+            ],
             filters: [
                 {
                     name: "imageFilter",
@@ -56,15 +97,20 @@ export default {
             ],
             stars: 0,
             cbEvents: {
-                onCompleteUpload: (file, response, status, header) => {
+                onCompleteUpload: (file, res, status, header) => {
                     let vm = this;
+
                     if (file.isSuccess) {
-                   
-                        if(response.code){
-                            
-                            vm.files.push(response.data.img_path)
+
+                        if (res.code) {
+                            vm.files.push(res.data.img_path)
+                        } else {
+
+                            file.cancel();
+                            file.remove();
+                            this.$alert(res.msg)
                         }
-                        
+
 
                     }
 
@@ -73,6 +119,7 @@ export default {
         }
     },
     methods: {
+
         onStatus(file) {
             if (file.isSuccess) {
                 return "上传成功";
@@ -94,6 +141,7 @@ export default {
         },
     },
     created() {
+
         this.setTitle('发表评论')
 
 
