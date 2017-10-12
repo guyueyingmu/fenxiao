@@ -229,7 +229,7 @@ class Home extends Base
     public function dis_apply(){
         $user_info = db('users')->field('phone_number')->find(session('mini.uid'));
         if(!$user_info['phone_number']){
-            $this->error('未绑定手机号');
+            $this->error('未绑定手机号', '/reg');
         }
         $res = db('distribution_apply')->insert([
             'user_id' => session('mini.uid'),

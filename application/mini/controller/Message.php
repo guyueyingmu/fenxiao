@@ -22,9 +22,14 @@ class Message extends Base
         $uid      = session("mini.uid");
         $group_id = get_group_id($uid);
         // client_id与uid绑定
-        Gateway::bindUid($client_id, $uid);
+        $res = Gateway::bindUid($client_id, $uid);
         // 加入某个群组（可调用多次加入多个群组）
-        Gateway::joinGroup($client_id, $group_id);
+        $res2 = Gateway::joinGroup($client_id, $group_id);
+        if($res && $res2){
+            $this->success('成功');
+        }else{
+            $this->error('连接失败');
+        }
     }
     
     /**
