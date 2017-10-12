@@ -7,38 +7,27 @@
 
         </div>
         <ul class="order-list">
-            <li>
-                <div class="h">订单号：162208000112
-       
-                </div>
-                <div class="m">
-                    <img src="" width="50" height="50">
+            <li v-for="item in list" :key="item.id">
+                <div class="h">订单号：{{item.order_number}}</div>
+                <div class="m" v-for="good in item.orders_goods" :key="good.id">
+                    <img :src="good.good_img" width="50" height="50">
                     <div class="info">
-                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠</div>
+                        <div class="title">{{good.good_title}}</div>
                     </div>
                     <div class="tool">
-                        <div>￥198.00</div>
-                        <div>x 1</div>
-                    </div>
-                </div>
-                <div class="m">
-                    <img src="" width="50" height="50">
-                    <div class="info">
-                        <div class="title">美白系列美白霜好的美白霜，特价优惠美白系列美白霜好的美白霜，特价优惠美</div>
-                    </div>
-                    <div class="tool">
-                        <div>￥198.00</div>
-                        <div>x 1</div>
+                        <div>￥{{good.price}}</div>
+                        <div>x {{good.buy_num}}</div>
                     </div>
                 </div>
                 <div class="b">
-                    <div>订单总额:￥198.00</div>
+                    <div>订单总额:￥</div>
                     <div>
-                        售后进度：<span class="status">已同意</span>
+                        售后进度：
+                        <span class="status">{{status(item.status)}}</span>
                     </div>
                 </div>
             </li>
-           
+
         </ul>
 
         <div class="nodata" v-if="list.length < 1 && loading == false">
@@ -50,24 +39,68 @@
 <script>
 import http from '@/assets/js/http'
 export default {
-    name: 'favorite',
+    name: 'shouhou',
     mixins: [http],
     data() {
         return {
-            list: [],
-            tagsIdx: 1
+            refund_list: [],
+            exchange_list: [],
+            tagsIdx: 1,
+            
         }
     },
+    computed:{
+        list(){
+            if(this.tagsIdx == 1){
+                return this.refund_list
+            }else{
+                return this.exchange_list
+            }
+        },
+      
+    },
     methods: {
-        ondel() {
+          status(idx){
+            let r = ['待处理','已发货','已服务','已取消','已完成']
+            let e = ['待处理','已发货','已服务','已取消','已完成']
+            let _idx= parseInt(idx,10)
+            if(this.tagsIdx == 1){
+              return r[_idx -1]   
+            }else{
+                 return e[_idx -1]
+            }
+        },
+        //换货
+        exchange() {
+            let url = '/mini/Exchange/get_list', vm = this;
+            vm.apiGet(url).then(function(res) {
+                if (res.code) {
+                    vm.exchange_list = res.data.list;
+                } else {
+                    vm.handleError(res)
+                }
+            })
 
         },
-        get_list() {
-        }
+        //退款
+        refund() {
+            let url = '/mini/Refund/get_list', vm = this;
+
+            vm.apiGet(url).then(function(res) {
+                if (res.code) {
+                    vm.refund_list = res.data.list;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+
+
+        },
     },
     created() {
         this.setTitle('售后记录')
-        // this.get_list();
+        this.refund();
+        this.exchange();
 
     }
 }
