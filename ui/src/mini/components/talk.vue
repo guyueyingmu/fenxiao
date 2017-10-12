@@ -65,7 +65,7 @@ export default {
         setTimeout(function() {
             var input = document.getElementById('input-key');
             input.addEventListener('focus', function() {
-                vm.$refs['ss'].scrollTo(0, 999, 0);
+                vm.$refs['ss'].scrollTo(0, 99999, 0);
                 setTimeout(function() {
 
                     document.body.scrollTop = 99999
@@ -135,7 +135,7 @@ export default {
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     if(type != 3){
-                        vm.$msg(res.msg);
+                        // vm.$msg(res.msg);
                     }      
                     vm.info.content = '';              
                 } else {
@@ -153,6 +153,9 @@ export default {
                     vm.list_pages = res.data.pages;
                     if (page < 2) {
                         vm.list = res.data.list;
+                        setTimeout(()=>{
+                              vm.$refs['ss'].scrollTo(0, 999, 0);
+                        },200)
                     } else {
                         let _list = vm.list, _new_list = res.data.list;
                         _list = _new_list.concat(_list);
@@ -180,14 +183,19 @@ export default {
                     //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
                     let url = '/mini/Message/bind'
                     vm.apiPost(url,data).then(res=>{
-                        console.log(res)
+                     
                         if(res.code){
                             vm.serverInit = false
+                            window.bb = vm.$refs['ss'];
                         }
                     })
                     break;
                 case 'msg':
                     vm.list.push(data.content);
+                    console.log(vm.$refs['ss'])
+                    setTimeout(()=>{
+                          vm.$refs['ss'].scrollTo(0, 9999, 20);
+                    },200)
                     break;
                 // 当mvc框架调用GatewayClient发消息时直接alert出来
                 default:
