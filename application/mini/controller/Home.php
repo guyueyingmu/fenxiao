@@ -86,9 +86,16 @@ class Home extends Base
         $page = input('param.page', 1, 'intval');
         $limit = config('mini_page_limit');
         
-        $where = 'user_id='. session('mini.uid'). ' AND status=2';
-        $list = db('users_credits_records')->where($where)->order('earn_time DESC')->page($page, $limit)
+        $where = 'user_id='. session('mini.uid');
+        $list = db('users_credits_records')->where($where)->order('id DESC')->page($page, $limit)
                 ->field('id,credits_in,credits_out,credits_from,add_time')->select();
+        
+        if($list){
+            $credits_from = ['', '签到收入', '购买商品收入', '分享收入', '积分兑换支出', '后台操作收入', '后台操作支出'];
+            foreach($list as $k=>$v){
+                $list[$k]['credits_from_txt'] = $credits_from[$v['credits_from']];
+            }
+        }
         
         $total = db('users_credits_records')->where($where)->count();
         

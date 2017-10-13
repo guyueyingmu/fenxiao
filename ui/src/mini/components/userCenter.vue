@@ -21,13 +21,13 @@
                 </div>
             </div>
             <ul class="slef-card">
-                <li v-if="info.distribution_level == 2">
+                <li v-if="info.distribution_level == 2" @click="goto('/tixian')">
                     <a href="javascript:;">
                         <span class="num">￥{{info.earn_total||0}}</span>
                         <span class="tit">佣金</span>
                     </a>
                 </li>
-                <li>
+                <li @click="goto('/jifen')">
                     <a href="javascript:;">
                         <span class="num">{{info.credits||0}}</span>
                         <span class="tit">积分</span>
@@ -49,6 +49,10 @@
                     <span>查看全部订单</span>
                     <i class="iconfont icon-arrow"></i>
                 </div>
+            </li>
+
+            <li @click="goto('/yongjin')">
+                <div class="title"><i class="iconfont icon-shouhoufuwu"></i> 佣金记录</div>
             </li>
 
             <li @click="goto('/shouhou')">
