@@ -24,9 +24,9 @@ const reg = () =>
 
 const confirm = () =>
   import ( /* webpackChunkName: "confirm" */ '@/components/confirmOrder')
-  
-  const pay = () =>
-    import ( /* webpackChunkName: "pay" */ '@/components/payOrder')
+
+const pay = () =>
+  import ( /* webpackChunkName: "pay" */ '@/components/payOrder')
 
 const address = () =>
   import ( /* webpackChunkName: "address" */ '@/components/address')
@@ -64,10 +64,14 @@ const shouhou = () =>
   import ( /* webpackChunkName: "shouhou" */ '@/components/shouhou')
 const daili = () =>
   import ( /* webpackChunkName: "daili" */ '@/components/daili')
+
 const yongjin = () =>
   import ( /* webpackChunkName: "yongjin" */ '@/components/yongjin')
-  const jifen = () =>
+
+const jifen = () =>
   import ( /* webpackChunkName: "jifen" */ '@/components/jifen')
+const qiandao = () =>
+  import ( /* webpackChunkName: "qiandao" */ '@/components/qiandao')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -200,15 +204,20 @@ const router = new Router({
       component: start,
     },
     {
-        path: '/daili',
-        name: 'daili',
-        component: daili,
-      },
+      path: '/daili',
+      name: 'daili',
+      component: daili,
+    },
     {
-        path: '/jifen',
-        name: 'jifen',
-        component: jifen,
-      },
+      path: '/jifen',
+      name: 'jifen',
+      component: jifen,
+    },
+    {
+      path: '/qiandao',
+      name: 'qiandao',
+      component: qiandao,
+    },
     {
       path: '*',
       name: '404',

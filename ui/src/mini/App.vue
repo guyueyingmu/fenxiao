@@ -17,11 +17,11 @@
                     <i class="iconfont icon-sousuo"></i>搜索</span>
             </div>
         </div>
-        <transition :name="transitionName">
+        
             <router-view class="child-view" :style="{'margin-bottom':showNav?'58px':''}">
 
             </router-view>
-        </transition>
+     
         <nav v-if="showNav == true">
             <div class="nva-item" :class="{'active':$route.name == 'home'}" @click="goto('/')">
                 <i class="iconfont icon-shouye"></i>
