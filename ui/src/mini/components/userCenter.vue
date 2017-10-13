@@ -90,7 +90,7 @@
 
             <li @click="goto('/yongjin')">
                 <div class="title">
-                    <i class="iconfont icon-shouhoufuwu"></i> 佣金记录</div>
+                    <i class="iconfont icon-yongjin"></i> 佣金记录</div>
             </li>
 
             <li @click="goto('/shouhou')">
