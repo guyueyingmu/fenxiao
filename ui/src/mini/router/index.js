@@ -72,6 +72,8 @@ const jifen = () =>
   import ( /* webpackChunkName: "jifen" */ '@/components/jifen')
 const qiandao = () =>
   import ( /* webpackChunkName: "qiandao" */ '@/components/qiandao')
+const user = () =>
+  import ( /* webpackChunkName: "user" */ '@/components/user')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -217,6 +219,11 @@ const router = new Router({
       path: '/qiandao',
       name: 'qiandao',
       component: qiandao,
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: user,
     },
     {
       path: '*',
