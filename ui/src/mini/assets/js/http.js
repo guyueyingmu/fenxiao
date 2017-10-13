@@ -116,7 +116,7 @@ const apiMethods = {
         });
 
       } else {
-        // this.$message.error(res.msg);
+        this.$msg(res.msg);
       }
 
 

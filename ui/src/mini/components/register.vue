@@ -94,7 +94,7 @@ export default {
                         history.go(-1);
                     },1000);                    
                 } else {
-                    vm.$msg(res.msg);
+                    vm.handleError(res)
                 }
             })
         },
@@ -132,7 +132,7 @@ export default {
                         cb()
                     }
                 } else {
-                    vm.$msg(res.msg);
+                    vm.handleError(res)
                 }
             })
         }

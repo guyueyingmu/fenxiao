@@ -26,8 +26,10 @@ class Withdraw extends Base
                 ->count();
         
         if($list){
+            $status = ['', '待处理', '已同意', '拒绝'];
             foreach($list as $k=>$v){
                 $list[$k]['user_name'] = session('mini.nickname');
+                $list[$k]['status_txt'] = $status[$v['status']];
             }
         }
         
@@ -59,14 +61,17 @@ class Withdraw extends Base
         if($user_account < $withdraw_amount){
             $this->error('提现金额高于账户余额，无法提现');
         }
-        $res = db('users_withdraw')->insert([
+        $add_data = [
             'user_id' => session('mini.uid'),
             'amount' => $withdraw_amount,
             'status' => 1,
             'add_time' => date('Y-m-d H:i:s'),
-        ]);
+        ];
+        $res = db('users_withdraw')->insert($add_data);
         if($res){
-            $this->success('申请提现成功');
+            $add_data['status_txt'] = '待处理';
+            $add_data['user_name'] = session('mini.nickname');
+            $this->success('申请提现成功', '', $add_data);
         }else{
             $this->error('申请提现失败');
         }
