@@ -1,9 +1,9 @@
 <template>
     <div class="talk">
-        <div  v-loading.win="serverInit"></div>
-        <div class="reply_list_box" :style="{'top':$is.WeiXin == false?'68px':'10px'}">
+        <div v-loading.win="serverInit"></div>
+        <div class="reply_list_box" :style="{'top':$is.WeiXin == false?'58px':'10px'}">
             <div class="reply_list_content" id="reply_list_content">
-                <div class="sd-scroller" >
+                <div class="sd-scroller">
                     <scroller ref="ss">
                         <div class="item" v-for="(item,idx) in list" :key="idx">
                             <div class="item-box" :class="{'self':item.send_user == 1}">
@@ -26,7 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="time">{{item.add_time}}</div>
+                            <div class="time">{{item.add_time}}</div>
                         </div>
                     </scroller>
                 </div>
@@ -75,14 +75,14 @@ export default {
 
         //新增商品消息
         this.onSend(3, this.$route.params.good_id);
-        setTimeout(function(){
+        setTimeout(function() {
             vm.get_list();
-        },500)
-        
+        }, 500)
+
     },
     data() {
         return {
-            serverInit:true,
+            serverInit: true,
             reqopts: {
                 formData: {
                     image_type: 'message_img'
@@ -90,21 +90,7 @@ export default {
                 responseType: 'json',
                 withCredentials: false
             },
-            list: [
-                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2,add_time:"2012-12-12 18:12:12" },
-                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 1, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 2, user_name: '赵多', content: { img_url: 'static/mini/img/demo/1.png', thumb_img_url: 'static/mini/img/demo/1.png' }, type: 2 },
-                // { send_user: 2, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
-                // { send_user: 1, user_name: '赵多', content: { good_img: 'static/mini/img/demo/1.png', good_title: '维达(Vinda) 抽纸 超韧3层130抽软抽*24包(小规格) 整箱销售', good_price: "299.00" }, type: 3 },
-                // { send_user: 1, user_name: '李明', content: '你好职b', type: 1 },
-                // { send_user: 2, user_name: '李明', content: '你好职b', type: 1 },
-            ],
+            list: [],
             list_pages: {},
             info: {
                 content: ''
@@ -131,19 +117,19 @@ export default {
         },
         //发送消息
         onSend(type, content) {
-            let url = '/mini/Message/send_msg', vm = this, data = {type: type, content: content};
+            let url = '/mini/Message/send_msg', vm = this, data = { type: type, content: content };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
-                    if(type != 3){
+                    if (type != 3) {
                         // vm.$msg(res.msg);
-                    }      
-                    vm.info.content = '';              
+                    }
+                    vm.info.content = '';
                 } else {
                     vm.handleError(res)
                 }
             })
         },
-        get_list(page){
+        get_list(page) {
             page = page || 1;
             let url = '/mini/Message/chat_list?page=' + page,
                 vm = this;
@@ -153,15 +139,15 @@ export default {
                     vm.list_pages = res.data.pages;
                     if (page < 2) {
                         vm.list = res.data.list;
-                        setTimeout(()=>{
-                              vm.$refs['ss'].scrollTo(0, 999, 0);
-                        },200)
+                        setTimeout(() => {
+                            vm.$refs['ss'].scrollTo(0, 999, 0);
+                        }, 200)
                     } else {
                         let _list = vm.list, _new_list = res.data.list;
                         _list = _new_list.concat(_list);
                         vm.list = _list;
                     }
-                 
+
                 } else {
                     vm.handleError(res)
                 }
@@ -169,9 +155,12 @@ export default {
         }
     },
     created() {
-      const  ws = new WebSocket("ws://127.0.0.1:8282");
-      let vm = this;
+        const ip = window.location.hostname;
+        const ws = new WebSocket("ws://" + ip + ":8282");
+
+        let vm = this;
         ws.onmessage = function(e) {
+
             // json数据转换成js对象
             var data = eval("(" + e.data + ")");
             var type = data.type || '';
@@ -182,9 +171,9 @@ export default {
                     // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
                     //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
                     let url = '/mini/Message/bind'
-                    vm.apiPost(url,data).then(res=>{
-                     
-                        if(res.code){
+                    vm.apiPost(url, data).then(res => {
+
+                        if (res.code) {
                             vm.serverInit = false
                             window.bb = vm.$refs['ss'];
                         }
@@ -193,9 +182,9 @@ export default {
                 case 'msg':
                     vm.list.push(data.content);
                     console.log(vm.$refs['ss'])
-                    setTimeout(()=>{
-                          vm.$refs['ss'].scrollTo(0, 9999, 20);
-                    },200)
+                    setTimeout(() => {
+                        vm.$refs['ss'].scrollTo(0, 9999, 20);
+                    }, 200)
                     break;
                 // 当mvc框架调用GatewayClient发消息时直接alert出来
                 default:
