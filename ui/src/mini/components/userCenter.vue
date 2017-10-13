@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li>
-                        <div class="qindao" v-if="!qiandao" @click="onQiandao">
+                        <div class="qindao" v-if="!info.sign_in" @click="onQiandao">
                             <em>立即签到</em>
                         </div>
                         <a href="javascript:;" v-else @click="goto('/qiandao')">
@@ -52,7 +52,7 @@
             </div>
             <ul class="slef-card" v-if="info.distribution_level == 2">
                 <li>
-                    <a href="javascript:;"  @click="goto('/tixian')">
+                    <a href="javascript:;" @click="goto('/tixian')">
                         <span class="num">￥{{info.earn_total||0}}</span>
                         <span class="tit">佣金</span>
                     </a>
@@ -66,7 +66,7 @@
                 </li>
                 <li>
 
-                    <div class="qindao" v-if="!qiandao" @click="onQiandao">
+                    <div class="qindao" v-if="!info.sign_in" @click="onQiandao">
                         <em>立即签到</em>
                     </div>
                     <a href="javascript:;" v-else @click="goto('/qiandao')">
@@ -115,25 +115,22 @@
                     <i class="iconfont icon-zhanghao1"></i> 帐号</div>
             </li>
             <!-- <li>
-                            <div class="title"><i class="iconfont icon-logout"></i> 退出</div>
-                        </li> -->
+                                    <div class="title"><i class="iconfont icon-logout"></i> 退出</div>
+                                </li> -->
         </ul>
         <div style="height:20px;"></div>
         <div class="qiandao-animate">
             <transition name="qd2">
                 <div class="m" v-show="qiandao_an">
-                    <div class="t">+60</div>
+                    <div class="t">+{{sign_in_num}}</div>
                     <div>签到成功！</div>
                 </div>
             </transition>
         </div>
         <div class="qrcode-dialog" v-if="qrcode" @click="qrcode = false">
-            <img src="" >
-            <div class="tit">甘需要城</div>
-            <div class="tit">甘需要城</div>
-            <div class="tit">甘需要城</div>
+            <img :src="info.dis_qrcode">
+            <div class="tit">{{info.nickname}}的推广二维码</div>
         </div>
-
 
     </div>
 </template>
@@ -145,21 +142,30 @@ export default {
     data() {
         return {
             info: {},
-            qiandao: false,
-            qiandao_an:false,
-            qrcode:false
+            qiandao_an: false,
+            qrcode: false,
+            sign_in_num: 0,
         }
     },
     methods: {
         //签到
         onQiandao() {
-            this.qiandao_an = true
-            this.qiandao = true
-            let vm = this;
-            setTimeout(() => {
-               vm.qiandao_an = false
-            }, 1000)
+            let url = '/mini/Home/signin',
+                vm = this;
 
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.sign_in_num = res.data;
+                    vm.qiandao_an = true;
+                    vm.info.sign_in = true;
+                    vm.info.sign_total ++;
+                    setTimeout(() => {
+                        vm.qiandao_an = false
+                    }, 1000)
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
         get_info() {
             let url = '/mini/Home/center_info',

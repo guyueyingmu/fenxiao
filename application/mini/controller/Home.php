@@ -48,6 +48,9 @@ class Home extends Base
         //签到天数
         $user_info['sign_total'] = db('signin')->where('user_id', session('mini.uid'))->count();
         
+        //今天是否签到
+        $user_info['sign_in'] = db('signin')->where('user_id', session('mini.uid'))->where('signin_date', date('Y-m-d'))->count();
+        
         $this->success('成功', '', $user_info);
     }
     
@@ -145,7 +148,7 @@ class Home extends Base
 //            $this->error("发货失败");
             $this->error($e->getMessage());
         }
-        $this->success('今天已签到  +'. config('signin_credits'). '积分');
+        $this->success('今天已签到  +'. config('signin_credits'). '积分', '', config('signin_credits'));
     }
     
     /**
