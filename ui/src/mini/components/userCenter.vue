@@ -88,6 +88,11 @@
                 </div>
             </li>
 
+            <li @click="goto('/yongjin')">
+                <div class="title">
+                    <i class="iconfont icon-shouhoufuwu"></i> 佣金记录</div>
+            </li>
+
             <li @click="goto('/shouhou')">
                 <div class="title">
                     <i class="iconfont icon-shouhoufuwu"></i> 售后记录</div>
