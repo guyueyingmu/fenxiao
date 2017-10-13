@@ -115,7 +115,7 @@
                     <i class="iconfont icon-3"></i> 我要代理</div>
             </li>
 
-            <li>
+            <li @click="goto('/user')">
                 <div class="title">
                     <i class="iconfont icon-zhanghao1"></i> 帐号</div>
             </li>
