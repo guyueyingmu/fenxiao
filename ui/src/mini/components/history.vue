@@ -14,7 +14,10 @@
                 <i class="iconfont icon-shanchu " @click="ondel(idx);"></i>
             </li>
         </ul>
-
+      <div class="spinner" v-if="sloading">
+            <mt-spinner  :size="18" color="#26a2ff"></mt-spinner>
+        </div>
+        <div class="nodata-line" v-else-if="pages.total_page == pages.current_page">没有更多数据了</div>
         <div class="nodata" v-if="list.length < 1 && loading == false">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
             <div>您还没有访问记录~</div>

@@ -64,6 +64,10 @@ const shouhou = () =>
   import ( /* webpackChunkName: "shouhou" */ '@/components/shouhou')
 const daili = () =>
   import ( /* webpackChunkName: "daili" */ '@/components/daili')
+const yongjin = () =>
+  import ( /* webpackChunkName: "yongjin" */ '@/components/yongjin')
+  const jifen = () =>
+  import ( /* webpackChunkName: "jifen" */ '@/components/jifen')
 
 const noFound = () =>
   import ( /* webpackChunkName: "noFound" */ '@/components/noFound')
@@ -161,6 +165,11 @@ const router = new Router({
       component: tixian,
     },
     {
+      path: '/yongjin',
+      name: 'yongjin',
+      component: yongjin,
+    },
+    {
       path: '/history',
       name: 'history',
       component: history,
@@ -194,6 +203,11 @@ const router = new Router({
         path: '/daili',
         name: 'daili',
         component: daili,
+      },
+    {
+        path: '/jifen',
+        name: 'jifen',
+        component: jifen,
       },
     {
       path: '*',
