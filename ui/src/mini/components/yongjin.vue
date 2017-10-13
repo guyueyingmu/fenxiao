@@ -3,10 +3,10 @@
         <ul class="ui-fixd"  v-show="list.length > 0"  v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="cheackLoadMore">
             <li class="med" v-for="(item,idx) in list" :key="idx">
                 <div class="f">
-                    <div>时间：2017-8-9 15:15:10</div>
-                    <div>级别：一级获佣</div>
+                    <div>时间：{{item.earn_time}}</div>
+                    <div>级别：{{item.level == 1 ? '一级获佣' : '二级获佣'}}</div>
                 </div>
-                <div class="red">+ ￥6.9</div>
+                <div class="red">+ ￥{{item.earn_amount_input}}</div>
               
             </li>
         </ul>
@@ -46,7 +46,7 @@ export default {
         },
         get_list(page) {
             page = page || 1;
-            let url = '/mini/Collect/get_list?page=' + page,
+            let url = '/mini/Home/distribution_list?page=' + page,
                 vm = this;
             vm.sloading = true
             this.apiGet(url).then(function(res) {
@@ -79,7 +79,7 @@ export default {
         },
     },
     created() {
-        this.setTitle('拥金记录')
+        this.setTitle('佣金记录')
         this.get_list();
     },
 

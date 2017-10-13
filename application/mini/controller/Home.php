@@ -86,9 +86,16 @@ class Home extends Base
         $page = input('param.page', 1, 'intval');
         $limit = config('mini_page_limit');
         
-        $where = 'user_id='. session('mini.uid'). ' AND status=2';
-        $list = db('users_credits_records')->where($where)->order('earn_time DESC')->page($page, $limit)
+        $where = 'user_id='. session('mini.uid');
+        $list = db('users_credits_records')->where($where)->order('id DESC')->page($page, $limit)
                 ->field('id,credits_in,credits_out,credits_from,add_time')->select();
+        
+        if($list){
+            $credits_from = ['', '签到收入', '购买商品收入', '分享收入', '积分兑换支出', '后台操作收入', '后台操作支出'];
+            foreach($list as $k=>$v){
+                $list[$k]['credits_from_txt'] = $credits_from[$v['credits_from']];
+            }
+        }
         
         $total = db('users_credits_records')->where($where)->count();
         
@@ -179,7 +186,8 @@ class Home extends Base
         }
         
         //发送短信验证码
-        $res = Sms::get_code($data['phone']);
+        $sms = new Sms();
+        $res = $sms->send_sms($data['phone']);
         if($res['code'] == 40000){
             $this->success('验证码发送成功');
         }else{
@@ -206,10 +214,10 @@ class Home extends Base
         if ($validate_res !== true) {
             $this->error($validate_res);
         }
-        
-        $res = Sms::check_code($data);
+        $sms = new Sms();
+        $res = $sms->check_code($data);
         if($res['code'] != 40000){
-            $this->error($data['msg']);
+            $this->error($res['msg']);
         }
         
         $update_res = db('users')->update([
@@ -224,6 +232,13 @@ class Home extends Base
     }
     
     /**
+     * 查看是否已申请代理
+     */
+    public function dis_applly_check(){
+        $apply = db('distribution_apply')->where('user_id', session('mini.uid'))->count();
+        $this->success('成功', '', $apply);
+    }
+    /**
      * 申请代理
      */
     public function dis_apply(){
@@ -231,13 +246,17 @@ class Home extends Base
         if(!$user_info['phone_number']){
             $this->error('未绑定手机号', '/reg');
         }
+        $apply = db('distribution_apply')->where('user_id', session('mini.uid'))->count();
+        if($apply){
+            $this->success('已申请，请不要重复申请');
+        }
         $res = db('distribution_apply')->insert([
             'user_id' => session('mini.uid'),
             'status' => 1,
             'add_time' => date('Y-m-d H:i:s'),
         ]);
         if($res){
-            $this->error('申请成功');
+            $this->success('申请成功');
         }else{
             $this->error('申请失败');
         }

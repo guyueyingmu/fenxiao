@@ -30,7 +30,7 @@ class Sms extends Controller
         $ip = $_SERVER["REMOTE_ADDR"];
         $time = time();
         //限制60秒只能发送一次
-        $count1 = db("sms_cache")->where("phone_number='$phone' and create_time+60>=$time")->count();
+        $count1 = db("sms_cache")->where("phone_number='$phone' and add_time+60>=$time")->count();
         if ($count1) {
             $return_data = array(
                 'code' => 40003,
@@ -41,7 +41,7 @@ class Sms extends Controller
         //一天内只能发送5条
         $start = date('Y-m-d 00:00:00', time());
         $end = date('Y-m-d 23:59:59', time());
-        $count2 = db("sms_cache")->where("phone_number='$phone' and ip='$ip' and (create_time>= unix_timestamp('$start') AND create_time<= unix_timestamp('$end'))")->count();
+        $count2 = db("sms_cache")->where("phone_number='$phone' and ip='$ip' and (add_time>= unix_timestamp('$start') AND add_time<= unix_timestamp('$end'))")->count();
         if ($count2 >= 5) {
             $return_data = array(
                 'code' => 40003,
@@ -64,9 +64,9 @@ class Sms extends Controller
         $sms_data['phone_number'] = $phone;
         $sms_data['verify_code'] = $verify;   //验证码
         $sms_data['content'] = $msg;
-        $sms_data['create_time'] = time();
+        $sms_data['add_time'] = time();
         $sms_data['ip'] = $ip;
-        if ($res['Code'] == 'OK') {
+        if ($res->Code == 'OK') {
             $sms_data['status_send'] = 1;
             $return_data = array(
                 'code' => 40000,
@@ -77,7 +77,7 @@ class Sms extends Controller
             $sms_data['status_send'] = 0;
             $return_data = array(
                 'code' => 40010,
-                'msg' => '发送失败,原因:' . $res['Message'],
+                'msg' => '发送失败,原因:' . $res->Message,
             );
         }
         $save_res = db("sms_cache")->insert($sms_data);
@@ -100,7 +100,7 @@ class Sms extends Controller
                 'msg' => '数据不完整'
             ];
         }
-        $info = db('sms_cache')->where('phone_number', $array['phone'])->where('status_send', 1)->where('status_use', 0)->order('id DESC')->select();
+        $info = db('sms_cache')->where('phone_number = "'. $array['phone']. '" AND status_send = 1 AND status_use = 0 AND add_time+60 <= '. time())->order('id DESC')->select();
         if(!$info){
             return [
                 'code' => 40003,

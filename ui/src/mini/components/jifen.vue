@@ -3,10 +3,11 @@
         <ul class="ui-fixd"  v-show="list.length > 0"  v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="cheackLoadMore">
             <li class="med" v-for="(item,idx) in list" :key="idx">
                 <div class="f">
-                    <div>时间：2017-8-9 15:15:10</div>
-                    <div>渠道：签到收入</div>
+                    <div>时间：{{item.add_time}}</div>
+                    <div>渠道：{{item.credits_from_txt}}</div>
                 </div>
-                <div class="red">+ 60</div>
+                <div class="red" v-if="item.credits_in">+ {{item.credits_in}}</div>
+                <div class="red" v-else>- {{item.credits_out}}</div>
               
             </li>
         </ul>
@@ -46,7 +47,7 @@ export default {
         },
         get_list(page) {
             page = page || 1;
-            let url = '/mini/Collect/get_list?page=' + page,
+            let url = '/mini/Home/credits_list?page=' + page,
                 vm = this;
             vm.sloading = true
             this.apiGet(url).then(function(res) {

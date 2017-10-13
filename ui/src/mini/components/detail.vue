@@ -10,7 +10,10 @@
         <div class="header">
             <h2 class="title">{{good_info.good_title}}</h2>
             <div class="info">
-                <span class="price">￥
+                <span class="price" v-if="good_info.good_type == 4 || good_info.good_type == 5">积分
+                    <em>{{good_info.credits}}</em>
+                </span>
+                <span class="price" v-else>￥
                     <em>{{good_info.price}}</em>
                 </span>
                 <span class="share">
@@ -34,7 +37,7 @@
                 <em>购物车</em>
                 <i class="num">{{good_info.cart_total}}</i>
             </div>
-            <div class="item add" @click="add_cart(good_info.id);">加入购物车</div>
+            <div class="item add" @click="add_cart(good_info.id);" v-if="good_info.good_type == 1">加入购物车</div>
             <div class="item buy" @click="go_buy(good_info.id)">立即购买</div>
 
         </div>

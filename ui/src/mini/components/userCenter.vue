@@ -52,7 +52,7 @@
             </div>
             <ul class="slef-card" v-if="info.distribution_level == 2">
                 <li>
-                    <a href="javascript:;">
+                    <a href="javascript:;"  @click="goto('/tixian')">
                         <span class="num">￥{{info.earn_total||0}}</span>
                         <span class="tit">佣金</span>
                     </a>
