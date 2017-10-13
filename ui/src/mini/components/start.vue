@@ -139,9 +139,27 @@ export default {
             //单个文件上传
             file.upload();
         },
+        get_list(){
+            let id = this.$route.params.order_id;
+            if(!id){
+                this.$msg('没有ID')
+                return;
+            }
+            console.log(id)
+            let vm= this,url='/mini/Comment/get_list?good_id='+id,data={};
+            this.apiGet(url,data).then(res=>{
+                if(res.code){
+                    vm.list = res.list
+                    vm.pages = res.pages
+
+                }else{
+                    vm.handleError(res)
+                }
+            })
+        }
     },
     created() {
-
+        this.get_list();
         this.setTitle('发表评论')
 
 

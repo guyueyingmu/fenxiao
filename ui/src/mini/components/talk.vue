@@ -1,23 +1,24 @@
 <template>
     <div class="talk">
         <div v-loading.win="serverInit"></div>
-        <div class="reply_list_box" :style="{'top':$is.WeiXin == false?'58px':'10px'}">
+        <div class="reply_list_box" :style="{'top':$is.WeiXin == false?'58px':'5px'}">
             <div class="reply_list_content" id="reply_list_content">
                 <div class="sd-scroller">
-                    <scroller ref="ss">
+                    <scroller ref="ss" :onRefresh="refresh" refreshText="加载更多">
                         <div class="item" v-for="(item,idx) in list" :key="idx">
+                            <div class="time">{{item.add_time}}</div>
                             <div class="item-box" :class="{'self':item.send_user == 1}">
-                                <div class="avt"><img src="static/mini/img/demo/avt.jpg" width="40" height="40">
+                                <div class="avt"><img v-lazy="`static/mini/img/demo/avt.jpg`" width="40" height="40">
                                     <span class="name">{{item.user_name}}</span>
                                 </div>
                                 <div class="item-content">
                                     <span v-if="item.type ===1">{{item.content}}</span>
 
-                                    <span v-if="item.type ===2" @click="onZoom(item.content.img_url)"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
+                                    <span v-if="item.type ===2" @click="onZoom(item.content.img_url)"><img v-lazy="item.content.thumb_img_url" width="60" height="60"></span>
 
                                     <div class="pro_box" v-if="item.type ===3">
-                                        <div class="pro_box_flex">
-                                            <div class="pro_img"><img :src="item.content.good_img" width="40" height="40"></div>
+                                        <div class="pro_box_flex" @click="goto('/detail/id/'+item.content.good_id)">
+                                            <div class="pro_img"><img v-lazy="item.content.good_img" width="40" height="40"></div>
                                             <div class="info">
                                                 <div class="bl">{{item.content.good_title}}</div>
                                                 <div class="cost">￥{{item.content.good_price}}</div>
@@ -26,7 +27,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="time">{{item.add_time}}</div>
+
                         </div>
                     </scroller>
                 </div>
@@ -107,6 +108,17 @@ export default {
         }
     },
     methods: {
+        refresh(e) {
+            console.log('刷新')
+            let vm = this;
+            if (this.list_pages.total_page > this.list_pages.current_page) {
+                setTimeout(() => {
+                    vm.$refs['ss'].finishPullToRefresh()
+                    vm.get_list(parseInt(vm.list_pages.current_page, 10) + 1)
+                }, 1000)
+            }
+
+        },
         onZoom(url) {
             console.log(url)
         },
@@ -183,7 +195,10 @@ export default {
                     vm.list.push(data.content);
                     console.log(vm.$refs['ss'])
                     setTimeout(() => {
-                        vm.$refs['ss'].scrollTo(0, 9999, 20);
+                        if (vm.$refs['ss']) {
+                            vm.$refs['ss'].scrollTo(0, 9999, 20);
+                        }
+
                     }, 200)
                     break;
                 // 当mvc框架调用GatewayClient发消息时直接alert出来

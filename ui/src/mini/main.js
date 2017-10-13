@@ -10,11 +10,14 @@ import store from './vuex'
 // 按需引入部分组件
 import {
   Toast,
-  MessageBox
+  MessageBox,
+  InfiniteScroll,Lazyload,Spinner
 } from 'mint-ui'
 Vue.component(Toast.name, Toast);
 Vue.component(MessageBox.name, MessageBox);
-
+Vue.use(Lazyload);
+Vue.use(InfiniteScroll);
+Vue.component(Spinner.name, Spinner);
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
@@ -39,10 +42,8 @@ Vue.config.devtools = true
 import style from './assets/css/style.less'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
-import { InfiniteScroll,Lazyload,Spinner} from 'mint-ui';
-Vue.use(Lazyload);
-Vue.use(InfiniteScroll);
-Vue.component(Spinner.name, Spinner);
+
+
 
 const IS = {}
 IS.IPhone = /iPhone/.test(navigator.userAgent);
