@@ -45,7 +45,7 @@
                     </li>
                 </ul>
 
-                <div class="qrcode" v-if="info.distribution_level == 2">
+                <div class="qrcode" v-if="info.distribution_level == 2" @click="qrcode = true">
                     <i class="iconfont icon-erweima"></i>
                     <div>分销</div>
                 </div>
@@ -126,8 +126,14 @@
                     <div>签到成功！</div>
                 </div>
             </transition>
-
         </div>
+        <div class="qrcode-dialog" v-if="qrcode" @click="qrcode = false">
+            <img src="" >
+            <div class="tit">甘需要城</div>
+            <div class="tit">甘需要城</div>
+            <div class="tit">甘需要城</div>
+        </div>
+
 
     </div>
 </template>
@@ -140,7 +146,8 @@ export default {
         return {
             info: {},
             qiandao: false,
-            qiandao_an:false
+            qiandao_an:false,
+            qrcode:false
         }
     },
     methods: {
