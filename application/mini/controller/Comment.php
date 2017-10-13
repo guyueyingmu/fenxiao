@@ -192,7 +192,7 @@ class Comment extends Base
         if(!$good_list){
             $this->error('订单有误');
         }
-        exit(json_encode($good_list));
+//        exit(json_encode($good_list));
         $this->success('成功', '', $good_list);
     }
 }
