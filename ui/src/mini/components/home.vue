@@ -81,10 +81,13 @@
                     {{good.good_title}}
                 </div>
                 <div class="info">
-                    <span class="price">￥
+                    <span class="price" v-if="good.good_type == 4 || good.good_type == 5">积分
+                        <em>{{good.credits}}</em>
+                    </span>
+                    <span class="price" v-else>￥
                         <em>{{good.price}}</em>
                     </span>
-                    <i class="iconfont icon-gouwuche1" @click="add_cart(good.id);"></i>
+                    <i class="iconfont icon-gouwuche1" v-if="good.good_type == 1" @click="add_cart(good.id);"></i>
                 </div>
             </li>
         </ul>

@@ -10,7 +10,7 @@
             <div class="f-l">
                 <input type="tel" maxlength="4" placeholder="请输入验证码" v-model="form.c">
             </div>
-            <div class="f-r"> <img src="" alt="" width="92" height="42"> </div>
+            <div class="f-r"> <img :src="verify_url" @click="change_verify();" alt="" width="92" height="42"> </div>
 
         </div>
         <div class="form-item">
@@ -23,7 +23,7 @@
 
         </div>
         <div class="form-item">
-            <button type="button" :disabled="form_disabled == 1" class="ui-btn ui-btn-block ui-btn-l2">{{sub_text}}</button>
+            <button type="button" :disabled="form_disabled == 1" class="ui-btn ui-btn-block ui-btn-l2" @click="bind_phone()">{{sub_text}}</button>
         </div>
         <div class="form-item">
             <div>
@@ -55,7 +55,8 @@ export default {
                 c: ''
             },
             codeText: '获取验证码',
-            t: ''
+            t: '',
+            verify_url: '/mini/Home/get_verify',
         }
     },
     computed: {
@@ -83,6 +84,23 @@ export default {
         }
     },
     methods: {
+        //立即绑定
+        bind_phone(){
+            let vm = this, url = "/mini/Home/bind";
+            this.apiPost(url, {phone: this.form.tel, phone_code: this.form.code, agree: this.form.agree}).then((res) => {
+                if (res.code) {
+                    vm.$msg(res.msg);
+                    setTimeout(function(){
+                        history.go(-1);
+                    },1000);                    
+                } else {
+                    vm.$msg(res.msg);
+                }
+            })
+        },
+        change_verify(){
+            this.verify_url = this.verify_url + "?r=" + Math.random();
+        },
         getCode() {
             let that = this;
             var cb = function() {
@@ -101,20 +119,20 @@ export default {
                         that.codeText = '获取验证码'
                         that.codeDisabled = false;
                     }
-                }, 100)
+                }, 1000)
             }
             this.getCodeAjax(cb);
         },
         getCodeAjax(cb) {
-            let vm = this, url = "";
-            cb()
-            this.apiGet(url).then((res) => {
+            let vm = this, url = "/mini/Home/send_phone_code";
+            // cb()
+            this.apiPost(url, {phone: this.form.tel, verify: this.form.c}).then((res) => {
                 if (res.code) {
                     if (typeof cb == 'function') {
                         cb()
                     }
                 } else {
-
+                    vm.$msg(res.msg);
                 }
             })
         }

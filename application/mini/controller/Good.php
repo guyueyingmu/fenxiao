@@ -23,7 +23,7 @@ class Good extends Base
         }
         $keyword = input('param.keyword', '', 'trim');
         if($keyword){
-            $where .= ' AND good_name LIKE "%'.$keyword.'%" ';
+            $where .= ' AND good_title LIKE "%'.$keyword.'%" ';
         }
         $cat_id = input('param.cat_id', '', 'intval');
         if($cat_id){

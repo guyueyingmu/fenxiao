@@ -124,13 +124,18 @@ class Order extends Base
             $good_id[] = $v['good_id'];
             $good_count[$v['good_id']] = $v['good_count'];
         }
+        $good_where = 'g.id IN ($good_id) AND g.status = 1';
+        if(count($goods) > 1){
+            $good_where .= ' AND g.good_type = 1';
+        }
         $good_list = db('goods')->alias('g')
                 ->join('__GOODS_CATEGORY__ gc', 'gc.id=g.cat_id', 'LEFT')
-                ->where('g.id', 'IN', $good_id)->where('g.status', 1)->order('FIELD(g.id, '.  implode(',', $good_id).')')
+                ->where($good_where)->order('FIELD(g.id, '.  implode(',', $good_id).')')
                 ->field('g.id good_id,g.good_num,g.good_img,g.good_title,gc.cat_name,g.credits,g.price,g.distribution,g.good_type,g.presenter_credits')->select();
         if(!$good_list){
             $this->error('商品不存在');
         }
+        
         $total_amount = 0;
         $total_credits = 0;
         foreach($good_list as $k=>$v){
