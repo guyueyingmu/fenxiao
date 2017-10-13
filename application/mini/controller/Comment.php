@@ -94,6 +94,15 @@ class Comment extends Base
         if(!is_array($good_info)){
             $this->error('数据格式不正确');
         }
+        
+        $order_info = db('orders')->where('id', $order_id)->where('user_id', session('mini.uid'))->field('id,order_status,pay_status')->find();
+        if(!$order_info){
+            $this->error('订单不存在');
+        }
+        if($order_info['order_status'] != 5){
+            $this->error('订单未完成，不能评价');
+        }
+        
         $comment_good_id = [];
         $add_data_all = [];
         foreach($good_info as $k=>$v){
@@ -161,5 +170,29 @@ class Comment extends Base
         
         $this->success('评价成功');
         
+    }
+    
+    /**
+     * 获取订单的商品信息
+     */
+    public function get_order_goods(){
+        $order_id = input('param.order_id', '', 'intval');
+        if(!$order_id){
+            $this->error('参数错误');
+        }
+        $order_info = db('orders')->where('id', $order_id)->where('user_id', session('mini.uid'))->field('id,order_status')->find();
+        if(!$order_info){
+            $this->error('订单不存在');
+        }
+        if($order_info['order_status'] != 5){
+            $this->error('订单未完成，不能评价');
+        }
+        $good_list = db('orders_goods')->where('order_id', $order_id)
+                ->field('good_id,good_img,good_title')->select();
+        if(!$good_list){
+            $this->error('订单有误');
+        }
+//        exit(json_encode($good_list));
+        $this->success('成功', '', $good_list);
     }
 }
