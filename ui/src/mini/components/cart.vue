@@ -1,6 +1,7 @@
 <template>
-    <div class="cart">
-        <ul class="thumb-list">
+    <div class="cart" v-loading="loading">
+
+        <ul class="thumb-list" v-if="list.length > 0 && loading == false">
             <li v-for="(item,idx) in list" :key="item.good_id">
                 <input type="checkbox" class="ui-checkbox" v-model="item.selected" @change="onChange">
                 <img v-lazy="item.good_img" width="70" height="70">
@@ -18,11 +19,11 @@
                 <i class="iconfont icon-shanchu " @click="ondel(idx);"></i>
             </li>
         </ul>
-        <div class="nodata" v-if="list.length < 1">
+        <div class="nodata" v-if="list.length < 1 && loading == false">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
             <div>您的购物车是空的~</div>
         </div>
-        <div class="tool-bottom">
+        <div class="tool-bottom" v-if="list.length > 0">
             <div><input type="checkbox" id="allcheackbox" v-model="allCheakbox" class="ui-checkbox" @change="onAllCheack"></div>
             <div>
                 <label for="allcheackbox">全选</label>
@@ -115,11 +116,12 @@ export default {
         
         //取数据
         get_list(page) {
+            
             page = page || 1;
             let url = '/mini/Cart/get_list?page=' + page,
                 vm = this;
 
-            vm.loading = true;
+          
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
@@ -127,7 +129,7 @@ export default {
                 } else {
                     vm.handleError(res)
                 }
-                vm.loading = false;
+               
             })
         },
 
@@ -135,6 +137,7 @@ export default {
     created() {
         this.setTitle('我的购物车')
         this.get_list();
+      
     },
 }
 

@@ -39,7 +39,7 @@ Vue.config.devtools = true
 import style from './assets/css/style.less'
 import VueScroller from 'vue-scroller'
 Vue.use(VueScroller)
-import { InfiniteScroll,Lazyload,Spinner,Indicator } from 'mint-ui';
+import { InfiniteScroll,Lazyload,Spinner} from 'mint-ui';
 Vue.use(Lazyload);
 Vue.use(InfiniteScroll);
 Vue.component(Spinner.name, Spinner);
@@ -114,15 +114,38 @@ router.beforeEach((to, from, next) => {
 
 
 const loading = {
+  a: '',
   inserted(el, binding) {
+    let html = '<div class="spin-mask"></div><div class="spin-main">\
+                <div class="loader">\
+                    <svg viewBox="25 25 50 50" class="circular">\
+                        <circle cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" class="path"></circle>\
+                    </svg>\
+                </div>\
+                <div class="spin-text">加载中..</div>\
+            </div>'
+    let d = document.createElement("DIV")
+    if (binding.modifiers.full) {
+      d.className = 'load full'
+      el.style.position = 'relative'
+    } else if (binding.modifiers.win) {
+      d.className = 'load win'
+    } else {
+      d.className = 'load'
+    }
+    d.style.display = 'none'
+    d.innerHTML = html;
+    el.appendChild(d)
+    binding.def.a = d;
+    // console.log('inserted:', binding.def)
 
   },
   update(el, binding) {
     // console.log('update:', binding.def)
     if (binding.value) {
-        Indicator.open('加载中...');
+      binding.def.a.style.display = 'block'
     } else {
-        Indicator.close();
+      binding.def.a.style.display = 'none'
     }
   }
 }

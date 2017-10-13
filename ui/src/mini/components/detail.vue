@@ -35,7 +35,7 @@
             <div class="item btn myCart" @click="goto('/cart')">
                 <i class="iconfont icon-gouwuche"></i>
                 <em>购物车</em>
-                <i class="num">{{good_info.cart_total}}</i>
+                <i class="num" v-if="good_info.cart_total">{{good_info.cart_total}}</i>
             </div>
             <div class="item add" @click="add_cart(good_info.id);" v-if="good_info.good_type == 1">加入购物车</div>
             <div class="item buy" @click="go_buy(good_info.id)">立即购买</div>

@@ -1,5 +1,5 @@
 <template>
-    <div id="app" v-loading.win="winloading">
+    <div id="app">
         <!--微信里隐藏 导航-->
         <header class="hd_nav" v-if="$is.WeiXin == false">
             <a href="javascript:history.go(-1)" class="back"></a>
