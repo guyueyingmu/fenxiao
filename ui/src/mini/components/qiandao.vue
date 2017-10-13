@@ -3,12 +3,12 @@
         <div class="user">
             <div class="userBox">
                 <div class="photo">
-                    <img src="info.img_url">
+                    <img :src="info.img_url">
                 </div>
                 <div class="inners">
-                    <div>我的积分：1290</div>
+                    <div>我的积分：{{info.credits}}</div>
                     <div>已累计签到：
-                        <span class="red">18天</span>
+                        <span class="red">{{info.sign_total}}天</span>
                     </div>
                 </div>
                 <div class="qiandao-gz" @click="showTips">
@@ -28,9 +28,9 @@
                 </div>
                 <div class="info" style="padding-left:5px">积分
                     <span class="price">
-                        <em>{{good.price}}</em>
+                        <em>{{good.credits}}</em>
                     </span>
-                    <i class="iconfont icon-gouwuche1" @click="add_cart(good.id);"></i>
+                    <i class="iconfont" ></i>
                 </div>
             </li>
         </ul>
@@ -42,7 +42,7 @@
 
         <div class="nodata" v-if="list.length < 1 && sloading == false">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
-            <div>您还没有积分记录~</div>
+            <div>还没有积分商品~</div>
         </div>
 
         <div class="qian-tips" v-show="tips">
@@ -67,7 +67,8 @@ export default {
             list: [],
             pages: {},
             sloading: false,
-            tips: false
+            tips: false,
+            info: {},
         }
     },
     methods: {
@@ -87,10 +88,10 @@ export default {
         },
         get_list(page) {
             page = page || 1;
-            let url = '/mini/Collect/get_list?page=' + page,
+            let url = '/mini/Good/get_list?page=' + page,
                 vm = this;
             vm.sloading = true
-            this.apiGet(url).then(function(res) {
+            this.apiGet(url, {list_type : 1}).then(function(res) {
 
                 if (res.code) {
 
@@ -118,10 +119,23 @@ export default {
 
             })
         },
+        get_info() {
+            let url = '/mini/Home/center_info',
+                vm = this;
+
+            this.apiGet(url, {}).then(function(res) {
+                if (res.code) {
+                    vm.info = res.data;
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
 
     },
     created() {
-        this.setTitle('签到')
+        this.setTitle('签到');
+        this.get_info();
         this.get_list();
     },
 
