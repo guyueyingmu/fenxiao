@@ -1,6 +1,6 @@
 <template>
     <div v-loading="loading">
-        <ul class="thumb-list" v-show="list.length > 0" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10">
+        <ul class="thumb-list" v-show="list.length > 0" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="cheackLoadMore">
             <li v-for="(item,idx) in list" :key="item.id">
                 <img :src="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.good_id)">
                 <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.good_id)">
@@ -66,14 +66,10 @@ export default {
             let url = '/mini/Footmark/get_list?page=' + page,
                 vm = this;
             this.apiGet(url, {}).then(function(res) {
-
                 if (res.code) {
                     vm.pages = res.data.pages;
                     if (page < 2) {
                         vm.list = res.data.list;
-                        setTimeout(() => {
-                            vm.loadMore()
-                        }, 250)
                     } else {
                         let _list = vm.list;
                         _list = _list.concat(res.data.list)
@@ -84,6 +80,7 @@ export default {
                 }
                 setTimeout(() => {
                     vm.sloading = false;
+                    vm.$emit('checkLoadMore')
                 }, 200)
 
             })

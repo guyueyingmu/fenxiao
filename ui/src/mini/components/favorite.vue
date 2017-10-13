@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <ul class="thumb-list" v-show="list.length > 0" ref="ss" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="one">
+        <ul class="thumb-list" v-show="list.length > 0" ref="ss" v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="cheackLoadMore">
             <li v-for="(item,idx) in list" :key="idx">
                 <img v-lazy="item.good_img" width="70" height="70" @click="goto('/detail/id/'+item.good_id)">
                 <div class="info" style="margin-right:1.5em" @click="goto('/detail/id/'+item.good_id)">
@@ -40,9 +40,7 @@ export default {
         }
     },
     methods: {
-        one() {
-            console.log(`this one`)
-        },
+   
         loadMore() {
             console.log('load')
             if (this.sloading) { return }
@@ -60,7 +58,7 @@ export default {
             this.apiGet(url).then(function(res) {
 
                 if (res.code) {
-                    vm.$emit('one', '33')
+                   
                     vm.pages = res.data.pages;
                     if (vm.list.length == 0) {
                         vm.list = res.data.list;
@@ -74,6 +72,7 @@ export default {
                     }
                     setTimeout(() => {
                         vm.sloading = false;
+                         vm.$emit('cheackLoadMore')
                     }, 200)
 
 
