@@ -14,7 +14,7 @@
         <div class="space15"></div>
         <ul class="thumb-list">
             <li v-for="(item,idx) in list.orders_goods" :key="idx">
-                <img src="item.good_img" width="70" height="70">
+                <img :src="item.good_img" width="70" height="70">
                 <div class="info">
                     <div class="title">{{item.good_title}}</div>
                     <div class="tool">

@@ -124,7 +124,7 @@ class Order extends Base
             $good_id[] = $v['good_id'];
             $good_count[$v['good_id']] = $v['good_count'];
         }
-        $good_where = 'g.id IN ($good_id) AND g.status = 1';
+        $good_where = 'g.id IN ('.implode(',', $good_id).') AND g.status = 1';
         if(count($goods) > 1){
             $good_where .= ' AND g.good_type = 1';
         }
