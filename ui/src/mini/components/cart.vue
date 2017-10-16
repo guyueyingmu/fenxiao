@@ -76,29 +76,35 @@ export default {
     methods: {
         //结算
         go_buy() {
-            let _d = this.list, params = [];
+            let _d = this.list, params = [], isSelected = false;
             for (let item of _d) {
-                if(item.selected){
-                    params.push({good_id: item.good_id, good_count: item.total});
+                if (item.selected) {
+                    params.push({ good_id: item.good_id, good_count: item.total });
+                    isSelected = true
                 }
             }
-            this.setCart(params)
-            this.goto('/confirm');
+            if (isSelected) {
+               this.setCart(params)
+               this.goto('/confirm')
+            } else {
+                this.$msg('请选择商品，再提交');
+            }
+
         },
-        ondel(index){
+        ondel(index) {
             let vm = this;
             this.$confirm({
                 msg: '确定删除此商品？',
-                yes: function(){vm.del(index)}
+                yes: function() { vm.del(index) }
             })
         },
         //删除
-        del(k){
-            let url = '/mini/Cart/del', vm = this, data = {good_id: this.list[k].good_id};
+        del(k) {
+            let url = '/mini/Cart/del', vm = this, data = { good_id: this.list[k].good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
-                    vm.list.splice(k,1);
+                    vm.list.splice(k, 1);
                 } else {
                     vm.handleError(res)
                 }
@@ -113,15 +119,15 @@ export default {
                 item.selected = event.target.checked;
             }
         },
-        
+
         //取数据
         get_list(page) {
-            
+
             page = page || 1;
             let url = '/mini/Cart/get_list?page=' + page,
                 vm = this;
 
-          
+
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
@@ -129,7 +135,7 @@ export default {
                 } else {
                     vm.handleError(res)
                 }
-               
+
             })
         },
 
@@ -137,7 +143,7 @@ export default {
     created() {
         this.setTitle('我的购物车')
         this.get_list();
-      
+
     },
 }
 

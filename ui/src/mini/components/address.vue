@@ -68,8 +68,9 @@ export default {
                 this.$msg('请选择地址');
                 return false;
             }
+            console.log(this.list[this.checked])
             this.setAddress(this.list[this.checked]);
-            history.go(-1);
+           this.goto('/confirm')
         },
         //设为默认
         set_default(index){

@@ -61,7 +61,7 @@
                     </a>
                 </li> -->
                 <li>
-                    <a href="/#/class">
+                    <a href="javascript:;" @click="goto('/class')">
                         <i class="nav-icon item-8"><img src="static/mini/img/home/icon/8.png" width="100%"></i>
                         <span>更多</span>
                     </a>
