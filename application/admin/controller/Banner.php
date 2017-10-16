@@ -97,16 +97,19 @@ class Banner extends Base
         $data = [
             'id'  => input("id"),
             'status'  => input("status","","trim"),
+            'sort'  => input("sort","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
             'id'  => 'require|number',
             'status'  => 'require|in:1,2',
+            'sort'  => 'between:0,999',
         ],[
             'id.require' => '参数错误',
             'id.number' => '参数格式错误',
             'status.require' => '请选择商品启用状态',
             'status.in' => '启用状态数据不正确',
+            'sort.between' => '排序只能在0-999之间',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);
