@@ -140,7 +140,8 @@ export default {
             this.get_talk_list(item.message_group_id);
         },
         bind_ws(user_id){
-            const  ws = new WebSocket("ws://127.0.0.1:8282");
+            const ip = window.location.hostname;
+            const  ws = new WebSocket("ws://"+ ip +":8282");
             let vm = this;
             ws.onmessage = function(e) {
                 // json数据转换成js对象
