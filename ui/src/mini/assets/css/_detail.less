@@ -70,8 +70,8 @@
         box-shadow: 0 -5px 5px rgba(136, 136, 136, 0.48);
         .item {
             text-align: center;
-            padding: 0 1em;
-            @h: 56px;
+            padding: 0 5px;
+            @h: 50px;
             &:active {
                 opacity: .7;
             }
@@ -86,7 +86,7 @@
                 padding-top: (@h / 2)-18;
                 padding-bottom: (@h / 2)-18;
                 line-height: 1;
-                padding: (@h / 2)-18 .6em;
+                padding: (@h / 2)-18 8px;
                 &:active {
                     background: #eeeeee;
                 }
@@ -94,13 +94,14 @@
             &.buy {
                 background: #FF5722;
                 color: #fff;
-                line-height: @h;
+                line-height: @h - 2;
                 flex: 1;
             }
             &.add {
                 background: #FFC107;
                 color: #fff;
-                line-height: @h;
+                line-height: @h - 2;
+                flex: 1;
             }
         }
     }
@@ -127,13 +128,15 @@
     .tagsLabel {
         padding: 1em;
         text-align: center;
+        display: flex;
+        justify-content: space-between;
         span {
             display: inline-block;
             flex: 1;
             text-align: center;
             background: rgba(255, 211, 198, 0.57);
             color: #444;
-            padding: 5px 20px;
+            padding: 5px 0px;
             border-radius: 20px;
             font-size: 13px;
             margin: 0 5px;

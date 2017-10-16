@@ -6,7 +6,7 @@
             <h3 class="headerTitle">{{$store.state.title}}</h3>
         </header>
         <div :style="{'margin-top':$is.WeiXin == false?'58px':''}"></div>
-        <div class="search" :class="{'show':showSearch}" v-if="$route.name == 'home' || $route.name == 'search'">
+        <div class="search" :class="{'show':showSearch}" v-if="$route.name == 'home' || $route.name == 'search2' || $route.name == 'search'">
             <div class="search-p" @click="onSearch" v-if="showSearch == false">
                 <i class="iconfont icon-sousuo"></i>请输入关键词搜索</div>
             <div class="search-box" v-if="showSearch == true">

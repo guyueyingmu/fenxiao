@@ -12,12 +12,14 @@
         <div class="header-sort-mask" @click="closeDialog" v-if="showCat ==true"></div>
         <div class="header-sort">
             <div class="item" @click="showCat = !showCat" :class="{'active':showCat || $store.state.search.cat_idx }">
-                <i class="iconfont icon-fenlei"></i> <span v-if="cat_list.length > 1">{{$store.state.search.cat_idx?cat_list[$store.state.search.cat_idx].cat_name:'分类'}}</span></div>
+                <i class="iconfont icon-fenlei"></i>
+                <span v-if="cat_list.length > 1">{{$store.state.search.cat_idx?cat_list[$store.state.search.cat_idx].cat_name:'分类'}}</span>
+            </div>
             <div class="item sort" :class="{'active':$store.state.sort,'skin':sort}" @click="onSort">
                 <i class="iconfont icon-paixu"></i> 价格</div>
             <transition name="cat">
                 <div class="class-dialog" v-show="showCat">
-                    <div class="scroll"  v-if="cat_list.length > 0">
+                    <div class="scroll" v-if="cat_list.length > 0">
                         <scroller>
                             <span v-for="(i,cat_idx) in cat_list" :key="i.id" :class="{'active':cat_idx == $store.state.search.cat_idx}" @click="selectCat(cat_idx)">{{i.cat_name}}
                                 <i class="iconfont icon-dagou" v-if="cat_idx == $store.state.search.cat_idx"></i>
@@ -68,7 +70,7 @@ export default {
             this.init();
 
         },
-      
+
     },
     data() {
         return {
@@ -109,7 +111,7 @@ export default {
             }
         },
         selectCat(cat_idx) {
-      
+
             this.$store.state.search.cat_idx = cat_idx;
             let vm = this
             setTimeout(() => {
@@ -140,6 +142,18 @@ export default {
             this.apiGet(url, { limit: 7 }).then(function(res) {
                 if (res.code) {
                     vm.cat_list = vm.cat_list.concat(res.data);
+                    if (vm.$route.name == 'search2') {
+                        let cat_id = vm.$route.params.cat_id;
+                        let cat_idx = 0;
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (cat_id == res.data[i].id) {
+                                cat_idx = (i +1)
+                                break;
+                            }
+                        }
+                        vm.selectCat(cat_idx);
+                        vm.getSearch()
+                    }
                 } else {
                     vm.handleError(res)
                 }
@@ -183,9 +197,9 @@ export default {
         this.init();
         this.setTitle('搜索')
         this.get_cat();
-        // this.$store.state.search.keyword = ''
-        // this.$store.state.search.sort = false
-        // this.$store.state.list = []
+
+
+
 
     }
 
