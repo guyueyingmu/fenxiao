@@ -66,11 +66,23 @@ export default {
     name: 'search',
     mixins: [http],
     watch: {
-        '$route'() {
+        '$route'(to, form) {
+
             this.init();
+
 
         },
 
+    },
+    beforeRouteEnter(to, from, next) {
+        console.log(from)
+        next(vm => {
+            if (from.name == 'home') {
+                vm.$store.state.list = []
+                vm.$store.state.search.keyword = '';
+            }
+
+        })
     },
     data() {
         return {
@@ -98,17 +110,17 @@ export default {
             this.sort = true;
             this.$store.state.sort = !this.$store.state.sort;
 
-            if (this.$store.state.search.keyword) {
-                this.getSearch()
-            }
+            // if (this.$store.state.search.keyword) {
+            this.getSearch()
+            //  }
 
         },
         closeDialog() {
             this.showCat = false
 
-            if (this.$store.state.search.keyword) {
-                this.getSearch()
-            }
+            // if (this.$store.state.search.keyword) {
+            this.getSearch()
+            //  }
         },
         selectCat(cat_idx) {
 
@@ -144,10 +156,11 @@ export default {
                     vm.cat_list = vm.cat_list.concat(res.data);
                     if (vm.$route.name == 'search2') {
                         let cat_id = vm.$route.params.cat_id;
+                        vm.$store.state.search.keyword = ''
                         let cat_idx = 0;
                         for (let i = 0; i < res.data.length; i++) {
                             if (cat_id == res.data[i].id) {
-                                cat_idx = (i +1)
+                                cat_idx = (i + 1)
                                 break;
                             }
                         }
@@ -198,10 +211,8 @@ export default {
         this.setTitle('搜索')
         this.get_cat();
 
+    },
 
-
-
-    }
 
 
 }
