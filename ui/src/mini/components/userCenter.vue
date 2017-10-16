@@ -14,8 +14,7 @@
         <div class="user">
             <div class="userBox">
                 <div class="photo">
-                    <!-- static/mini/img/demo/avt.jpg -->
-                    <a href="javascript:;"><img :src="info.img_url" width="100%"> </a>
+                    <a href="javascript:;"><img v-lazy="info.img_url" width="100%"> </a>
                 </div>
                 <div class="inners">
                     <div class="name">{{info.nickname}}</div>
