@@ -34,7 +34,7 @@
 
             <ul class="thumb-box">
                 <li v-for="item in $store.state.list" :key="item.id">
-                    <div class="thumb" @click="goto('/detail/id/'+item.id)"><img :src="item.good_img||'static/mini/img/grey.gif'" onerror="this.src=`static/mini/img/grey.gif`;this.error=null"></div>
+                    <div class="thumb" @click="goto('/detail/id/'+item.id)"><img v-lazy="item.good_img"></div>
                     <div class="title" @click="goto('/detail/id/'+item.id)">
                         {{item.good_title}}
                     </div>

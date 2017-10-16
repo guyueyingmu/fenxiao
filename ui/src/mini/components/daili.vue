@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="static/mini/img/code.png"  style="width:100%;">
+        <img src="/static/mini/img/code.png"  style="width:100%;">
        <div style="padding:13px;">
            <a herf="javascript:;" class="ui-btn ui-btn-block" v-if="applied == 0" @click="save_data()">我要代理</a>
        </div>

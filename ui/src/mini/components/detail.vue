@@ -124,11 +124,7 @@ export default {
                 autoHeight: true,
 
             },
-            // swiperSlides: [
-            //     'static/mini/img/demo/detail/2.png',
-            //     'static/mini/img/demo/detail/1.png',
-            //     'static/mini/img/demo/detail/3.png',
-            // ],
+
             tagActive: 0,
             loadComment: false,
             comment_list: [],
