@@ -94,8 +94,8 @@
 
                     <el-form-item label="参与分销" v-if="form.good_type < 4" prop="distribution">
                         <el-radio-group v-model="form.distribution" placeholder="积分类商品不参与分销，参与分销的必须是现金支付的商品">
-                            <el-radio :label="1">参与</el-radio>
-                            <el-radio :label="2">不参与</el-radio>
+                            <el-radio :label="`1`">参与</el-radio>
+                            <el-radio :label="`2`">不参与</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="积分兑换" v-if="form.good_type >= 4" prop="credits">
@@ -127,8 +127,8 @@
                 <el-col :span="12">
                     <el-form-item label="是否上架">
                         <el-radio-group v-model="form.status" placeholder="是否上架">
-                            <el-radio :label="1">上架</el-radio>
-                            <el-radio :label="2">下架</el-radio>
+                            <el-radio :label="`1`">上架</el-radio>
+                            <el-radio :label="`2`">下架</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
@@ -171,11 +171,11 @@ export default {
                 good_img: [{ required: true, type: 'string', message: '请上传商品小图', trigger: 'blur' }],
                 banner_img: [{ required: true, type: 'array', message: '请上传商品轮播图', trigger: 'blur' }],
                 good_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-                cat_id: [{ required: true, pattern: /^.*$/, message: '请选择分类', trigger: 'blur' },],
+                cat_id: [{ required: true,  message: '请选择分类', trigger: 'blur' },],
 
                 distribution: [{ required: true, type: 'number', message: '请选择参与分销', trigger: 'blur' }],
-                credits: [{ required: true, pattern: /^.*$/, message: '请输入积分兑换', trigger: 'blur' }],
-                good_type: [{ required: true, pattern: /^.*$/, message: '请选择商品类型', trigger: 'blur' }],
+                credits: [{ required: true,  message: '请输入积分兑换', trigger: 'blur' }],
+                good_type: [{ required: true,  message: '请选择商品类型', trigger: 'blur' }],
                 price: [{ required: true, message: '请输入销售价格', trigger: 'blur' }],
 
                 good_title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
@@ -328,7 +328,8 @@ export default {
                 vm = this;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    vm.bannerImg_temp_list = [];
+                    console.log(res.data)
+                   vm.bannerImg_temp_list = [];
                     let _d = res.data.banner_img;
                     for (let i = 0; i < _d.length; i++) {
                         if (_d[i].is_show == 1) {
@@ -336,6 +337,15 @@ export default {
                         }
 
                     }
+                    let _item = res.data;
+                        _item.cat_id = _item.cat_id.toString()
+                        _item.good_type = _item.good_type.toString()
+                        _item.credits = _item.credits.toString()
+                        _item.distribution = _item.distribution.toString()
+                        _item.inventory = _item.inventory.toString()
+                        _item.presenter_credits = _item.presenter_credits.toString()
+                        _item.status = _item.status.toString()
+                    // }
                     vm.form = res.data;
                     vm.loading = false;
                 } else {

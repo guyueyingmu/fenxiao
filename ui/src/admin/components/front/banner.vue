@@ -10,7 +10,7 @@
             <el-table-column prop="img_url" label="轮播图">
                 <template scope="scope">
                     <div style="padding:10px 0;">
-                        <img :src="scope.row.img_url"  width="100" height="43">
+                        <img :src="scope.row.img_url" width="100" height="43">
                     </div>
                 </template>
             </el-table-column>
@@ -27,6 +27,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
+                    <el-button type="text" size="small" @click="onEdit(scope.$index)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>
             </el-table-column>
@@ -80,6 +81,8 @@ export default {
                 sort: '0',
                 status: ''
             },
+            isEdit:false,
+            editId :0,
             list: []
         }
     },
@@ -99,8 +102,16 @@ export default {
                 }
             })
         },
+        onEdit(idx) {
+            this.isEdit = true;
+            this.dialogFormVisible = true;
+            let _d = JSON.parse(JSON.stringify(this.list[idx]))
+            this.editId = _d.id;
+            this.dialog = _d
+        },
         //添加
         open_addCat(data) {
+                   this.isEdit = false;
             this.dialogFormVisible = true;
             this.dialog = {
                 img_url: '',
@@ -137,7 +148,7 @@ export default {
         //保存数据
         postNewCat() {
             let data = this.dialog;
-            let url = '/admin/Banner/add', vm = this;
+            let url = this.isEdit?'/admin/Banner/edit':'/admin/Banner/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
                     vm.$message.success(res.msg);

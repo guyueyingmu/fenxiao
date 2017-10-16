@@ -123,7 +123,11 @@ export default {
                     vm = this;
                 this.apiGet(url).then(function(res) {
                     if (res.code) {
+                        for(let _item of res.data.list){
+                            _item.id = _item.id.toString();
+                        }
                         vm.setCatList(res.data.list)
+
 
                     } else {
                         vm.handleError(res)
