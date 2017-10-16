@@ -49,11 +49,11 @@
                                             <span class="name">{{item.user_name}}</span>
                                         </div>
                                         <div class="item-content">
-                                            <span v-if="item.type ===1">{{item.content}}</span>
+                                            <span v-if="item.type == 1">{{item.content}}</span>
 
-                                            <span v-if="item.type ===2" @click="onZoom(item.content.img_url)"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
+                                            <span v-if="item.type == 2" @click="onZoom(item.content.img_url)"><img :src="item.content.thumb_img_url" width="60" height="60"></span>
 
-                                            <div class="pro_box" v-if="item.type ===3">
+                                            <div class="pro_box" v-if="item.type == 3">
                                                 <div class="pro_box_flex">
                                                     <div class="pro_img"><img :src="item.content.good_img" width="40" height="40"></div>
                                                     <div class="info">
