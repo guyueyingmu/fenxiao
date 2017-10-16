@@ -17,9 +17,6 @@ use \GatewayWorker\Gateway;
 use \GatewayWorker\BusinessWorker;
 use \Workerman\Autoloader;
 
-// 自动加载类
-require_once __DIR__ . '/../../vendor/autoload.php';
-
 // gateway 进程，这里使用Text协议，可以用telnet测试
 $gateway = new Gateway("websocket://0.0.0.0:8282");
 // gateway名称，status方便查看
@@ -60,8 +57,7 @@ $gateway->onConnect = function($connection)
 */
 
 // 如果不是在根目录启动，则运行runAll方法
-if(!defined('GLOBAL_START'))
-{
+if(!defined('GLOBAL_START')) {
     Worker::runAll();
 }
 
