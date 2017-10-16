@@ -121,8 +121,12 @@ export default {
             })
         },
         save_data() {
-  
-            let url = '/mini/Order/add_order', vm = this, data = { good_info: JSON.stringify(vm.post_good_list), address_id: vm.info.address.id };
+            if(this.info.show_address && !this.address.id){
+            console.log(this.address.id)
+                this.$msg('请选择配送地址');
+                return false;
+            }
+            let url = '/mini/Order/add_order', vm = this, data = { good_info: JSON.stringify(vm.post_good_list), address_id: vm.address.id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);

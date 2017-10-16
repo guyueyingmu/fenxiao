@@ -36,7 +36,7 @@
             <div class="sendBox">
                 <div class="flex">
                     <div class="upload">
-                        <vue-file-upload label="上传" icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                        <vue-file-upload icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
                     </div>
                     <div class="input">
                         <input type="text" class="ui-input" id="input-key" autocomplete="off" placeholder="请输入内容" v-model="info.content"> </input>
