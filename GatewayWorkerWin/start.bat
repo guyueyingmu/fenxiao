@@ -1,0 +1,2 @@
+php Applications\fenxiao\start_register.php Applications\fenxiao\start_gateway.php Applications\fenxiao\start_businessworker.php
+pause
