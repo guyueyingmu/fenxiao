@@ -167,7 +167,7 @@ export default {
         }
     },
     created() {
-        const ip = window.location.hostname;
+        const ip = '119.23.75.94';//window.location.hostname;
         const ws = new WebSocket("ws://" + ip + ":8282");
 
         let vm = this;
