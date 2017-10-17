@@ -36,12 +36,13 @@
             <div class="sendBox">
                 <div class="flex">
                     <div class="upload">
-                        <vue-file-upload icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                        <vue-file-upload label="" icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
                     </div>
                     <div class="input">
-                        <input type="text" class="ui-input" id="input-key" autocomplete="off" placeholder="请输入内容" v-model="info.content"> </input>
+                        <input  type="text" class="ui-input needsclick" id="input-key" autocomplete="off" placeholder="请输入内容" v-model="info.content">  </input>
+                      
                     </div>
-                    <div style="width:60px;margin-left:10px;">
+                    <div  class="send_btn_warp">
                         <button type="button" class="ui-btn ui-btn-send" @click="onSend(1, info.content)">发送</button>
                     </div>
                 </div>
@@ -59,20 +60,21 @@ export default {
     mixins: [http],
     components: {
         VueFileUpload
+        
     },
     mounted() {
         this.setTitle('在线客服')
         let vm = this;
         setTimeout(function() {
             var input = document.getElementById('input-key');
-            input.addEventListener('focus', function() {
-                vm.$refs['ss'].scrollTo(0, 99999, 0);
+            input.addEventListener('focus', function() {          
                 setTimeout(function() {
-
-                    document.body.scrollTop = 99999
-                }, 200)
+                    document.body.scrollTop = 99999;
+                     vm.$refs['ss'].scrollTo(0, 99999, 0);
+                }, 380)
+                   
             }, false)
-        }, 100)
+        }, 1000)
 
         //新增商品消息
         this.onSend(3, this.$route.params.good_id);
@@ -193,7 +195,6 @@ export default {
                     break;
                 case 'msg':
                     vm.list.push(data.content);
-                    console.log(vm.$refs['ss'])
                     setTimeout(() => {
                         if (vm.$refs['ss']) {
                             vm.$refs['ss'].scrollTo(0, 9999, 20);

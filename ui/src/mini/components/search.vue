@@ -2,7 +2,7 @@
     <div class="search-page">
         <div class="search show">
             <div class="search-box">
-                <input type="text" id="keyword" v-model="search.keyword" placeholder="请输入关键词搜索" class="ui-input" v-focus="isIndex">
+                <input type="text"  id="keyword" v-model="search.keyword" @keyup.enter="onSearch"  preloader="请输入关键词搜索" class="needsclick ui-input" v-focus="isIndex">
                 <i class="iconfont icon-chuyidong" @click="search.keyword = ''" v-if="search.keyword.length"></i>
                 <span class="ui-btn ui-btn-search" @click="onSearch">
                     <i class="iconfont icon-sousuo"></i>搜索</span>
@@ -62,7 +62,7 @@
           <div class="spinner" v-if="sloading">
             <mt-spinner  :size="18" color="#26a2ff"></mt-spinner>
         </div>
-        <div class="nodata-line" v-else-if="pages.total_page == pages.current_page">没有更多数据了</div>
+        <div class="nodata-line" v-else-if="pages.total_page == pages.current_page && search.list.lenght > 0">没有更多数据了</div>
 
         <div class="nodata" v-if="search.list.length < 1 && search.loading == false ">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>

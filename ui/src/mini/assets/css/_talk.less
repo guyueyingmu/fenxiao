@@ -1,13 +1,32 @@
 .talk {
-    
+    .fileupload-button {
+        background: #fff!important;
+        color: #333!important;
+        border: solid 1px #ddd!important;
+        border-radius: 4px!important;
+        box-sizing: border-box!important;
+        padding: 5px 12px!important;
+        box-sizing: border-box;
+        height: 40px; 
+    }
+    .fileupload-button input {
+        -webkit-appearance: none!important;
+        font-size: 0!important;
+        opacity: 0!important;
+        bottom: 0!important;
+        left: 0!important;
+        width: 100%!important;
+        color: transparent!important;
+        ;
+        background: none!important;
+        ;
+    }
     .reply_list_box {
         position: absolute;
         top: 60px;
         bottom: 0;
         left: 0;
         right: 0;
-       
-
         .reply_list_content {
             overflow: hidden;
             position: absolute;
@@ -17,59 +36,76 @@
             bottom: 60px;
         }
         .sendBox {
-          
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-            padding: 10px;
+            padding: 0 10px 5px;
             background: #fff;
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            .flex{
+            .flex {
                 display: flex;
                 align-items: center;
-                &>*{
+                &>* {
                     display: block;
-                   
                 }
-                .upload{
-                    width: 80px;
-                    // margin-right: 10px;
+                .upload {
+                    width: 45px; // margin-right: 10px;
                     overflow: hidden;
                 }
             }
-            .input{
+            .input {
                 flex: 1;
-                input{
-                    padding: 5px;
+                padding: 5px 0;
+                .ui-input {
+                    min-height: 40px; 
+                    max-height: 300px;
+                    padding: 3px; 
+                    outline: 0; 
+                    border: 1px solid #a0b3d6; 
+                    font-size: 14px; 
+                    word-wrap: break-word;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    _overflow-y: visible;
+                    position: relative;
+                    z-index: 99;
+                    zoom: 1;
+                    border-radius: 4px;
+                    &:focus{
+                        border-color: @skin;
+                    }
+
                 }
-              
             }
-            .ui-btn-send{
-                padding: 2px;
-                width: 50px;
-                line-height: 30px;
+            .send_btn_warp {
+                width: 70px;
+                margin-left: 5px;
+            }
+            .ui-btn-send {
+                padding: 0;
                 width: 100%;
+                line-height: 40px;
+                box-sizing: border-box;
             }
         }
     }
     .sd-scroller {
-      height: 100%;
-      padding: 10px;
-      margin: 0 10px;
-      box-sizing: border-box;
-      position: relative;
+        height: 100%;
+        padding: 10px;
+        margin: 0 10px;
+        box-sizing: border-box;
+        position: relative;
     }
     .reply_list_content {
         .time {
             text-align: center;
             color: #b7b7b7;
-            font-size: 12px;
-            // margin-bottom: 3em;
+            font-size: 12px; // margin-bottom: 3em;
             // margin-top: 5px;
             text-indent: .5em;
         }
-        .item{
+        .item {
             margin-bottom: 2em;
         }
         .item-box {
@@ -198,8 +234,9 @@
         }
     }
 }
-.spinner-holder{
-    .spinner{
+
+.spinner-holder {
+    .spinner {
         background: none
     }
 }
