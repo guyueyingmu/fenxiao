@@ -12,11 +12,11 @@
                                     <span class="name">{{item.user_name}}</span>
                                 </div>
                                 <div class="item-content">
-                                    <span v-if="item.type ===1">{{item.content}}</span>
+                                    <span v-if="item.type == 1">{{item.content}}</span>
 
-                                    <span v-if="item.type ===2" @click="onZoom(item.content.img_url)"><img v-lazy="item.content.thumb_img_url" width="60" height="60"></span>
+                                    <span v-if="item.type == 2" @click="onZoom(item.content.img_url)"><img v-lazy="item.content.thumb_img_url" width="60" height="60"></span>
 
-                                    <div class="pro_box" v-if="item.type ===3">
+                                    <div class="pro_box" v-if="item.type == 3">
                                         <div class="pro_box_flex" @click="goto('/detail/id/'+item.content.good_id)">
                                             <div class="pro_img"><img v-lazy="item.content.good_img" width="40" height="40"></div>
                                             <div class="info">
@@ -36,7 +36,7 @@
             <div class="sendBox">
                 <div class="flex">
                     <div class="upload">
-                        <vue-file-upload label="上传" icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
+                        <vue-file-upload icon="iconfont icon-tupian" :request-options="reqopts" :autoUpload="true" :events='cbEvents' name="image" url="/admin/Asset/upload?_ajax=1"></vue-file-upload>
                     </div>
                     <div class="input">
                         <input type="text" class="ui-input" id="input-key" autocomplete="off" placeholder="请输入内容" v-model="info.content"> </input>
@@ -167,7 +167,7 @@ export default {
         }
     },
     created() {
-        const ip = window.location.hostname;
+        const ip = window.location.hostname;//'119.23.75.94';//
         const ws = new WebSocket("ws://" + ip + ":8282");
 
         let vm = this;

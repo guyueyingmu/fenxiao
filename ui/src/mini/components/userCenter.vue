@@ -126,7 +126,7 @@
         <div class="qiandao-animate">
             <transition name="qd2">
                 <div class="m" v-show="qiandao_an">
-                    <div class="t">+{{sign_in_num}}</div>
+                    <div class="t">积分 +{{sign_in_num}}</div>
                     <div>签到成功！</div>
                 </div>
             </transition>
