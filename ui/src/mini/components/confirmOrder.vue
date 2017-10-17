@@ -130,11 +130,14 @@ export default {
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
-                    if (res.data.pay_method == 2) {
-                        vm.goto('/success/order_id/' + res.data.order_id);
-                    } else {
-                        vm.goto('/pay/order_id/' + res.data.order_id);
-                    }
+                    setTimeout(function(){
+                        if (res.data.pay_method == 2) {
+                            vm.goto('/success/order_id/' + res.data.order_id);
+                        } else {
+                            vm.goto('/pay/order_id/' + res.data.order_id);
+                        }
+                    },500);
+                    
                     window.localStorage.removeItem('__CART__')
                 } else {
                     vm.handleError(res)
