@@ -18,7 +18,8 @@ use \GatewayWorker\BusinessWorker;
 use \Workerman\Autoloader;
 
 // gateway 进程，这里使用Text协议，可以用telnet测试
-$gateway = new Gateway("websocket://192.168.8.200:8282");
+$ip = $_SERVER['SERVER_NAME'];
+$gateway = new Gateway("websocket://".$ip.":8282");
 // gateway名称，status方便查看
 $gateway->name = 'Fenxiao';
 // gateway进程数
