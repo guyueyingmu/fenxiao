@@ -2,22 +2,23 @@
     <div class="search-page">
         <div class="search show">
             <div class="search-box">
-                <input type="text"  id="keyword" v-model="search.keyword" @keyup.enter="onSearch"  preloader="请输入关键词搜索" class="needsclick ui-input" v-focus="isIndex">
+                <input type="text"  id="keyword" v-model="search.keyword" @keyup.enter="onSearch"  placeholder="请输入关键词搜索" class="needsclick ui-input" v-focus="isIndex">
                 <i class="iconfont icon-chuyidong" @click="search.keyword = ''" v-if="search.keyword.length"></i>
                 <span class="ui-btn ui-btn-search" @click="onSearch">
                     <i class="iconfont icon-sousuo"></i>搜索</span>
             </div>
         </div>
 
-        <div class="search-history">
-            <div class="header" v-if="hList.length > 0">
+        <div class="search-history" v-if="hList.length > 0">
+            <div class="header" >
                 <span class="title">最近搜索：</span>
-                <a herf="javascript:;" @click="clear">清空历史</a>
+                <a herf="javascript:;" @click="clear()">清空历史</a>
             </div>
-            <div class="h-list" v-if="hList.length > 0">
+            <div class="h-list" >
                 <span class="label" v-for="item in hList" :key="item" @click="getSearch(1,item)">{{item}}</span>
             </div>
         </div>
+
         <div class="header-sort-mask" @click="closeDialog" v-if="showCat ==true"></div>
         <div class="header-sort">
             <div class="item" @click="showCat = !showCat" :class="{'active':showCat || search.cat_idx }">
@@ -77,13 +78,7 @@ import http from '@/assets/js/http'
 export default {
     name: 'search',
     mixins: [http],
-    beforeRouteEnter: (to, from, next) => {
-     next(vm=>{
-         if(from.name !='home'){
-             vm.isIndex = false
-         }
-     })
-    },
+
     data() {
         return {
             isIndex:true,
@@ -115,13 +110,11 @@ export default {
 
         },
         onSearch() {
-            if (!this.search.keyword) {
-                return
-            }
+        
             var obj = document.getElementById('keyword')
             obj.blur();
             let _list = this.hList;
-            if (this.hList.indexOf(this.search.keyword) == -1) {
+            if (this.search.keyword && this.hList.indexOf(this.search.keyword) == -1) {
                 if (_list.length >= 10) {
                     _list.shift()
                 }
@@ -190,7 +183,7 @@ export default {
         },
         clear() {
             window.localStorage.removeItem('__SearchHistory__');
-            this.hlist = []
+            this.hList = []
 
         },
         init() {
@@ -280,6 +273,9 @@ export default {
 
     },
     created() {
+        if(this.$route.name == 'search2'){
+            this.isIndex = false
+        }
         this.init();
         this.setTitle('搜索')
         this.get_cat();
