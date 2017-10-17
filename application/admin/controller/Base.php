@@ -9,7 +9,7 @@ class Base extends Controller
 
     public function __construct(){
        session("admin.uid",1);
-       session("admin.current_menu",1);
+       session("admin.current_menu",'all');
         
         if(!session("admin.uid")){
             $url = "/admin/login";
