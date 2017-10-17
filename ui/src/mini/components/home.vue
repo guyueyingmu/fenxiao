@@ -1,9 +1,14 @@
 <template>
     <div class="home">
+        <div class="search" :class="{'show':showSearch}">
+            <div class="search-p" @click="onSearch" v-if="showSearch == false">
+                <i class="iconfont icon-sousuo"></i>请输入关键词搜索
+            </div>
 
+        </div>
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption" :style="setbannerHeight">
-            <swiper-slide v-for="(slide,k) in swiperSlides" :key="k" >
+            <swiper-slide v-for="(slide,k) in swiperSlides" :key="k">
                 <img v-lazy="slide.img_url">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
@@ -18,7 +23,7 @@
                         <span>{{cat.cat_name}}</span>
                     </a>
                 </li>
-              
+
                 <li>
                     <a href="javascript:;" @click="goto('/class')">
                         <i class="nav-icon item-8"><img src="/static/mini/img/home/icon/8.png" width="100%"></i>
@@ -64,10 +69,10 @@ export default {
         swiper,
         swiperSlide
     },
-    computed:{
-        setbannerHeight(){
-            let a = window.innerWidth/2.34375;
-           return {'height':a +'px'}
+    computed: {
+        setbannerHeight() {
+            let a = window.innerWidth / 2.34375;
+            return { 'height': a + 'px' }
         }
     },
     data() {
@@ -79,19 +84,24 @@ export default {
                 paginationClickable: true,
                 mousewheelControl: true,
                 observeParents: true,
-              
-               
+
+
 
             },
-            swiperSlides: [ ],
+            swiperSlides: [],
             cat_list: [],
-            good_list: []
+            good_list: [],
+            showSearch: false,
         }
     },
     methods: {
+        onSearch() {
+            this.showSearch = true;
+            this.goto('/search')
+        },
         //加入购物车
-        add_cart(good_id){
-            let url = '/mini/Cart/add', vm = this, data = {good_id: good_id};
+        add_cart(good_id) {
+            let url = '/mini/Cart/add', vm = this, data = { good_id: good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
@@ -116,7 +126,7 @@ export default {
             let url = '/mini/Home/get_cat_list?page=1',
                 vm = this;
 
-            this.apiGet(url, {limit: 7}).then(function(res) {
+            this.apiGet(url, { limit: 7 }).then(function(res) {
                 if (res.code) {
                     vm.cat_list = res.data;
                 } else {

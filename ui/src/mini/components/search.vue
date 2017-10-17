@@ -1,5 +1,13 @@
 <template>
     <div class="search-page">
+        <div class="search show">
+            <div class="search-box">
+                <input type="text"   value="kk" placeholder="请输入关键词搜索" class="ui-input" v-focus="true">
+                <i class="iconfont icon-chuyidong"></i>
+                <span class="ui-btn ui-btn-search"><i class="iconfont icon-sousuo"></i>搜索</span>
+            </div>
+        </div>
+        
         <div class="search-history">
             <div class="header" v-if="$store.state.hList.length > 0">
                 <span class="title">最近搜索：</span>
@@ -86,6 +94,7 @@ export default {
     },
     data() {
         return {
+            kk:"",
             showCat: false,
             list: [],
             sort: false,
@@ -95,6 +104,44 @@ export default {
         }
     },
     methods: {
+               search() {
+            if (!this.$store.state.search.keyword) {
+                return
+            }
+            var obj = document.getElementById('keyword')
+            obj.blur();
+            let _list = this.$store.state.hList;
+            if (this.$store.state.hList.indexOf(this.$store.state.search.keyword) == -1) {
+                if (_list.length >= 10) {
+                    _list.shift()
+                }
+                _list.push(this.$store.state.search.keyword)
+
+                if (_list) {
+                    _list = JSON.stringify(_list);
+                    window.localStorage.setItem('__SearchHistory__', _list);
+                }
+            }
+
+            let url = '/mini/Good/get_list?page=1',
+                vm = this, data = {
+                    keyword: this.$store.state.search.keyword
+                };
+            vm.$store.state.search.loading = true;
+            this.apiGet(url, data).then(function(res) {
+                if (res.code) {
+                    vm.setSearchList(res.data.list)
+
+                } else {
+                    vm.handleError(res)
+                }
+                setTimeout(() => {
+                    vm.$store.state.search.loading = false;
+                }, 400)
+            })
+
+
+        },
         //加入购物车
         add_cart(good_id) {
             let url = '/mini/Cart/add', vm = this, data = { good_id: good_id };
@@ -110,8 +157,9 @@ export default {
             this.sort = true;
             this.$store.state.sort = !this.$store.state.sort;
 
+
             // if (this.$store.state.search.keyword) {
-            this.getSearch()
+            // this.getSearch()
             //  }
 
         },
