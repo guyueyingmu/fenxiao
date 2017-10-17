@@ -8,7 +8,7 @@ class Base extends Controller
     public $menu_id = '';
 
     public function __construct(){
-//        session("admin.uid",1);
+       session("admin.uid",1);
 //        session("admin.current_menu",3);
         
         if(!session("admin.uid")){
