@@ -85,6 +85,9 @@
             </div>
 
         </div>
+        <div class="ui-showShare" v-show="showShare" @click="showShare = false">
+
+        </div>
         <div style="height:100px;background:#fff"></div>
 
     </div>
@@ -113,6 +116,7 @@ export default {
 
     data() {
         return {
+            showShare:false,
             swiperOption: {
                 autoplay: 3500,
                 setWrapperSize: true,
@@ -149,13 +153,7 @@ export default {
         },
         //立即购买
         onshare() {
-             let shareData = {
-                    title: '标题',
-                    desc: '简介',//这里请特别注意是要去除html
-                    link: 'http://baidu.com',
-                    imgUrl: '标题图'
-                };
-                window.wx.onMenuShareAppMessage(shareData);
+            this.showShare = true
         },
         go_buy(good_id) {
             let params = [{ good_id: good_id, good_count: 1 }]
