@@ -55,7 +55,7 @@ class Cart extends Base
         }
         $cart = db('goods_cart')->where('user_id', session('mini.uid'))->where('good_id', $good_id)->find();
         if($cart){
-            $this->success('已加入购物车');
+            $this->error('该商品已在购物车内');
         }
         $add_data['user_id'] = session('mini.uid');
         $add_data['good_id'] = $good_id;
