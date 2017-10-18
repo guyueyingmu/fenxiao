@@ -181,6 +181,7 @@ export default {
     created() {
         // 组件创建完后获取数据，
         this.initData();
+        window.$vm = this
 
     },
     methods: {
