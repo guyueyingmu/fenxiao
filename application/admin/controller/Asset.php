@@ -79,6 +79,7 @@ class Asset extends Controller
             $res['max_h'] = 200;
         }else{ //其他图片
             $res['max_w'] = $res['max_h'] = 0;
+            
         }
         return $res;
     }
