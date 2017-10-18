@@ -187,7 +187,7 @@ export default {
     methods: {
         //组件内的方法
         updateContent(v){
-            console.log(v)
+       
             this.form.detail =v 
         },
 
@@ -317,7 +317,7 @@ export default {
                 vm = this;
             this.apiGet(url).then(function(res) {
                 if (res.code) {
-                    console.log(res.data)
+                  
                     vm.bannerImg_temp_list = [];
                     let _d = res.data.banner_img;
                     for (let i = 0; i < _d.length; i++) {
