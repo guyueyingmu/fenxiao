@@ -22,7 +22,7 @@
             <el-table-column prop="pid" label="所属分销商用户ID"></el-table-column>
             <el-table-column prop="distribution_level" label="分销等级">
                 <template scope="scope">
-                    {{scope.row.distribution_level === 1?'会员':scope.row.distribution_level === 2?'分销商':''}}
+                    {{scope.row.distribution_level == 1?'会员':scope.row.distribution_level == 2?'分销商':''}}
                 </template>
             </el-table-column>
             <el-table-column prop="distributor_time" label="设为分销商时间"></el-table-column>

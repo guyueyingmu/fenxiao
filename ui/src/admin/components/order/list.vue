@@ -181,13 +181,13 @@
                     </el-select>
                 </el-form-item>
              
-                <el-form-item class="is-required" label="快递编号" label-width="100px" v-if="dialogForm.deliver_method === 2">
+                <el-form-item class="is-required" label="快递编号" label-width="100px" v-if="dialogForm.deliver_method == 2">
                     <el-input v-model="dialogForm.tracking_number" auto-complete="off" placeholder="快递编号">
 
                     </el-input>
                 </el-form-item>
                   
-                    <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type === 3">
+                    <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type == 3">
                         <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
                     </el-form-item>
             </el-form>

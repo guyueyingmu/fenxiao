@@ -28,18 +28,18 @@
             <el-table-column prop="good_id" label="商品ID"></el-table-column>
             <el-table-column prop="earn_amount" label="获佣金额">            
                 <template scope="scope">
-                    {{scope.row.status === 2?scope.row.earn_amount_input:scope.row.earn_amount}}
+                    {{scope.row.status == 2?scope.row.earn_amount_input:scope.row.earn_amount}}
                 </template>
             </el-table-column>
             <el-table-column prop="earn_user_id" label="获佣分销商用户ID" width="150"></el-table-column>
             <el-table-column prop="level" label="获佣级别">                
                 <template scope="scope">
-                    {{scope.row.level === 1?'一级获佣':'二级获佣'}}
+                    {{scope.row.level == 1?'一级获佣':'二级获佣'}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" label="获佣状态">                
                 <template scope="scope">
-                    {{scope.row.status === 1?'等待获佣':'已获佣'}}
+                    {{scope.row.status == 1?'等待获佣':'已获佣'}}
                 </template>
             </el-table-column>
             <el-table-column prop="earn_time" label="获佣时间" width="170"></el-table-column>

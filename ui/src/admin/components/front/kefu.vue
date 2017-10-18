@@ -202,8 +202,8 @@ export default {
         },
         //小图上传前处理
         beforeAvatarUpload(file) {
-            const isJPG = file.type === 'image/jpeg';
-            const isPNG = file.type === 'image/png';
+            const isJPG = file.type == 'image/jpeg';
+            const isPNG = file.type == 'image/png';
             let isTypeOk = false;
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {

@@ -45,12 +45,12 @@
             </el-table-column>
             <el-table-column prop="distribution" label="参与分销" width="100">
                 <template scope="scope">
-                    {{scope.row.distribution === 1?'参与':'不参与'}}
+                    {{scope.row.distribution == 1?'参与':'不参与'}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" align="center" label="是否上架" width="150">
                 <template scope="scope">
-                    {{scope.row.status === 1?'上架':'下架'}}
+                    {{scope.row.status == 1?'上架':'下架'}}
                 </template>
             </el-table-column>
             <el-table-column prop="sort" label="排序" width="100"></el-table-column>
