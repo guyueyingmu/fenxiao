@@ -3,19 +3,19 @@
         <div class="top_tips">
             <i class="iconfont icon-tanhao"></i> 请您绑定手机号码，以便更好的为您服务</div>
         <div class="form-item">
-            <input type="tel" v-model="form.tel" v-focus placeholder="请输入您的手机号码" maxlength="11">
+            <input type="tel" class="needsclick" v-model="form.tel" v-focus placeholder="请输入您的手机号码" maxlength="11">
             <span class="form-err-tips" v-show="form.tel.length && getCodeDisabled == 1">手机号不正确</span>
         </div>
         <div class="form-item">
             <div class="f-l">
-                <input type="tel" maxlength="4" placeholder="请输入验证码" v-model="form.c">
+                <input type="tel" class="needsclick" maxlength="4" placeholder="请输入验证码" v-model="form.c">
             </div>
             <div class="f-r"> <img :src="verify_url" @click="change_verify();" alt="" width="92" height="42"> </div>
 
         </div>
         <div class="form-item">
             <div class="f-l">
-                <input type="tel" maxlength="4" :disabled="getCodeDisabled == 1" placeholder="请输入您的验证码" v-model="form.code">
+                <input type="tel" class="needsclick" maxlength="4" :disabled="getCodeDisabled == 1" placeholder="请输入您的验证码" v-model="form.code">
             </div>
             <div class="f-r">
                 <button type="button" :disabled="getCodeDisabled == 1 || codeDisabled == true" class="ui-btn ui-btn-getCode" @click="getCode">{{codeText}}</button>

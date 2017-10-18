@@ -3,7 +3,7 @@
         <em @click="jian">
             <i class="iconfont icon-jian"></i>
         </em>
-        <input type="tel" v-model="v" disabled maxlength="3">
+        <input type="tel" class="needsclick" v-model="v" disabled maxlength="3">
         <em @click="jia">
             <i class="iconfont icon-jia"></i>
         </em>

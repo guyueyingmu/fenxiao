@@ -6,7 +6,7 @@
                 <input type="checkbox" class="ui-checkbox" v-model="item.selected" @change="onChange">
                 <img v-lazy="item.good_img" width="70" height="70">
                 <div class="info">
-                    <div class="title">{{item.good_title}}</div>
+                    <div class="title" style="padding-right:1em">{{item.good_title}}</div>
                     <div class="tool">
                         <span class="price">￥
                             <em>{{item.price}}</em>
