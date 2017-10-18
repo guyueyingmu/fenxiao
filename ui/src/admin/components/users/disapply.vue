@@ -22,7 +22,7 @@
             <el-table-column prop="add_time" label="申请时间" width="180"></el-table-column>
             <el-table-column prop="status" label="处理状态" width="120">
                 <template scope="scope">
-                    {{scope.row.status === 2?'已处理' : '待处理'}}
+                    {{scope.row.status == 2?'已处理' : '待处理'}}
                 </template>
             </el-table-column>
             <el-table-column prop="handle_time" label="处理时间" width="180"></el-table-column>

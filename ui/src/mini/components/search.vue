@@ -101,11 +101,12 @@ export default {
     },
     methods: {
           loadMore() {
+              return
             console.log('load')
-            if (this.sloading) { return }
+            if (this.sloading) {  }
 
             let page = parseInt(this.pages.current_page, 10) || 1;
-            if (page < this.pages.total_page) {
+            if (page < this.pages.total_page ) {
                 this.getSearch(page + 1);
             }
 
@@ -126,23 +127,9 @@ export default {
                     window.localStorage.setItem('__SearchHistory__', _list);
                 }
             }
+            this.getSearch()
 
-            let url = '/mini/Good/get_list?page=1',
-                vm = this, data = {
-                    keyword: this.search.keyword
-                };
-            vm.search.loading = true;
-            this.apiGet(url, data).then(function(res) {
-                if (res.code) {
-                    vm.setSearchList(res.data.list)
-
-                } else {
-                    vm.handleError(res)
-                }
-                setTimeout(() => {
-                    vm.search.loading = false;
-                }, 400)
-            })
+     
 
 
         },
@@ -162,9 +149,7 @@ export default {
             this.search.sort = !this.search.sort;
             this.getSearch()
 
-            // if (this.search.keyword) {
-
-            //  }
+        
 
         },
         closeDialog() {
@@ -189,9 +174,6 @@ export default {
         },
         init() {
             this.getList()
-            // setTimeout(function() {
-            //     document.body.scrollTop = 0;
-            // }, 500)
         },
         getList() {
             let _list = window.localStorage.getItem('__SearchHistory__');
@@ -226,6 +208,7 @@ export default {
             })
         },
         getSearch(page,keyword) {
+          
             page = page || 1;
             let url = '/mini/Good/get_list?page='+page,
                 vm = this, data = {
@@ -249,13 +232,12 @@ export default {
             this.apiGet(url, data).then(function(res) {
                 if (res.code) {
                     vm.pages = res.data.pages;
-                    if (vm.pages.current_page < 2) {
+                    
+                    if (parseInt(res.data.pages.current_page,10) < 2) {
                         vm.search.list = res.data.list;
                     } else {
                         let _list = vm.search.list;
                         vm.search.list = _list.concat(res.data.list)
-
-
                     }
                     setTimeout(() => {
                         vm.sloading = false;

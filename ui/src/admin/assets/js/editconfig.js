@@ -26,7 +26,7 @@ export default { // 全局组件名称，使用new VueHtml5Editor(options)时该
   // config image module 
   image: {
     // 文件最大体积，单位字节  max file size 
-    sizeLimit: 512 * 1024,
+    sizeLimit: 1024 * 1024 * 5,
     // 上传参数,默认把图片转为base64而不上传 
     // upload config,default null and convert image to base64 
     upload: {

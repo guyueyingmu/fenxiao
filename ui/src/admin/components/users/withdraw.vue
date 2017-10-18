@@ -31,7 +31,7 @@
             <el-table-column prop="add_time" label="提现申请时间" width="180"></el-table-column>
             <el-table-column prop="status" label="提现审核状态" width="120">
                 <template scope="scope">
-                    {{scope.row.status === 2?'已同意':scope.row.status === 3?'拒绝':'待处理'}}
+                    {{scope.row.status == 2?'已同意':scope.row.status == 3?'拒绝':'待处理'}}
                 </template>
             </el-table-column>
             <el-table-column prop="handle_time" label="提现审核时间" width="180"></el-table-column>

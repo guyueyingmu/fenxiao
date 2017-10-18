@@ -37,8 +37,8 @@
             <el-table-column prop="handle_user" label="处理员" width="100"> </el-table-column>
             <el-table-column prop="status" label="处理状态" width="100">
                 <template scope="scope">
-                    <span v-if="scope.row.status === 1">未处理</span>
-                    <span v-else-if="scope.row.status === 2">同意</span>
+                    <span v-if="scope.row.status == 1">未处理</span>
+                    <span v-else-if="scope.row.status == 2">同意</span>
                     <span v-else>拒绝</span>
                 </template>
             </el-table-column>
@@ -46,7 +46,7 @@
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template scope="scope">
-                    <el-button type="text" v-if="scope.row.status === 1 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
+                    <el-button type="text" v-if="scope.row.status == 1 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
                 </template>
             </el-table-column>
         </el-table>

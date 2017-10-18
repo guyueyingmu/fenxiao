@@ -34,7 +34,7 @@
         </div>
         <div class="page-title recommend ">
             <span class="title">推荐商品</span>
-            <span class="more" @click="goto('/search')">更多
+            <span class="more" @click="goto('/search/cat_id/0')">更多
                 <i class="iconfont icon-arrow"></i>
             </span>
         </div>

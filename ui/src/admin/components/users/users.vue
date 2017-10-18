@@ -50,7 +50,7 @@
             </el-table-column>
             <el-table-column prop="sex" label="性别" width="100">
                 <template scope="scope">
-                    {{scope.row.sex === 1?'男':scope.row.sex === 2?'女':'保密'}}
+                    {{scope.row.sex == 1?'男':scope.row.sex == 2?'女':'保密'}}
                 </template>
             </el-table-column>
             <el-table-column prop="province" label="省份" width="100"></el-table-column>
@@ -60,7 +60,7 @@
             <el-table-column prop="account_balance" label="账户余额" width="100"></el-table-column>
             <el-table-column prop="status" label="登录状态" width="100">
                 <template scope="scope">
-                    {{scope.row.status === 1?'启用':'禁用'}}
+                    {{scope.row.status == 1?'启用':'禁用'}}
                 </template>
             </el-table-column>
             <el-table-column prop="register_time" label="注册时间" width="150"></el-table-column>
