@@ -1,7 +1,7 @@
 
 
 <template>
-    <div style="padding:4em 40% 4em 4em" v-loading="loading" element-loading-text="拼命加载中">
+    <div style="padding:1em 10% 4em 4em" v-loading="loading" element-loading-text="拼命加载中">
         <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="商品小图" class="my_error is-required">
                 <div class="red small">尺寸为 280 * 280 正方形</div>
@@ -22,13 +22,13 @@
             </el-form-item>
 
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="品牌">
                         <el-input v-model="form.brand" placeholder="品牌" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="商品编号">
                         <el-input v-model="form.good_num" placeholder="商品编号" :maxlength="20"></el-input>
                     </el-form-item>
@@ -36,12 +36,12 @@
             </el-row>
 
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="商品名称"  class="is-required">
                         <el-input v-model="form.good_name" placeholder="商品名称" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
 
                     <el-form-item label="商品分类"  class="is-required">
                         <el-tooltip class="item" effect="dark" content="亲~ 分类可以在左边主菜单里进行增加哦! ~_~" placement="right">
@@ -54,12 +54,12 @@
             </el-row>
 
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="供应商">
                         <el-input v-model="form.supplier" placeholder="供应商" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="商品颜色">
                         <el-input v-model="form.color" placeholder="商品颜色" :maxlength="20"></el-input>
                     </el-form-item>
@@ -67,12 +67,12 @@
             </el-row>
 
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="商品规格">
                         <el-input v-model="form.specification" placeholder="商品规格" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="销售价格"  class="is-required">
                         <el-input v-model="form.price" placeholder="销售价格" :maxlength="20"></el-input>
                     </el-form-item>
@@ -81,7 +81,7 @@
             </el-row>
 
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="商品类型"  class="is-required">
                         <el-tooltip class="item" effect="dark" :content="form.good_type?$store.state.GOODTYPE[form.good_type-1].tip:''" placement="top">
                             <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
@@ -90,7 +90,7 @@
                         </el-tooltip>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
 
                     <el-form-item label="参与分销" v-if="parseInt(form.good_type,10) < 4" class="is-required">
                         <el-radio-group v-model="form.distribution" placeholder="积分类商品不参与分销，参与分销的必须是现金支付的商品">
@@ -105,12 +105,12 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="可用库存">
                         <el-input v-model="form.inventory" placeholder="可用库存" :maxlength="7"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="赠送积分">
                         <el-input v-model="form.presenter_credits" placeholder="购买该商品赠送积分" :maxlength="7"></el-input>
                     </el-form-item>
@@ -119,12 +119,12 @@
 
             <el-row>
 
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="排序">
                         <el-input v-model="form.sort" placeholder="请输入0~999之间整数，数字越大排序越前" :maxlength="3"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="是否上架">
                         <el-radio-group v-model="form.status" placeholder="是否上架">
                             <el-radio :label="`1`">上架</el-radio>
