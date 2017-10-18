@@ -36,7 +36,7 @@ class Goodsall extends Base
         $status = input("param.status", "", 'intval');
                 
         $where = "1=1";
-        $where .= $keyword ? " AND (g.good_num LIKE '%$keyword%' OR g.good_name LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (g.good_num LIKE '%$keyword%' OR g.good_title LIKE '%$keyword%')" : "";
         $where .= $cat_id ? " AND g.cat_id = $cat_id" : "";
         $where .= $good_type ? " AND g.good_type = $good_type" : "";
         $where .= $status ? " AND g.status = $status" : "";
@@ -45,7 +45,7 @@ class Goodsall extends Base
         $list = $goods->alias("g")
                 ->join("__GOODS_CATEGORY__ gc", "gc.id=g.cat_id", "LEFT")
                 ->where($where)
-                ->field("g.id, g.good_name, g.specification, g.brand, g.price, g.credits, g.presenter_credits, g.good_type, g.distribution, g.status, g.sort, g.add_time, gc.cat_name")
+                ->field("g.id, g.good_title, g.specification, g.brand, g.price, g.credits, g.presenter_credits, g.good_type, g.distribution, g.status, g.sort, g.add_time, gc.cat_name")
                 ->page($page,$limit)
                 ->order('g.id DESC')
                 ->select();

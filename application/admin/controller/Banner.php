@@ -55,17 +55,20 @@ class Banner extends Base
             'status'  => input("status","","trim"),
             'img_url'  => input("img_url","","trim"),
             'sort'  => input("sort","","trim"),
+            'goto_url'  => input("goto_url","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
             'img_url'  => 'require',
             'status'  => 'require|in:1,2',
             'sort'  => 'between:0,999',
+            'goto_url'  => 'max:500',
         ],[
             'img_url.require' => '请上传轮播图',
             'status.require' => '请选择启用状态',
             'status.in' => '启用状态数据不正确',
             'sort.between' => '排序只能在0-999之间',
+            'goto_url.max' => '链接最大长度不能大于500',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);
@@ -98,18 +101,21 @@ class Banner extends Base
             'id'  => input("id"),
             'status'  => input("status","","trim"),
             'sort'  => input("sort","","trim"),
+            'goto_url'  => input("goto_url","","trim"),
         ];
         
         $validate_res = $this->validate($data,[
             'id'  => 'require|number',
             'status'  => 'require|in:1,2',
             'sort'  => 'between:0,999',
+            'goto_url'  => 'max:500',
         ],[
             'id.require' => '参数错误',
             'id.number' => '参数格式错误',
             'status.require' => '请选择商品启用状态',
             'status.in' => '启用状态数据不正确',
             'sort.between' => '排序只能在0-999之间',
+            'goto_url.max' => '链接最大长度不能大于500',
         ]); 
         if ($validate_res !== true) {
             $this->error($validate_res);

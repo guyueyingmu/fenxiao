@@ -14,6 +14,7 @@
                     </div>
                 </template>
             </el-table-column>
+            <el-table-column prop="goto_url" label="链接"></el-table-column>
             <el-table-column prop="sort" label="排序"></el-table-column>
             <el-table-column prop="admin_user_name" label="添加人"></el-table-column>
             <el-table-column prop="add_time" label="添加时间"></el-table-column>
@@ -50,6 +51,11 @@
                 <el-form-item label="排序">
                     <el-input v-model="dialog.sort" placeholder="排序 0 - 999" auto-complete="off"></el-input>
                 </el-form-item>
+
+                <el-form-item label="链接">
+                    <el-input v-model="dialog.goto_url" placeholder="链接地址" auto-complete="off"></el-input>
+                </el-form-item>
+
                 <el-form-item label="轮播图" class="my_error">
                     <div class="red small">尺寸为 750 * 320 长方形</div>
                     <el-upload :disabled="isEdit" class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
@@ -79,7 +85,8 @@ export default {
             dialog: {
                 img_url: '',
                 sort: '0',
-                status: ''
+                status: '',
+                goto_url: '',
             },
             isEdit:false,
             editId :0,
@@ -116,7 +123,8 @@ export default {
             this.dialog = {
                 img_url: '',
                 sort: '0',
-                status: 1
+                status: 1,
+                goto_url: '',
             }
 
         },
