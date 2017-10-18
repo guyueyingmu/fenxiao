@@ -9,7 +9,7 @@
         <!--首页轮播图片尺寸  750 * 320-->
         <swiper :options="swiperOption" :style="setbannerHeight">
             <swiper-slide v-for="(slide,k) in swiperSlides" :key="k">
-                <img v-lazy="slide.img_url" v-if="slide.goto_url" @click="goto(slide.goto_url)">
+                <img v-lazy="slide.img_url" @click="banner_go(slide.goto_url)">
             </swiper-slide>
             <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -95,6 +95,11 @@ export default {
         }
     },
     methods: {
+        banner_go(url){
+            if(url){
+                location.href=url;
+            }
+        },
         onSearch() {
             this.showSearch = true;
             this.goto('/search')

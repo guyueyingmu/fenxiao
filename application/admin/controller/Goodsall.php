@@ -34,12 +34,14 @@ class Goodsall extends Base
         $cat_id = input("param.cat_id", "", 'intval');
         $good_type = input("param.good_type", "", 'intval');
         $status = input("param.status", "", 'intval');
+        $distribution = input("param.distribution", "", 'intval');
                 
         $where = "1=1";
         $where .= $keyword ? " AND (g.good_num LIKE '%$keyword%' OR g.good_title LIKE '%$keyword%')" : "";
         $where .= $cat_id ? " AND g.cat_id = $cat_id" : "";
         $where .= $good_type ? " AND g.good_type = $good_type" : "";
         $where .= $status ? " AND g.status = $status" : "";
+        $where .= $distribution ? " AND g.distribution = $distribution" : "";
         
         $goods = new Goods();
         $list = $goods->alias("g")

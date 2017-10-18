@@ -119,7 +119,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/goodsall/get_list?page=' + page,
+            let url = '/admin/goodsall/get_list?distribution=1&page=' + page,
                 vm = this;
 
             vm.loading = true;
