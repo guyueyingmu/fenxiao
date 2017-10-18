@@ -30,25 +30,21 @@ class Asset extends Controller
             
             $res_url = $url_path . DS . $save_name;
             
+            //图片处理
+            $image = \think\Image::open($file_path . DS . $save_name);
+            $width = $image->width();
             $get_info = $this->upload_type($img_type);
-            if($get_info['max_w'] > 0){
-                //图片处理
-                $image = \think\Image::open($file_path . DS . $save_name);
-                $width = $image->width();
-
-                // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
-                $thumb_save_name = getThumbUrl(str_replace("\\","/",$save_name));
-
-    //            if($width > $get_info['max_w']){
-                    $image->thumb($get_info['max_w'], $get_info['max_h'])->save($file_path . DS . $thumb_save_name);
-    //            }
-
-                $thumb_res_url = $url_path . DS . $thumb_save_name;
-                $this->success("上传成功","",["img_path" => $thumb_res_url, "big_img_path" => $res_url]);
-            }else{                
-                $this->success("上传成功","",["img_path" => '', "big_img_path" => $res_url]);
-            }
             
+            // 按照原图的比例生成一个最大为150*150的缩略图并保存为thumb.png
+            $thumb_save_name = getThumbUrl(str_replace("\\","/",$save_name));
+            
+//            if($width > $get_info['max_w']){
+                $image->thumb($get_info['max_w'], $get_info['max_h'])->save($file_path . DS . $thumb_save_name);
+//            }
+                
+            $res_url = $url_path . DS . $thumb_save_name;
+            
+            $this->success("上传成功","",["img_path" => $res_url, "big_img_path" => $url_path . DS . $save_name]);
             
         }else{
             // 上传失败获取错误信息
@@ -78,8 +74,7 @@ class Asset extends Controller
             $res['max_w'] = 200;
             $res['max_h'] = 200;
         }else{ //其他图片
-            $res['max_w'] = $res['max_h'] = 0;
-            
+            $res['max_w'] = $res['max_h'] = 300;
         }
         return $res;
     }
