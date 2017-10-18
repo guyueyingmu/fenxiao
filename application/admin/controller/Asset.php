@@ -21,8 +21,8 @@ class Asset extends Controller
         $url_path = DS . 'uploads' . DS . $img_type;
         
         // 移动到框架应用根目录/public/uploads/ 目录下
-        //图片大小不能超过2mb
-        $info = $file->validate(['size'=>2097152,'ext'=>'jpg,png,gif'])->move($file_path);
+        //图片大小不能超过5mb
+        $info = $file->validate(['size'=>5242880,'ext'=>'jpg,png,gif'])->move($file_path);
         if($info){
             // 成功上传后 获取上传信息
             // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
