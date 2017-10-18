@@ -103,6 +103,7 @@ export default {
           loadMore() {
             console.log('load')
             if (this.sloading) { return }
+
             let page = parseInt(this.pages.current_page, 10) || 1;
             if (page < this.pages.total_page) {
                 this.getSearch(page + 1);

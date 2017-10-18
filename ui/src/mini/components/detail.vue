@@ -50,7 +50,6 @@
 
         <div class="content minHeight200" v-show="tagActive == 0" v-html="good_info.detail">
         </div>
-
         <div class="comment-list minHeight200" v-show="tagActive == 1" v-loading="loadComment">
 
             <div class="main">
@@ -81,7 +80,6 @@
                     <i class="iconfont icon-zanwuxinxi"></i>
                     暂无评论
                 </div>
-
             </div>
 
         </div>

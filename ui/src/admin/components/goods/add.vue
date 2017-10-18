@@ -2,8 +2,8 @@
 
 <template>
     <div style="padding:4em 40% 4em 4em" v-loading="loading" element-loading-text="拼命加载中">
-        <el-form :model="form" ref="form" :rules="rules" label-width="100px">
-            <el-form-item label="商品小图" prop="good_img" class="my_error">
+        <el-form :model="form" ref="form" label-width="100px">
+            <el-form-item label="商品小图" class="my_error is-required">
                 <div class="red small">尺寸为 280 * 280 正方形</div>
                 <el-upload class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="hSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.good_img" :src="form.good_img" class="avatar">
@@ -11,7 +11,7 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="商品轮播图" prop="banner_img" class="my_error">
+            <el-form-item label="商品轮播图" class="my_error is-required">
                 <div class="red small">尺寸为 540 * 540 正方形</div>
                 <el-upload list-type="picture-card" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="pSuccess" :on-preview="handlePV" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
@@ -24,26 +24,26 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="品牌">
-                        <el-input v-model="form.brand" placeholder="品牌" :maxlength="12"></el-input>
+                        <el-input v-model="form.brand" placeholder="品牌" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
 
                 <el-col :span="12">
                     <el-form-item label="商品编号">
-                        <el-input v-model="form.good_num" placeholder="商品编号" :maxlength="12"></el-input>
+                        <el-input v-model="form.good_num" placeholder="商品编号" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="商品名称" prop="good_name">
-                        <el-input v-model="form.good_name" placeholder="商品名称" :maxlength="10"></el-input>
+                    <el-form-item label="商品名称"  class="is-required">
+                        <el-input v-model="form.good_name" placeholder="商品名称" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
 
-                    <el-form-item label="商品分类" prop="cat_id">
+                    <el-form-item label="商品分类"  class="is-required">
                         <el-tooltip class="item" effect="dark" content="亲~ 分类可以在左边主菜单里进行增加哦! ~_~" placement="right">
                             <el-select placeholder="商品分类" v-model="form.cat_id" style="display:block;">
                                 <el-option v-for="item in $store.state.cat_list" :key="item.id" :value="item.id" :label="item.cat_name"></el-option>
@@ -56,12 +56,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="供应商">
-                        <el-input v-model="form.supplier" placeholder="供应商" :maxlength="10"></el-input>
+                        <el-input v-model="form.supplier" placeholder="供应商" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="商品颜色">
-                        <el-input v-model="form.color" placeholder="商品颜色" :maxlength="10"></el-input>
+                        <el-input v-model="form.color" placeholder="商品颜色" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -69,12 +69,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="商品规格">
-                        <el-input v-model="form.specification" placeholder="商品规格" :maxlength="10"></el-input>
+                        <el-input v-model="form.specification" placeholder="商品规格" :maxlength="20"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="销售价格" prop="price">
-                        <el-input v-model="form.price" placeholder="销售价格" :maxlength="10"></el-input>
+                    <el-form-item label="销售价格"  class="is-required">
+                        <el-input v-model="form.price" placeholder="销售价格" :maxlength="20"></el-input>
                     </el-form-item>
 
                 </el-col>
@@ -82,7 +82,7 @@
 
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="商品类型" prop="good_type">
+                    <el-form-item label="商品类型"  class="is-required">
                         <el-tooltip class="item" effect="dark" :content="form.good_type?$store.state.GOODTYPE[form.good_type-1].tip:''" placement="top">
                             <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
                                 <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
@@ -92,13 +92,13 @@
                 </el-col>
                 <el-col :span="12">
 
-                    <el-form-item label="参与分销" v-if="form.good_type < 4" prop="distribution">
+                    <el-form-item label="参与分销" v-if="parseInt(form.good_type,10) < 4" class="is-required">
                         <el-radio-group v-model="form.distribution" placeholder="积分类商品不参与分销，参与分销的必须是现金支付的商品">
                             <el-radio :label="`1`">参与</el-radio>
                             <el-radio :label="`2`">不参与</el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="积分兑换" v-if="form.good_type >= 4" prop="credits">
+                    <el-form-item label="积分兑换" v-if="parseInt(form.good_type,10) >= 4"  class="is-required">
                         <el-input v-model="form.credits" placeholder="积分类商品时必填" :maxlength="7"></el-input>
                     </el-form-item>
 
@@ -133,12 +133,14 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="商品标题" prop="good_title">
-                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="20"></el-input>
+            <el-form-item label="商品标题" class="is-required">
+                <el-input v-model="form.good_title" placeholder="商品标题" :maxlength="100"></el-input>
             </el-form-item>
-            <el-form-item label="商品详情" prop="detail">
+            <el-form-item label="商品详情" class="is-required">
                 <!-- <el-input type="textarea" v-model="form.detail" placeholder="商品详情" :maxlength="100"></el-input> -->
-                <vue-editor v-model="form.detail"></vue-editor>
+                <!-- <vue-editor v-model="form.detail"></vue-editor> -->
+                <!-- <UE :defaultMsg=defaultMsg :config=config ref="ue"></UE> -->
+                <vue-html5-editor :z-index="1000" :auto-height="true"  @change="updateContent" :content="form.detail" :height="500" placeholder="商品详情"></vue-html5-editor>
             </el-form-item>
             <div style="height:40px;"></div>
             <el-form-item label-width="40%">
@@ -150,14 +152,17 @@
     </div>
 </template>
 <script>
-import http from '../../assets/js/http'
-import { VueEditor } from 'vue2-editor'
 
+
+import http from '../../assets/js/http'
+import options from '../../assets/js/editconfig'
+import VueHtml5Editor from 'vue-html5-editor'
+
+const editor = new VueHtml5Editor(options)
 export default {
     mixins: [http],
     components: {
-
-        VueEditor
+        "vue-html5-editor": editor
     },
     data() {
         return {
@@ -167,21 +172,7 @@ export default {
             bannerImg_temp_list: [],
             cat_list: [],
             form: {},
-            rules: {
-                good_img: [{ required: true, type: 'string', message: '请上传商品小图', trigger: 'blur' }],
-                banner_img: [{ required: true, type: 'array', message: '请上传商品轮播图', trigger: 'blur' }],
-                good_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-                cat_id: [{ required: true,  message: '请选择分类', trigger: 'blur' },],
 
-                distribution: [{ required: true, type: 'number', message: '请选择参与分销', trigger: 'blur' }],
-                credits: [{ required: true,  message: '请输入积分兑换', trigger: 'blur' }],
-                good_type: [{ required: true,  message: '请选择商品类型', trigger: 'blur' }],
-                price: [{ required: true, message: '请输入销售价格', trigger: 'blur' }],
-
-                good_title: [{ required: true, message: '请输入商品标题', trigger: 'blur' }],
-                detail: [{ required: true, message: '商品详情', trigger: 'blur' }],
-
-            }
         };
     },
     watch: {
@@ -194,6 +185,10 @@ export default {
     },
     methods: {
         //组件内的方法
+        updateContent(v){
+            console.log(v)
+            this.form.detail =v 
+        },
 
         //数据初始化
         initData() {
@@ -209,9 +204,9 @@ export default {
                 specification: '',
                 good_type: '',
                 price: '',
-                distribution: '',
+                distribution: '1',
                 credits: '',
-                status: 1,
+                status: '1',
                 inventory: '',
                 presenter_credits: '',
                 sort: 0,
@@ -289,31 +284,24 @@ export default {
 
         //提交表单
         submitForm(formName) {
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    this.loading = true;
-                    let url = this.isEdit ? '/admin/goodsall/edit?good_id=' + this.form.id : '/admin/goodsall/add',
-                        data = this.form,
-                        vm = this;
-                    this.apiPost(url, data).then(function(res) {
-                        if (res.code) {
-                            vm.$message.success(res.msg);
-                            setTimeout(function() {
-                                vm.$router.push('/goods');
-                            }, 500)
-
-                        } else {
-                            vm.handleError(res)
-                        }
-                        vm.loading = false;
-
-                    })
+            this.loading = true;
+            let url = this.isEdit ? '/admin/goodsall/edit?good_id=' + this.form.id : '/admin/goodsall/add',
+                data = this.form,
+                vm = this;
+            this.apiPost(url, data).then(function(res) {
+                                vm.loading = false;
+                if (res.code) {
+                    vm.$message.success(res.msg);
+                    setTimeout(function() {
+                        vm.$router.push('/goods');
+                    }, 500)
 
                 } else {
-                    this.$message.error('请填写必填项！');
-                    return false;
+                    vm.handleError(res)
                 }
-            });
+      
+
+            })
         },
         //重置表单
         resetForm(formName) {
@@ -329,7 +317,7 @@ export default {
             this.apiGet(url).then(function(res) {
                 if (res.code) {
                     console.log(res.data)
-                   vm.bannerImg_temp_list = [];
+                    vm.bannerImg_temp_list = [];
                     let _d = res.data.banner_img;
                     for (let i = 0; i < _d.length; i++) {
                         if (_d[i].is_show == 1) {
@@ -338,13 +326,13 @@ export default {
 
                     }
                     let _item = res.data;
-                        _item.cat_id = _item.cat_id.toString()
-                        _item.good_type = _item.good_type.toString()
-                        _item.credits = _item.credits.toString()
-                        _item.distribution = _item.distribution.toString()
-                        _item.inventory = _item.inventory.toString()
-                        _item.presenter_credits = _item.presenter_credits.toString()
-                        _item.status = _item.status.toString()
+                    _item.cat_id = _item.cat_id.toString()
+                    _item.good_type = _item.good_type.toString()
+                    _item.credits = _item.credits.toString()
+                    _item.distribution = _item.distribution.toString()
+                    _item.inventory = _item.inventory.toString()
+                    _item.presenter_credits = _item.presenter_credits.toString()
+                    _item.status = _item.status.toString()
                     // }
                     vm.form = res.data;
                     vm.loading = false;
@@ -365,3 +353,7 @@ export default {
 
 }
 </script>
+<style scoped>
+    @import url(https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css);
+</style>
+
