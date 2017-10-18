@@ -25,8 +25,8 @@
             <el-table-column prop="status" label="是否启用">
                 <template scope="scope">
                     <el-radio-group v-model="scope.row.status" size="small" @change="changeStatus(scope.row)">
-                        <el-radio-button :label="1">启用</el-radio-button>
-                        <el-radio-button :label="2">禁用</el-radio-button>
+                        <el-radio-button :label="'1'">启用</el-radio-button>
+                        <el-radio-button :label="'2'">禁用</el-radio-button>
                     </el-radio-group>
                 </template>
             </el-table-column>
@@ -63,7 +63,7 @@
                 <el-form-item label="轮播图" class="my_error">
                     <div class="red small">尺寸为 750 * 320 长方形</div>
                     <el-upload :disabled="isEdit" class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar">
+                        <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar" style="width:180px;">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
