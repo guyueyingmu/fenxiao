@@ -16,7 +16,7 @@
                 <span class="price" v-else>￥
                     <em>{{good_info.price}}</em>
                 </span>
-                <span class="share">
+                <span class="share" @click="onshare()">
                     <i class="iconfont icon-fenxiang"></i>我要分享</span>
             </div>
         </div>
@@ -85,6 +85,9 @@
             </div>
 
         </div>
+        <div class="ui-showShare" v-show="showShare" @click="showShare = false">
+
+        </div>
         <div style="height:100px;background:#fff"></div>
 
     </div>
@@ -113,6 +116,7 @@ export default {
 
     data() {
         return {
+            showShare:false,
             swiperOption: {
                 autoplay: 3500,
                 setWrapperSize: true,
@@ -147,42 +151,10 @@ export default {
 
             }
         },
-        //我的足迹  保存
-        // setHistory(data) {
-        //     let _canPush = true;
-        //     if (data) {
-
-        //         let olddata = window.localStorage.getItem("__history__")
-        //         if (olddata) {
-        //             olddata = JSON.parse(olddata)
-        //             if (olddata) {
-        //                 for (let item of olddata) {
-        //                     if (item.id == data.id) {
-        //                         _canPush = false;
-        //                         break;
-        //                     }
-        //                 }
-        //                 if (_canPush) {
-        //                     console.log(olddata.length)
-        //                     if (olddata.length < 10) {
-        //                         olddata.splice(0, 0, data);
-        //                     }
-
-        //                 }
-        //             }
-
-        //         } else {
-        //             olddata = []
-        //             olddata.splice(0, 0, data);
-        //         }
-
-
-        //         window.localStorage.setItem("__history__", JSON.stringify(olddata))
-
-        //     }
-
-        // },
         //立即购买
+        onshare() {
+            this.showShare = true
+        },
         go_buy(good_id) {
             let params = [{ good_id: good_id, good_count: 1 }]
             this.setCart(params)
@@ -264,7 +236,7 @@ export default {
             this.apiGet(url, searchData).then(function(res) {
                 vm.loadComment = false;
                 if (res.code) {
-                       vm.comment_pages = res.data.pages;
+                    vm.comment_pages = res.data.pages;
                     if (page < 2) {
                         vm.comment_list = res.data.list;
 
@@ -273,7 +245,7 @@ export default {
                         _list = _list.concat(res.data.list)
                         vm.comment_list = _list;
                     }
-                 
+
                 } else {
                     vm.handleError(res)
                 }

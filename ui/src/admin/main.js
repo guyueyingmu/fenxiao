@@ -10,6 +10,7 @@ import store from './vuex'
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
+Vue.http.options.credentials = true;
 Vue.config.devtools = true
 
 import Element from 'element-ui'

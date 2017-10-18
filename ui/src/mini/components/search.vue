@@ -1,28 +1,38 @@
 <template>
     <div class="search-page">
-        <div class="search-history">
-            <div class="header" v-if="$store.state.hList.length > 0">
-                <span class="title">最近搜索：</span>
-                <a herf="javascript:;" @click="clear">清空历史</a>
-            </div>
-            <div class="h-list" v-if="$store.state.hList.length > 0">
-                <span class="label" v-for="item in $store.state.hList" :key="item" @click="getSearch(item)">{{item}}</span>
+        <div class="search show">
+            <div class="search-box">
+                <input type="text"  id="keyword" v-model="search.keyword" @keyup.enter="onSearch"  placeholder="请输入关键词搜索" class="needsclick ui-input" v-focus="isIndex">
+                <i class="iconfont icon-chuyidong" @click="search.keyword = ''" v-if="search.keyword.length"></i>
+                <span class="ui-btn ui-btn-search" @click="onSearch">
+                    <i class="iconfont icon-sousuo"></i>搜索</span>
             </div>
         </div>
+
+        <div class="search-history" v-if="hList.length > 0">
+            <div class="header" >
+                <span class="title">最近搜索：</span>
+                <a herf="javascript:;" @click="clear()">清空历史</a>
+            </div>
+            <div class="h-list" >
+                <span class="label" v-for="item in hList" :key="item" @click="getSearch(1,item)">{{item}}</span>
+            </div>
+        </div>
+
         <div class="header-sort-mask" @click="closeDialog" v-if="showCat ==true"></div>
         <div class="header-sort">
-            <div class="item" @click="showCat = !showCat" :class="{'active':showCat || $store.state.search.cat_idx }">
+            <div class="item" @click="showCat = !showCat" :class="{'active':showCat || search.cat_idx }">
                 <i class="iconfont icon-fenlei"></i>
-                <span v-if="cat_list.length > 1">{{$store.state.search.cat_idx?cat_list[$store.state.search.cat_idx].cat_name:'分类'}}</span>
+                <span v-if="cat_list.length > 1">{{search.cat_idx?cat_list[search.cat_idx].cat_name:'分类'}}</span>
             </div>
-            <div class="item sort" :class="{'active':$store.state.sort,'skin':sort}" @click="onSort">
+            <div class="item sort" :class="{'active':search.sort,'skin':usedSort}" @click="onSort">
                 <i class="iconfont icon-paixu"></i> 价格</div>
             <transition name="cat">
                 <div class="class-dialog" v-show="showCat">
                     <div class="scroll" v-if="cat_list.length > 0">
                         <scroller>
-                            <span v-for="(i,cat_idx) in cat_list" :key="i.id" :class="{'active':cat_idx == $store.state.search.cat_idx}" @click="selectCat(cat_idx)">{{i.cat_name}}
-                                <i class="iconfont icon-dagou" v-if="cat_idx == $store.state.search.cat_idx"></i>
+                            <span v-for="(i,cat_idx) in cat_list" :key="i.id" :class="{'active':cat_idx == search.cat_idx}" @click="selectCat(cat_idx)">{{i.cat_name}}
+                                <i class="iconfont icon-dagou" v-if="cat_idx == search.cat_idx"></i>
                             </span>
                         </scroller>
 
@@ -30,10 +40,10 @@
                 </div>
             </transition>
         </div>
-        <div v-if="$store.state.list.length > 0  && $store.state.search.loading == false ">
+        <div>
 
-            <ul class="thumb-box">
-                <li v-for="item in $store.state.list" :key="item.id">
+            <ul class="thumb-box"  v-infinite-scroll="loadMore" :infinite-scroll-disabled="sloading" :infinite-scroll-immediate-check="false" :infinite-scroll-distance="10" infinite-scroll-listen-for-event="cheackLoadMore">
+                <li v-for="item in search.list" :key="item.id">
                     <div class="thumb" @click="goto('/detail/id/'+item.id)"><img v-lazy="item.good_img"></div>
                     <div class="title" @click="goto('/detail/id/'+item.id)">
                         {{item.good_title}}
@@ -50,9 +60,12 @@
                 </li>
             </ul>
         </div>
-        <div style="padding:1em 0" v-loading="$store.state.search.loading"></div>
+          <div class="spinner" v-if="sloading">
+            <mt-spinner  :size="18" color="#26a2ff"></mt-spinner>
+        </div>
+        <div class="nodata-line" v-else-if="pages.total_page == pages.current_page && search.list.lenght > 0">没有更多数据了</div>
 
-        <div class="nodata" v-if="$store.state.list.length < 1 && $store.state.search.loading == false ">
+        <div class="nodata" v-if="search.list.length < 1 && search.loading == false ">
             <i class="iconfont icon-tongyongmeiyoushuju"></i>
             <div>没有找到数据</div>
         </div>
@@ -65,36 +78,73 @@ import http from '@/assets/js/http'
 export default {
     name: 'search',
     mixins: [http],
-    watch: {
-        '$route'(to, form) {
 
-            this.init();
-
-
-        },
-
-    },
-    beforeRouteEnter(to, from, next) {
-        console.log(from)
-        next(vm => {
-            if (from.name == 'home') {
-                vm.$store.state.list = []
-                vm.$store.state.search.keyword = '';
-            }
-
-        })
-    },
     data() {
         return {
+            isIndex:true,
             showCat: false,
-            list: [],
-            sort: false,
+            usedSort: false,
+            sloading:false,
+            search: {
+                keyword: '',
+                loading: false,
+                sort: false,
+                cat_idx: 0,
+                list: [],
+
+            },
+            hList: [],
             cat_list: [
                 { cat_name: '全部', id: 0 }
             ]
         }
     },
     methods: {
+          loadMore() {
+            console.log('load')
+            if (this.sloading) { return }
+            let page = parseInt(this.pages.current_page, 10) || 1;
+            if (page < this.pages.total_page) {
+                this.getSearch(page + 1);
+            }
+
+        },
+        onSearch() {
+        
+            var obj = document.getElementById('keyword')
+            obj.blur();
+            let _list = this.hList;
+            if (this.search.keyword && this.hList.indexOf(this.search.keyword) == -1) {
+                if (_list.length >= 10) {
+                    _list.shift()
+                }
+                _list.push(this.search.keyword)
+
+                if (_list) {
+                    _list = JSON.stringify(_list);
+                    window.localStorage.setItem('__SearchHistory__', _list);
+                }
+            }
+
+            let url = '/mini/Good/get_list?page=1',
+                vm = this, data = {
+                    keyword: this.search.keyword
+                };
+            vm.search.loading = true;
+            this.apiGet(url, data).then(function(res) {
+                if (res.code) {
+                    vm.setSearchList(res.data.list)
+
+                } else {
+                    vm.handleError(res)
+                }
+                setTimeout(() => {
+                    vm.search.loading = false;
+                }, 400)
+            })
+
+
+        },
         //加入购物车
         add_cart(good_id) {
             let url = '/mini/Cart/add', vm = this, data = { good_id: good_id };
@@ -107,24 +157,25 @@ export default {
             })
         },
         onSort() {
-            this.sort = true;
-            this.$store.state.sort = !this.$store.state.sort;
-
-            // if (this.$store.state.search.keyword) {
+            this.usedSort = true;
+            this.search.sort = !this.search.sort;
             this.getSearch()
+
+            // if (this.search.keyword) {
+
             //  }
 
         },
         closeDialog() {
             this.showCat = false
 
-            // if (this.$store.state.search.keyword) {
+            // if (this.search.keyword) {
             this.getSearch()
             //  }
         },
         selectCat(cat_idx) {
 
-            this.$store.state.search.cat_idx = cat_idx;
+            this.search.cat_idx = cat_idx;
             let vm = this
             setTimeout(() => {
                 vm.closeDialog()
@@ -132,19 +183,20 @@ export default {
         },
         clear() {
             window.localStorage.removeItem('__SearchHistory__');
-            this.sethList([])
+            this.hList = []
+
         },
         init() {
             this.getList()
-            setTimeout(function() {
-                document.body.scrollTop = 0;
-            }, 500)
+            // setTimeout(function() {
+            //     document.body.scrollTop = 0;
+            // }, 500)
         },
         getList() {
             let _list = window.localStorage.getItem('__SearchHistory__');
             if (_list) {
                 _list = JSON.parse(_list);
-                this.sethList(_list)
+                this.hList = _list;
             }
         },
         get_cat() {
@@ -156,7 +208,7 @@ export default {
                     vm.cat_list = vm.cat_list.concat(res.data);
                     if (vm.$route.name == 'search2') {
                         let cat_id = vm.$route.params.cat_id;
-                        vm.$store.state.search.keyword = ''
+                        vm.search.keyword = ''
                         let cat_idx = 0;
                         for (let i = 0; i < res.data.length; i++) {
                             if (cat_id == res.data[i].id) {
@@ -172,41 +224,58 @@ export default {
                 }
             })
         },
-        getSearch(keyword) {
-            let url = '/mini/Good/get_list?page=1',
+        getSearch(page,keyword) {
+            page = page || 1;
+            let url = '/mini/Good/get_list?page='+page,
                 vm = this, data = {
-                    keyword: keyword || this.$store.state.search.keyword
+                    keyword: keyword || this.search.keyword
                 };
             if (keyword) {
-                this.$store.state.search.keyword = keyword
+                this.search.keyword = keyword
             }
-            if (this.$store.state.search.cat_idx) {
-                data.cat_id = this.cat_list[this.$store.state.search.cat_idx].id
+            if (this.search.cat_idx) {
+                data.cat_id = this.cat_list[this.search.cat_idx].id
             }
-            if (this.sort) {
-                if (this.$store.state.sort == false) {
+            if (this.usedSort) {
+                if (this.search.sort == false) {
                     data.price_order = 'desc'
                 } else {
                     data.price_order = 'asc'
                 }
             }
 
-            vm.$store.state.search.loading = true;
+
             this.apiGet(url, data).then(function(res) {
                 if (res.code) {
-                    vm.setSearchList(res.data.list)
+                    vm.pages = res.data.pages;
+                    if (vm.pages.current_page < 2) {
+                        vm.search.list = res.data.list;
+                    } else {
+                        let _list = vm.search.list;
+                        vm.search.list = _list.concat(res.data.list)
+
+
+                    }
+                    setTimeout(() => {
+                        vm.sloading = false;
+                        vm.$emit('cheackLoadMore')
+                    }, 200)
+
+
+
                 } else {
                     vm.handleError(res)
                 }
-                setTimeout(() => {
-                    vm.$store.state.search.loading = false;
-                }, 400)
+
             })
         }
 
 
     },
     created() {
+        if(this.$route.name == 'search2'){
+            this.isIndex = false
+        }
         this.init();
         this.setTitle('搜索')
         this.get_cat();

@@ -8,8 +8,8 @@ class Base extends Controller
     public $menu_id = '';
 
     public function __construct(){
-//        session("admin.uid",1);
-//        session("admin.current_menu",3);
+    //    session("admin.uid",1);
+    //    session("admin.current_menu",'all');
         
         if(!session("admin.uid")){
             $url = "/admin/login";
@@ -29,9 +29,9 @@ class Base extends Controller
     }
     
     public function check_auth(){
-        if(session('admin.menu_auth') != 'all' && !in_array($this->menu_id, explode(",", session('admin.menu_auth')))){
-            $this->error("没有访问权限");
-        }
+       if(session('admin.menu_auth') != 'all' && !in_array($this->menu_id, explode(",", session('admin.menu_auth')))){
+           $this->error("没有访问权限");
+       }
     }
     
     /**

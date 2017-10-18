@@ -5,8 +5,7 @@ import Router from 'vue-router'
 const home = () =>
   import ( /* webpackChunkName: "home" */ '@/components/home')
 
-const search = () =>
-  import ( /* webpackChunkName: "search" */ '@/components/search')
+ import search from '@/components/search'
 
 const productClass = () =>
   import ( /* webpackChunkName: "class" */ '@/components/class')
