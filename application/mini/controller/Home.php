@@ -10,7 +10,7 @@ class Home extends Base
      * @return type
      */
     public function banner(){
-        $list = db('banner')->where('status=1')->limit(3)->select();
+        $list = db('banner')->where('status=1')->select();
         
         $this->success('成功', '', $list);
     }
