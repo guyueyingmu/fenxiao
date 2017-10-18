@@ -14,7 +14,11 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="goto_url" label="链接"></el-table-column>
+            <el-table-column prop="goto_url" label="链接">
+                <template scope="scope">
+                    <a :href="scope.row.goto_url" target="_blank">{{scope.row.goto_url}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="sort" label="排序"></el-table-column>
             <el-table-column prop="admin_user_name" label="添加人"></el-table-column>
             <el-table-column prop="add_time" label="添加时间"></el-table-column>
@@ -88,8 +92,8 @@ export default {
                 status: '',
                 goto_url: '',
             },
-            isEdit:false,
-            editId :0,
+            isEdit: false,
+            editId: 0,
             list: []
         }
     },
@@ -118,7 +122,7 @@ export default {
         },
         //添加
         open_addCat(data) {
-                   this.isEdit = false;
+            this.isEdit = false;
             this.dialogFormVisible = true;
             this.dialog = {
                 img_url: '',
@@ -156,7 +160,7 @@ export default {
         //保存数据
         postNewCat() {
             let data = this.dialog;
-            let url = this.isEdit?'/admin/Banner/edit':'/admin/Banner/add', vm = this;
+            let url = this.isEdit ? '/admin/Banner/edit' : '/admin/Banner/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
                     vm.$message.success(res.msg);
