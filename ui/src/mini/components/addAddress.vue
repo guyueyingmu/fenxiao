@@ -5,12 +5,12 @@
         <div class="ui-input-list">
             <li>
                 <div class="m">收货人：</div>
-                <div class="f"><input type="text" maxlength="4" v-model="save_data.user_name" class="ui-input" placeholder="请输入姓名"></div>
+                <div class="f"><input type="text" maxlength="4" v-model="save_data.user_name" class="ui-input needsclick" placeholder="请输入姓名"></div>
             </li>
 
             <li>
                 <div class="m">手机号：</div>
-                <div class="f"><input type="tel" maxlength="11" class="ui-input" v-model="save_data.phone" placeholder="请输入手机号"></div>
+                <div class="f"><input type="tel" maxlength="11" class="ui-input needsclick" v-model="save_data.phone" placeholder="请输入手机号"></div>
             </li>
 
             <li>
@@ -20,7 +20,7 @@
                         <ui-area v-model="area"></ui-area>
 
                     </div>
-                    <div><input type="text" class="ui-input" v-model="save_data.address" placeholder="请输入详细地址"></div>
+                    <div><input type="text" class="ui-input needsclick" v-model="save_data.address" placeholder="请输入详细地址"></div>
                 </div>
             </li>
 

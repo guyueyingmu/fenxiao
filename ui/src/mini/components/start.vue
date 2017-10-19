@@ -15,7 +15,7 @@
                     <div class="m">
                         商品评分：
                         <rate v-model="item.stars" :text="true" :size="26"></rate>
-                        <textarea class="ui-input" style="min-height:80px;" v-model="item.content" placeholder="请输入您的内容" maxlength="200"></textarea>
+                        <textarea class="ui-input needsclick" style="min-height:80px;" v-model="item.content" placeholder="请输入您的内容" maxlength="200"></textarea>
 
                         <div class="thumb-rate">
                             <li v-for="img in item.imgs" :key="img">

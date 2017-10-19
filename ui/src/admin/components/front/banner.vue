@@ -14,15 +14,19 @@
                     </div>
                 </template>
             </el-table-column>
-            <el-table-column prop="goto_url" label="链接"></el-table-column>
+            <el-table-column prop="goto_url" label="链接">
+                <template scope="scope">
+                    <a :href="scope.row.goto_url" target="_blank">{{scope.row.goto_url}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="sort" label="排序"></el-table-column>
             <el-table-column prop="admin_user_name" label="添加人"></el-table-column>
             <el-table-column prop="add_time" label="添加时间"></el-table-column>
             <el-table-column prop="status" label="是否启用">
                 <template scope="scope">
                     <el-radio-group v-model="scope.row.status" size="small" @change="changeStatus(scope.row)">
-                        <el-radio-button :label="1">启用</el-radio-button>
-                        <el-radio-button :label="2">禁用</el-radio-button>
+                        <el-radio-button :label="'1'">启用</el-radio-button>
+                        <el-radio-button :label="'2'">禁用</el-radio-button>
                     </el-radio-group>
                 </template>
             </el-table-column>
@@ -59,7 +63,7 @@
                 <el-form-item label="轮播图" class="my_error">
                     <div class="red small">尺寸为 750 * 320 长方形</div>
                     <el-upload :disabled="isEdit" class="avatar-uploader" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`banner_img`}" accept="image/jpeg,image/png" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar">
+                        <img v-if="dialog.img_url" :src="dialog.img_url" class="avatar" style="width:180px;">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -88,8 +92,8 @@ export default {
                 status: '',
                 goto_url: '',
             },
-            isEdit:false,
-            editId :0,
+            isEdit: false,
+            editId: 0,
             list: []
         }
     },
@@ -118,7 +122,7 @@ export default {
         },
         //添加
         open_addCat(data) {
-                   this.isEdit = false;
+            this.isEdit = false;
             this.dialogFormVisible = true;
             this.dialog = {
                 img_url: '',
@@ -156,7 +160,7 @@ export default {
         //保存数据
         postNewCat() {
             let data = this.dialog;
-            let url = this.isEdit?'/admin/Banner/edit':'/admin/Banner/add', vm = this;
+            let url = this.isEdit ? '/admin/Banner/edit' : '/admin/Banner/add', vm = this;
             this.apiPost(url, data).then((res) => {
                 if (res.code) {
                     vm.$message.success(res.msg);

@@ -29,7 +29,16 @@
         <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="good_link" label="商品页面链接" width="200">
                 <template scope="scope">
-                    <a :href="scope.row.good_link">{{scope.row.good_link}}</a>
+           
+                       
+                    <el-popover   placement="right" trigger="hover">
+                         <div>
+                             <vue-qr :text="or(scope.row.good_id)" height="200" width="200"></vue-qr>
+                             <div style="text-align:center;color:#666">用微信扫一扫</div>
+                         </div>
+                         <el-button type="text"  slot="reference" >/mini/#/detail/id/{{scope.row.good_id}}</el-button>
+                    </el-popover>
+                    
                 </template>
             </el-table-column>
             <el-table-column prop="user_id" label="用户ID" width="120"></el-table-column>
@@ -54,11 +63,14 @@
 </template>
 
 <script>
+import VueQr from 'vue-qr'
 import http from '@/assets/js/http'
-import { DatePicker } from 'element-ui'
+import { DatePicker,Popover } from 'element-ui'
 export default {
     mixins: [http],
     components: {
+        VueQr,
+        'el-popover':Popover,
         "el-date-picker": DatePicker,
     },
 
@@ -76,8 +88,12 @@ export default {
             list: []
         }
     },
-    methods: {
 
+    methods: {
+        or(id){
+            let a = window.location.origin;
+             return   a +'/mini/#/detail/id/'+id
+        },
         //格式化日期范围
         fromDate(val) {
             if (val) {

@@ -31,7 +31,7 @@
             </li>
         </ul>
 
-        <div style="height:10px;" v-if="address.id"></div>
+        <div style="height:10px;" v-if="info.show_address== 1"></div>
         <div v-if="info.good_list.length > 0">
 
             <ul class="thumb-list l-t">

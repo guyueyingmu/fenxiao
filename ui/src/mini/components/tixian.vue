@@ -45,7 +45,7 @@
                     </div>
                     <div class="mint-msgbox-content">
                         <div class="mint-msgbox-message">可提现金额：￥{{d.account}}</div>
-                        <div class="mint-msgbox-input"><input :placeholder="d.inputPlaceholder" v-focusd v-model="d.inputValue" type="number">
+                        <div class="mint-msgbox-input"><input class="needsclick" :placeholder="d.inputPlaceholder" v-focusd v-model="d.inputValue" type="number">
                         </div>
                         <div class="space"></div>
                     </div>
