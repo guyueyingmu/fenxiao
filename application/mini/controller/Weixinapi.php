@@ -7,9 +7,9 @@ use think\controller;
 class Weixinapi extends controller {
 
     //appid
-    private static $appid = 'wx6f63d40e3936ed3b';
+    private static $appid = 'wx07c5256fbb3a1db6';
     //appsecret
-    private static $appsecret = 'b43e92f640898d59a0e532a621918ace';
+    private static $appsecret = '0433c84fd7994cce46f3379d5488ad0d';
 
     //获取code后跳转的地址
     const authRedirectUri = '';
