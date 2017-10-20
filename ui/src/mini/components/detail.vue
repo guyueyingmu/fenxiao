@@ -221,7 +221,7 @@ export default {
                         var title = vm.good_info.good_name;
                         var desc = vm.good_info.good_title;
                         var link = location.href;
-                        var imgUrl = vm.good_info.good_img;
+                        var imgUrl = 'http://'+location.host+vm.good_info.good_img;
                         var dataUrl = '';
                         var type = '';
                         alert('aaa');alert(title);alert(desc);alert(link);alert(imgUrl);
