@@ -97,7 +97,8 @@ class Good extends Base
         
         //微信分享
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+//        $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url = "$protocol$_SERVER[HTTP_HOST]/mini/Index/index/";
         $weixin =new Weixinapi();
         $info['share_ticket'] = $weixin->getSignPackage($url);
         
