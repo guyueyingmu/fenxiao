@@ -99,7 +99,7 @@ class Index
         $host = "http://".$_SERVER['HTTP_HOST'];
         switch($status){
             case 1://购物商城
-                $url =  $host."/mini/Index/index/#/home";
+                $url =  $host."/mini/Index/index/#";
                 break;
             case 2://个人中心
                 $url =  $host."/mini/Index/index/#/userCenter";
