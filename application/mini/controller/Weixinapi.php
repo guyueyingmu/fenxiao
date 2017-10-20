@@ -2,9 +2,9 @@
 
 namespace app\mini\controller;
 
-use think\controller;
+use think\Controller;
 
-class Weixinapi extends controller {
+class Weixinapi extends Controller {
 
     //appid
     private static $appid = 'wx07c5256fbb3a1db6';

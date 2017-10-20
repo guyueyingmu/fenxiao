@@ -3,16 +3,16 @@
  {	
 	  "name":"购物商城",
       "type":"view",
-      "url":"http://m.koudehui.cn/index/Index/goweixin/gourl/1"
+      "url":"http://mall.minbbo.com/index/Index/goweixin/gourl/1"
   },
   {
 	  "name":"积分兑换",
       "type":"view",
-      "url":"http://m.koudehui.cn/index/Index/goweixin/gourl/1/list_type/1"
+      "url":"http://mall.minbbo.com/index/Index/goweixin/gourl/3"
    },
   {
 	  "name":"个人中心",
       "type":"view",
-      "url":"http://m.koudehui.cn/index/Index/goweixin/gourl/2"
+      "url":"http://mall.minbbo.com/index/Index/goweixin/gourl/2"
    }]
 }
