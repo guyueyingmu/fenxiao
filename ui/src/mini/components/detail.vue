@@ -205,7 +205,7 @@ export default {
 
                     //分享配置
                     window.wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: vm.good_info.share_ticket.appId, // 必填，公众号的唯一标识
                         timestamp: vm.good_info.share_ticket.timestamp, // 必填，生成签名的时间戳
                         nonceStr: vm.good_info.share_ticket.nonceStr, // 必填，生成签名的随机串
@@ -224,7 +224,6 @@ export default {
                         var imgUrl = 'http://'+location.host+vm.good_info.good_img;
                         var dataUrl = '';
                         var type = '';
-                        alert('aaa');alert(title);alert(desc);alert(link);alert(imgUrl);
                         window.wx.onMenuShareAppMessage({
                             title: title, // 分享标题
                             desc: desc, // 分享描述
