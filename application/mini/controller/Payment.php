@@ -69,8 +69,8 @@ class Payment extends Controller
 		//echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
 		$jsApiParameters = $tools->GetJsApiParameters($order);
                 
-        $result['jsApiParameters'] = $jsApiParameters;
-        $result['order_id'] = $order_id;
+        $this->assign('jsApiParameters',$jsApiParameters);
+		$this->assign('order_id',$order_id);
         
         return view('pay');
 		
@@ -79,7 +79,6 @@ class Payment extends Controller
 	public function notify(){
 		require APP_PATH . "/../extend/Wxpay/lib/WxPay.Api.php";
 		require APP_PATH . "/../extend/Wxpay/lib/WxPay.Notify.php";
-		
 		$notify = new \WxPayNotify();
 		
 		//验证数据
@@ -92,8 +91,8 @@ class Payment extends Controller
 		    $result = (array)simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 			
 			$order = db("orders");
-			$order_data = $order->where("order_number=".(int)$result['out_trade_no'])->find();
-			if($order_data['order_amount'] * 100 !=$result['total_fee'])
+			$order_data = $order->where("order_number=".$result['out_trade_no'])->find();
+			if($order_data['total_amount'] * 100 !=$result['total_fee'])
 			{
 				exit("error");
 			}

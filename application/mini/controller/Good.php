@@ -95,6 +95,12 @@ class Good extends Base
                 ->join('__USERS__ u', 'u.id=gc.user_id', 'LEFT')
                 ->where($where)->count();
         
+        //微信分享
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $weixin =new Weixinapi();
+        $info['share_ticket'] = $weixin->getSignPackage($url);
+        
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
     }

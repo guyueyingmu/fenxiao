@@ -595,5 +595,82 @@ class Weixinapi extends Controller {
         $postdata = json_encode($data);
         return $this->sendData($url, $postdata);
     }
+    
+    public function getJsApiTicket() {        
+        $ticket = '';
+        $accessToken = $this->getAccessToken();
+
+        $hostdir = $_SERVER['DOCUMENT_ROOT'];
+        if (!is_dir($hostdir . "/token/")) {
+            mkdir($hostdir . "/token/", 0777, true);
+        }
+        $is_local = preg_match('/(127\.0\.0\.1)|(192.168\.8\.\d)/i', $_SERVER['SERVER_ADDR']);
+
+        if (!$is_local) {
+            if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json")) 
+                fopen($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", "w");
+
+            $data = json_decode(file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json"));
+
+            if ($data == null || $data->expire_time < time()) {
+
+                $data = (object) array();
+
+                $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
+                $res = file_get_contents($url);
+                $result = json_decode($res, true);
+                $ticket = $result['ticket'];
+
+                if ($ticket) {
+
+                    $data->expire_time = time() + 7000;
+                    $data->ticket = $ticket;
+                    $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", "w");
+                    fwrite($fp, json_encode($data));
+                    fclose($fp);
+                }
+            } else {
+                $ticket = $data->ticket;
+            }
+        }
+        return $ticket;
+    }
+    
+    //获取jssdk  add by YIYI 20150814
+    public function getSignPackage($url) {
+        $jsapiTicket = $this->getJsApiTicket();
+
+        // 注意 URL 一定要动态获取，不能 hardcode.
+        if (!$url) {
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+            $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        }
+        $timestamp = time();
+        $nonceStr = $this->createNonceStr();
+
+        // 这里参数的顺序要按照 key 值 ASCII 码升序排序
+        $string = "jsapi_ticket=$jsapiTicket&noncestr=$nonceStr&timestamp=$timestamp&url=$url";
+
+        $signature = sha1($string);
+
+        $signPackage = array(
+            "appId" => self::$appid,
+            "nonceStr" => $nonceStr,
+            "timestamp" => $timestamp,
+            "url" => $url,
+            "signature" => $signature,
+            "rawString" => $string
+        );
+        return $signPackage;
+    }
+    
+    private function createNonceStr($length = 16) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+          $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
+    }
 
 }
