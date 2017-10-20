@@ -67,7 +67,7 @@ class Good extends Base
         if(!$id){
             $this->error('参数错误');
         }
-        $info = db('goods')->where('id', $id)->where('status', 1)->field('id,good_title,price,detail,good_type,credits,good_img')->find();
+        $info = db('goods')->where('id', $id)->where('status', 1)->field('id,good_name,good_title,price,detail,good_type,credits,good_img')->find();
         if(!$info){
             $this->error('商品数据不存在');
         }
