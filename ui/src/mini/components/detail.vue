@@ -224,6 +224,7 @@ export default {
                         var imgUrl = vm.good_info.good_img;
                         var dataUrl = '';
                         var type = '';
+                        alert('aaa');alert(title);alert(desc);alert(link);alert(imgUrl);
                         window.wx.onMenuShareAppMessage({
                             title: title, // 分享标题
                             desc: desc, // 分享描述
