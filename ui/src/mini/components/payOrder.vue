@@ -100,7 +100,37 @@ export default {
         },
         //微信支付
         do_pay(){
+            let vm = this;
             console.log('微信支付');
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', vm.jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', vm.jsApiCall); 
+                    document.attachEvent('onWeixinJSBridgeReady', vm.jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        },
+        jsApiCall(){
+            let vm = this;
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                vm.jsApiParameters,
+                function(res){
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        vm.goto('/paySuccess/order_id/'+vm.order_id);
+                    }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+                        // window.history.go(-1);
+                        //window.location = "/Pay/order/fail";
+                    }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+    //                    window.history.go(-1);
+                        // let return_url = "/index/Order/order_detail/order_id/{$order_id}";
+                        //     window.location = return_url;
+                    }
+                }
+            );
         },
         //积分兑换
         credits(){
