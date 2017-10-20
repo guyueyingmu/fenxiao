@@ -121,12 +121,17 @@ const apiMethods = {
     },
     //统一服务器出错处理
     serverError(err) {
+        this.loading = false;
       this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url, '警告', {
-        type: 'error'
+        type: 'error',
+        callback:function(){
+            window.history.back()
+        }
       });
     },
     //统一异常处理
     handleError(res) {
+        this.loading = false;
         if(res.msg == '请登录后操作'){
             this.$store.state.LoginDialogVisible = true
 
