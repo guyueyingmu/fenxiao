@@ -70,8 +70,9 @@ class Payment extends Controller
 		$jsApiParameters = $tools->GetJsApiParameters($order);
                 
         $result['jsApiParameters'] = $jsApiParameters;
+        $result['order_id'] = $order_id;
         
-        $this->success('成功', '', $result);
+        return view('pay');
 		
     }
 	

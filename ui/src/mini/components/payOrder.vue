@@ -63,7 +63,7 @@ export default {
     mixins: [http],
     data() {
         return {
-            list: [],
+            list: {},
             order_id: 0,
             jsApiParameters: {},
         }
@@ -77,22 +77,6 @@ export default {
             this.apiGet(url, {order_id: this.order_id}).then(function(res) {
                 if (res.code) {
                     vm.list = res.data;
-                    if(vm.list.pay_method == 1){
-                        vm.get_pay_info();
-                    }
-                } else {
-                    vm.handleError(res)
-                }
-            })
-        },
-        //获取支付信息
-        get_pay_info(){
-            let url = '/mini/Payment/index',
-                vm = this;
-
-            this.apiGet(url, {order_id: this.order_id}).then(function(res) {
-                if (res.code) {
-                    vm.jsApiParameters = res.data.jsApiParameters;
                 } else {
                     vm.handleError(res)
                 }
@@ -100,37 +84,7 @@ export default {
         },
         //微信支付
         do_pay(){
-            let vm = this;
-            //vm.$msg('微信支付');
-            if (typeof WeixinJSBridge == "undefined"){ //vm.$msg('1');
-                if( document.addEventListener ){
-                    document.addEventListener('WeixinJSBridgeReady', vm.jsApiCall, false);
-                }else if (document.attachEvent){
-                    document.attachEvent('WeixinJSBridgeReady', vm.jsApiCall); 
-                    document.attachEvent('onWeixinJSBridgeReady', vm.jsApiCall);
-                }
-            }else{ //vm.$msg('2');
-                vm.jsApiCall();
-            }
-        },
-        jsApiCall(){ 
-            let vm = this; vm.$msg('3'); vm.$msg(vm.jsApiParameters);
-            WeixinJSBridge.invoke(
-                'getBrandWCPayRequest',
-                vm.jsApiParameters,
-                function(res){
-                    if (res.err_msg == "get_brand_wcpay_request:ok") { vm.$msg('4');
-                        vm.goto('/paySuccess/order_id/'+vm.order_id);
-                    }else if(res.err_msg == "get_brand_wcpay_request:fail"){ vm.$msg('5');
-                        // window.history.go(-1);
-                        //window.location = "/Pay/order/fail";
-                    }else if(res.err_msg == "get_brand_wcpay_request:cancel"){ vm.$msg('6');
-    //                    window.history.go(-1);
-                        // let return_url = "/index/Order/order_detail/order_id/{$order_id}";
-                        //     window.location = return_url;
-                    }
-                }
-            );
+            location.href=vm.list.pay_url;
         },
         //积分兑换
         credits(){

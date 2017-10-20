@@ -356,6 +356,7 @@ class Order extends Base
         }
         $info['order_status_txt'] = self::$order_status[$info['order_status']];
         $info['pay_status_txt'] = self::$pay_status[$info['pay_status']];
+        $info['pay_url'] = url('/mini/Payment/index', ['order_id' => $order_id]);
 //        echo '<pre>';print_r($info);exit;
         $this->success('成功', '', $info);
     }
