@@ -46,10 +46,12 @@ class Weixin extends Controller
                     switch($postData['Event']){
                         //关注
                         case 'subscribe': 
+                            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", '1', FILE_APPEND);
                             $content = '欢迎关注';
 							echo  $weixin->replyTextTemplate($postData['FromUserName'], $postData['ToUserName'], $content);
 							
                             $this->add_user($postData);
+                            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", 'end', FILE_APPEND);
 //							if(isset($postData['EventKey']) && $postData['EventKey']) {
 //								//判断qrscene是否存在，从而判断是否为扫描带参数二维码事件
 //                                $qrscene = preg_match ("/qrscene/i", $postData['EventKey']);
@@ -125,7 +127,8 @@ class Weixin extends Controller
     public function add_user($postData){
         //用户是否已注册
         $user_info = db('users')->where('openid', $postData['FromUserName'])->find();
-                        
+        
+        $parent_user_id = 0;
         if(isset($postData['EventKey']) && $postData['EventKey']) {
             //判断qrscene是否存在，从而判断是否为扫描带参数二维码事件
             $qrscene = preg_match ("/qrscene/i", $postData['EventKey']);
@@ -139,9 +142,7 @@ class Weixin extends Controller
         $weixin = new Weixinapi();
         //获取用户信息
         $weixin_user_info = $weixin->getUserInfo($postData['FromUserName']);
-
         if(isset($weixin_user_info['errcode']) && $weixin_user_info['errcode']){
-
             //$weixin->addErrorLog('调用获取用户信息接口失败：' . session("weixin.openid") . PHP_EOL . print_r($user_info, true));
         }else{
             //保存用户信息
@@ -154,7 +155,15 @@ class Weixin extends Controller
             }
         }
         
-        if(!$user_info['id']){
+        if(isset($user_info['id']) && $user_info['id']){
+            if($parent_user_id && $user_info['distribution_level'] == 0 && $user_info['pid'] == ''){
+                $user_info['distribution_level'] = 1;
+                $user_info['pid'] = $parent_user_id;
+                $user_info['dis_scan_time'] = date('Y-m-d H:i:s');
+            }
+            $user_info['last_login_time'] = date('Y-m-d H:i:s');
+            db('users')->update($user_info);
+        }else{
             $user_info['openid'] = $postData['FromUserName'];
             if($parent_user_id){
                 $user_info['distribution_level'] = 1;
@@ -164,15 +173,7 @@ class Weixin extends Controller
             $user_info['register_time'] = date('Y-m-d H:i:s');
             $user_info['last_login_time'] = date('Y-m-d H:i:s');
             //注册用户账号
-            $user_info['id'] = db('users')->insertGetId($user_info);
-        }else{
-            if($parent_user_id && $user_info['distribution_level'] == 0 && $user_info['pid'] == ''){
-                $user_info['distribution_level'] = 1;
-                $user_info['pid'] = $parent_user_id;
-                $user_info['dis_scan_time'] = date('Y-m-d H:i:s');
-            }
-            $user_info['last_login_time'] = date('Y-m-d H:i:s');
-            db('users')->update($user_info);
+            $user_info['id'] = db('users')->insertGetId($user_info);            
         }
     }
     

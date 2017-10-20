@@ -5,7 +5,7 @@ use app\mini\controller\Weixinapi;
 /*
  * 微信入口处理
  */
-class Index
+class Index extends Controller
 {
     public function index(){
         return view();
@@ -67,7 +67,7 @@ class Index
 			//生成cookies
             cookie("weixin_open_arr",$return,array('expire'=>3600*24,'domain'=>'http://'.$_SERVER['HTTP_HOST'].'/'));
 			            
-            $user_data = db("users")->where("openid='".$return['openid']."'")->field("id uid,openid,phone_number,img_url,nickname,sex,status,distribution_level,pid")->find();
+            $user_data = db("users")->where("openid='".$return['openid']."'")->field("id,openid,phone_number,img_url,nickname,sex,status,distribution_level,pid")->find();
             
             if(!$user_data){
                 $this->error('用户不存在，请重新关注');
@@ -77,9 +77,10 @@ class Index
             }
             
             //更新用户登录信息 
-            db("users")->where("id=".$user_data['uid'])->update(array_merge($user_data,array("last_login_time"=>date('Y-m-d H:i:s'))));
+            db("users")->where("id=".$user_data['id'])->update(array_merge($user_data,array("last_login_time"=>date('Y-m-d H:i:s'))));
             
             session("mini",$user_data);
+            session("mini.uid",$user_data['id']);
             
 			ob_start();
             header("Location:".$go_url);
