@@ -101,16 +101,16 @@ export default {
         //微信支付
         do_pay(){
             let vm = this;
-            vm.$msg('微信支付');
-            if (typeof WeixinJSBridge == "undefined"){ vm.$msg('1');
+            //vm.$msg('微信支付');
+            if (typeof WeixinJSBridge == "undefined"){ //vm.$msg('1');
                 if( document.addEventListener ){
                     document.addEventListener('WeixinJSBridgeReady', vm.jsApiCall, false);
                 }else if (document.attachEvent){
                     document.attachEvent('WeixinJSBridgeReady', vm.jsApiCall); 
                     document.attachEvent('onWeixinJSBridgeReady', vm.jsApiCall);
                 }
-            }else{ vm.$msg('2');
-                jsApiCall();
+            }else{ //vm.$msg('2');
+                vm.jsApiCall();
             }
         },
         jsApiCall(){ 
