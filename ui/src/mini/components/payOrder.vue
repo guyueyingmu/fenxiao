@@ -48,7 +48,7 @@
             </li>
         </ul>
         <div class="btn-wrap">
-            <div class="btn-fixed">
+            <div class="btn-fixed" v-if="list.pay_status == 1">
                 <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="do_pay();" v-if="list.pay_method == 1">确定支付</button>
                 <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="credits();" v-if="list.pay_method == 3">确定兑换</button>
             </div>
@@ -84,7 +84,7 @@ export default {
         },
         //微信支付
         do_pay(){
-            location.href=vm.list.pay_url;
+            location.href=this.list.pay_url;
         },
         //积分兑换
         credits(){
