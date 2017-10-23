@@ -46,12 +46,10 @@ class Weixin extends Controller
                     switch($postData['Event']){
                         //关注
                         case 'subscribe': 
-                            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", '1', FILE_APPEND);
                             $content = '欢迎关注';
 							echo  $weixin->replyTextTemplate($postData['FromUserName'], $postData['ToUserName'], $content);
 							
                             $this->add_user($postData);
-                            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", 'end', FILE_APPEND);
 //							if(isset($postData['EventKey']) && $postData['EventKey']) {
 //								//判断qrscene是否存在，从而判断是否为扫描带参数二维码事件
 //                                $qrscene = preg_match ("/qrscene/i", $postData['EventKey']);
@@ -127,16 +125,19 @@ class Weixin extends Controller
     public function add_user($postData){
         //用户是否已注册
         $user_info = db('users')->where('openid', $postData['FromUserName'])->find();
-        
+        file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '1'.json_encode($postData), FILE_APPEND);
         $parent_user_id = 0;
         if(isset($postData['EventKey']) && $postData['EventKey']) {
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '2', FILE_APPEND);
             //判断qrscene是否存在，从而判断是否为扫描带参数二维码事件
             $qrscene = preg_match ("/qrscene/i", $postData['EventKey']);
             if($qrscene){
-                $scene_id = str_replace('qrscene_', '', $postData['EventKey']);
-                db("qrcode")->where("scene_id",$scene_id)->setInc("scan_total");//扫码数+1
-                $parent_user_id = db("qrcode")->where("scene_id",$scene_id)->value("user_id");
+                $scene_id = str_replace('qrscene_', '', $postData['EventKey']);file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '3/'.$scene_id, FILE_APPEND);                
+            }else{
+                $scene_id = $postData['EventKey'];
             }
+            db("qrcode")->where("scene_id",$scene_id)->setInc("scan_total");//扫码数+1
+            $parent_user_id = db("qrcode")->where("scene_id",$scene_id)->value("user_id");
         }
         
         $weixin = new Weixinapi();

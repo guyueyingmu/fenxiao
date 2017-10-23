@@ -8,7 +8,7 @@
         </div>
         <div class="form-item">
             <div class="f-l">
-                <input type="tel" class="needsclick" maxlength="4" placeholder="请输入验证码" v-model="form.c">
+                <input type="text" class="needsclick" maxlength="4" placeholder="请输入验证码" v-model="form.c">
             </div>
             <div class="f-r"> <img :src="verify_url" @click="change_verify();" alt="" width="92" height="42"> </div>
 

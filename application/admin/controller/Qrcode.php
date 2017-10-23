@@ -42,7 +42,7 @@ class Qrcode extends Base
                 'scene_id'=>$scene_id,
                 'user_id'=>$user_id,
                 'qrcode_url'=>$qrcode,
-                'add_time'=>date('Y-m-d H:i:s'),
+                'add_time'=>time(),
                 'scan_total'=>0
             ]);
         }
