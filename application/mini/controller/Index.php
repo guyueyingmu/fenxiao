@@ -58,15 +58,18 @@ class Index extends Controller
         
         $return = $weixin->getAuthAccessToken($code);
         
-        if(isset($return['errcode'] ) && $return['errcode'] == 40029){
-            $cookData = cookie("weixin_open_arr");
-            $return = $weixin->getAuthRefreshAccessToken($cookData['refresh_token']);
+        if(isset($return['errcode'])){
+//            $cookData = cookie("weixin_open_arr");
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/log/weixin_openid.json", json_encode($return), FILE_APPEND);
+//            $return = $weixin->getAuthRefreshAccessToken($cookData['refresh_token']);
+            header("Content-type:text/html;charset=utf-8");
+            exit("获取openid失败，请重试");
         }
 		
-        if($return['openid']){
+        if(isset($return['openid'])){
 			//生成cookies
-            cookie("weixin_open_arr",$return,array('expire'=>3600*24,'domain'=>'http://'.$_SERVER['HTTP_HOST'].'/'));
-			            
+//            cookie("weixin_open_arr",$return,3600*24);
+			
             $user_data = db("users")->where("openid='".$return['openid']."'")->field("id,openid,phone_number,img_url,nickname,sex,status,distribution_level,pid")->find();
             
             if(!$user_data){
