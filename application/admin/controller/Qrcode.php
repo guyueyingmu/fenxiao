@@ -10,8 +10,8 @@ class Qrcode extends Base
     /**
      * 获取二维码
      */
-    public function get_qrcode(){
-        $user_id = input('param.user_id', '', 'intval');
+    public function get_qrcode($user_id){
+//        $user_id = input('param.user_id', '', 'intval');
         if(!$user_id){
             return false;
         }
