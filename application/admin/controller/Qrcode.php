@@ -43,7 +43,6 @@ class Qrcode extends Base
                 'user_id'=>$user_id,
                 'qrcode_url'=>$qrcode,
                 'add_time'=>date('Y-m-d H:i:s'),
-                'status'=>1,
                 'scan_total'=>0
             ]);
         }
