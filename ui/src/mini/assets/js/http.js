@@ -3,6 +3,7 @@
  * (c) 2017 Nick
  * @license MIT
  */
+import base64 from '@/assets/js/base64'
 'use strict';
 /*  */
 import {
@@ -112,7 +113,7 @@ const apiMethods = {
       let vm = this; console.log('a');
       if (res.data.errcode == 1) {//未登录
         console.log('b');
-        location.href = "/mini/Index/goweixin?redirect=" + encodeURIComponent(window.location.href);
+        location.href = "/mini/Index/goweixin/redirect/" + base64.encode(window.location.href);
       } else if (res.url) {
         console.log('c');
         vm.goto(res.url);

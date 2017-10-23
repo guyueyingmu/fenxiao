@@ -18,15 +18,15 @@ class Index extends Controller
     //跳转判断处理
     public function goweixin(){
         $param = input(); 
-        print_r($param);exit;
-        $go_url = $param['gourl'];
+        
+        $go_url = isset($param['gourl']) ? $param['gourl'] : '';
         if($go_url){
             $url = $this->getMiniUrl($go_url);
             if(!$url){
                 $this->error("参数错误");
             }
         }elseif($param['redirect']){
-            $url = $param['redirect'];
+            $url = base64_decode($param['redirect']);
         }
         
         if($param){//传递其他参数的处理
