@@ -63,7 +63,7 @@ class Index extends Controller
             $return = $weixin->getAuthRefreshAccessToken($cookData['refresh_token']);
         }
 		
-        if($return['openid']){
+        if(isset($return['openid'])){
 			//生成cookies
             cookie("weixin_open_arr",$return,array('expire'=>3600*24,'domain'=>'http://'.$_SERVER['HTTP_HOST'].'/'));
 			            
