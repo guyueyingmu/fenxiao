@@ -100,7 +100,7 @@ class Sms extends Controller
                 'msg' => '数据不完整'
             ];
         }
-        $info = db('sms_cache')->where('phone_number = "'. $array['phone']. '" AND status_send = 1 AND status_use = 0 AND add_time+60 >= '. time())->order('id DESC')->select();
+        $info = db('sms_cache')->where('phone_number = "'. $array['phone']. '" AND status_send = 1 AND status_use = 0 AND add_time+60*10 >= '. time())->order('id DESC')->select();
         if(!$info){
             return [
                 'code' => 40003,

@@ -61,7 +61,7 @@ class Payment extends Controller
 		$input->SetTrade_type("JSAPI");
 		$input->SetOpenid($openId);
 		$order = $WxPayApi->unifiedOrder($input);
-		file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/jsapi_ticket.json", json_encode($order), FILE_APPEND);
+		
 		if($order['result_code']=='FAIL'){
             $this->error($order['err_code_des']);
 		}

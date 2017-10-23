@@ -125,14 +125,13 @@ class Weixin extends Controller
     public function add_user($postData){
         //用户是否已注册
         $user_info = db('users')->where('openid', $postData['FromUserName'])->find();
-        file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '1'.json_encode($postData), FILE_APPEND);
+        
         $parent_user_id = 0;
         if(isset($postData['EventKey']) && $postData['EventKey']) {
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '2', FILE_APPEND);
             //判断qrscene是否存在，从而判断是否为扫描带参数二维码事件
             $qrscene = preg_match ("/qrscene/i", $postData['EventKey']);
             if($qrscene){
-                $scene_id = str_replace('qrscene_', '', $postData['EventKey']);file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/token/test.json", '3/'.$scene_id, FILE_APPEND);                
+                $scene_id = str_replace('qrscene_', '', $postData['EventKey']);            
             }else{
                 $scene_id = $postData['EventKey'];
             }
