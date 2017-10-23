@@ -19,9 +19,9 @@
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="cat_img" label="分类小图"  width="100">
                 <template scope="scope">
-                    <div style="padding:10px 0;">
+                    
                         <img :src="scope.row.cat_img"  width="40" height="40" alt="">
-                    </div>
+                  
                 </template>
             </el-table-column>
             <el-table-column prop="cat_name" label="商品分类"></el-table-column>

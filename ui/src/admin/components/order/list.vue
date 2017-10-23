@@ -57,44 +57,44 @@
                                 <col width="100">
                                 <col width="100">
                                 <col width="120">
-                                <col width="150">
-                                <col width="120">
-                                <col width="100">
-                                <col width="100">
-                                <col width="100">
-                                <col　width="160">
-                                    <col>
-                                    <col width="220">
+                                <col width="180">
+                                <col width="90">
+                                <col width="90">
+                                <col width="90">
+                                <col width="90">
+                                <col　width="90">
+                                <col width="180">
+                                <col width="200">
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>订单编号</th>
+                                    <th class="center">订单编号</th>
                                     <th class="center">下单用户ID</th>
-                                    <th>用户手机</th>
-                                    <th>下单时间</th>
-                                    <th>订单总额</th>
-                                    <th>订单状态</th>
-                                    <th>支付状态</th>
-                                    <th>订单来源</th>
-                                    <th>支付方式</th>
-                                    <th>完成时间</th>
-                                    <th>操作</th>
+                                    <th class="center">用户手机</th>
+                                    <th class="center">下单时间</th>
+                                    <th class="center">订单总额</th>
+                                    <th class="center">订单状态</th>
+                                    <th class="center">支付状态</th>
+                                    <th class="center">订单来源</th>
+                                    <th class="center">支付方式</th>
+                                    <th class="center">完成时间</th>
+                                    <th class="center">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{item.order_number}}</td>
+                                    <td class="center">{{item.order_number}}</td>
                                     <td class="center">{{item.user_id}}</td>
-                                    <td>{{item.phone_number}}</td>
-                                    <td>{{item.add_time}}</td>
-                                    <td>{{item.total_amount}}</td>
-                                    <td>
+                                    <td class="center">{{item.phone_number}}</td>
+                                    <td class="center">{{item.add_time}}</td>
+                                    <td class="center">{{item.total_amount}}</td>
+                                    <td class="center">
                                         <span :class="{'red': item.order_status == 1}">{{item.order_status_txt }}</span>
                                     </td>
-                                    <td>{{item.pay_status_txt }}</td>
-                                    <td>{{item.order_from_txt}}</td>
-                                    <td>{{item.pay_method_txt }}</td>
-                                    <td>{{item.finish_time}}</td>
+                                    <td class="center">{{item.pay_status_txt }}</td>
+                                    <td class="center">{{item.order_from_txt}}</td>
+                                    <td class="center">{{item.pay_method_txt }}</td>
+                                    <td class="center">{{item.finish_time}}</td>
                                     <td class="center tool_no_border">
                                         <el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button>
                                         <el-button type="text" size="small" v-if="item.order_status == 1" @click="OnCannelOrder(idx)">取消订单</el-button>
