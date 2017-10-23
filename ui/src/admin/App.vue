@@ -6,7 +6,7 @@
                 <div class="my_nav_warp">
                     <div class="my_nav">
                         <div class="layout-logo-left">
-                            <span>分销管理系统</span>
+                            <span>分销管理系</span>
                         </div>
                         <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
                             <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
