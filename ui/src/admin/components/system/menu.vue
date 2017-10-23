@@ -31,8 +31,8 @@
         </div>
 
         <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="商品编号" width="100" fixed="left"></el-table-column>
-            <el-table-column prop="good_name" label="商品名" width="150" fixed="left"></el-table-column>
+            <el-table-column prop="id" label="商品编号" width="100" ></el-table-column>
+            <el-table-column prop="good_title" label="商品标题" width="150" ></el-table-column>
             <el-table-column prop="cat_name" label="商品分类" width="150"></el-table-column>
             <el-table-column prop="specification" label="商品规格" width="150"></el-table-column>
             <el-table-column prop="brand" label="品牌" width="150"></el-table-column>
