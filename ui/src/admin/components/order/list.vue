@@ -116,7 +116,7 @@
                                                 <tr class="bg">
                                                     <th>商品编号</th>
                                                     <th class="center">商品图标</th>
-                                                    <th class="center">商品名称</th>
+                                                    <th class="center">商品标题</th>
                                                     <th class="center">商品分类</th>
                                                     <th class="center">购买单价</th>
                                                     <th class="center">购买数量</th>
@@ -127,7 +127,7 @@
                                                 <tr v-for="(goods,goods_idx) in item.orders_goods" :key="goods.id">
                                                     <td class="center">{{goods.good_id}}</td>
                                                     <td class="center"><img :src="goods.good_img" width="40" height="40"></td>
-                                                    <td class="center">{{goods.good_name}}</td>
+                                                    <td class="center">{{goods.good_title}}</td>
                                                     <td class="center">{{goods.cat_name}}</td>
                                                     <td class="center">{{goods.price}}</td>
                                                     <td class="center">{{goods.buy_num}}</td>
