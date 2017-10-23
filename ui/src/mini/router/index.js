@@ -95,6 +95,11 @@ const router = new Router({
       component: search,
     },
     {
+      path: '/search/list_type/:list_type',
+      name: 'search3',
+      component: search,
+    },
+    {
       path: '/class',
       name: 'class',
       component: productClass,

@@ -227,6 +227,9 @@ export default {
                     data.price_order = 'asc'
                 }
             }
+            if(this.$route.name == 'search3'){
+                data.list_type = this.$route.params.list_type;
+            }
 
 
             this.apiGet(url, data).then(function(res) {
@@ -258,6 +261,10 @@ export default {
     created() {
         if(this.$route.name == 'search2'){
             this.isIndex = false
+        }
+        if(this.$route.name == 'search3'){
+            this.isIndex = false
+            this.getSearch();
         }
         this.init();
         this.setTitle('搜索')

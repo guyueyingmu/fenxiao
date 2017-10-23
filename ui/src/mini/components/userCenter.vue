@@ -163,7 +163,7 @@ export default {
                     vm.qiandao_an = true;
                     vm.info.sign_in = true;
                     vm.info.sign_total ++;
-                    vm.info.credits = parseInt(vm.info.credits) + vm.sign_in_num;
+                    vm.info.credits = parseInt(vm.info.credits) + parseInt(vm.sign_in_num);
                     setTimeout(() => {
                         vm.qiandao_an = false
                     }, 1000)

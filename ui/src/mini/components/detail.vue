@@ -255,6 +255,10 @@ export default {
                 }
             })
         },
+        //分享成功，给用户添加相应的积分
+        share_credits() {
+            
+        },
         loadMore() {
             let page = parseInt(this.comment_pages.current_page, 10);
             clearTimeout(this.timer)
