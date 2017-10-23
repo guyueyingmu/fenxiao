@@ -113,7 +113,7 @@ const apiMethods = {
       let vm = this; console.log('a');
       if (res.data.errcode == 1) {//未登录
         console.log('b');
-        location.href = "/mini/Index/goweixin/redirect/" + base64.encode(window.location.href);
+        location.href = "http://"+window.location.host+"/mini/Index/goweixin/redirect/" + base64.encode(window.location.href);
       } else if (res.url) {
         console.log('c');
         vm.goto(res.url);
