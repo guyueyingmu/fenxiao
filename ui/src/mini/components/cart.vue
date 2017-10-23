@@ -50,7 +50,8 @@ export default {
     data() {
         return {
             list: [],
-            allCheakbox: false
+            allCheakbox: false,
+            user_phone_number: ''
         }
     },
     computed: {
@@ -76,6 +77,10 @@ export default {
     methods: {
         //结算
         go_buy() {
+            if(this.user_phone_number == ''){
+                this.goto('/reg');
+                return false;
+            }
             let _d = this.list, params = [], isSelected = false;
             for (let item of _d) {
                 if (item.selected) {
@@ -131,7 +136,8 @@ export default {
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
                     vm.list = res.data.list;
-                    vm.pages = res.data.pages
+                    vm.pages = res.data.pages;
+                    vm.user_phone_number = res.data.user_phone_number;
                 } else {
                     vm.handleError(res)
                 }

@@ -25,6 +25,8 @@ class Cart extends Base
         
         $total_page = ceil($total/$limit);
         
+        $phone_number = db('users')->where("id", session('mini.uid'))->value("phone_number");
+        
         $result = [
             "list" => $list,
             "pages" => [
@@ -32,7 +34,8 @@ class Cart extends Base
                 "total_page" => $total_page,
                 "limit" => $limit,
                 "current_page" => $page,
-            ]            
+            ],            
+            "user_phone_number" => $phone_number ? $phone_number : ''
         ];
         
         $this->success('成功', '', $result);

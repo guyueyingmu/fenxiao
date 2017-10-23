@@ -154,9 +154,13 @@ export default {
             this.showShare = true
         },
         go_buy(good_id) {
-            let params = [{ good_id: good_id, good_count: 1 }]
-            this.setCart(params)
-            this.goto('/confirm');
+            if(this.good_info.user_phone_number){
+                let params = [{ good_id: good_id, good_count: 1 }]
+                this.setCart(params)
+                this.goto('/confirm');
+            }else{
+                this.goto('/reg');
+            }            
         },
         //加入购物车
         add_cart(good_id) {

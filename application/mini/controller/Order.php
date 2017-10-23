@@ -111,6 +111,11 @@ class Order extends Base
 //        ];
         $address_id = input('param.address_id', '', 'intval');
         
+        $user_phone = db('users')->where("id", session('mini.uid'))->value("phone_number");
+        if(!$user_phone){
+            $this->error("绑定手机后才可以下单", '/mini/Index/index/#/reg');
+        }
+        
         if(!$goods){
             $this->error('缺少要购买的商品信息');
         }

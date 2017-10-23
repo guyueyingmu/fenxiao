@@ -95,6 +95,9 @@ class Good extends Base
                 ->join('__USERS__ u', 'u.id=gc.user_id', 'LEFT')
                 ->where($where)->count();
         
+        $phone_number = db('users')->where("id", session('mini.uid'))->value("phone_number");
+        $info['user_phone_number'] = $phone_number ? $phone_number : '';
+        
         //微信分享
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 //        $url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
