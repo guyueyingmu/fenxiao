@@ -175,7 +175,7 @@ export default {
         get_info() {
             let url = '/mini/Home/center_info',
                 vm = this;
-
+console.log('aaaa');
             this.apiGet(url, {}).then(function(res) {
                 if (res.code) {
                     vm.info = res.data;

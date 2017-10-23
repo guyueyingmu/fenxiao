@@ -14,10 +14,7 @@ class Base extends Controller
         if(!session("mini.uid")){
             $url = "/admin/login";
             if(\think\Request::instance()->isAjax()){
-                $result['code'] == 2;
-                $result['msg'] == "请登录后操作";
-                $result['url'] == $url;
-                exit(json_encode($result));
+                $this->error('请登录后操作', $url, ['errcode' => 1, 'errmsg' => '未登录']);
             }else{
                 $this->redirect($url);
             }

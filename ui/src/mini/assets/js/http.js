@@ -12,7 +12,7 @@ const apiMethods = {
   data() {
     return {
       loading: false,
-      winloading:false,
+      winloading: false,
       pages: {
         current_page: 1,
         total: 10,
@@ -43,7 +43,7 @@ const apiMethods = {
       setAddress: "setAddress",
       setKeyword: "setKeyword",
       setSearchList: "setSearchList",
-      
+
     }),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {
@@ -63,20 +63,20 @@ const apiMethods = {
     },
     //统一GET数据
     apiGet(url, data) {
-        let that = this;
-        that.loading = true;
+      let that = this;
+      that.loading = true;
       return new Promise((resolve, reject) => {
         this.$http.get(url, {
           params: data,
           _timeout: 5000,
           onTimeout: (request) => {
             console.log('timeout')
-        }
+          }
         }).then((response) => {
           resolve(response.body);
           that.loading = false;
         }, (response) => {
-            this.serverError(response);
+          this.serverError(response);
           reject(response);
         });
       });
@@ -84,20 +84,20 @@ const apiMethods = {
     },
     //统一POST数据
     apiPost(url, data) {
-        let that = this;
-        that.loading = true;
+      let that = this;
+      that.loading = true;
       return new Promise((resolve, reject) => {
-        this.$http.post(url, data,{
-            _timeout: 5000,
-            onTimeout: (request) => {
-              console.log('timeout')
+        this.$http.post(url, data, {
+          _timeout: 5000,
+          onTimeout: (request) => {
+            console.log('timeout')
           }
         })
           .then((response) => {
             resolve(response.body);
             that.loading = false;
           }, (response) => {
-              this.serverError(response);
+            this.serverError(response);
             reject(response);
           });
       });
@@ -108,14 +108,21 @@ const apiMethods = {
       this.loading = false;
     },
     //统一异常处理
-    handleError(res) {
-        let vm = this;
-      if (/数据不存在/.test(res.msg)) {
-        this.$alert(res.msg,function(){
-           vm.goto('/')
+    handleError(res) { console.log('abbb');
+      let vm = this; console.log('a');
+      if (res.data.errcode == 1) {//未登录
+        console.log('b');
+        location.href = "/mini/Index/goweixin?redirect=" + encodeURIComponent(window.location.href);
+      } else if (res.url) {
+        console.log('c');
+        vm.goto(res.url);
+      } else if (/数据不存在/.test(res.msg)) {
+        console.log('d');
+        this.$alert(res.msg, function () {
+          vm.goto('/')
         });
-
       } else {
+        console.log('e');
         this.$msg(res.msg);
       }
 
