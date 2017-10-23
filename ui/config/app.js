@@ -8,7 +8,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../../public/static/mini'),
     assetsSubDirectory: 'build', //引用子目录 
     assetsPublicPath: '/static/mini/', //引用根目录
-    productionSourceMap:false ,
+    productionSourceMap:true ,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
