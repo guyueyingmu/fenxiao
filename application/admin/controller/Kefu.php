@@ -78,7 +78,7 @@ class Kefu extends Base
                 ->where($where)
                 ->field("m.user_id,u.nickname,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
                 ->page($page,$limit)
-                ->order('m.read_status ASC,m.id ASC')
+                ->order('m.read_status ASC,m.add_time DESC')
                 ->select();
         $total = Db::table($subQuery." m")
                 ->where($where)
