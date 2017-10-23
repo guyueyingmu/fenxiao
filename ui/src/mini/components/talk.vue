@@ -8,7 +8,7 @@
                         <div class="item" v-for="(item,idx) in list" :key="idx">
                             <div class="time">{{item.add_time}}</div>
                             <div class="item-box" :class="{'self':item.send_user == 1}">
-                                <div class="avt"><img v-lazy="`/static/mini/img/demo/avt.jpg`" width="40" height="40">
+                                <div class="avt"><img v-lazy="head_img" width="40" height="40">
                                     <span class="name">{{item.user_name}}</span>
                                 </div>
                                 <div class="item-content">
@@ -118,6 +118,8 @@ export default {
                     vm.$refs['ss'].finishPullToRefresh()
                     vm.get_list(parseInt(vm.list_pages.current_page, 10) + 1)
                 }, 1000)
+            }else{
+                 vm.$refs['ss'].finishPullToRefresh()
             }
 
         },
