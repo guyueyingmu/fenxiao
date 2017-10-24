@@ -72,7 +72,7 @@
                         <div class="sendBox">
                             <el-row type="flex">
                                 <el-col style="width:60px;margin-right:10px;">
-                                    <el-upload class="upload-demo" action="/admin/Asset/upload?_ajax=1" name="image" :on-success="messageImgSuccess" :data="{image_type:`message_img`}" :show-file-list="false">
+                                    <el-upload class="upload-demo" action="/admin/Asset/upload?_ajax=1" name="image" :on-success="messageImgSuccess" :data="{img_type:`message_img`}" :show-file-list="false">
                                         <el-button size="info" type="primary" icon="upload"></el-button>
                                     </el-upload>
                                 </el-col>
