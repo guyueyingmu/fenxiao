@@ -146,7 +146,7 @@ class Message extends Base
                     $list[$k]['head_img'] = session('mini.img_url');
                 }else{
                     $list[$k]['user_name'] = '客服';
-                    $list[$k]['head_img'] = '';
+                    $list[$k]['head_img'] = '/static/img/avt2.jpg';
                 }
                 $id_arr[] = $v['id'];
             }

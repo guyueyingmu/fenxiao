@@ -153,7 +153,7 @@ class Kefu extends Base
                         $admin_user_info[$v['send_user_id']] = db('admin_user')->field('id,nickname')->find();
                     }
                     $list[$k]['user_name'] = $admin_user_info[$v['send_user_id']]['nickname'];
-                    $list[$k]['img_url'] = '';
+                    $list[$k]['img_url'] = '/static/img/avt2.jpg';
                 }
                 $id_arr[] = $v['id'];
             }
