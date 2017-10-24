@@ -6,8 +6,8 @@
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="img_url" label="轮播图">
+            <el-table-column prop="id" label="ID" width="60"></el-table-column>
+            <el-table-column prop="img_url" label="轮播图" width="140">
                 <template scope="scope">
                     <div style="padding:10px 0;">
                         <img :src="scope.row.img_url" width="100" height="43">
@@ -19,10 +19,10 @@
                     <a :href="scope.row.goto_url" target="_blank">{{scope.row.goto_url}}</a>
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="排序"></el-table-column>
-            <el-table-column prop="admin_user_name" label="添加人"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间"></el-table-column>
-            <el-table-column prop="status" label="是否启用">
+            <el-table-column prop="sort" label="排序" width="80"></el-table-column>
+            <el-table-column prop="admin_user_name" label="添加人" width="100"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间" width="140"></el-table-column>
+            <el-table-column prop="status" label="是否启用" width="140">
                 <template scope="scope">
                     <el-radio-group v-model="scope.row.status" size="small" @change="changeStatus(scope.row)">
                         <el-radio-button :label="'1'">启用</el-radio-button>
@@ -30,7 +30,7 @@
                     </el-radio-group>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center">
+            <el-table-column label="操作" align="center" width="120">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="onEdit(scope.$index)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>

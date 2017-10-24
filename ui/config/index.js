@@ -28,7 +28,10 @@ module.exports = {
     autoOpenBrowser: 0,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
+    proxyTable:{
+        
+    },
+    proxyTable2: {
         "/admin/**":{
             target: proxyconfig.usedorigin?proxyconfig.originHost:proxyconfig.localhost,
             changeOrigin: proxyconfig.usedorigin,

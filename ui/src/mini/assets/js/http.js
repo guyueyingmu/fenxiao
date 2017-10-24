@@ -89,11 +89,11 @@ const apiMethods = {
       that.loading = true;
       return new Promise((resolve, reject) => {
         this.$http.post(url, data, {
-          _timeout: 5000,
-          onTimeout: (request) => {
-            console.log('timeout')
-          }
-        })
+            _timeout: 5000,
+            onTimeout: (request) => {
+              console.log('timeout')
+            }
+          })
           .then((response) => {
             resolve(response.body);
             that.loading = false;
@@ -105,25 +105,24 @@ const apiMethods = {
     },
     //统一服务器出错处理
     serverError(err) {
-      this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url);
       this.loading = false;
+      this.$alert('服务器出错，错误码：' + err.status + ',\n' + 'url：' + err.url);
     },
     //统一异常处理
-    handleError(res) { console.log('abbb');
-      let vm = this; console.log('a');
-      if (res.data.errcode == 1) {//未登录
-        console.log('b');
-        window.location.href = "http://"+window.location.host+"/mini/Index/goweixin/redirect/" + base64.encode(window.location.href);
-      } else if (res.url) {
-        console.log('c');
+    handleError(res) {
+      let vm = this;
+      if (res.data.errcode == 1) { //未登录
+
+        window.location.href = "http://" + window.location.host + "/mini/Index/goweixin/redirect/" + base64.encode(window.location.href);
+      } else if (res.url) {;
         vm.goto(res.url);
       } else if (/数据不存在/.test(res.msg)) {
-        console.log('d');
+
         this.$alert(res.msg, function () {
           vm.goto('/')
         });
       } else {
-        console.log('e');
+
         this.$msg(res.msg);
       }
 

@@ -34,27 +34,27 @@
             <el-table-column prop="id" label="商品编号" width="100" ></el-table-column>
             <el-table-column prop="good_title" label="商品标题" ></el-table-column>
             <el-table-column prop="cat_name" label="商品分类" width="100"></el-table-column>
-            <el-table-column prop="specification" label="商品规格" width="100"></el-table-column>
+            <el-table-column prop="specification" label="商品规格" width="80"></el-table-column>
             <el-table-column prop="brand" label="品牌" width="150"></el-table-column>
-            <el-table-column prop="credits" label="积分兑换" width="150"></el-table-column>
-            <el-table-column prop="presenter_credits" label="赠送积分" width="150"></el-table-column>
+            <el-table-column prop="credits" label="积分兑换" width="80"></el-table-column>
+            <el-table-column prop="presenter_credits" label="赠送积分" width="80"></el-table-column>
             <el-table-column prop="good_type" label="商品类型" width="100">
                  <template scope="scope">
                   <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="distribution" label="参与分销" width="100">
+            <el-table-column prop="distribution" label="参与分销" width="80">
                 <template scope="scope">
                     {{scope.row.distribution == 1?'参与':'不参与'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="status" align="center" label="是否上架" width="100">
+            <el-table-column prop="status" align="center" label="是否上架" width="80">
                 <template scope="scope">
                     {{scope.row.status == 1?'上架':'下架'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="排序" width="100"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
+            <el-table-column prop="sort" label="排序" width="60"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间" width="140"></el-table-column>
 
         </el-table>
         <div class="pagination">

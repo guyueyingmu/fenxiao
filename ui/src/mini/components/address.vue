@@ -50,90 +50,111 @@
     </div>
 </template>
 <script>
-import http from '@/assets/js/http'
+import http from "@/assets/js/http";
 export default {
-    name: 'class',
-    mixins: [http],
-    data() {
-        return {
-            list: [],
-            is_use: 0,
-            checked:''
-        }
+  name: "class",
+  mixins: [http],
+  data() {
+    return {
+      list: [],
+      is_use: 0,
+      checked: ""
+    };
+  },
+  methods: {
+    //选择并使用
+    do_use() {
+      if (this.checked === "") {
+        this.$msg("请选择地址");
+        return false;
+      }
+
+      this.setAddress(this.list[this.checked]);
+      this.goto("/confirm");
     },
-    methods: {
-        //选择并使用
-        do_use(){
-            if(this.checked === ''){
-                this.$msg('请选择地址');
-                return false;
-            }
-            console.log(this.list[this.checked])
-            this.setAddress(this.list[this.checked]);
-           this.goto('/confirm')
-        },
-        //设为默认
-        set_default(index){
-            let url = '/mini/Address/setdefault', vm = this, data = {id: this.list[index].id};
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.$msg(res.msg);
-                    vm.get_list();
-                } else {
-                    vm.handleError(res)
-                }
-            })
-        },
-        ondel(index){
-            let vm = this;
-            this.$confirm({
-                msg: '确定删除此地址？',
-                yes: function(){vm.del(index)}
-            })
-        },
-        //删除
-        del(k){
-            let url = '/mini/Address/del', vm = this, data = {id: this.list[k].id};
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.$msg(res.msg);
-                    // vm.list.splice(k,1);
-                    vm.get_list();
-                } else {
-                    vm.handleError(res)
-                }
-            })
-        },
-        //取数据
-        get_list(page) {
-            let url = '/mini/Address/get_list',
-                vm = this;
-
-            vm.loading = true;
-            this.apiGet(url, {}).then(function(res) {
-                if (res.code) {
-                
-                    vm.list = res.data;
-                    
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
-        },
-
-    },
-    created() {
-        this.setTitle('收货地址')
-        this.get_list();
-
-        this.is_use = this.$route.params.is_use;
-        if(this.is_use == 1){
-            this.setTitle('选择地址');
+    //设为默认
+    set_default(index) {
+      let url = "/mini/Address/setdefault",
+        vm = this,
+        data = { id: this.list[index].id };
+      this.apiPost(url, data).then(function(res) {
+        if (res.code) {
+          vm.$msg(res.msg);
+          vm.map_default(index);
+        } else {
+          vm.handleError(res);
         }
+      });
+    },
+    map_default(idx) {
+      let _d = this.list;
+      for (let i = 0; i < _d.length; i++) {
+        if (i == idx) {
+          _d[i].is_default = "1";
+        } else {
+          _d[i].is_default = "0";
+        }
+      }
+      this.list = _d;
+    },
+    ondel(index) {
+      let vm = this;
+      this.$confirm({
+        msg: "确定删除此地址？",
+        yes: function() {
+          vm.del(index);
+        }
+      });
+    },
+    //删除
+    del(k) {
+      let url = "/mini/Address/del",
+        vm = this,
+        data = { id: this.list[k].id };
+      this.apiPost(url, data).then(function(res) {
+        if (res.code) {
+          vm.$msg(res.msg);
+          vm.get_list();
+          vm.checkStorage(vm.list[k].id);
+        } else {
+          vm.handleError(res);
+        }
+      });
+    },
+    checkStorage(id) {
+      let _add = window.localStorage.getItem("__Select_Address__");
+      if (_add) {
+        _add = JSON.parse(_add);
+
+        if (_add.id == id) {
+          window.localStorage.removeItem("__Select_Address__");
+        }
+      }
+    },
+    //取数据
+    get_list(page) {
+      let url = "/mini/Address/get_list",
+        vm = this;
+
+      vm.loading = true;
+      this.apiGet(url, {}).then(function(res) {
+        if (res.code) {
+          vm.list = res.data;
+        } else {
+          vm.handleError(res);
+        }
+        vm.loading = false;
+      });
     }
+  },
+  created() {
+    this.setTitle("收货地址");
+    this.get_list();
 
-
-}
-
+    this.is_use = this.$route.params.is_use;
+    if (this.is_use == 1) {
+      this.setTitle("选择地址");
+    }
+  }
+};
 </script>

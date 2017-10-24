@@ -10,7 +10,7 @@
             <div class="f-l">
                 <input type="text" class="needsclick" maxlength="4" placeholder="请输入验证码" v-model="form.c">
             </div>
-            <div class="f-r"> <img :src="verify_url" @click="change_verify();" alt="" width="92" height="42"> </div>
+            <div class="f-r"> <img :src="verify_url" @click="change_verify();" alt="" width="180" height="60"> </div>
 
         </div>
         <div class="form-item">
@@ -128,14 +128,20 @@ export default {
             // cb()
             this.apiPost(url, {phone: this.form.tel, verify: this.form.c}).then((res) => {
                 if (res.code) {
+                    vm.$msg(res.msg)
                     if (typeof cb == 'function') {
                         cb()
                     }
                 } else {
+                    this.change_verify()
                     vm.handleError(res)
                 }
             })
         }
+    },
+    beforeRouteLeave: (to, from, next) => {
+        next();
+        window.document.body.removeAttribute('style')
     }
 
 }
