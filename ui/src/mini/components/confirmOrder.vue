@@ -81,86 +81,96 @@
     </div>
 </template>
 <script>
-import http from '@/assets/js/http'
+import http from "@/assets/js/http";
 export default {
-    name: 'class',
-    mixins: [http],
-    data() {
-        return {
-            post_good_list:[],
-            info: {
-                good_list: [],
-                address: {},
-                show_address: 1,
-                total_amount: '',
-                total_credits: 1
-            },
-            address: {}
-        }
-    },
-    methods: {
-        get_good_info() {
-            let url = '/mini/Order/check_order',
-                vm = this;
+  name: "class",
+  mixins: [http],
+  data() {
+    return {
+      post_good_list: [],
+      info: {
+        good_list: [],
+        address: {},
+        show_address: 1,
+        total_amount: "",
+        total_credits: 1
+      },
+      address: {}
+    };
+  },
+  methods: {
+    get_good_info() {
+      let url = "/mini/Order/check_order",
+        vm = this;
 
-            this.apiGet(url, this.post_good_list).then(function(res) {
-                if (res.code) {
-                    vm.info = res.data;
-                    if (res.data.show_address == 1) {
-                        let _add = window.localStorage.getItem('__Select_Address__')
-                        if (_add) {
-                            vm.address = JSON.parse(_add)
-                        } else {
-                            vm.address = {}
-                        }
-                    }
-
-                } else {
-                    vm.handleError(res)
-                }
-            })
-        },
-        save_data() {
-            if(this.info.show_address && !this.address.id){
-            console.log(this.address.id)
-                this.$msg('请选择配送地址');
-                return false;
+      this.apiGet(url, this.post_good_list).then(function(res) {
+        if (res.code) {
+          vm.info = res.data;
+          if (res.data.show_address == 1) {
+            if (res.data.address) {
+              let _add = window.localStorage.getItem("__Select_Address__");
+              if (_add) {
+                vm.address = JSON.parse(_add);
+              } else {
+                vm.address = {};
+              }
+            } else {
+              vm.address = {};
             }
-            let url = '/mini/Order/add_order', vm = this, data = { good_info: JSON.stringify(vm.post_good_list), address_id: vm.address.id };
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.$msg(res.msg);
-                    setTimeout(function(){
-                        if (res.data.pay_method == 2) {
-                            vm.goto('/success/order_id/' + res.data.order_id);
-                        } else {
-                            vm.goto('/pay/order_id/' + res.data.order_id);
-                        }
-                    },500);
-                    
-                    window.localStorage.removeItem('__CART__')
-                } else {
-                    vm.handleError(res)
-                }
-            })
+          }
+        } else {
+          vm.handleError(res);
         }
+      });
     },
-    created() {
-        this.setTitle('确认订单')
-        let _list = this.$store.state.cart;
-
-        if (_list.length < 1) {
-            _list = window.localStorage.getItem('__CART__')
-            if (_list) {
-                _list = JSON.parse(_list)
+    save_data() {
+      if (this.info.show_address && !this.address.id) {
+        console.log(this.address.id);
+        this.$msg("请选择配送地址");
+        return false;
+      }
+      let url = "/mini/Order/add_order",
+        vm = this,
+        data = {
+          good_info: JSON.stringify(vm.post_good_list),
+          address_id: vm.address.id
+        };
+      this.apiPost(url, data).then(function(res) {
+        if (res.code) {
+            vm.removeStorage();
+          vm.$msg(res.msg);
+          setTimeout(function() {
+            if (res.data.pay_method == 2) {
+              vm.goto("/success/order_id/" + res.data.order_id);
+            } else {
+              vm.goto("/pay/order_id/" + res.data.order_id);
             }
+          }, 500);
 
+          window.localStorage.removeItem("__CART__");
+        } else {
+          vm.handleError(res);
         }
-        this.post_good_list = _list;
-        this.get_good_info();
+      });
+    },
+    removeStorage(){
+         window.localStorage.removeItem("__Select_Address__");
+
     }
+  },
 
+  created() {
+    this.setTitle("确认订单");
+    let _list = this.$store.state.cart;
 
-}
-
+    if (_list.length < 1) {
+      _list = window.localStorage.getItem("__CART__");
+      if (_list) {
+        _list = JSON.parse(_list);
+      }
+    }
+    this.post_good_list = _list;
+    this.get_good_info();
+  }
+};
 </script>
