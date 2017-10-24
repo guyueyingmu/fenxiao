@@ -7,9 +7,9 @@ class Base extends Controller
 {
 
     public function __construct(){
-//        $user_info = db('users')->find(1);
-//        session("mini",$user_info);
-//        session("mini.uid",1);        
+       $user_info = db('users')->find(1);
+       session("mini",$user_info);
+       session("mini.uid",1);        
         
         if(!session("mini.uid")){
             $url = "/admin/login";
