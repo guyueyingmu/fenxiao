@@ -2,7 +2,11 @@
     <div style="padding:5% 10% 0 0; " v-loading="loading">
         <el-form ref="ruleForm" label-width="230px" class="demo-ruleForm">
             <el-form-item :label="item.show_name" :prop="item.c_name" v-for="(item,k) in ruleForm" :key="item.id">
-                <el-input v-model="item.c_value" :disabled="k == 0 && c_type == 1"></el-input>
+                <el-radio-group v-model="item.c_value" size="small" v-if="item.c_name == 'user_center_sale_total_show'">
+                    <el-radio-button :label="`1`">显示</el-radio-button>
+                    <el-radio-button :label="`2`">不显示</el-radio-button>
+                </el-radio-group>
+                <el-input v-model="item.c_value" v-else :disabled="k == 0 && c_type == 1"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">保存设置</el-button>

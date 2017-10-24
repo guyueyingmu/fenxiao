@@ -18,7 +18,7 @@
                 </div>
                 <div class="inners">
                     <div class="name">{{info.nickname}}</div>
-                    <div class="cardMsg" v-if="info.distribution_level == 2">
+                    <div class="cardMsg" v-if="info.distribution_level == 2 && info.user_center_sale_total_show == 1">
                         <span class="infor-tit">营业总额：</span>
                         <span class="infor-inte">
                             <a href="javascript:;">￥{{info.business_total_amount}}</a>

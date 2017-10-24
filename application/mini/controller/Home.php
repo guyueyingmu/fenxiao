@@ -38,10 +38,13 @@ class Home extends Base
     public function center_info(){
         $user_info = db('users')->field('id,credits,earn_total,nickname,img_url,distribution_level,account_balance,sex,phone_number')->find(session('mini.uid'));
         
+        $user_info['user_center_sale_total_show'] = config('user_center_sale_total_show');
         //营业总额，统计所有订单的总额
         if($user_info['distribution_level'] == 2){
-            $user_info['business_total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
-            $user_info['business_total_amount'] = $user_info['business_total_amount'] ? $user_info['business_total_amount'] : 0;
+            if(config('user_center_sale_total_show') == 1){
+                $user_info['business_total_amount'] = db('orders')->where('order_status', 5)->where('pay_method', 'IN', [1, 2])->sum('total_amount');
+                $user_info['business_total_amount'] = $user_info['business_total_amount'] ? $user_info['business_total_amount'] : 0;
+            }
             //分销二维码
             $user_info['dis_qrcode'] = db('qrcode')->where('user_id', $user_info['id'])->value('qrcode_url');
         }
