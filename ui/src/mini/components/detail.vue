@@ -237,6 +237,7 @@ export default {
                             dataUrl: dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
                             success: function () { 
                                 // 用户确认分享后执行的回调函数
+                                vm.share_credits();
                             },
                             cancel: function () { 
                                 // 用户取消分享后执行的回调函数
@@ -248,6 +249,7 @@ export default {
                             imgUrl: imgUrl, // 分享图标
                             success: function () { 
                                 // 用户确认分享后执行的回调函数
+                                vm.share_credits();
                             },
                             cancel: function () { 
                                 // 用户取消分享后执行的回调函数
@@ -261,7 +263,14 @@ export default {
         },
         //分享成功，给用户添加相应的积分
         share_credits() {
-            
+            let url = '/mini/Home/share_credits', vm = this, data = { good_id: good_id };
+            this.apiPost(url, data).then(function(res) {
+                if (res.code) {
+                    vm.$msg(res.msg);
+                } else {
+                    vm.handleError(res)
+                }
+            })
         },
         loadMore() {
             let page = parseInt(this.comment_pages.current_page, 10);

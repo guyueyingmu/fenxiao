@@ -11,6 +11,7 @@ class Orderdislog extends Base
 {
     //定义当前菜单id
     public $menu_id = 18;
+    private static $order_status = ['', '待处理', '已发货', '已服务', '已取消', '已完成'];//订单状态
     
     public function __construct(\think\Request $request = null) {
         parent::__construct($request);
@@ -40,13 +41,18 @@ class Orderdislog extends Base
                 ->join("__ORDERS__ o", "o.id=dl.order_id", "LEFT")
                 ->join("__ADMIN_USER__ au", "au.id=dl.admin_user_id", "LEFT")
                 ->where($where)
-                ->field("dl.id,o.order_number,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status,dl.earn_time,dl.admin_user_id,au.nickname admin_user_name,dl.earn_amount_input")
+                ->field("dl.id,o.order_number,o.order_status,dl.order_user_id,dl.good_id,dl.earn_amount,dl.earn_user_id,dl.level,dl.status,dl.earn_time,dl.admin_user_id,au.nickname admin_user_name,dl.earn_amount_input")
                 ->page($page,$limit)
                 ->order('dl.id DESC')
                 ->select();
         $total = db('order_distribution_log')->alias("dl")
                 ->where($where)
                 ->count();
+        if($list){
+            foreach($list as $k=>$v){
+                $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
+            }
+        }
         
         $total_page = ceil($total/$limit);
         
