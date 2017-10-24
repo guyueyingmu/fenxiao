@@ -91,7 +91,10 @@
                                     <td class="center">
                                         <span :class="{'red': item.order_status == 1}">{{item.order_status_txt }}</span>
                                     </td>
-                                    <td class="center">{{item.pay_status_txt }}</td>
+                                    <td class="center">
+                                        <span v-if="item.pay_status_txt ==`已支付` " class="red"> {{item.pay_status_txt }}</span>
+                                        <span v-else>{{item.pay_status_txt }}</span>
+                                        </td>
                                     <td class="center">{{item.order_from_txt}}</td>
                                     <td class="center">{{item.pay_method_txt }}</td>
                                     <td class="center">{{item.finish_time}}</td>
@@ -133,7 +136,7 @@
                                                     <td class="center">{{goods.buy_num}}</td>
 
                                                     <td class="center tool_no_border" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
-                                                        <el-button v-if="((item.order_status == 1 ) && item.pay_status == 2) ||  (goods.good_type == 3 &&  item.pay_status == 1)" size="small" @click="killOrder(item,idx)">
+                                                        <el-button type="success" v-if="((item.order_status == 1 ) && item.pay_status == 2) ||  (goods.good_type == 3 &&  item.pay_status == 1)" size="small" @click="killOrder(item,idx)">
                                                             {{(goods.good_type == 1 || goods.good_type == 4) ? `立即发货` : `立即服务` }}</el-button>
                                                         <span v-else style="color:#ccc">
                                                             无操作

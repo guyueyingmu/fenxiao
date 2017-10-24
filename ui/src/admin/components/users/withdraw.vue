@@ -25,19 +25,19 @@
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
             <el-table-column prop="user_id" label="提现用户ID" width="120"></el-table-column>
             <el-table-column prop="nickname" label="提现人"></el-table-column>
-            <el-table-column prop="phone_number" label="手机号码" width="150"></el-table-column>
-            <el-table-column prop="account_balance" label="账户余额" width="100"></el-table-column>
-            <el-table-column prop="amount" label="提现金额" width="100"></el-table-column>
-            <el-table-column prop="add_time" label="提现申请时间" width="180"></el-table-column>
-            <el-table-column prop="status" label="提现审核状态" width="120">
+            <el-table-column prop="phone_number" label="手机号码" width="120"></el-table-column>
+            <el-table-column prop="account_balance" label="账户余额" width="80"></el-table-column>
+            <el-table-column prop="amount" label="提现金额" width="80"></el-table-column>
+            <el-table-column prop="add_time" label="提现申请时间" width="150"></el-table-column>
+            <el-table-column prop="status" label="状态" width="80">
                 <template scope="scope">
                     {{scope.row.status == 2?'已同意':scope.row.status == 3?'拒绝':'待处理'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="handle_time" label="提现审核时间" width="180"></el-table-column>
-            <el-table-column prop="admin_user_id" label="管理员ID" width="100"></el-table-column>
-            <el-table-column prop="admin_user_name" label="管理员名称" width="150"></el-table-column>
-            <el-table-column label="操作" width="150" align="center">
+            <el-table-column prop="handle_time" label="提现审核时间" width="150"></el-table-column>
+            <el-table-column prop="admin_user_id" label="管理员ID" width="90"></el-table-column>
+            <el-table-column prop="admin_user_name" label="管理员名称" width="120"></el-table-column>
+            <el-table-column label="操作" width="120" align="center">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="agree(scope.row)" v-if="scope.row.status == 1">同意</el-button>
                     <el-button type="text" size="small" @click="refuse(scope.row)" v-if="scope.row.status == 1">拒绝</el-button>
