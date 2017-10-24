@@ -263,7 +263,7 @@ export default {
         },
         //分享成功，给用户添加相应的积分
         share_credits() {
-            let url = '/mini/Home/share_credits', vm = this, data = { good_id: good_id };
+            let url = '/mini/Home/share_credits', vm = this, data = { good_id: this.good_id };
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
                     vm.$msg(res.msg);
