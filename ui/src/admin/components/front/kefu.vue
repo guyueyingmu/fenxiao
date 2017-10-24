@@ -47,7 +47,9 @@
 
                                 <div class="item" v-for="(item,idx) in dialog.list" :key="idx">
                                     <div class="item-box" :class="{'self':item.send_user == 2}">
-                                        <div class="avt"><img :src="item.img_url" width="40" height="40">
+                                        <div class="avt">
+                                            <img v-if="item.send_user == 2" src="../../assets/img/avt2.jpg" width="40" height="40">
+                                            <img  v-else :src="item.img_url" width="40" height="40">
                                             <span class="name">{{item.user_name}}</span>
                                         </div>
                                         <div class="item-content">
