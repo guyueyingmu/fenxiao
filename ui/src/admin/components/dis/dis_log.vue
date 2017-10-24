@@ -2,7 +2,7 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
-                <el-tab-pane label="分成日志" name="0"></el-tab-pane>
+                <el-tab-pane label="分成日志" name="1"></el-tab-pane>
                 <el-tab-pane label="已获佣" name="2"></el-tab-pane>
             </el-tabs>
         </div>
@@ -24,6 +24,7 @@
 
         <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
             <el-table-column prop="order_number" label="订单编号"></el-table-column>
+            <el-table-column prop="order_status_txt" label="订单状态"></el-table-column>
             <el-table-column prop="order_user_id" label="下单用户ID" width="110"></el-table-column>
             <el-table-column prop="good_id" label="商品ID"></el-table-column>
             <el-table-column prop="earn_amount" label="获佣金额">            
@@ -47,7 +48,7 @@
             <el-table-column prop="admin_user_name" align="center" label="管理员名称"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1">确定获佣</el-button>
+                    <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1 && scope.row.order_status == 5">确定获佣</el-button>
                 </template>
             </el-table-column>
 
@@ -82,7 +83,7 @@ export default {
     mixins: [http],
     data() {
         return {
-            tabs: '',
+            tabs: '1',
             isSearch: false,
             dialogFormVisible: false,
             dalogi_loading: false,
@@ -173,7 +174,7 @@ export default {
     },
     //组件初始化
     created() {
-        this.get_list();
+        this.get_list(1, {status: 1});
         this.setBreadcrumb(['分销', '分成日志'])
         
     }

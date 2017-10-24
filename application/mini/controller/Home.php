@@ -265,4 +265,36 @@ class Home extends Base
             $this->error('申请失败');
         }
     }
+    
+    /**
+     * 商品分享成功后给用户添加相应的积分
+     */
+    public function share_credits(){
+        $good_id = input('param.good_id', 0, 'intval');
+        if(!$good_id){
+            $this->error('参数错误');
+        }
+        Db::startTrans();
+        try{
+            //积分记录
+            db('users_credits_records')->insert([
+                'user_id' => session('mini.uid'),
+                'credits_in' => config('share_good_credits'),
+                'credits_from' => 3,
+                'track_id' => $good_id,
+                'add_time' => date('Y-m-d H:i:s'),
+            ]);
+            //修改用户积分
+            db('users')->where('id', session('mini.uid'))->setInc('credits', config('share_good_credits'));
+            
+            // 提交事务
+            Db::commit();  
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+//            $this->error("发货失败");
+            $this->error($e->getMessage());
+        }
+        $this->success('分享成功', '', config('share_good_credits'));
+    }
 }
