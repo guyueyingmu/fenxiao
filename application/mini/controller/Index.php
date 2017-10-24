@@ -25,14 +25,14 @@ class Index extends Controller
             if(!$url){
                 $this->error("参数错误");
             }
-        }elseif($param['redirect']){
+        }elseif(isset($param['redirect']) && $param['redirect']){
             $url = base64_decode($param['redirect']);
         }
         
         if($param){//传递其他参数的处理
             $other_param = "";
             foreach($param as $k=>$v){
-                if($k != "gourl"){
+                if($k != "gourl" && $k != "redirect"){
                     $other_param .= "/$k/$v";
                 }
             }
