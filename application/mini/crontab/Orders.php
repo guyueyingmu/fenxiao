@@ -1,19 +1,37 @@
 <?php
-namespace app\mini\controller;
-use think\Controller;
+namespace app\mini\crontab;
+use think\console\Command;
+use think\console\Input;
+use think\console\Output;
 
-/*
- * 脚本
+/**
+ * 计划任务 Hour
+ * @author nick
+ *
  */
-class Crontab extends Controller
-{
+class Orders extends Command{
+	
+	 protected function configure(){
+		 $this->setName('Orders')->setDescription('订单计划任务');
+	 }
+	  
+	 protected function execute(Input $input, Output $output){
+		$output->writeln('Orders Crontab job start...');
+		/*** 这里写计划任务列表集 START ***/
+	  
+		$this->handle_timeout_orders();
+		
+		/*** 这里写计划任务列表集 END ***/
+		$output->writeln('Orders Crontab job end...');
+	 }
+	 
     /*
-     * 超时处理订单
-     * 1分钟跑一次
+     * 订单计划任务
      */
-    public function handle_timeout_orders(){        
+    public function handle_timeout_orders(){      
         //下单7天后未支付取消订单
         $cancel_list = db("orders")->where("pay_status",'IN',[1,4])->where("order_status",1)->where("add_time",'lt',date('Y-m-d H:i:s', time()-7*24*3600))->field("id")->select();
+		
         if($cancel_list){
             foreach($cancel_list as $k=>$v){
                 $data = [
