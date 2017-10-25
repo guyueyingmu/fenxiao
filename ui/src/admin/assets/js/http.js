@@ -67,7 +67,8 @@ const apiMethods = {
       setTitle: "setTitle",
       setBreadcrumb: 'setBreadcrumb',
       setCatList: 'setCatList',
-      setNavlist: 'setNavlist'
+      setNavlist: 'setNavlist',
+      setTalkBox: 'setTalkBox'
     }),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {

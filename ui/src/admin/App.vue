@@ -20,7 +20,7 @@
                 </div>
 
             </div>
-            <div v-loading="$store.state.c_loading" class="layout-right">
+            <div  class="layout-right">
                 <div class="layout-main-wrap">
                     <div class="layout-header">
                         <div class="layout-header-left"></div>
@@ -60,139 +60,143 @@
             </span>
         </el-dialog>
 
+
+        <!-- 客服对话 -->
+        <talk-box v-if="$store.state.talkBox_show"></talk-box>
+
     </div>
 </template>
 
 <script>
-
-import http from './assets/js/http'
+import http from "./assets/js/http";
+import talkBox from "./components/talkBox";
 export default {
-    name: 'app',
-    mixins: [http],
-    watch: {
-        '$route'(to, from) {
-            const toDepth = to.path.split('/').length
-            const fromDepth = from.path.split('/').length
-            this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-        }
-    },
-    data() {
-        return {
-            transitionName: 'slide-left',
-            list: [],
-            nickname: '',
-            breadcrumb: {
-                l1: "",
-                l2: ''
-            },
-            c_loading: false
-        }
-    },
-
-    methods: {
-        closeLogin() {
-            window.location = '/admin/Login/log_out'
-        },
-
-        //退出登录
-        loginOut() {
-            let url = '/admin/Login/log_out', vm = this;
-            function _login_out(vm, url) {
-                vm.apiGet(url).then(function(res) {
-                    if (res.code) {
-                        window.location = '/admin/login.html'
-                    }
-                })
-            }
-
-            this.$confirm('是否退出登录?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                //_login_out(vm, url)
-                window.location = '/admin/Login/log_out'
-
-            }).catch(() => {
-            });
-        },
-        get_cat() {
-            console.log(this.$store.state.cat_list.length)
-            if (this.$store.state.cat_list.length < 1) {
-                let url = '/admin/goodscat/get_list',
-                    vm = this;
-                this.apiGet(url).then(function(res) {
-                    if (res.code) {
-                        for(let _item of res.data.list){
-                            _item.id = _item.id.toString();
-                        }
-                        vm.setCatList(res.data.list)
-
-
-                    } else {
-                        vm.handleError(res)
-                    }
-
-                })
-            }
-        },
-    },
-    computed: {
-        "minHeight"() {
-            return (window.innerHeight - 144) + 'px'
-        },
-        activeMenu() {
-            var _path = this.$route.path;
-            if (/goods_add/.test(_path) || /goods_edit/.test(_path) || /order_id/.test(_path) || /user_id/.test(_path)) {
-                _path = _path.split('/')
-                _path = '/' + _path[1];
-            }
-
-            return _path
-        },
-        activeMenuOpen() {
-            let a = [];
-            for (let i = 0; i < this.list.length; i++) {
-                a.push(i.toString())
-            }
-
-            return a
-
-        },
-
-    },
-    created() {
-
-        //初始化，获取菜单信息
-        let vm = this;
-        let url = '/admin/login/get_menu'
-        this.apiGet(url).then(function(res) {
-            if (res) {
-                let data = JSON.parse(res);
-                for (let i = 0; i < data.length; i++) {
-                    for (let k = 0; k < data[i].child.length; k++) {
-                        data[i].child[k].link = data[i].child[k].menu_link.replace('/admin/index/#', '')
-                    }
-                }
-                vm.list = data;
-                window.localStorage.setItem('__Menu__', JSON.stringify(data))
-                vm.setNavlist(data)
-
-            }
-        })
-        //用户信息
-        this.apiGet('/admin/Login/get_user_info').then(function(res) {
-            if (res.code) {
-                vm.nickname = res.data.nickname;
-                vm.get_cat();
-            }
-        })
-
-
-
-
+  name: "app",
+  mixins: [http],
+  components: {
+    talkBox
+  },
+  watch: {
+    $route(to, from) {
+      const toDepth = to.path.split("/").length;
+      const fromDepth = from.path.split("/").length;
+      this.transitionName = toDepth < fromDepth ? "slide-right" : "slide-left";
     }
+  },
+  data() {
+    return {
+      transitionName: "slide-left",
+      list: [],
+      nickname: "",
+      breadcrumb: {
+        l1: "",
+        l2: ""
+      },
+      c_loading: false
+    };
+  },
 
-}
+  methods: {
+    closeLogin() {
+      window.location = "/admin/Login/log_out";
+    },
+
+    //退出登录
+    loginOut() {
+      let url = "/admin/Login/log_out",
+        vm = this;
+      function _login_out(vm, url) {
+        vm.apiGet(url).then(function(res) {
+          if (res.code) {
+            window.location = "/admin/login.html";
+          }
+        });
+      }
+
+      this.$confirm("是否退出登录?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          //_login_out(vm, url)
+          window.location = "/admin/Login/log_out";
+        })
+        .catch(() => {});
+    },
+    get_cat() {
+      console.log(this.$store.state.cat_list.length);
+      if (this.$store.state.cat_list.length < 1) {
+        let url = "/admin/goodscat/get_list",
+          vm = this;
+        this.apiGet(url).then(function(res) {
+          if (res.code) {
+            for (let _item of res.data.list) {
+              _item.id = _item.id.toString();
+            }
+            vm.setCatList(res.data.list);
+          } else {
+            vm.handleError(res);
+          }
+        });
+      }
+    }
+  },
+  computed: {
+    minHeight() {
+      return window.innerHeight - 144 + "px";
+    },
+    activeMenu() {
+      var _path = this.$route.path;
+      if (
+        /goods_add/.test(_path) ||
+        /goods_edit/.test(_path) ||
+        /order_id/.test(_path) ||
+        /user_id/.test(_path)
+      ) {
+        _path = _path.split("/");
+        _path = "/" + _path[1];
+      }
+
+      return _path;
+    },
+    activeMenuOpen() {
+      let a = [];
+      for (let i = 0; i < this.list.length; i++) {
+        a.push(i.toString());
+      }
+
+      return a;
+    }
+  },
+  created() {
+    //初始化，获取菜单信息
+    let vm = this;
+    let url = "/admin/login/get_menu";
+    this.apiGet(url).then(function(res) {
+      if (res) {
+        let data = JSON.parse(res);
+        for (let i = 0; i < data.length; i++) {
+          for (let k = 0; k < data[i].child.length; k++) {
+            data[i].child[k].link = data[i].child[k].menu_link.replace(
+              "/admin/index/#",
+              ""
+            );
+          }
+        }
+        vm.list = data;
+        window.localStorage.setItem("__Menu__", JSON.stringify(data));
+        vm.setNavlist(data);
+      }
+    });
+    //用户信息
+    this.apiGet("/admin/Login/get_user_info").then(function(res) {
+      if (res.code) {
+        vm.nickname = res.data.nickname;
+        vm.get_cat();
+      }
+    });
+  }
+};
 </script>
 

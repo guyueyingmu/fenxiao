@@ -14,7 +14,11 @@ const state ={
         {label:'积分实物商品',id:"4",tip:'(积分兑换 需要快递)'},
         {label:'积分虚拟商品',id:"5",tip:'(积分兑换 无需快递)'},
 
-    ]
+    ],
+    talkBox_show:false,
+    talkBoxInfo:{
+
+    }
  
 }
 export default state;

@@ -236,9 +236,10 @@ body {
 
 .reply_list_dialog {
     position: fixed;
-    width: 500px;
+    width: 400px;
     right: 0;
-    top: 0%;
+    // top: 0%;
+    height: 500px;
     z-index: 998;
     bottom: 0%;
     background: #fff;
@@ -246,21 +247,50 @@ body {
 
 .reply_list_dialog_bg {
     position: fixed;
-    left: 0;
-    right: 0;
-    top: 0%;
-    z-index: 997;
-    bottom: 0%;
-    background: #000;
-    opacity: .5;
+    right: 10px;
+    top: 5px;
+    z-index: 999;
+    color: #888;
+    font-size: 18px;
+    opacity: .9;
+    &:hover i{
+        color:red;
+    }
+   
+}
+.close_btn_right{
+    float: right;
+    cursor: pointer;
+    padding: 0 10px;
+    color: #888;
+    font-size: 16px;
+    opacity: .9;
+    line-height: 35px;
+    &:hover i{
+        color:red;
+    }
+
 }
 
 .reply_list_box {
-    padding: 10px; // border-right: solid 1px #ddd;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.4);
+    // padding: 10px; // border-right: solid 1px #ddd;
+    box-shadow: 0px 0 10px 2px rgba(0, 0, 0, 0.4);
     height: 100%;
     width: 100%;
     box-sizing: border-box;
+    .header{
+        text-align: center;
+        font-size: 14px;
+        background: #f2f2f2;
+        line-height: 2.5;
+        cursor: move;
+        padding-left: 36px;
+        box-sizing: border-box;
+        border-bottom: solid 1px #ddd;
+        position: relative;
+        z-index: 99;
+        color: #888;
+    }
 }
 
 
@@ -293,7 +323,7 @@ body {
     .reply_list_content {
         overflow: hidden;
         position: absolute;
-        top: 0px;
+        top: 35px;
         left: 0px;
         right: 0px;
         bottom: 63px;

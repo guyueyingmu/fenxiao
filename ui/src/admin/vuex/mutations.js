@@ -15,6 +15,9 @@ const mutations = {
   },
   setRose(state, str) {
     state.RoseDialogVisible= str;
+  },
+  setTalkBox(state, str) {
+    state.talkBoxInfo= str;
   }
 }
 

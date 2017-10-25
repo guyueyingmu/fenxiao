@@ -1,12 +1,13 @@
 <template>
   <div>
       <div class="reply_list_main">
-            <div  class="reply_list_dialog_bg" @click="close_reply"></div>
-         
-            <transition name="left">
-                <div class="reply_list_dialog">
+        
+    
+                <div class="reply_list_dialog" v-drop>
                        <div  class="loadmore-msg" v-show="loadmore_f">加载更多信息...</div>
+                     
                     <div class="reply_list_box">
+                        <div class="header" id="move_head">与 <b>{{dialog.info.nickname}}</b> 对话中<div class="close_btn_right" @click="close_reply"><i class="el-icon-circle-cross"></i></div></div>
                         <div class="reply_list_content" id="reply_list_content">
                             <div class="sd-scroller" v-loading="replyLoading">
 
@@ -54,8 +55,9 @@
 
                         </div>
                     </div>
+                    
                 </div>
-            </transition>
+    
 
         </div>
         <el-dialog v-model="d_zoon" size="tiny">
@@ -66,6 +68,7 @@
 <script>
 import Iscroll from "@/assets/js/iscroll";
 import http from "@/assets/js/http";
+
 export default {
   name: "talkBox",
   mixins: [http],
@@ -96,7 +99,7 @@ export default {
       this.dialog.info.content = "";
       this.reply_show = true;
       this.replyLoading = true;
-      document.body.style.overflow = "hidden";
+      //   document.body.style.overflow = "hidden";
       this.bind_ws(item.user_id);
       this.current_user_id = item.user_id;
       this.get_talk_list(item.message_group_id);
@@ -141,18 +144,23 @@ export default {
     },
     close_reply() {
       this.reply_show = false;
-      document.body.style.overflow = "auto";
-      IScroll1.disable();
+      IScroll1 = null;
 
       let user_id = this.current_user_id;
       this.current_user_id = 0;
+      let vm = this;
       //退出聊天分组
       let url = "/admin/Kefu/leave_group";
       this.apiPost(url, {
         client_id: this.current_client_id,
         user_id: user_id
       }).then(res => {
-        console.log(res);
+                vm.$store.state.talkBox_show = false;
+          vm.$message({
+          message: '成功退出对话',
+          type: 'success'
+        });
+ 
       });
     },
     //小图上传成功
@@ -252,42 +260,24 @@ export default {
           this.get_talk_list(message_group_id, page);
         }
       }
-    },
-    created() {
-      setTimeout(() => {
-        if (window.IScroll1 == null || !window.IScroll1) {
-          window.IScroll1 = new IScroll("#reply_list_content", {
-            mouseWheel: true,
-            scrollbars: true
-          });
-
-          window.IScroll1.on("scrollEnd", function() {
-            vm.loadmore();
-          });
-        }
-      }, 500);
-
-      //      beforeRouteEnter(to, from, next) {
-      //     next(vm => {
-      //       if (window.IScroll1 == null || !window.IScroll1) {
-      //         setTimeout(() => {
-      //           window.IScroll1 = new IScroll("#reply_list_content", {
-      //             mouseWheel: true,
-      //             scrollbars: true
-      //           });
-      //         }, 500);
-      //       }
-      //     });
-      //   },
-      //   beforeRouteLeave(to, from, next) {
-      //     if (window.IScroll1) {
-      //       window.IScroll1.destroy();
-      //     }
-
-      //     window.IScroll1 = null;
-      //     next();
-      //   }
     }
+  },
+  created() {
+    let vm = this;
+    this.open_replyDialog(this.$store.state.talkBoxInfo);
+
+    setTimeout(() => {
+      if (window.IScroll1 == null || !window.IScroll1) {
+        window.IScroll1 = new IScroll("#reply_list_content", {
+          mouseWheel: true,
+          scrollbars: true
+        });
+
+        window.IScroll1.on("scrollEnd", function() {
+          vm.loadmore();
+        });
+      }
+    }, 500);
   }
 };
 </script>
