@@ -192,13 +192,14 @@ const drop = {
     let that = binding.def;
 
     el.addEventListener('mousedown', function (e) {
-      if(e.target && e.target.id == 'move_head'){
+      if(e.target && e.target.id == 'move_head' || e.target.nodeName == "B" && e.target.offsetParent.id == 'move_head'){
         that.x = e.offsetX;
         that.y = e.offsetY;
         el.style.top = el.offsetTop + 'px';
         el.style.left = el.offsetLeft + 'px';
         el.style.right = "inherit"
         that.canMove = true;
+        document.addEventListener('mousemove', _move, false)
       }
      
     }, false)
@@ -209,16 +210,14 @@ const drop = {
             el.style.left = (e.clientX - that.x) + 'px';
           }
     }
-    document.addEventListener('mousemove', _move, false)
+
     document.addEventListener('mouseup', function (e) {
       that.canMove = false;
-      document.removeEventListener('_move')
+      document.removeEventListener('mousemove',_move)
     }, false)
 
   },
-  update(el, binding) {
-    el.focus();
-  }
+ 
 }
 
 Vue.directive('drop', drop)

@@ -1,13 +1,14 @@
 <template>
   <div>
       <div class="reply_list_main">
+          <div class="reply-min-box" v-if="minshow"><i class="el-icon-information"></i> 与 <b>{{dialog.info.nickname}}</b> 对话中 <a href="javascript:;" @click="onMinDisable">[恢复窗口]</a> </div>
         
     
-                <div class="reply_list_dialog" v-drop>
+                <div class="reply_list_dialog" v-drop v-show="minshow ==false">
                        <div  class="loadmore-msg" v-show="loadmore_f">加载更多信息...</div>
                      
                     <div class="reply_list_box">
-                        <div class="header" id="move_head">与 <b>{{dialog.info.nickname}}</b> 对话中<div class="close_btn_right" @click="close_reply"><i class="el-icon-circle-cross"></i></div></div>
+                        <div class="header" id="move_head"><a  class="reply-min-btn" @click="onMin" href="javascript:;" title="最小化"><i class="el-icon-minus"></i></a>与 <b>{{dialog.info.nickname}}</b> 对话中<div title="关闭" class="close_btn_right" @click="close_reply"><i class="el-icon-circle-cross"></i></div></div>
                         <div class="reply_list_content" id="reply_list_content">
                             <div class="sd-scroller" v-loading="replyLoading">
 
@@ -74,6 +75,7 @@ export default {
   mixins: [http],
   data() {
     return {
+        minshow:false,
       r_pages: {},
       d_z_url: "",
       current_user_id: 0,
@@ -92,6 +94,14 @@ export default {
     };
   },
   methods: {
+      onMin(){
+          //最小化
+          this.minshow = true;
+      },
+         onMinDisable(){
+          //最大化
+          this.minshow = false;
+      },
     //回复
     open_replyDialog(item) {
       this.dialog.list = [];
@@ -155,12 +165,11 @@ export default {
         client_id: this.current_client_id,
         user_id: user_id
       }).then(res => {
-                vm.$store.state.talkBox_show = false;
-          vm.$message({
-          message: '成功退出对话',
-          type: 'success'
+        vm.$store.state.talkBox_show = false;
+        vm.$message({
+          message: "成功退出对话",
+          type: "success"
         });
- 
       });
     },
     //小图上传成功
