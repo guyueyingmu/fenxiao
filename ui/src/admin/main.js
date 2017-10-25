@@ -202,22 +202,17 @@ const drop = {
       }
      
     }, false)
+    function _move (e){
 
-    document.addEventListener('mousemove', function (e) {
-
-      if (that.canMove) {
-        el.style.top = (e.clientY - that.y) + 'px';
-        el.style.left = (e.clientX - that.x) + 'px';
-      }
-
-    }, false)
+        if (that.canMove) {
+            el.style.top = (e.clientY - that.y) + 'px';
+            el.style.left = (e.clientX - that.x) + 'px';
+          }
+    }
+    document.addEventListener('mousemove', _move, false)
     document.addEventListener('mouseup', function (e) {
-      that.canMove = false
-      if (that.canMove) {
-        el.style.top = e.clientY + 'px';
-        el.style.left = e.clientX + 'px';
-      }
-
+      that.canMove = false;
+      document.removeEventListener('_move')
     }, false)
 
   },
