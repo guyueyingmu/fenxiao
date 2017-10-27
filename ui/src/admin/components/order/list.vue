@@ -136,7 +136,7 @@
                                                     <td class="center">{{goods.buy_num}}</td>
 
                                                     <td class="center tool_no_border" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
-                                                        <el-button type="success" v-if="((item.order_status == 1 ) && item.pay_status == 2) ||  (goods.good_type == 3 &&  item.pay_status == 1)" size="small" @click="killOrder(item,idx)">
+                                                        <el-button type="success" v-if="((item.order_status == 1 ) && item.pay_status == 2) ||  (goods.good_type == 3 &&  item.pay_status == 1 && item.order_status == 1)" size="small" @click="killOrder(item,idx)">
                                                             {{(goods.good_type == 1 || goods.good_type == 4) ? `立即发货` : `立即服务` }}</el-button>
                                                         <span v-else style="color:#ccc">
                                                             无操作
