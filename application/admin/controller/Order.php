@@ -137,11 +137,13 @@ class Order extends Base
             $this->error("订单不存在");
         }
         $good_type = $order_info->ordersGoods()->value('good_type');
+		
         if(!in_array($good_type,[1, 4])){
             $this->error("非发货类型订单");
         }
         
         $validate_res = $this->validate($data,"OrdersConsignment.consignment"); 
+		
         if ($validate_res !== true) {
             $this->error($validate_res);
         }
@@ -152,9 +154,15 @@ class Order extends Base
         Db::startTrans();
         try{
             //保存发货记录
-            $data['admin_user_id'] = session("admin.uid");
-            $data['add_time'] = date("Y-m-d H:i:s");
-            db('OrderConsignment')->insert($data);
+			$fh_data['consignment_time'] = $data['consignment_time'];
+			$fh_data['consignment_user'] = $data['consignment_user'];
+			$fh_data['deliver_method'] = $data['deliver_method'];
+			$fh_data['order_id'] = $data['order_id'];
+			$fh_data['tracking_number'] = $data['tracking_number'];
+            $fh_data['admin_user_id'] = session("admin.uid");
+            $fh_data['add_time'] = date("Y-m-d H:i:s");
+			
+            db('OrderConsignment')->insert($fh_data);
             
             //修改订单状态为已发货，订单分成处理改为已处理
             Orders::update(['id' => $data['order_id'], 'order_status' => 2, 'distribution_status' => 2]);
@@ -173,7 +181,7 @@ class Order extends Base
         }
             
         //写日志
-        $this->add_log($this->menu_id,['title' => '后台发货操作', 'data' => $data]);
+        $this->add_log($this->menu_id,['title' => '后台发货操作', 'data' => $fh_data]);
         
         $this->success("发货成功");
     }
@@ -219,7 +227,7 @@ class Order extends Base
                         $presenter_credits += $v['presenter_credits'];
                     }
                 }
-                if($log_data_all){
+                if(isset($log_data_all)){
                     db("OrderDistributionLog")->insertAll($log_data_all);
                 }
 
