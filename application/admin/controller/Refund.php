@@ -58,7 +58,8 @@ class Refund extends Base
         if($list){
             foreach($list as $k=>$v){
                 $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
-                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];                
+                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];   
+                $list[$k]['status'] = intval($v['status']);
             }
         }
         $total = db('orders_refund_apply')->alias("r")
