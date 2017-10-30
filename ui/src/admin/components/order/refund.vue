@@ -32,6 +32,11 @@
         <!-- 表格 -->
         <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="order_number" label="订单编号" width="120"></el-table-column>
+            <el-table-column prop="total_amount" label="退款金额" width="120">
+                <template scope="scope">
+                    <span>￥{{scope.row.total_amount}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="order_status_txt" label="订单状态" width="120"></el-table-column>
             <el-table-column prop="pay_status_txt" label="支付状态" width="120"></el-table-column>
             <el-table-column prop="user_id" label="下单用户ID" width="120"></el-table-column>
@@ -49,7 +54,7 @@
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template scope="scope">
-                    <el-button type="text" v-if="scope.row.status == 1 " size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
+                    <el-button type="text" v-if="scope.row.status == 1 || scope.row.pay_status == 5" size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -142,15 +147,14 @@ export default {
         //退款弹窗
         onRefund(item, idx) {
             this.dialogForm = {
-                handle_user: '',
-                handle_time: '',
-                handle_note: '',
-                status: '',
-                id: ''
+                handle_user: item.handle_user,
+                handle_time: item.handle_time,
+                handle_note: item.handle_note,
+                status: item.status,
+                id: item.id
             }
             this.dialogFormVisible = true;
             this.dialog_temp = item;
-            this.dialogForm.id = item.id;
 
 
         },

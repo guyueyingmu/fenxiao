@@ -51,7 +51,7 @@ class Refund extends Base
                 ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
                 ->where($where)
-                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time,o.order_status,o.pay_status")
+                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time,o.order_status,o.pay_status,o.total_amount")
                 ->page($page,$limit)
                 ->order('r.id DESC')
                 ->select();
@@ -135,7 +135,10 @@ class Refund extends Base
             if($data['status'] == 2){
                 //调用微信退款接口处理退款
                 $pay = new \app\mini\controller\Payment();
-                $pay->refund($refund['order_id']);
+                $refund_res = $pay->refund($refund['order_id']);
+                if($refund_res['code'] == 0){
+                    exception($refund_res['msg']);
+                }
             }
             
             // 提交事务
