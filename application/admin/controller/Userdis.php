@@ -39,7 +39,7 @@ class Userdis extends Base
         $list = $users->where($where)->alias('u')
                 ->join('__USERS__ pu', 'pu.id=u.pid', 'LEFT')
                 ->join('__QRCODE__ q', 'q.user_id=u.id', 'LEFT')
-                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,q.qrcode_url dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND distribution_level=2 AND pid=u.`id`)) c_total2")
+                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,q.qrcode_url dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND  pid=u.`id`)) c_total2")
                 ->page($page,$limit)
                 ->order('u.id DESC')
                 ->select();
