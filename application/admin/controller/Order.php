@@ -36,13 +36,15 @@ class Order extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
         $order_status = input("param.order_status", "", 'intval');
         $pay_status = input("param.pay_status", "", 'intval');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
                 
         $where = "1=1";
-        $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (u.phone_number LIKE '%$user_phone%')" : "";
         $where .= $order_status ? " AND o.order_status = $order_status" : "";
         $where .= $pay_status ? " AND o.pay_status = $pay_status" : "";
         $where .= $start_time ? " AND o.add_time >= '$start_time 00:00:00'" : "";

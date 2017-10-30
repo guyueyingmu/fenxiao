@@ -17,7 +17,8 @@ class Disapply extends Base
     
     /**
      * 获取列表
-     * @param string $keyword 用户id，手机号码
+     * @param string $keyword 用户id
+     * @param string $user_phone 手机号码
      * @param int $status 提现审核状态（1待处理 2已同意 3拒绝）
      * @return string
      */
@@ -27,9 +28,11 @@ class Disapply extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
                 
         $where = "1=1";
-        $where .= $keyword ? " AND (u.id LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (u.id LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (u.phone_number LIKE '%$user_phone%')" : "";
         
         $list = db('distribution_apply')->alias('da')
                 ->join("__USERS__ u", "u.id=da.user_id", "LEFT")

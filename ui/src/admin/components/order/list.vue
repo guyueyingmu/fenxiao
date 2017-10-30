@@ -13,7 +13,10 @@
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
                 <el-form-item label-width="1">
-                    <el-input v-model="formInline.keyword" placeholder="订单编号/用户手机" style="width:200px"></el-input>
+                    <el-input v-model="formInline.keyword" placeholder="订单编号" style="width:200px"></el-input>
+                </el-form-item>
+                <el-form-item label-width="1">
+                    <el-input v-model="formInline.user_phone" placeholder="用户手机" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="订单状态">
                     <el-select v-model="formInline.order_status" placeholder="订单状态" style="width:120px" clearable>
@@ -295,6 +298,7 @@ export default {
             formInline: {
                 order_status: '',
                 keyword: '',
+                user_phone: '',
                 pay_status: '',
                 start_time: '',
                 end_time: ''
@@ -388,6 +392,7 @@ export default {
             this.formInline = {
                 goods_type: '',
                 keyword: '',
+                user_phone: '',
                 cat_id: '',
                 status: ''
             }

@@ -20,6 +20,7 @@ class Userdis extends Base
     /**
      * 获取列表
      * @param string $keyword 用户id，手机号码
+     * @param string $user_phone 手机号码
      * @return string
      */
     public function get_list(){
@@ -28,9 +29,11 @@ class Userdis extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
                 
         $where = "u.distribution_level = 2 AND u.status = 1";
-        $where .= $keyword ? " AND (u.id LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (u.id LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (u.phone_number LIKE '%$user_phone%')" : "";
 
         $users = new Users();
         $list = $users->where($where)->alias('u')

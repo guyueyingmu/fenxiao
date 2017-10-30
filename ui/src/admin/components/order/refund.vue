@@ -11,7 +11,10 @@
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
                 <el-form-item label-width="1">
-                    <el-input v-model="formInline.keyword" placeholder="订单编号/用户手机" style="width:200px"></el-input>
+                    <el-input v-model="formInline.keyword" placeholder="订单编号" style="width:200px"></el-input>
+                </el-form-item>
+                <el-form-item label-width="1">
+                    <el-input v-model="formInline.user_phone" placeholder="用户手机" style="width:200px"></el-input>
                 </el-form-item>
 
                 <el-form-item label="申请时间">
@@ -127,6 +130,7 @@ export default {
             isSearch: false,
             formInline: {
                 keyword: '',
+                user_phone: '',
                 start_time: '',
                 end_time: ''
 
@@ -180,6 +184,7 @@ export default {
         onReset() {
             this.formInline = {
                 keyword: '',
+                user_phone: '',
                 status: '',
                 start_time: '',
                 end_time: ''
