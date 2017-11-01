@@ -28,7 +28,7 @@
             <el-table-column prop="phone_number" label="手机号码" width="120"></el-table-column>
             <el-table-column prop="account_balance" label="账户余额" width="80"></el-table-column>
             <el-table-column prop="amount" label="提现金额" width="80"></el-table-column>
-            <el-table-column prop="add_time" label="提现申请时间" width="150"></el-table-column>
+            <el-table-column prop="add_time" label="提现申请时间"></el-table-column>
             <el-table-column prop="status" label="状态" width="80">
                 <template scope="scope">
                     {{scope.row.status == 2?'已同意':scope.row.status == 3?'拒绝':'待处理'}}

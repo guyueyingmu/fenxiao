@@ -1,3 +1,10 @@
+.line(@l: 2) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp:@l;
+}
 body {
     padding: 0;
     margin: 0;
@@ -524,4 +531,104 @@ body {
     a{
         color: #fff;
     }
+}
+.order-list-2{
+    ul{
+        margin: 0;
+        padding: 0;
+    }
+    li{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: block;
+        border:solid 1px #ddd;
+        margin-bottom:30px;
+    }
+    .li-head{
+        display: flex;
+        justify-content: space-between;
+        background: #eee;
+        align-items: center;
+        span{
+            padding: 10px 5px;
+            box-sizing: border-box;
+            &:nth-child(1){
+                flex-basis: 140px;
+            }
+            &:nth-child(2){
+                flex-basis: 120px;
+            }
+            &:nth-child(3){
+                flex-basis: 80px;
+            }
+            &:nth-child(4){
+                flex-basis: 160px;
+            }
+            &:nth-child(5){
+                flex-basis: 90px;
+            }
+            &:nth-child(6){
+                flex-basis: 90px;
+            }
+            &:nth-child(7){
+                flex-basis: 120px;
+            }
+        }
+        
+
+    }
+    .center{
+        text-align: center;
+    }
+    .right{
+        text-align: right;
+    }
+    .t-left{
+        text-align: left;
+    }
+    .thumb-list{
+        display: flex;
+        .pic{
+            margin-right: 10px;
+        }
+        .info{
+            flex: 1;
+            text-align: left;
+            .title{
+                margin-top: 5px;
+                .line(3);
+                font-size: 14px;
+                min-height: 55px;
+                word-break: break-all;
+             
+            }
+            .des{
+                color: #888;
+            }
+        }
+    }
+    em{
+        font-style: normal;
+    }
+    td{
+        padding: 10px 2em;
+        border-right: solid 1px #ddd;
+        &:last-child{
+            border-right: none;
+        }
+    }
+    table{
+        border-collapse:collapse;border-spacing:0;
+    }
+    tr ~ tr{
+        td{
+            border-top: solid 1px #ddd;
+        }
+    }
+}
+.no-data{
+    text-align: center;
+    line-height: 5;
+    color: #888;
 }

@@ -47,7 +47,76 @@
 
         </div>
 
-        <div class="ui-table-wrapper" style="width: 100%" v-loading.body="loading">
+        <div class="order-list-2" v-loading="loading"  v-if="list && list.length">
+            <ul>
+                <li v-for="(item,idx) in list" :key="item.id">
+                    <div class="li-head">
+                            <span><b>{{item.add_time}}</b></span>
+                            <span>订单号: {{item.order_number}}</span>
+               
+                            <span>￥{{item.total_amount}}</span>
+                            <span><em v-if="item.pay_status_txt ==`已支付` " class="red"> {{item.pay_status_txt }}</em>
+                                        <em v-else>{{item.pay_status_txt }}</em>
+                                        （{{item.pay_method_txt }}）
+                            </span>
+                            <span>来源: {{item.order_from_txt}}</span>
+                          
+                            <span>状态：<em :class="{'red': item.order_status == 1}">{{item.order_status_txt }}</em></span>
+                            <!-- <span>下单ID: {{item.user_id}}</span> -->
+                            <span>手机: {{item.phone_number}}</span>
+                            <span>完成时间：{{item.finish_time||'无'}}</span>
+                            <span style="padding-right:1em;"><el-button type="text" size="small" @click="goto('/orders/order_id/'+item.id)">查看详情</el-button> <el-button type="text" size="small" v-if="item.order_status == 1" @click="OnCannelOrder(idx)">取消订单</el-button></span>
+                        </div>
+                        <div class="li-mian">
+                                 <table class="" style="width: 100%">
+                                      <colgroup>
+                                            <col width="120">
+                                            <col width="500">
+                                            <col width="200">
+                                            <col>
+                                   
+                                        </colgroup>
+                                        <tr v-for="(goods,goods_idx) in item.orders_goods" :key="goods.id">
+                                            <td class="center">商品ID:{{goods.good_id}}</td>
+                                            <td class="center">
+                                                <div class="thumb-list">
+                                                  <div class="pic"><img :src="goods.good_img" width="80" height="80"></div>
+                                                    <div class="info">
+                                                        <div class="title">{{goods.good_title}}</div>
+                                                        <div class="des">商品分类：{{goods.cat_name}}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="right" style="padding-right:7em">
+                                                <div>￥{{goods.price}}</div>
+                                                <div>x {{goods.buy_num}}</div>
+                                            </td>
+                                     
+                                            <td class="t-left tool_no_border"  style="padding-left:7em" v-if="goods_idx == 0" :rowspan="item.orders_goods.length">
+                                                <el-button type="success" v-if="((item.order_status == 1 ) && item.pay_status == 2) ||  (goods.good_type == 3 &&  item.pay_status == 1)" size="small" @click="killOrder(item,idx)">
+                                                    {{(goods.good_type == 1 || goods.good_type == 4) ? `立即发货` : `立即服务` }}</el-button>
+                                                <span v-else style="color:#ccc">
+                                                    无操作
+                                                </span>
+                                            </td>
+                                            
+                                        </tr>
+                                </table>
+
+                        </div>
+
+                </li>
+            </ul>
+       
+
+
+        </div>
+        <div class="no-data" v-else>
+            没有数据
+        </div>
+
+
+        <!-- <div class="ui-table-wrapper" style="width: 100%" v-loading.body="loading">
             <template v-if="list && list.length">
 
                 <template v-for="(item,idx) in list">
@@ -157,7 +226,7 @@
                 没有数据
             </div>
 
-        </div>
+        </div> -->
 
         <!-- 分页 -->
         <div class="pagination">
@@ -168,7 +237,7 @@
         <!-- 弹窗 -->
         <el-dialog :title="dalogi_title[dialogForm.good_type]" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading">
             <!-- 要发货 1，3，4 -->
-            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 1 ||   dialogForm.good_type == 3 || dialogForm.good_type == 4">
+            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 1 || dialogForm.good_type == 4">
                 <el-form-item label="发货员" label-width="100px">
                     <el-input v-model="dialogForm.consignment_user" auto-complete="off" placeholder="发货员"></el-input>
                 </el-form-item>
@@ -196,7 +265,7 @@
             </el-form>
 
             <!-- 要服务 2 5 -->
-            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 2 || dialogForm.good_type == 5">
+            <el-form :model="dialogForm" :inline="true" v-if="dialogForm.good_type == 2 || dialogForm.good_type == 5 ||   dialogForm.good_type == 3">
                 <el-form-item label="服务员" label-width="100px">
                     <el-input v-model="dialogForm.service_user" auto-complete="off" placeholder="发货员"></el-input>
                 </el-form-item>
@@ -257,209 +326,195 @@
 </template>
 
 <script>
-import http from '@/assets/js/http'
-import { DatePicker } from 'element-ui'
+import http from "@/assets/js/http";
+import { DatePicker } from "element-ui";
 export default {
-    mixins: [http],
-    components: {
-        "el-date-picker": DatePicker,
+  mixins: [http],
+  components: {
+    "el-date-picker": DatePicker
+  },
+  data() {
+    return {
+      dalogi_title: ["", "实物商品发货", "虚拟商品服务", "预约商品服务", "积分商品发货", "积分商品服务"],
+      dalogi_loading: false,
+      dialog_temp: {},
+      dialogForm: {
+        consignment_user: "",
+        deliver_method: "",
+        consignment_time: "",
+        tracking_number: "",
+        good_type: "",
+        service_user: "",
+        service_time: "",
+        total_amount: "",
+        note: ""
+      },
+      dialogFormVisible: false,
+      tabs: "",
+      value8: "",
+      isSearch: false,
+      formInline: {
+        order_status: "",
+        keyword: "",
+        pay_status: "",
+        start_time: "",
+        end_time: ""
+      },
+      list: []
+    };
+  },
+  methods: {
+    //处理订单
+    killOrder(item, idx) {
+      this.dialogForm = {
+        consignment_user: "",
+        deliver_method: "",
+        consignment_time: "",
+        tracking_number: "",
+        good_type: "",
+        service_user: "",
+        service_time: "",
+        note: ""
+      };
+      this.dialogFormVisible = true;
+      this.dialog_temp = item;
+      this.dialogForm.order_id = item.id;
+      this.dialogForm.good_type = item.orders_goods[0].good_type;
     },
-    data() {
-        return {
-            dalogi_title: [
-                '',
-                '实物商品发货',
-                '虚拟商品服务',
-                '预约商品服务',
-                '积分商品发货',
-                '积分商品服务',
-            ],
-            dalogi_loading: false,
-            dialog_temp: {},
-            dialogForm: {
-                consignment_user: '',
-                deliver_method: '',
-                consignment_time: '',
-                tracking_number: '',
-                good_type: '',
-                service_user: '',
-                service_time: '',
-                total_amount: '',
-                note: ''
+    //确定弹窗
+    dialog_ok() {
+      let url = "/admin/order/consignment",
+        vm = this,
+        data = this.dialogForm;
 
-            },
-            dialogFormVisible: false,
-            tabs: '',
-            value8: '',
-            isSearch: false,
-            formInline: {
-                order_status: '',
-                keyword: '',
-                pay_status: '',
-                start_time: '',
-                end_time: ''
+      if (
+        this.dialogForm.good_type == 2 ||
+        this.dialogForm.good_type == 5 ||
+        this.dialogForm.good_type == 3
+      ) {
+        url = "/admin/order/service";
+      }
+      vm.dalogi_loading = true;
 
-            },
-            list: []
+      this.apiPost(url, data).then(function(res) {
+        if (res.code) {
+          vm.$message.success(res.msg);
+          vm.dialogFormVisible = false;
+        } else {
+          vm.handleError(res);
         }
+        vm.dalogi_loading = false;
+      });
     },
-    methods: {
-        //处理订单
-        killOrder(item, idx) {
-            this.dialogForm = {
-                consignment_user: '',
-                deliver_method: '',
-                consignment_time: '',
-                tracking_number: '',
-                good_type: '',
-                service_user: '',
-                service_time: '',
-                note: ''
-            }
-            this.dialogFormVisible = true;
-            this.dialog_temp = item;
-            this.dialogForm.order_id = item.id;
-            this.dialogForm.good_type = item.orders_goods[0].good_type
+    //格式化日期范围
+    fromDate(val) {
+      if (val) {
+        let _v = val.split(" - ");
+        this.formInline.start_time = _v[0];
+        this.formInline.end_time = _v[1];
+      }
+    },
+    fromDate2(val) {
+      this.dialogForm.consignment_time = val;
+    },
+    fromDate3(val) {
+      this.dialogForm.service_time = val;
+    },
+    //选择标签页
+    onSelectedTabs(tab) {
+      let _name = tab.name;
+      let _data = {
+        order_status: _name
+      };
+      this.get_list(1, _data);
+    },
+    //设置下架状态样式
+    tableRowClassName(row, index) {
+      if (row.status == 2) {
+        return "status_off";
+      } else {
+        return "";
+      }
+    },
+    //表格设置分类名
+    getType(good_type_id) {
+      let id = parseInt(good_type_id, 10);
+      return this.$store.getters.GOODTYPE[id - 1].label;
+    },
 
+    //清空搜索
+    onReset() {
+      this.formInline = {
+        goods_type: "",
+        keyword: "",
+        cat_id: "",
+        status: ""
+      };
+      this.get_list(1);
+      this.isSearch = false;
+    },
+    //搜索
+    onSearch(current_paged) {
+      this.isSearch = true;
+      current_paged = current_paged || 1;
+      let searchData = this.formInline;
+      this.get_list(current_paged, searchData);
+    },
 
-        },
-        //确定弹窗
-        dialog_ok(done) {
-
-            let url = '/admin/order/consignment', vm = this, data = this.dialogForm;
-            if (this.dialogForm.good_type == 2 || this.dialogForm.good_type == 5 || this.dialogForm.good_type == 3) {
-                url = '/admin/order/service'
-            }
-            vm.dalogi_loading = true;
-
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    vm.$message.success(res.msg);
-                    done();
-
-
-                } else {
-                    vm.handleError(res)
-                }
-                vm.dalogi_loading = false;
-            })
-
-        },
-        //格式化日期范围
-        fromDate(val) {
-            if (val) {
-                let _v = val.split(' - ');
-                this.formInline.start_time = _v[0]
-                this.formInline.end_time = _v[1]
-            }
-        },
-        fromDate2(val) {
-            this.dialogForm.consignment_time = val
-        },
-        fromDate3(val) {
-            this.dialogForm.service_time = val
-        },
-        //选择标签页
-        onSelectedTabs(tab) {
-            let _name = tab.name;
-            let _data = {
-                order_status: _name
-            }
-            this.get_list(1, _data)
-
-        },
-        //设置下架状态样式
-        tableRowClassName(row, index) {
-            if (row.status == 2) {
-                return 'status_off'
-            } else {
-                return ''
-            }
-
-        },
-        //表格设置分类名
-        getType(good_type_id) {
-            let id = parseInt(good_type_id, 10)
-            return this.$store.getters.GOODTYPE[id - 1].label;
-        },
-
-        //清空搜索
-        onReset() {
-            this.formInline = {
-                goods_type: '',
-                keyword: '',
-                cat_id: '',
-                status: ''
-            }
-            this.get_list(1)
-            this.isSearch = false;
-        },
-        //搜索
-        onSearch(current_paged) {
-            this.isSearch = true;
-            current_paged = current_paged || 1;
-            let searchData = this.formInline
-            this.get_list(current_paged, searchData)
-        },
-
-        //取数据
-        get_list(page, searchData) {
-            page = page || 1;
-            let url = '/admin/order/get_list?page=' + page,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url, searchData).then(function(res) {
-                if (res.code) {
-                    vm.list = res.data.list;
-                    vm.pages = res.data.pages
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
-        },
-        //取消订单确认
-        OnCannelOrder(index) {
-            let vm = this;
-            this.$confirm('是否取消当前订单?', '提示', {
-                confirmButtonText: '确定取消',
-                cancelButtonText: '点错了',
-                type: 'warning'
-            }).then(() => {
-                vm.removeData(index)
-
-            }).catch(() => {
-            });
-
-        },
-
-        //删除列表数据
-        removeData(index) {
-            let _data = this.list[index]
-            let url = '/admin/order/cancel?order_id=' + _data.id,
-                vm = this;
-            vm.loading = true;
-            this.apiGet(url).then(function(res) {
-                if (res.code) {
-                    vm.list.splice(index, 1)
-                    vm.$message({
-                        type: 'success',
-                        message: res.msg
-                    });
-                } else {
-                    vm.handleError(res)
-                }
-                vm.loading = false;
-            })
+    //取数据
+    get_list(page, searchData) {
+      page = page || 1;
+      let url = "/admin/order/get_list?page=" + page,
+        vm = this;
+      vm.loading = true;
+      this.apiGet(url, searchData).then(function(res) {
+        if (res.code) {
+          vm.list = res.data.list;
+          vm.pages = res.data.pages;
+        } else {
+          vm.handleError(res);
         }
-
+        vm.loading = false;
+      });
     },
-    //组件初始化
-    created() {
-        this.get_list();
-        this.setBreadcrumb(['订单', '订单列表'])
+    //取消订单确认
+    OnCannelOrder(index) {
+      let vm = this;
+      this.$confirm("是否取消当前订单?", "提示", {
+        confirmButtonText: "确定取消",
+        cancelButtonText: "点错了",
+        type: "warning"
+      })
+        .then(() => {
+          vm.removeData(index);
+        })
+        .catch(() => {});
+    },
 
+    //删除列表数据
+    removeData(index) {
+      let _data = this.list[index];
+      let url = "/admin/order/cancel?order_id=" + _data.id,
+        vm = this;
+      vm.loading = true;
+      this.apiGet(url).then(function(res) {
+        if (res.code) {
+          vm.list.splice(index, 1);
+          vm.$message({
+            type: "success",
+            message: res.msg
+          });
+        } else {
+          vm.handleError(res);
+        }
+        vm.loading = false;
+      });
     }
-
-}
+  },
+  //组件初始化
+  created() {
+    this.get_list();
+    this.setBreadcrumb(["订单", "订单列表"]);
+  }
+};
 </script>
