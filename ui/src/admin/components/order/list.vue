@@ -326,12 +326,10 @@
 </template>
 <script>
 import http from "@/assets/js/http";
-import { DatePicker } from "element-ui";
+
 export default {
   mixins: [http],
-  components: {
-    "el-date-picker": DatePicker
-  },
+
   data() {
     return {
       dalogi_title: ["", "实物商品发货", "虚拟商品服务", "预约商品服务", "积分商品发货", "积分商品服务"],
@@ -449,7 +447,6 @@ export default {
         pay_status: "",
         start_time: "",
         end_time: ""
-        
       };
       this.get_list(1);
       this.isSearch = false;

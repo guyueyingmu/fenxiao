@@ -63,13 +63,14 @@ const apiMethods = {
   },
   methods: {
     //统一全局方法引用  见 "./vuex/actions.js"
-    ...mapActions({
-      setTitle: "setTitle",
-      setBreadcrumb: 'setBreadcrumb',
-      setCatList: 'setCatList',
-      setNavlist: 'setNavlist',
-      setTalkBox: 'setTalkBox'
-    }),
+    ...mapActions([
+      'setTitle',
+      'setBreadcrumb',
+      'setCatList',
+      'setNavlist',
+      'addTalkBox',
+      'removeTalkBox'
+    ]),
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {
       if (this.isSearch) {

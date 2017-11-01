@@ -55,12 +55,10 @@ export default {
   },
   methods: {
     open_replyDialog(item) {
-      if (this.$store.state.talkBox_show) {
-        this.$alert("一次只能跟一个用户对话");
-      } else {
-        this.$store.state.talkBox_show = true;
-        this.setTalkBox(item);
-      }
+        if(item){
+            this.addTalkBox(item);
+        }
+      
     },
     //清空
     onReset() {

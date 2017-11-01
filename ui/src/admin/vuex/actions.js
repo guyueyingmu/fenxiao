@@ -15,8 +15,11 @@ const actions ={
       setRose({commit},val){
           commit('setRose',val)
       },
-      setTalkBox({commit},val){
-          commit('setTalkBox',val)
+      addTalkBox({commit},val){
+          commit('addTalkBox',val)
+      },
+      removeTalkBox({commit},val){
+          commit('removeTalkBox',val)
       }
     
 }

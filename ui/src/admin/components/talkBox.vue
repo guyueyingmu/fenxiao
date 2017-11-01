@@ -1,15 +1,15 @@
 <template>
   <div>
       <div class="reply_list_main">
-          <div class="reply-min-box" v-if="minshow"><i class="el-icon-information"></i> 与 <b>{{dialog.info.nickname}}</b> 对话中 <a href="javascript:;" @click="onMinDisable">[恢复窗口]</a> </div>
-        
-    
+      
+          <div class="reply-min-box" v-if="minshow" v-autoPosition>
+              <i class="el-icon-information"></i> 与 <b>{{dialog.info.nickname}}</b> 对话中 <a href="javascript:;" @click="onMinDisable">[恢复窗口]</a> </div> 
                 <div class="reply_list_dialog" v-drop v-show="minshow ==false">
                        <div  class="loadmore-msg" v-show="loadmore_f">加载更多信息...</div>
                      
                     <div class="reply_list_box">
                         <div class="header" id="move_head"><a  class="reply-min-btn" @click="onMin" href="javascript:;" title="最小化"><i class="el-icon-minus"></i></a>与 <b>{{dialog.info.nickname}}</b> 对话中<div title="关闭" class="close_btn_right" @click="close_reply"><i class="el-icon-circle-cross"></i></div></div>
-                        <div class="reply_list_content" id="reply_list_content">
+                        <div class="reply_list_content" :id="reply_id">
                             <div class="sd-scroller" v-loading="replyLoading">
 
                                 <div class="item" v-for="(item,idx) in dialog.list" :key="idx">
@@ -39,7 +39,7 @@
                             </div>
 
                         </div>
-                        <div class="sendBox">
+                        <div class="sendBox"  @keyup.enter="onSend">
                             <el-row type="flex">
                                 <el-col style="width:60px;margin-right:10px;">
                                     <el-upload class="upload-demo" action="/admin/Asset/upload?_ajax=1" name="image" :on-success="messageImgSuccess" :data="{img_type:`message_img`}" :show-file-list="false">
@@ -47,7 +47,7 @@
                                     </el-upload>
                                 </el-col>
                                 <el-col>
-                                    <el-input type="textarea" autosize placeholder="请输入内容" v-model="dialog.info.content"> </el-input>
+                                    <el-input type="text"  placeholder="请输入内容" v-model="dialog.info.content"> </el-input>
                                 </el-col>
                                 <el-col style="width:60px;margin-left:10px;">
                                     <el-button type="info" @click="onSend()">发送</el-button>
@@ -73,9 +73,11 @@ import http from "@/assets/js/http";
 export default {
   name: "talkBox",
   mixins: [http],
+  props:['boxInfo'],
   data() {
     return {
-        minshow:false,
+        reply_id:'reply_list_content',
+      minshow: false,
       r_pages: {},
       d_z_url: "",
       current_user_id: 0,
@@ -84,6 +86,7 @@ export default {
       replyLoading: false,
       loadmore_f: false,
       reply_show: false,
+      IScroll:{},
       dialog: {
         info: {
           content: "",
@@ -94,14 +97,14 @@ export default {
     };
   },
   methods: {
-      onMin(){
-          //最小化
-          this.minshow = true;
-      },
-         onMinDisable(){
-          //最大化
-          this.minshow = false;
-      },
+    onMin() {
+      //最小化
+      this.minshow = true;
+    },
+    onMinDisable() {
+      //最大化
+      this.minshow = false;
+    },
     //回复
     open_replyDialog(item) {
       this.dialog.list = [];
@@ -138,12 +141,14 @@ export default {
             break;
           case "msg":
             console.log(1, data.content);
+            vm.new_msg(data.content);
+
             vm.dialog.list.push(data.content);
             setTimeout(() => {
-              IScroll1.refresh();
+              vm.IScroll.refresh();
             }, 200);
             setTimeout(() => {
-              IScroll1.scrollTo(0, IScroll1.maxScrollY, 200);
+              vm.IScroll.scrollTo(0, vm.IScroll.maxScrollY, 200);
             }, 300);
             break;
           // 当mvc框架调用GatewayClient发消息时直接alert出来
@@ -152,20 +157,49 @@ export default {
         }
       };
     },
-    close_reply() {
-      this.reply_show = false;
-      IScroll1 = null;
+    new_msg(data) {
+        let vm = this;
+      // type
+      if (data.send_user != 2) {
+        //不是自己发的
+        let msg = data.user_name+ '：' + data.content;
+         const h = this.$createElement;
+        if (data.type == 2) {
+          msg = "[图片]";
+        } else if (data.type == 3) {
+          msg = "[商品信息]";
+        }
+      
 
+       let _c =  this.$notify({
+          title: "您有新消息",
+          message:  h('div', [msg,h('div',{ style: 'color: #888'},data.add_time.substr(11))]),
+          type: "info",
+          onClick:function () {
+              let id = data.user_id;
+              if(vm.minshow){
+                  vm.minshow = false
+                  _c.close();
+              }
+              
+          }
+        });
+      }
+    },
+    close_reply() {
+      let vm = this;
+      this.reply_show = false;
+      vm.IScroll = null;
       let user_id = this.current_user_id;
       this.current_user_id = 0;
-      let vm = this;
+
       //退出聊天分组
       let url = "/admin/Kefu/leave_group";
       this.apiPost(url, {
         client_id: this.current_client_id,
         user_id: user_id
       }).then(res => {
-        vm.$store.state.talkBox_show = false;
+        vm.removeTalkBox(user_id)
         vm.$message({
           message: "成功退出对话",
           type: "success"
@@ -215,11 +249,11 @@ export default {
           if (res.data.pages.current_page < 2) {
             vm.dialog.list = res.data.list;
             setTimeout(() => {
-              IScroll1.refresh();
+              vm.IScroll.refresh();
             }, 600);
             setTimeout(() => {
-              IScroll1.scrollTo(0, IScroll1.maxScrollY, 200);
-              IScroll1.enable();
+              vm.IScroll.scrollTo(0, vm.IScroll.maxScrollY, 200);
+              vm.IScroll.enable();
             }, 750);
           } else {
             let _list = vm.dialog.list;
@@ -259,9 +293,10 @@ export default {
       });
     },
     loadmore() {
+        let vm = this;
       console.log("load more");
       let message_group_id = this.dialog.info.message_group_id;
-      if (window.IScroll1.maxScrollY < 0 && window.IScroll1.y == 0) {
+      if (vm.IScroll.maxScrollY < 0 && vm.IScroll.y == 0) {
         let page = parseInt(this.r_pages.current_page, 10);
         if (page < parseInt(this.r_pages.total_page, 10)) {
           page = page + 1;
@@ -273,19 +308,28 @@ export default {
   },
   created() {
     let vm = this;
-    this.open_replyDialog(this.$store.state.talkBoxInfo);
+    this.open_replyDialog(this.boxInfo);
 
-    setTimeout(() => {
-      if (window.IScroll1 == null || !window.IScroll1) {
-        window.IScroll1 = new IScroll("#reply_list_content", {
-          mouseWheel: true,
-          scrollbars: true
-        });
 
-        window.IScroll1.on("scrollEnd", function() {
+
+
+  },
+  mounted(){
+         let vm = this;
+
+        let time = parseInt(Math.random() * 10000 + 10000 ,10);
+        this.reply_id = 'reply_list_content' + time;
+ 
+        setTimeout(() => {
+       let el = document.getElementById('reply_list_content' + time)
+            vm.IScroll = new IScroll(el, {
+            mouseWheel: true,
+            scrollbars: true
+            });
+        vm.IScroll.on("scrollEnd", function() {
           vm.loadmore();
         });
-      }
+     
     }, 500);
   }
 };
