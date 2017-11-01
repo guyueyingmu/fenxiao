@@ -57,7 +57,7 @@
                             <span>￥{{item.total_amount}}</span>
                             <span><em v-if="item.pay_status_txt ==`已支付` " class="red"> {{item.pay_status_txt }}</em>
                                         <em v-else>{{item.pay_status_txt }}</em>
-                                        （{{item.pay_method_txt }}）
+                                        <em v-if="item.pay_method_txt">（{{item.pay_method_txt}}）</em>
                             </span>
                             <span>来源: {{item.order_from_txt}}</span>
                           

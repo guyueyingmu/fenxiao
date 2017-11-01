@@ -57,13 +57,13 @@
 
             <h4 class="pen_title">订单商品</h4>
             <el-table :data="order_info.orders_goods" border style="width: 100%">
-                <el-table-column prop="good_num" label="商品编号" width="120"></el-table-column>
+                <el-table-column prop="good_id" label="商品ID" width="120"></el-table-column>
                 <el-table-column prop="good_img" label="商品图标" width="100">
                     <template scope="scope">
                         <img :src="scope.row.good_img" width="40" heigth="40" alt="">
                     </template>
                 </el-table-column>
-                <el-table-column prop="good_name" label="商品名称"></el-table-column>
+                <el-table-column prop="good_title" label="商品名称"></el-table-column>
                 <el-table-column prop="cat_name" label="商品分类" width="120"> </el-table-column>
                 <el-table-column prop="credits" label="扣减积分" width="120"> </el-table-column>
                 <el-table-column prop="price" label="购买单价" width="120"> </el-table-column>

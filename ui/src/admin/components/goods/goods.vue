@@ -36,7 +36,7 @@
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="商品编号" width="70" ></el-table-column>
+            <el-table-column prop="id" label="商品ID" width="70" ></el-table-column>
             <el-table-column prop="good_title" label="商品标题"></el-table-column>
             <el-table-column prop="cat_name" label="商品分类" width="100"></el-table-column>
             <el-table-column prop="specification" label="商品规格" width="100"></el-table-column>
