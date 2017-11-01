@@ -19,7 +19,8 @@ class Userdismember extends Base
     
     /**
      * 获取列表
-     * @param string $keyword 用户id，手机号码
+     * @param string $keyword 用户id
+     * @param string $user_phone 手机号码
      * @return string
      */
     public function get_list(){
@@ -28,9 +29,11 @@ class Userdismember extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
                 
         $where = "distribution_level != 0 AND pid != 0 AND status = 1";
-        $where .= $keyword ? " AND (id LIKE '%$keyword%' OR phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (id LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (phone_number LIKE '%$user_phone%')" : "";
 
         $users = new Users();
         $list = $users->where($where)

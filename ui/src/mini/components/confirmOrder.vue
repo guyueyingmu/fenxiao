@@ -112,7 +112,7 @@ export default {
               if (_add) {
                 vm.address = JSON.parse(_add);
               } else {
-                vm.address = {};
+                vm.address = res.data.address;
               }
             } else {
               vm.address = {};

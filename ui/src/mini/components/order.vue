@@ -81,7 +81,7 @@ export default {
         refund(index) {
             let url = '/mini/Refund/add', vm = this, data = { order_id: this.list[index].id };
             this.$confirm({
-                msg: '确定申请退款？<br />申请换货后将有客服人员跟进处理！',
+                msg: '确定申请退款？<br />申请退款后将有客服人员跟进处理！',
                 yes: function() {
                     vm.apiPost(url, data).then(function(res) {
                         if (res.code) {

@@ -22,7 +22,8 @@ class Refund extends Base
     
     /**
      * 获取列表
-     * @param string $keyword 关键词搜索
+     * @param string $keyword 订单编号
+     * @param string $user_phone 用户手机
      * @param string $start_time 开始时间
      * @param string $end_time 结束时间
      * @param int $status 处理状态（1未处理，2同意，3拒绝）
@@ -34,13 +35,15 @@ class Refund extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
         $status = input("param.status", "", 'trim');
                 
         $where = "1=1";
         $where .= $status ? " AND r.status = '$status'" : "";
-        $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (o.order_number LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (u.phone_number LIKE '%$user_phone%')" : "";
         $where .= $start_time ? " AND r.add_time >= '$start_time 00:00:00'" : "";
         $where .= $end_time ? " AND r.add_time <= '$end_time 23:59:59'" : "";
         
@@ -48,14 +51,15 @@ class Refund extends Base
                 ->join("__ORDERS__ o", "o.id=r.order_id", "LEFT")
                 ->join("__USERS__ u", "u.id=o.user_id", "LEFT")
                 ->where($where)
-                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time,o.order_status,o.pay_status")
+                ->field("r.*,u.phone_number,u.nickname,o.order_number,o.add_time order_add_time,o.order_status,o.pay_status,o.total_amount")
                 ->page($page,$limit)
                 ->order('r.id DESC')
                 ->select();
         if($list){
             foreach($list as $k=>$v){
                 $list[$k]['order_status_txt'] = self::$order_status[$v['order_status']];
-                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];                
+                $list[$k]['pay_status_txt'] = self::$pay_status[$v['pay_status']];   
+                $list[$k]['status'] = intval($v['status']);
             }
         }
         $total = db('orders_refund_apply')->alias("r")
@@ -115,7 +119,8 @@ class Refund extends Base
         if(!$refund){
             $this->error("退款申请不存在");
         }
-        if($refund['status'] != 1){
+        $order_info = db('orders')->where('id', $refund['order_id'])->field('id,pay_status')->find();
+        if($refund['status'] != 1 && $order_info['pay_status'] != 5){
             $this->error("已处理，不能重复处理");
         }
         
@@ -132,7 +137,10 @@ class Refund extends Base
             if($data['status'] == 2){
                 //调用微信退款接口处理退款
                 $pay = new \app\mini\controller\Payment();
-                $pay->refund($refund['order_id']);
+                $refund_res = $pay->refund($refund['order_id']);
+                if($refund_res['code'] == 0){
+                    exception($refund_res['msg']);
+                }
             }
             
             // 提交事务

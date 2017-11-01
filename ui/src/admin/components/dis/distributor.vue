@@ -2,8 +2,11 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="分销商用户ID/手机号码">
-                    <el-input v-model="formInline.keyword" placeholder="分销商用户ID/手机号码" style="width:170px"></el-input>
+                <el-form-item label="分销商用户ID">
+                    <el-input v-model="formInline.keyword" placeholder="分销商用户ID" style="width:170px"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号码">
+                    <el-input v-model="formInline.user_phone" placeholder="手机号码" style="width:170px"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -69,6 +72,7 @@ export default {
             show_user_name: '',
             formInline: {
                 keyword: '',
+                user_phone: '',
             },
             list: []
         }
@@ -83,6 +87,7 @@ export default {
         onReset() {
             this.formInline = {
                 keyword: '',
+                user_phone: '',
             }
             this.get_list(1)
             this.isSearch = false;

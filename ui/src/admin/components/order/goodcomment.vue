@@ -10,7 +10,7 @@
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
                 <el-form-item label-width="1">
-                    <el-input v-model="formInline.keyword" placeholder="订单编号/用户手机" style="width:200px"></el-input>
+                    <el-input v-model="formInline.keyword" placeholder="用户ID" style="width:200px"></el-input>
                 </el-form-item>
 
                 <el-form-item label="申请时间">

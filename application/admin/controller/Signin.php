@@ -17,7 +17,8 @@ class Signin extends Base
     
     /**
      * 获取列表
-     * @param string $keyword 用户id，手机号码
+     * @param string $keyword 用户id
+     * @param string $user_phone 手机号码
      * @param string $start_time 签到开始时间
      * @param string $end_time 签到结束时间
      * @return string
@@ -28,11 +29,13 @@ class Signin extends Base
         $limit = config('admin_page_limit');
         
         $keyword = input("param.keyword", "", 'trim');
+        $user_phone = input("param.user_phone", "", 'trim');
         $start_time = input("param.start_time", "", 'trim');
         $end_time = input("param.end_time", "", 'trim');
                 
         $where = "1=1";
-        $where .= $keyword ? " AND (u.id LIKE '%$keyword%' OR u.phone_number LIKE '%$keyword%')" : "";
+        $where .= $keyword ? " AND (u.id LIKE '%$keyword%')" : "";
+        $where .= $user_phone ? " AND (u.phone_number LIKE '%$user_phone%')" : "";
         $where .= $start_time ? " AND s.signin_date >= '$start_time'" : "";
         $where .= $end_time ? " AND s.signin_date <= '$end_time'" : "";
         

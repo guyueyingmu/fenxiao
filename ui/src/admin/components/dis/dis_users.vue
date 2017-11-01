@@ -2,8 +2,11 @@
     <div>
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="用户ID/手机号码">
-                    <el-input v-model="formInline.keyword" placeholder="用户ID/手机号码" style="width:140px"></el-input>
+                <el-form-item label="用户ID">
+                    <el-input v-model="formInline.keyword" placeholder="用户ID" style="width:140px"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号码">
+                    <el-input v-model="formInline.user_phone" placeholder="手机号码" style="width:140px"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -56,7 +59,7 @@ export default {
             isSearch: false,
             formInline: {
                 keyword: '',
-
+                user_phone: '',
             },
             list: []
         }
@@ -103,6 +106,7 @@ export default {
         onReset() {
             this.formInline = {
                 keyword: '',
+                user_phone: '',
             }
             this.get_list(1)
             this.isSearch = false;
