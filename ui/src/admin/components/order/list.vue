@@ -18,20 +18,20 @@
                 <el-form-item label="订单状态">
                     <el-select v-model="formInline.order_status" placeholder="订单状态" style="width:120px" clearable>
 
-                        <el-option :value="1" label="待处理"></el-option>
-                        <el-option :value="2" label="已服务"></el-option>
-                        <el-option :value="3" label="已发货"></el-option>
-                        <el-option :value="4" label="已取消"></el-option>
-                        <el-option :value="5" label="已完成"></el-option>
+                        <el-option value="1" label="待处理"></el-option>
+                        <el-option value="2" label="已服务"></el-option>
+                        <el-option value="3" label="已发货"></el-option>
+                        <el-option value="4" label="已取消"></el-option>
+                        <el-option value="5" label="已完成"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="支付状态">
                     <el-select v-model="formInline.pay_status" placeholder="支付状态" style="width:120px" clearable>
-                        <el-option :value="1" label="未支付"></el-option>
-                        <el-option :value="2" label="已支付"></el-option>
-                        <el-option :value="3" label="已退费"></el-option>
-                        <el-option :value="4" label="支付失败"></el-option>
-                        <el-option :value="5" label="退费失败"></el-option>
+                        <el-option value="1" label="未支付"></el-option>
+                        <el-option value="2" label="已支付"></el-option>
+                        <el-option value="3" label="已退费"></el-option>
+                        <el-option value="4" label="支付失败"></el-option>
+                        <el-option value="5" label="退费失败"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="下单日期">
@@ -444,10 +444,12 @@ export default {
     //清空搜索
     onReset() {
       this.formInline = {
-        goods_type: "",
+        order_status: "",
         keyword: "",
-        cat_id: "",
-        status: ""
+        pay_status: "",
+        start_time: "",
+        end_time: ""
+        
       };
       this.get_list(1);
       this.isSearch = false;

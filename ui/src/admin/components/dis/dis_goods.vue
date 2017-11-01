@@ -100,7 +100,7 @@ export default {
         //清空
         onReset() {
             this.formInline = {
-                goods_type: '',
+                   good_type: '',
                 keyword: '',
                 cat_id: '',
             }

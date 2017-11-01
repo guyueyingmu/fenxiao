@@ -83,11 +83,12 @@
             <el-row>
                 <el-col :span="8">
                     <el-form-item label="商品类型"  class="is-required">
-                        <el-tooltip class="item" effect="dark" :content="form.good_type?$store.state.GOODTYPE[form.good_type-1].tip:''" placement="top">
-                            <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
-                                <el-option v-for="item in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label"></el-option>
-                            </el-select>
-                        </el-tooltip>
+                        <el-select placeholder="商品类型" v-model="form.good_type" style="display:block;">
+                            <el-option v-for="(item,k) in $store.state.GOODTYPE" :key="item.id" :value="item.id" :label="item.label">
+                                <span style="float: left">{{item.label}}</span>
+                                <span style="float: right;opacity:0.7">{{item.tip}}</span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">

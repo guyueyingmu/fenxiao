@@ -2,6 +2,7 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
+                <el-tab-pane label="全部" name="0"></el-tab-pane>
                 <el-tab-pane label="换货申请" name="1"></el-tab-pane>
                 <el-tab-pane label="已换货" name="2"></el-tab-pane>
                 <el-tab-pane label="已拒绝" name="3"></el-tab-pane>
@@ -195,11 +196,10 @@ export default {
             this.isSearch = false;
         },
         //搜索
-        onSearch(current_paged) {
+        onSearch() {
             this.isSearch = true;
-            current_paged = current_paged || 1;
-            let searchData = this.formInline
-            this.get_list(current_paged, searchData)
+            let searchData = this.formInline;
+            this.get_list(1, searchData)
         },
 
         //取数据

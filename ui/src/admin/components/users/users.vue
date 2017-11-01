@@ -101,8 +101,8 @@
                 <div>
                     <el-form-item label="登录状态" label-width="100px">
                         <el-select v-model="dialogForm.status" placeholder="状态" style="width:120px" clearable>
-                            <el-option :value="1" label="启用"></el-option>
-                            <el-option :value="2" label="禁用"></el-option>
+                            <el-option value="1" label="启用"></el-option>
+                            <el-option value="2" label="禁用"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>

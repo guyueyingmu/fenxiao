@@ -2,6 +2,7 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
+                <el-tab-pane label="全部" name="0"></el-tab-pane>
                 <el-tab-pane label="退款申请" name="1"></el-tab-pane>
                 <el-tab-pane label="已退款" name="2"></el-tab-pane>
                 <el-tab-pane label="已拒绝" name="3"></el-tab-pane>
