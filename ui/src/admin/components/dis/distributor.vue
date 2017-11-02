@@ -28,6 +28,14 @@
             <el-table-column prop="p_user" label="上级分销商"></el-table-column>
             <el-table-column prop="c_total" label="一级会员总数"></el-table-column>
             <el-table-column prop="c_total2" label="二级会员总数"></el-table-column>
+            <el-table-column prop="sepcial_dis" label="特殊分销商">
+                <template scope="scope">
+                    <el-radio-group v-model="scope.row.sepcial_dis" size="small" @change="changeStatus(scope.row)">
+                        <el-radio-button :label="'1'">是</el-radio-button>
+                        <el-radio-button :label="'2'">否</el-radio-button>
+                    </el-radio-group>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="200" align="center">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="open_win(scope.row)">分销二维码</el-button>
@@ -78,6 +86,21 @@ export default {
         }
     },
     methods: {
+        changeStatus(item) {
+            let vm = this, url = '/admin/Userdis/special_dis', data = {
+                id: item.id,
+                status: item.sepcial_dis
+            };
+            this.apiPost(url, data).then((res) => {
+                vm.dialogLoading = false
+                if (res.code) {
+                    vm.$message.success(res.msg);
+
+                } else {
+                    vm.handleError(res)
+                }
+            })
+        },
         open_win(data){
             this.show_qrcode = data.dis_qrcode;
             this.show_user_name = data.nickname;
