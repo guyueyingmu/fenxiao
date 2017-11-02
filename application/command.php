@@ -9,4 +9,4 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-return ['app\mini\crontab\Orders', 'app\mini\crontab\Prize'];
+return ['app\mini\crontab\Orders', 'app\mini\crontab\Teamprize', 'app\mini\crontab\Totalprize'];
