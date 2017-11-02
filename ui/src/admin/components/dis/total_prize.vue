@@ -2,15 +2,18 @@
     <div>
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
-                <el-tab-pane label="分成日志" name="1"></el-tab-pane>
+                <el-tab-pane label="分销总额奖" name="1"></el-tab-pane>
                 <el-tab-pane label="已获佣" name="2"></el-tab-pane>
             </el-tabs>
         </div>
 
         <div class="page_heade">
             <el-form :inline="true" :model="formInline">
-                <el-form-item label="获佣分销商用户ID">
-                    <el-input v-model="formInline.keyword" placeholder="获佣分销商用户ID" style="width:140px"></el-input>
+                <el-form-item label="分销商用户ID">
+                    <el-input v-model="formInline.keyword" placeholder="分销商用户ID" style="width:140px"></el-input>
+                </el-form-item>
+                <el-form-item label="分销商手机">
+                    <el-input v-model="formInline.user_phone" placeholder="分销商手机" style="width:140px"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -23,19 +26,13 @@
         </div>
 
         <el-table :data="list"  border style="width: 100%" v-loading.body="loading">
-            <el-table-column prop="order_number" label="订单编号"></el-table-column>
-            <el-table-column prop="order_status_txt" label="订单状态"></el-table-column>
-            <el-table-column prop="order_user_id" label="下单用户ID" width="110"></el-table-column>
-            <el-table-column prop="good_id" label="商品ID"></el-table-column>
-            <el-table-column prop="earn_amount" label="获佣金额">            
+            <el-table-column prop="earn_user_id" label="用户ID"></el-table-column>
+            <el-table-column prop="nickname" label="用户呢称"></el-table-column>
+            <el-table-column prop="phone_number" label="手机号码" width="110"></el-table-column>
+            <el-table-column prop="earn_time" label="总额奖获得日期"></el-table-column>
+            <el-table-column prop="earn_amount" label="获得金额">            
                 <template scope="scope">
                     {{scope.row.status == 2?scope.row.earn_amount_input:scope.row.earn_amount}}
-                </template>
-            </el-table-column>
-            <el-table-column prop="earn_user_id" label="获佣分销商用户ID" width="150"></el-table-column>
-            <el-table-column prop="level" label="获佣级别">                
-                <template scope="scope">
-                    {{scope.row.level == 1?'一级获佣':'二级获佣'}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" label="获佣状态">                
@@ -43,12 +40,12 @@
                     {{scope.row.status == 1?'等待获佣':'已获佣'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="earn_time" label="获佣时间" width="170"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间" width="170"></el-table-column>
             <el-table-column prop="admin_user_id" label="管理员ID"></el-table-column>
             <el-table-column prop="admin_user_name" align="center" label="管理员名称"></el-table-column>
             <el-table-column label="操作" align="center">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1 && scope.row.order_status == 5">确定获佣</el-button>
+                    <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1">确定获佣</el-button>
                 </template>
             </el-table-column>
 
@@ -57,6 +54,10 @@
 
             <el-pagination v-if="parseInt(pages.total_page,10) > 1"  @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
             </el-pagination>
+        </div>
+
+        <div style="color:#8492A6">
+            备注： 每个月由系统统计当月特别分销商树状结构所有层级订单总额的总额奖百分比（分销设置中设置）
         </div>
 
         <!-- 弹窗 -->
@@ -89,8 +90,8 @@ export default {
             dalogi_loading: false,
             formInline: {
                 keyword: '',
+                user_phone: '',
                 status: 1,
-
             },
             list: [],
             dialogForm: {
@@ -107,7 +108,7 @@ export default {
         },
         //保存数据
         post_handle() {
-            let url = '/admin/Orderdislog/handle', vm = this, data = this.dialogForm;
+            let url = '/admin/Totalprize/handle', vm = this, data = this.dialogForm;
             vm.dalogi_loading = true;
             this.apiPost(url, data).then(function(res) {
                 if (res.code) {
@@ -140,6 +141,7 @@ export default {
         //清空
         onReset() {
             this.formInline.keyword = '';
+            this.formInline.user_phone = '';             
             this.get_list(1, this.formInline)
             this.isSearch = false;
         },
@@ -155,7 +157,7 @@ export default {
         //取数据
         get_list(page, searchData) {
             page = page || 1;
-            let url = '/admin/Orderdislog/get_list?page=' + page,
+            let url = '/admin/Totalprize/get_list?page=' + page,
                 vm = this;
 
             vm.loading = true;
@@ -175,7 +177,7 @@ export default {
     //组件初始化
     created() {
         this.get_list(1, {status: 1});
-        this.setBreadcrumb(['分销', '分成日志'])
+        this.setBreadcrumb(['分销', '分销总额奖'])
         
     }
 
