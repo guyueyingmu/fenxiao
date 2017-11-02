@@ -33,7 +33,7 @@ class Orderdislog extends Base
         $keyword = input("param.keyword", "", 'trim');
         $status = input("param.status", "", 'intval');
                 
-        $where = "1=1";
+        $where = "o.order_status != 4";
         $where .= $status ? " AND dl.status = '$status'" : "";
         $where .= $keyword ? " AND dl.earn_user_id = '$keyword'" : "";
         
@@ -46,6 +46,7 @@ class Orderdislog extends Base
                 ->order('dl.id DESC')
                 ->select();
         $total = db('order_distribution_log')->alias("dl")
+                ->join("__ORDERS__ o", "o.id=dl.order_id", "LEFT")
                 ->where($where)
                 ->count();
         if($list){
