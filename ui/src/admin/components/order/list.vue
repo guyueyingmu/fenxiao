@@ -258,10 +258,6 @@
 
                     </el-input>
                 </el-form-item>
-                  
-                    <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type == 3">
-                        <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
-                    </el-form-item>
             </el-form>
 
             <!-- 要服务 2 5 -->
@@ -276,6 +272,10 @@
                 <el-form-item label="备注" label-width="100px">
                     <el-input v-model="dialogForm.note" auto-complete="off" placeholder="备注">
                     </el-input>
+                </el-form-item>
+                  
+                <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type == 3">
+                    <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
                 </el-form-item>
 
             </el-form>
