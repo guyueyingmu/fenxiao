@@ -47,7 +47,7 @@ class Goodsall extends Base
         $list = $goods->alias("g")
                 ->join("__GOODS_CATEGORY__ gc", "gc.id=g.cat_id", "LEFT")
                 ->where($where)
-                ->field("g.id, g.good_title, g.specification, g.brand, g.price, g.credits, g.presenter_credits, g.good_type, g.distribution, g.status, g.sort, g.add_time, gc.cat_name")
+                ->field("g.id, g.good_title,g.good_img, g.specification, g.brand, g.price, g.credits, g.presenter_credits, g.good_type, g.distribution, g.status, g.sort, g.add_time, gc.cat_name")
                 ->page($page,$limit)
                 ->order('g.id DESC')
                 ->select();

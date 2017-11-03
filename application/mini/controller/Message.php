@@ -26,7 +26,17 @@ class Message extends Base
         $res = Gateway::bindUid($client_id, $uid);
         // 加入某个群组（可调用多次加入多个群组）
         $res2 = Gateway::joinGroup($client_id, $group_id);
-        if($res && $res2){
+		//查询客服组中存在的client_id
+		$data = Gateway::getClientSessionsByGroup('kefu');
+		//随机选择一个客服的client_id 加入用户组
+		if(count($data)>0){
+			$kefu_num = count($data);
+			$rand_num = rand(0,$kefu_num-1);
+			$key_array = array_keys($data);
+			$kefu_client_id = $key_array[$rand_num];
+			$res3 = Gateway::joinGroup($kefu_client_id, $group_id);
+		}
+        if($res && $res2 && $res3){
             $this->success('连接成功');
         }else{
             $this->error('连接失败');
