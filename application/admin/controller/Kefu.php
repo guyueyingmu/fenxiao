@@ -76,7 +76,7 @@ class Kefu extends Base
         $list = Db::table($subQuery." m")
                 ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
                 ->where($where)
-                ->field("m.user_id,u.nickname,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
+                ->field("m.user_id,u.nickname,u.img_url,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
                 ->page($page,$limit)
                 ->order('m.read_status ASC,m.add_time DESC')
                 ->select();

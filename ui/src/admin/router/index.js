@@ -48,6 +48,12 @@ const DisGoods = () =>
 const OrderdisLog = () =>
   import( /* webpackChunkName: "orderdisLog" */ '@/components/dis/dis_log')
 
+  const team_prize = () =>
+  import( /* webpackChunkName: "team_prize" */ '@/components/dis/team_prize')
+
+  const total_prize = () =>
+  import( /* webpackChunkName: "total_prize" */ '@/components/dis/total_prize')
+
 const Userdis = () =>
   import( /* webpackChunkName: "userdis" */ '@/components/dis/distributor')
 
@@ -177,6 +183,16 @@ const router = new Router({
     path: '/dislog', //分成日志
     name: 'OrderdisLog',
     component: OrderdisLog
+  },
+  {
+    path: '/team_prize', //分销团队奖
+    name: 'team_prize',
+    component: team_prize
+  },
+  {
+    path: '/total_prize', //分销总额奖
+    name: 'total_prize',
+    component: total_prize
   },
   {
     path: '/disusers', //分销会员

@@ -4,7 +4,7 @@
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
                 <el-tab-pane label="全部订单" name="0"></el-tab-pane>
                 <el-tab-pane label="待处理订单" name="1"></el-tab-pane>
-                <el-tab-pane label="已服务订单" name="2"></el-tab-pane>
+                <el-tab-pane label="已服务订单" name="3"></el-tab-pane>
                 <el-tab-pane label="已取消订单" name="4"></el-tab-pane>
                 <el-tab-pane label="已完成订单" name="5"></el-tab-pane>
             </el-tabs>
@@ -19,8 +19,8 @@
                     <el-select v-model="formInline.order_status" placeholder="订单状态" style="width:120px" clearable>
 
                         <el-option value="1" label="待处理"></el-option>
-                        <el-option value="2" label="已服务"></el-option>
-                        <el-option value="3" label="已发货"></el-option>
+                        <el-option value="2" label="已发货"></el-option>
+                        <el-option value="3" label="已服务"></el-option>
                         <el-option value="4" label="已取消"></el-option>
                         <el-option value="5" label="已完成"></el-option>
                     </el-select>
@@ -258,10 +258,6 @@
 
                     </el-input>
                 </el-form-item>
-                  
-                    <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type == 3">
-                        <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
-                    </el-form-item>
             </el-form>
 
             <!-- 要服务 2 5 -->
@@ -276,6 +272,10 @@
                 <el-form-item label="备注" label-width="100px">
                     <el-input v-model="dialogForm.note" auto-complete="off" placeholder="备注">
                     </el-input>
+                </el-form-item>
+                  
+                <el-form-item label="线下收款" label-width="100px" v-if="dialogForm.good_type == 3">
+                    <el-input v-model="dialogForm.total_amount" auto-complete="off" placeholder="收款总额"></el-input>
                 </el-form-item>
 
             </el-form>

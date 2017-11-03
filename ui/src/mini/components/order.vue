@@ -30,8 +30,8 @@
                     <div>
                         <button type="button" class="ui-btn active" v-if="item.pay_status == 1 && item.pay_method != 2" @click="goto('/pay/order_id/'+item.id)">付款</button>
                         <button type="button" class="ui-btn active" v-if="item.comment_status == 1" @click="goto('/start/order_id/'+item.id)">评价</button>
-                        <button type="button" class="ui-btn active" v-if="item.refund == 1" @click="refund(idx)">退款</button>
-                        <button type="button" class="ui-btn active" v-if="item.exchange == 1" @click="exchange(idx)">换货</button>
+                        <button type="button" class="ui-btn active" v-if="item.refund == 1" @click="refund(idx)">申请退款</button>
+                        <button type="button" class="ui-btn active" v-if="item.exchange == 1" @click="exchange(idx)">申请换货</button>
                     </div>
                 </div>
             </li>

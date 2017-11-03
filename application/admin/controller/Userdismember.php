@@ -91,6 +91,7 @@ class Userdismember extends Base
         
         if($data['distribution_level'] == 1){
             $data['out_distributor_time'] = date("Y-m-d H:i:s");
+            $data['sepcial_dis'] = 2;
             $log_title = '退出分销商';
         }else{
             $data['distributor_time'] = date("Y-m-d H:i:s");

@@ -39,7 +39,7 @@ class Userdis extends Base
         $list = $users->where($where)->alias('u')
                 ->join('__USERS__ pu', 'pu.id=u.pid', 'LEFT')
                 ->join('__QRCODE__ q', 'q.user_id=u.id', 'LEFT')
-                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,pu.nickname p_user,q.qrcode_url dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND  pid=u.`id`)) c_total2")
+                ->field("u.id,u.nickname,u.phone_number,u.distributor_time,u.account_balance,u.earn_total,u.pid,u.sepcial_dis,pu.nickname p_user,q.qrcode_url dis_qrcode,(SELECT COUNT(*) FROM mb_users WHERE status=1 AND pid=u.`id`) c_total,(SELECT COUNT(*) FROM mb_users WHERE status = 1 AND pid IN (SELECT id FROM mb_users WHERE status = 1 AND  pid=u.`id`)) c_total2")
                 ->page($page,$limit)
                 ->order('u.id DESC')
                 ->select();
@@ -117,5 +117,28 @@ class Userdis extends Base
         ];
 //        exit(json_encode($result));
         $this->success("成功", "", $result);
+    }
+    
+    /**
+     * 更改是否特殊经销商
+     */
+    public function special_dis(){
+        $id = input('param.id', '', 'intval');
+        if(!$id){
+            $this->error('参数错误');
+        }
+        $status = input('param.status', '', 'intval');
+        if(!in_array($status, [1, 2])){
+            $this->error('参数值错误');
+        }
+        $res = db('users')->update([
+            'id' => $id,
+            'sepcial_dis' => $status
+        ]);
+        if($res){
+            $this->success('成功');
+        }else{
+            $this->error('失败');
+        }
     }
 }
