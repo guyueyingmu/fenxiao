@@ -19,6 +19,7 @@ const mutations = {
   addTalkBox(state, arg) {
     let _ayyay = JSON.parse(JSON.stringify(state.talkBoxArray)),
       isHas = false;
+      arg.actived = true;
     for (let p = 0; p < state.talkBoxArray.length; p++) {
       if (_ayyay[p].user_id == arg.user_id) {
         _ayyay.splice(p, 1, arg)
@@ -30,6 +31,7 @@ const mutations = {
     if(!isHas){
         _ayyay.push(arg)
     }
+   
 
     state.talkBoxArray = _ayyay;
   },

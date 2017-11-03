@@ -62,7 +62,7 @@
 
 
         <!-- 客服对话 -->
-        <talk-box  v-for="(item,idx) in $store.state.talkBoxArray" :key="item.user_id" :boxInfo="item"></talk-box>
+        <talk-box v-if="$store.state.talkBoxArray.length" :talkArray="$store.state.talkBoxArray"></talk-box>
 
     </div>
 </template>
@@ -196,6 +196,8 @@ export default {
         vm.get_cat();
       }
     });
+
+    this.bind_ws();
   }
 };
 </script>
