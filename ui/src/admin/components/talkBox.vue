@@ -192,7 +192,7 @@ export default {
         if (_list[_k].user_id == vm.actived) {
           _d = _list[_k].list;
           _d.push(data);
-          console.log(_d);
+        //   console.log(_d);
           vm.scrollToEnd();
           break;
         }
@@ -378,7 +378,7 @@ export default {
       //   }
     },
     bind_ws() {
-        let vm = this;
+      let vm = this;
       const ip = "mall.minbbo.com";
       const ws = new WebSocket("ws://" + ip + ":8282");
       ws.onmessage = function(e) {
@@ -388,27 +388,29 @@ export default {
         switch (type) {
           case "init":
             console.log("run bind_ws");
-              let url = "/admin/Kefu/bind";
-              vm.current_client_id = data.client_id;
-              vm.apiPost(url, {
-                  client_id: data.client_id
-                })
-                .then(res => {
-                  console.log(res.msg)
-                });
+            let url = "/admin/Kefu/bind";
+            vm.current_client_id = data.client_id;
+            vm.apiPost(url, {
+                client_id: data.client_id
+              })
+              .then(res => {
+                console.log(res.msg);
+              });
             break;
           case "msg":
-            that.msg();
+            console.log("msg");
+            vm.pushContent(data.content);
             break;
           default:
         }
       };
+      
     }
   },
 
   created() {
     this.left = (window.innerWidth - 600) / 2 + "px";
-    this.bind_ws()
+   this.bind_ws();
   }
 };
 </script>

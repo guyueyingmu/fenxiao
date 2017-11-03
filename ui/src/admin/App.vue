@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" size="tiny" :close-on-click-modal="false">
+        <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" width="450px" :close-on-click-modal="false">
             <span>
                 <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您没有访问该页面的权限！</span>
             <span slot="footer" class="dialog-footer">
@@ -52,7 +52,7 @@
             </span>
         </el-dialog>
 
-        <el-dialog title="警告" :visible.sync="$store.state.LoginDialogVisible" size="tiny" :close-on-click-modal="false" :close="closeLogin">
+        <el-dialog title="警告" :visible.sync="$store.state.LoginDialogVisible" width="450px"  :close-on-click-modal="false" :close="closeLogin">
             <span>
                 <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您登录已超时，请重新登录！</span>
             <span slot="footer" class="dialog-footer">

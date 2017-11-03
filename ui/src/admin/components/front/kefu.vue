@@ -104,9 +104,6 @@ export default {
   created() {
     this.get_list();
     this.setBreadcrumb(["前台", "在线客服"]);
-    this.$on('msg',function(){
-        console.log(44444)
-    })
   }
 };
 </script>
