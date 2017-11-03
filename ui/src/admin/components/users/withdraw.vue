@@ -33,7 +33,7 @@
             <el-table-column prop="amount" label="提现金额" width="80"></el-table-column>
             <el-table-column prop="add_time" label="提现申请时间"></el-table-column>
             <el-table-column prop="status" label="状态" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 2?'已同意':scope.row.status == 3?'拒绝':'待处理'}}
                 </template>
             </el-table-column>
@@ -41,7 +41,7 @@
             <el-table-column prop="admin_user_id" label="管理员ID" width="90"></el-table-column>
             <el-table-column prop="admin_user_name" label="管理员名称" width="120"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="agree(scope.row)" v-if="scope.row.status == 1">同意</el-button>
                     <el-button type="text" size="small" @click="refuse(scope.row)" v-if="scope.row.status == 1">拒绝</el-button>
                 </template>

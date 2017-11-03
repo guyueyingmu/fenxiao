@@ -31,12 +31,12 @@
             <el-table-column prop="phone_number" label="手机号码" width="110"></el-table-column>
             <el-table-column prop="earn_time" label="总额奖获得日期"></el-table-column>
             <el-table-column prop="earn_amount" label="获得金额">            
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 2?scope.row.earn_amount_input:scope.row.earn_amount}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" label="获佣状态">                
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 1?'等待获佣':'已获佣'}}
                 </template>
             </el-table-column>
@@ -44,7 +44,7 @@
             <el-table-column prop="admin_user_id" label="管理员ID"></el-table-column>
             <el-table-column prop="admin_user_name" align="center" label="管理员名称"></el-table-column>
             <el-table-column label="操作" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_win(scope.row)" v-if="scope.row.status == 1">确定获佣</el-button>
                 </template>
             </el-table-column>

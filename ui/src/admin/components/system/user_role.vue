@@ -18,14 +18,14 @@
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="role_name" label="角色名称" width="150"></el-table-column>
             <el-table-column prop="menu_auth_name" label="菜单权限">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div style="padding:10px 0">
                         <el-tag v-for="item in scope.row.menu_auth_name" type="primary" class="mytag" :key="item">{{item}}</el-tag>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column prop="" label="操作" width="250">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div v-if="scope.row.id !== 1">
                         <el-button type="text" @click="open(true,scope.row)">修改</el-button>
                         <el-button type="text" @click="onRemove(scope.row)">删除</el-button>

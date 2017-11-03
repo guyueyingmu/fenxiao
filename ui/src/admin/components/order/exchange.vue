@@ -40,7 +40,7 @@
             <el-table-column prop="add_time" label="申请时间"> </el-table-column>
             <el-table-column prop="handle_user" label="处理员" width="100"> </el-table-column>
             <el-table-column prop="status" label="处理状态" width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span v-if="scope.row.status == 1">未处理</span>
                     <span v-else-if="scope.row.status == 2">同意</span>
                     <span v-else>拒绝</span>
@@ -49,7 +49,7 @@
             <el-table-column prop="handle_time" label="处理时间"></el-table-column>
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" v-if="scope.row.status == 1 " size="small" @click="onExchange(scope.row,scope.row.$index)">立即处理</el-button>
                 </template>
             </el-table-column>

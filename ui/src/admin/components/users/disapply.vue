@@ -24,7 +24,7 @@
             <el-table-column prop="phone_number" label="申请人手机号码" width="150"></el-table-column>
             <el-table-column prop="add_time" label="申请时间"></el-table-column>
             <el-table-column prop="status" label="处理状态" width="120">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 2?'已处理' : '待处理'}}
                 </template>
             </el-table-column>
@@ -32,7 +32,7 @@
             <el-table-column prop="admin_user_id" label="管理员ID" width="100"></el-table-column>
             <el-table-column prop="admin_user_name" label="管理员名称" width="150"></el-table-column>
             <el-table-column label="操作" width="150" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="handle(scope.row)" v-if="scope.row.status == 1">标记处理</el-button>
                 </template>
             </el-table-column>

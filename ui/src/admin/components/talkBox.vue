@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="sendbox-btn">
                                     <el-button size="small" @click="close_reply">关闭</el-button>
-                                    <el-button   size="small" type="info" @click="onSend()">发送</el-button>
+                                    <el-button   size="small" type="primary" @click="onSend()">发送</el-button>
                                 </div>
 
 

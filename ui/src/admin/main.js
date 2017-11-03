@@ -14,10 +14,10 @@ Vue.http.options.credentials = true;
 Vue.config.devtools = true
 
 import Element from 'element-ui'
-Vue.use(Element)
+Vue.use(Element, { size: 'small' })
 
 
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import style from './assets/css/style.less'
 
 

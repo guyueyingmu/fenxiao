@@ -18,7 +18,7 @@
         <el-table :data="list" border style="width: 100%" v-loading.body="loading">
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="cat_img" label="分类小图"  width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     
                         <img :src="scope.row.cat_img"  width="40" height="40" alt="">
                   
@@ -29,7 +29,7 @@
             <el-table-column prop="nickname" label="添加人" width="200"></el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_addCat(true,scope.row)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>

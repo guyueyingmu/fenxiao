@@ -25,13 +25,13 @@
             <el-table-column prop="dis_scan_time" label="分销扫码时间"></el-table-column>
             <el-table-column prop="pid" label="所属分销商用户ID"></el-table-column>
             <el-table-column prop="distribution_level" label="分销等级">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.distribution_level == 1?'会员':'分销商'}}
                 </template>
             </el-table-column>
             <el-table-column prop="distributor_time" label="设为分销商时间"></el-table-column>
             <el-table-column label="操作" width="100" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_set(scope.row)" v-if="scope.row.distribution_level == 1">设为分销商</el-button>
                     <el-button type="text" size="small" @click="open_set(scope.row)" v-if="scope.row.distribution_level == 2">退出分销商</el-button>
                 </template>

@@ -17,13 +17,13 @@
             <el-table-column prop="nickname" label="用户呢称" width="180"></el-table-column>
             <el-table-column prop="content" label="对话内容"></el-table-column>
             <el-table-column prop="read_status" label="是否已读">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.read_status == 1?"未读":"已读"}}
                 </template>
             </el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_replyDialog(scope.row)">回复</el-button>
                 </template>
             </el-table-column>
@@ -32,6 +32,9 @@
             <el-pagination v-if="parseInt(pages.total_page,10) > 1" @current-change="handleCurrentChange" :current-page="parseInt(pages.current_page,10)" :page-size="parseInt(pages.limit,10)" :total="pages.total" layout="total, prev, pager, next,jumper">
             </el-pagination>
         </div>
+
+
+
 
 
     </div>
