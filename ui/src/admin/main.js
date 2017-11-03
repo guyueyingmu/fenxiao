@@ -1,31 +1,32 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+/* eslint-disable no-new */
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 import vueResource from 'vue-resource'
-
 import store from './vuex'
 
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import style from './assets/css/style.less'
+Vue.use(Element, { size: 'small' })
 
 Vue.use(vueResource);
 Vue.http.options.emulateJSON = true;
 Vue.http.options.credentials = true;
 Vue.config.devtools = true
-
-import Element from 'element-ui'
-Vue.use(Element, { size: 'small' })
-
-
-import 'element-ui/lib/theme-chalk/index.css'
-import style from './assets/css/style.less'
-
-
 Vue.config.productionTip = false
 
-// Vue.config.devtools = true;
 
-/* eslint-disable no-new */
+// 自定义指令
+import directives from './directives'
+Vue.directive('drop', directives.drop)
+Vue.directive('autoPosition', directives.autoPosition)
+
+// import ws from './ws'
+// Vue.$ws = ws;
+// window.$vue = Vue;
 
 
 //全局的 before 钩子
@@ -95,67 +96,10 @@ router.beforeEach((to, from, next) => {
 
 })
 
-const drop = {
-  x: 0,
-  y: 0,
-  canMove: false,
-  inserted(el, binding) {
-    let that = binding.def;
-    let offsetX =0;
 
-    el.addEventListener('mousedown', function (e) {
 
-      if(e.target && e.target.id == 'move_head' || e.target.nodeName == "B" && e.target.offsetParent.id == 'move_head'){
-          if(e.target.id == 'move_head'){
-            offsetX =el.offsetWidth -  e.target.offsetWidth;
-          }
-          if(e.target.nodeName == "B" && e.target.offsetParent.id == 'move_head'){
-            offsetX =el.offsetWidth -  e.target.offsetParent.offsetWidth;
-          }
-        that.x = e.offsetX;
-        that.y = e.offsetY;
-        el.style.top = el.offsetTop + 'px';
-        el.style.left = el.offsetLeft + 'px';
-        that.canMove = true;
-        document.addEventListener('mousemove', _move, false)
-      }
-     
-    }, false)
-    function _move (e){
-  
-        if (that.canMove) {
-            el.style.top = (e.clientY - that.y) + 'px';
-            el.style.left = (e.clientX - that.x  - offsetX) + 'px';
-          }
-    }
 
-    document.addEventListener('mouseup', function (e) {
-      that.canMove = false;
-      document.removeEventListener('mousemove',_move)
-    }, false)
 
-  },
-}
-
-const autoPosition ={
-    inserted(el, binding) {
-        let that = binding.def;
-        let className = el.className;
-        console.log(className)
-        let _array = document.getElementsByClassName('reply-min-box'),top=0;
-        if(_array.length > 0){
-            let _h = _array.length >1? 36:32;
-            top  =  _h * (_array.length -1);
-       
-        }
-        el.style.top = top +'px'
-
-    }
-
-}
-
-Vue.directive('drop', drop)
-Vue.directive('autoPosition', autoPosition)
 
 const Vm = new Vue({
   el: '#app',

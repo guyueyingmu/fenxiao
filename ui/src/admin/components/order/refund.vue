@@ -67,7 +67,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="退款" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" size="small">
+        <el-dialog title="退款" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" width="700px">
 
             <!-- 要服务 2 5 -->
             <el-form :model="dialogForm" :inline="true">
@@ -76,7 +76,7 @@
                 </el-form-item>
 
                 <el-form-item label="处理时间" label-width="100px">
-                    <el-date-picker v-model="dialogForm.handle_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker style="width:200px;" v-model="dialogForm.handle_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="处理状态" label-width="100px">
                     <el-select v-model="dialogForm.status" placeholder="处理状态" style="width:193px">

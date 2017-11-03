@@ -8,7 +8,7 @@
                         <div class="layout-logo-left">
                             <span>分销管理系统</span>
                         </div>
-                        <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
+                        <el-menu :router="true"  :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
                             <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
                                 <template slot="title">
                                     <i class="el-icon-message"></i>{{item.menu_name}}</template>
@@ -62,7 +62,7 @@
 
 
         <!-- 客服对话 -->
-        <talk-box v-if="$store.state.talkBoxArray.length" :talkArray="$store.state.talkBoxArray"></talk-box>
+        <talk-box  :talkArray="$store.state.talkBoxArray"></talk-box>
 
     </div>
 </template>
@@ -197,7 +197,6 @@ export default {
       }
     });
 
-    this.bind_ws();
   }
 };
 </script>

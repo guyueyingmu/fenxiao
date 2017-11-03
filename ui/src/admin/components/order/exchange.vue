@@ -62,7 +62,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="换货" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" size="small">
+        <el-dialog title="换货" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" width="600px">
 
             <!-- 要服务 2 5 -->
             <el-form :model="dialogForm" :inline="true">

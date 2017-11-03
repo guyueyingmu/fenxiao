@@ -71,39 +71,6 @@ const apiMethods = {
       'addTalkBox',
       'removeTalkBox'
     ]),
-    bind_ws() {
-        // const ip = window.location.hostname;
-        const ip = "mall.minbbo.com";
-        const ws = new WebSocket("ws://" + ip + ":8282");
-        let vm = this;
-        ws.onmessage = function(e) {
-          // json数据转换成js对象
-          var data = eval("(" + e.data + ")");
-          var type = data.type || "";
-          switch (type) {
-            case "init":
-              let url = "/admin/Kefu/bind";
-              vm.current_client_id = data.client_id;
-              vm.apiPost(url, { client_id: data.client_id })
-                .then(res => {
-                    console.log(res.msg)
-                });
-              break;
-            case "msg":
-              console.log('msg')
-              if(typeof vm.new_msg == 'function'){
-                vm.new_msg(data.content);
-              }
-              if(typeof vm.new_msg == 'function'){
-                vm.pushContent(data.content);
-              }
-             
-              
-              break;
-            default:
-          }
-        };
-      },
     //currentPage 改变时会触发
     handleCurrentChange(current_paged) {
       if (this.isSearch) {

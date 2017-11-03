@@ -77,7 +77,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="设置" :visible.sync="dialogFormVisible" size="tiny" :close-on-click-modal="false" v-loading="dalogi_loading">
+        <el-dialog title="设置" :visible.sync="dialogFormVisible" width="600px" :close-on-click-modal="false" v-loading="dalogi_loading">
 
             <el-form :model="dialogForm" :inline="true">
                 <div>

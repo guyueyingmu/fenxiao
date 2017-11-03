@@ -16,7 +16,7 @@
                 <el-upload list-type="picture-card" action="/admin/Asset/upload?_ajax=1" name="image" :data="{img_type:`good_banner_img`}" accept="image/jpeg,image/png" :file-list="bannerImg_temp_list" :on-success="pSuccess" :on-preview="handlePV" :on-remove="handleRemove">
                     <i class="el-icon-plus"></i>
                 </el-upload>
-                <el-dialog v-model="dialogVisible" size="tiny">
+                <el-dialog v-model="dialogVisible">
                     <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </el-form-item>
