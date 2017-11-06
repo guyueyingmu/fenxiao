@@ -68,13 +68,15 @@ const directives = {
       el.addEventListener('scroll', function (e) {
         let target = e.target;
         let scrollTop = target.scrollTop;
-
+        
         clearTimeout(t);
+      
         t = setTimeout(function () {
-
           if (scrollTop <= arg) {
             if (vnode.context[cb]) {
-                vnode.context[cb].call()
+           
+                vnode.context[cb].call();
+                
             }
 
           }

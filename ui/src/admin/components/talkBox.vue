@@ -28,7 +28,7 @@
                                     <div class="close_btn_right"><i class="el-icon-circle-close"  @click="close_reply()"></i></div>
                                     <a  class="close_btn_right" @click="onMin" href="javascript:;" title="最小化"> <i class="el-icon-minus"></i></a>
                                     </div>
-                            <div class="reply_list_content" :id="'reply_list_content_'+item.user_id" v-pull:20="onPull"  :class="{'active':actived == item.user_id}" v-for="item in content_list" :key="item.user_id">
+                            <div class="reply_list_content" :id="'reply_list_content_'+item.user_id" v-pull:150="onPull"  :class="{'active':actived == item.user_id}" v-for="item in content_list" :key="item.user_id">
                                 <div class="sd-scroller">
                                     <div  v-loading="replyLoading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" style="height: 50px; margin-top: -20px;"></div>
 
@@ -85,8 +85,8 @@
     
 
         </div>
-        <el-dialog v-model="d_zoon" size="tiny">
-            <img width="100%" :src="d_z_url" alt="">
+        <el-dialog :visible.sync="d_zoon" width="550px">
+            <img width="100%" :src="d_z_url">
         </el-dialog>
   </div>
 </template>
@@ -359,12 +359,12 @@ export default {
         let oldH = el.scrollHeight;
 
         let _list = vm.content_list[idx];
-        console.log(_list);
+       
         _list.pages = res.pages;
         _list.list = res.list.concat(_list.list);
         setTimeout(() => {
           if (el) {
-            el.scrollBy(0, el.scrollHeight  - oldH);
+           // el.scrollBy(0, el.scrollHeight  - oldH);
             vm.replyLoading = false;
           }
         }, 200);
