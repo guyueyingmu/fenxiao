@@ -206,10 +206,11 @@ export default {
       let _list = vm.content_list,
         _d = {};
       for (let _k = 0; _k < _list.length; _k++) {
-        if (_list[_k].user_id == vm.actived) {
+          console.log(_list[_k].message_group_id  == data.message_group_id,_list[_k].message_group_id ) 
+        if (_list[_k].message_group_id == data.message_group_id) {
           _d = _list[_k].list;
           _d.push(data);
-          //   console.log(_d);
+
           vm.scrollToEnd();
           break;
         }
@@ -224,36 +225,6 @@ export default {
           el.scrollBy(0, el.scrollHeight);
         }
       }, 200);
-    },
-    new_msg(data) {
-      let vm = this;
-
-      if (data.send_user != 2) {
-        //不是自己发的
-        let msg = data.user_name + "：" + data.content;
-        const h = this.$createElement;
-        if (data.type == 2) {
-          msg = "[图片]";
-        } else if (data.type == 3) {
-          msg = "[商品信息]";
-        }
-
-        let _c = this.$notify({
-          title: "您有新消息",
-          message: h("div", [
-            msg,
-            h("div", { style: "color: #888" }, data.add_time.substr(11))
-          ]),
-          type: "info",
-          onClick: function() {
-            let id = data.user_id;
-            if (vm.minshow) {
-              vm.minshow = false;
-              _c.close();
-            }
-          }
-        });
-      }
     },
     close_reply(user_id) {
       let vm = this;
@@ -323,13 +294,13 @@ export default {
         vm = this;
       this.apiGet(url).then(res => {
         if (res.code) {
-          vm.content_output(res.data);
+          vm.content_output(res.data,message_group_id);
         } else {
           vm.handleError(res);
         }
       });
     },
-    content_output(res) {
+    content_output(res,message_group_id) {
       let vm = this,
         idx = 0;
 
@@ -337,7 +308,8 @@ export default {
         let _d = {
           user_id: vm.actived,
           list: res.list,
-          pages: res.pages
+          pages: res.pages,
+          message_group_id:message_group_id
         };
 
         let _list = vm.content_list,
@@ -396,20 +368,6 @@ export default {
         }
       });
     },
-    //分页加载
-    loadmore() {
-      let vm = this;
-
-      let message_group_id = this.userInfo.message_group_id;
-      //   if (vm.IScroll.maxScrollY < 0 && vm.IScroll.y == 0) {
-      //     let page = parseInt(this.r_pages.current_page, 10);
-      //     if (page < parseInt(this.r_pages.total_page, 10)) {
-      //       page = page + 1;
-      //       this.loadmore_f = true;
-      //       this.get_talk_list(message_group_id, page);
-      //     }
-      //   }
-    },
     bind_ws() {
       let vm = this;
     //   const ip = "mall.minbbo.com";
@@ -435,7 +393,7 @@ export default {
           case "msg":
             console.info("WebSocket:msg");
             vm.pushContent(data.content);
-            vm.new_msg(data.content)
+   
             break;
           default:
         }
