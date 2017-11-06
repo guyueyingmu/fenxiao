@@ -28,22 +28,22 @@ class Kefu extends Base
      */
     public function bind(){
         $client_id = input("param.client_id", "", "trim");
+		session("admin.kefu_client_id", $client_id);
 		$admin_uid = session("admin.uid");
         // 假设用户已经登录，用户uid和群组id在session中
         $uid      = 'admin'. $admin_uid;
-        // client_id与uid绑定
-        $res = Gateway::bindUid($client_id, $uid);
+		// client_id与uid绑定
+		$res = Gateway::bindUid($client_id, $uid);
+		// 加入客服群组
+		$res2 = Gateway::joinGroup($client_id, 'kefu');
+		//$data = Gateway::getClientSessionsByGroup('kefu');
+		if($res && $res2){
+			$this->success('连接成功');
+		}else{
+			$this->error('连接失败');
+		}
+		
         
-		$user_info = db('admin_user')->field('nickname')->find($admin_uid);
-		$_SESSION['kefu_uid'] = $admin_uid;
-		$_SESSION['nickname'] = $user_info['nickname'];
-		// 加入某个群组（可调用多次加入多个群组）
-        $res2 = Gateway::joinGroup($client_id, 'kefu');
-        if($res && $res2){
-            $this->success('连接成功');
-        }else{
-            $this->error('连接失败');
-        }
     }
 	
 	//获取客服列表
@@ -76,17 +76,14 @@ class Kefu extends Base
         
     }
 	
-    //关闭聊天窗口，离开分组
+    //关闭聊天窗口，客服离开用户分组
     public function leave_group(){
         $user_id = input("param.user_id", "", "intval");
-		//管理员绑定的UID
-		$uid = 'admin'. session("admin.uid");
-		//通过绑定的UID查找CLIENT_ID
-        $client_id = Gateway::getClientIdByUid($uid);
+        $kefu_client_id = session("admin.kefu_client_id");
 		//获取用户分组
         $group_id = get_group_id($user_id);
-		if($client_id && $group_id){
-			Gateway::leaveGroup($client_id, $group_id);
+		if($kefu_client_id && $group_id){
+			Gateway::leaveGroup($kefu_client_id, $group_id);
 			$this->success('退出成功');
 		}else{
 			$this->error('退出失败');
@@ -257,7 +254,6 @@ class Kefu extends Base
             //推送消息
             $uid = db('message_group')->where('id', $data['message_group_id'])->value('user_id');
             $group = get_group_id($uid);
-//            $exclude_user = Gateway::getClientIdByUid('admin'. session('admin.uid'));
             
             if($data['type'] == 2){
                 $data['content'] = ['img_url' => getThumbUrl($data['content'], 1), 'thumb_img_url' => $data['content']];                            
@@ -265,6 +261,10 @@ class Kefu extends Base
             $data['user_name'] = session('admin.nickname');
             $data['head_img'] = '';
             
+			$kefu_client_id = session("admin.kefu_client_id");
+			Gateway::joinGroup($kefu_client_id, $group);
+			//$data = Gateway::getClientSessionsByGroup($group);
+			//print_r($data);
             // 向任意群组的网站页面发送数据
             Gateway::sendToGroup($group, json_encode(array(
                 'type'      => 'msg',

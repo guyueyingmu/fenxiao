@@ -34,11 +34,17 @@ class Events
      * @param int $client_id 连接id
      */
     public static function onConnect($client_id) {
-		Gateway::sendToClient($client_id, json_encode(array(
-            'type'      => 'init',
-            'client_id' => $client_id,
-//            'group_id'  => $group
-        )));
+		
+		
+		
+		if(!$_SESSION['auth_id']){
+			Gateway::sendToClient($client_id, json_encode(array(
+				'type'      => 'init',
+				'client_id' => $client_id,
+	//            'group_id'  => $group
+			)));
+			$_SESSION['auth_id'] = 'ok';
+		}
     }
     
    /**

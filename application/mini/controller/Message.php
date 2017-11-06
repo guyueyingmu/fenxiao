@@ -22,10 +22,11 @@ class Message extends Base
         // 假设用户已经登录，用户uid和群组id在session中
         $uid      = session("mini.uid");
         $group_id = get_group_id($uid);
-        // client_id与uid绑定
-        $res = Gateway::bindUid($client_id, $uid);
-        // 加入某个群组（可调用多次加入多个群组）
-        $res2 = Gateway::joinGroup($client_id, $group_id);
+		
+		// client_id与uid绑定
+		$res = Gateway::bindUid($client_id, $uid);
+		// 加入某个群组（可调用多次加入多个群组）
+		$res2 = Gateway::joinGroup($client_id, $group_id);
 		//查询客服组中存在的client_id
 		$data = Gateway::getClientSessionsByGroup('kefu');
 		//随机选择一个客服的client_id 加入用户组
@@ -36,11 +37,12 @@ class Message extends Base
 			$kefu_client_id = $key_array[$rand_num];
 			$res3 = Gateway::joinGroup($kefu_client_id, $group_id);
 		}
-        if($res && $res2 && $res3){
-            $this->success('连接成功');
-        }else{
-            $this->error('连接失败');
-        }
+		if($res && $res2 && $res3){
+			$this->success('连接成功');
+		}else{
+			$this->error('连接失败');
+		}
+		
     }
     
     /**
