@@ -13,8 +13,9 @@ import {
   MessageBox,
   InfiniteScroll,Lazyload,Spinner
 } from 'mint-ui'
-Vue.component(Toast.name, Toast);
+Vue.component('mintToastPop', Toast);
 Vue.component(MessageBox.name, MessageBox);
+
 Vue.use(Lazyload);
 Vue.use(InfiniteScroll);
 Vue.component(Spinner.name, Spinner);
