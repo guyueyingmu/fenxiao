@@ -59,7 +59,8 @@ export default {
   methods: {
     open_replyDialog(item) {
         if(item){
-            this.addTalkBox(item);
+            let _i = JSON.parse(JSON.stringify(item))
+            this.addTalkBox(_i );
         }
       
     },

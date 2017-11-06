@@ -23,6 +23,7 @@ Vue.config.productionTip = false
 import directives from './directives'
 Vue.directive('drop', directives.drop)
 Vue.directive('autoPosition', directives.autoPosition)
+Vue.directive('pull', directives.pull)
 
 // import ws from './ws'
 // Vue.$ws = ws;
