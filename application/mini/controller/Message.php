@@ -94,7 +94,7 @@ class Message extends Base
                 $add_message['content'] = ['img_url' => getThumbUrl($content, 1), 'thumb_img_url' => $content];                            
             }
             $add_message['user_name'] = session('mini.nickname');
-            $add_message['head_img'] = session('mini.img_url');
+            $add_message['img_url'] = session('mini.img_url');
             
             //推送消息
             $group = get_group_id($uid);
