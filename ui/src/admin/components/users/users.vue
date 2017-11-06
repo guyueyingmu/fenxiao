@@ -44,12 +44,12 @@
             <el-table-column prop="id" label="用户ID" width="80"></el-table-column>
             <el-table-column prop="nickname" label="用户昵称"></el-table-column>
             <el-table-column prop="img_url" label="头像" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <img style="width:50px;" v-if="scope.row.img_url" :src="scope.row.img_url" />
                 </template>
             </el-table-column>
             <el-table-column prop="sex" label="性别" width="60">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.sex == 1?'男':scope.row.sex == 2?'女':'保密'}}
                 </template>
             </el-table-column>
@@ -59,14 +59,14 @@
             <el-table-column prop="credits" label="积分" width="80"></el-table-column>
             <el-table-column prop="account_balance" label="账户余额" width="80"></el-table-column>
             <el-table-column prop="status" label="登录状态" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 1?'启用':'禁用'}}
                 </template>
             </el-table-column>
             <el-table-column prop="register_time" label="注册时间" width="140"></el-table-column>
             <el-table-column prop="last_login_time" label="最近登录时间" width="140"></el-table-column>
             <el-table-column label="操作" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_set(scope.row)">设置</el-button>
                 </template>
             </el-table-column>
@@ -77,7 +77,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="设置" :visible.sync="dialogFormVisible" size="tiny" :close-on-click-modal="false" v-loading="dalogi_loading">
+        <el-dialog title="设置" :visible.sync="dialogFormVisible" width="600px" :close-on-click-modal="false" v-loading="dalogi_loading">
 
             <el-form :model="dialogForm" :inline="true">
                 <div>

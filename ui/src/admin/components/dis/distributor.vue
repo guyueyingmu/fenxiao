@@ -29,7 +29,7 @@
             <el-table-column prop="c_total" label="一级会员总数"></el-table-column>
             <el-table-column prop="c_total2" label="二级会员总数"></el-table-column>
             <el-table-column prop="sepcial_dis" label="特殊分销商">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-radio-group v-model="scope.row.sepcial_dis" size="small" @change="changeStatus(scope.row)">
                         <el-radio-button :label="'1'">是</el-radio-button>
                         <el-radio-button :label="'2'">否</el-radio-button>
@@ -37,7 +37,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="200" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="open_win(scope.row)">分销二维码</el-button>
                     <el-button type="text" size="small" @click="goto('/distributor/user_id/'+scope.row.id+'/level/1')">我的会员</el-button>
                 </template>

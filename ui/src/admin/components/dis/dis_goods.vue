@@ -39,17 +39,17 @@
             <el-table-column prop="credits" label="积分兑换" width="80"></el-table-column>
             <el-table-column prop="presenter_credits" label="赠送积分" width="80"></el-table-column>
             <el-table-column prop="good_type" label="商品类型" width="100">
-                 <template scope="scope">
+                 <template slot-scope="scope">
                   <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="distribution" label="参与分销" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.distribution == 1?'参与':'不参与'}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" align="center" label="是否上架" width="80">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 1?'上架':'下架'}}
                 </template>
             </el-table-column>

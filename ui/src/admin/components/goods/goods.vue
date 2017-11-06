@@ -36,33 +36,44 @@
         </div>
 
         <el-table :data="list" border style="width: 100%" v-loading.body="loading" :row-class-name="tableRowClassName">
-            <el-table-column prop="id" label="商品ID" width="70" ></el-table-column>
-            <el-table-column prop="good_title" label="商品标题"></el-table-column>
-            <el-table-column prop="cat_name" label="商品分类" width="100"></el-table-column>
-            <el-table-column prop="specification" label="商品规格" width="100"></el-table-column>
-            <el-table-column prop="brand" label="品牌" width="80"></el-table-column>
+            <el-table-column prop="id" label="ID" width="60" ></el-table-column>
+            <el-table-column prop="good_title" label="商品标题">
+                <template slot-scope="scope">
+                    <div class="thumb-list">
+                        <div class="pic"><img :src="scope.row.good_img" width="70" height="70"></div>
+                        <div class="info">
+                            <div class="title one">{{scope.row.good_title}}</div>
+                            <div class="des">[品牌]：{{scope.row.brand}}</div>
+                            <div class="des">[分类]：{{scope.row.cat_name}}</div>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column prop="cat_name" label="商品分类" width="100"></el-table-column> -->
+            <el-table-column prop="specification" label="商品规格" width="120"></el-table-column>
+            <!-- <el-table-column prop="brand" label="品牌" width="80"></el-table-column> -->
             <el-table-column prop="price" label="销售价格" width="80"></el-table-column>
             <el-table-column prop="credits" label="积分兑换" width="80"></el-table-column>
             <el-table-column prop="presenter_credits" label="赠送积分" width="80"></el-table-column>
             <el-table-column prop="good_type" label="商品类型" width="120">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span style="font-size:12px;">{{getType(scope.row.good_type)}}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="distribution" label="参与分销" width="70">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.distribution == 1?'参与':'不参与'}}
                 </template>
             </el-table-column>
             <el-table-column prop="status" align="center" label="是否上架" width="70">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.status == 1?'上架':'下架'}}
                 </template>
             </el-table-column>
-            <el-table-column prop="sort" label="排序" width="60"></el-table-column>
-            <el-table-column prop="add_time" label="添加时间" width="150"></el-table-column>
-            <el-table-column label="操作" width="120" align="center">
-                <template scope="scope">
+            <el-table-column prop="sort" label="排序" width="50"></el-table-column>
+            <el-table-column prop="add_time" label="添加时间" width="140"></el-table-column>
+            <el-table-column label="操作" width="100" align="center">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="goto('/goods/goods_edit/id/'+scope.row.id)">编辑</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.$index)">删除</el-button>
                 </template>

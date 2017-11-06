@@ -28,7 +28,7 @@
         <!-- 表格 -->
         <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="good_link" label="商品页面链接" width="200">
-                <template scope="scope">
+                <template slot-scope="scope">
            
                        
                     <el-popover   placement="right" trigger="hover">
@@ -47,7 +47,7 @@
             <el-table-column prop="nickname" label="处理员" width="150"></el-table-column>
             <el-table-column prop="delete_time" label="处理时间"></el-table-column>
             <el-table-column label="操作" width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" v-if="scope.row.delete_time == null" size="small" @click="onDel(scope.row.id)">删除评论</el-button>
                 </template>
             </el-table-column>

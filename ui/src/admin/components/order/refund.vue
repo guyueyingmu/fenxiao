@@ -34,7 +34,7 @@
         <el-table :data="list" border style="width: 100%" v-loading="loading">
             <el-table-column prop="order_number" label="订单编号" width="120"></el-table-column>
             <el-table-column prop="total_amount" label="退款金额" width="120">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span>￥{{scope.row.total_amount}}</span>
                 </template>
             </el-table-column>
@@ -45,7 +45,7 @@
             <el-table-column prop="add_time" label="申请时间"> </el-table-column>
             <el-table-column prop="handle_user" label="处理员" width="100"> </el-table-column>
             <el-table-column prop="status" label="处理状态" width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <span v-if="scope.row.status == 1">未处理</span>
                     <span v-else-if="scope.row.status == 2">同意</span>
                     <span v-else>拒绝</span>
@@ -54,7 +54,7 @@
             <el-table-column prop="handle_time" label="处理时间"></el-table-column>
             <el-table-column prop="handle_note" label="处理备注"></el-table-column>
             <el-table-column label="操作" width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" v-if="scope.row.status == 1 || scope.row.pay_status == 5" size="small" @click="onRefund(scope.row,scope.row.$index)">立即退款</el-button>
                 </template>
             </el-table-column>
@@ -67,7 +67,7 @@
         </div>
 
         <!-- 弹窗 -->
-        <el-dialog title="退款" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" size="small">
+        <el-dialog title="退款" :visible.sync="dialogFormVisible" :close-on-click-modal="false" v-loading="dalogi_loading" width="700px">
 
             <!-- 要服务 2 5 -->
             <el-form :model="dialogForm" :inline="true">
@@ -76,7 +76,7 @@
                 </el-form-item>
 
                 <el-form-item label="处理时间" label-width="100px">
-                    <el-date-picker v-model="dialogForm.handle_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker style="width:200px;" v-model="dialogForm.handle_time" type="datetime" @change="fromDate3" :editable="false" placeholder="选择日期"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="处理状态" label-width="100px">
                     <el-select v-model="dialogForm.status" placeholder="处理状态" style="width:193px">

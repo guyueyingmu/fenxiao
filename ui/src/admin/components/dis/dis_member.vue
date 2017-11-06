@@ -21,13 +21,13 @@
             <el-table-column prop="dis_scan_time" label="分销扫码时间" width="180"></el-table-column>
             <el-table-column prop="pid" label="所属分销商用户ID"></el-table-column>
             <el-table-column prop="distribution_level" label="分销等级">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{scope.row.distribution_level == 1?'会员':scope.row.distribution_level == 2?'分销商':''}}
                 </template>
             </el-table-column>
             <el-table-column prop="distributor_time" label="设为分销商时间"></el-table-column>
             <el-table-column label="操作" width="200" align="center">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="goto('/distributor/user_id/'+scope.row.id+'/level/2')" v-if="level == 1 && scope.row.distribution_level == 2">查看二级会员</el-button>
                 </template>
             </el-table-column>

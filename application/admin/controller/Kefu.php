@@ -28,28 +28,70 @@ class Kefu extends Base
      */
     public function bind(){
         $client_id = input("param.client_id", "", "trim");
-        $user_id = input("param.user_id", "", "intval");
-
+		$admin_uid = session("admin.uid");
         // 假设用户已经登录，用户uid和群组id在session中
-        $uid      = 'admin'. session("admin.uid");
-        $group_id = get_group_id($user_id);
+        $uid      = 'admin'. $admin_uid;
         // client_id与uid绑定
         $res = Gateway::bindUid($client_id, $uid);
-        // 加入某个群组（可调用多次加入多个群组）
-        $res2 = Gateway::joinGroup($client_id, $group_id);
+        
+		$user_info = db('admin_user')->field('nickname')->find($admin_uid);
+		$_SESSION['kefu_uid'] = $admin_uid;
+		$_SESSION['nickname'] = $user_info['nickname'];
+		// 加入某个群组（可调用多次加入多个群组）
+        $res2 = Gateway::joinGroup($client_id, 'kefu');
         if($res && $res2){
             $this->success('连接成功');
         }else{
             $this->error('连接失败');
         }
     }
+	
+	//获取客服列表
+    public function get_kefu_group(){
+        //查询客服组
+		$data = Gateway::getClientSessionsByGroup('kefu');
+		if(count($data)>0){
+			foreach($data as $key=>$list){
+				$list['kefu_client_id'] = $key;	
+			}
+			$this->success("成功", "", $list);
+		}else{
+			$this->error('失败');
+		}
+        
+    }
+	
+	//转移用户给其他客服
+    public function move_group(){
+        $user_id = input("param.user_id", "", "intval");
+		$kefu_client_id = input("param.kefu_client_id", "", "intval");
+		//获取用户分组
+        $group_id = get_group_id($user_id);
+		$res = Gateway::joinGroup($kefu_client_id, $group_id);
+		if($res){
+			$this->success('转移成功');
+		}else{
+			$this->error('转移失败');
+		}
+        
+    }
+	
     //关闭聊天窗口，离开分组
     public function leave_group(){
         $user_id = input("param.user_id", "", "intval");
-        $client_id = input("param.client_id", "", "trim");
+		//管理员绑定的UID
+		$uid = 'admin'. session("admin.uid");
+		//通过绑定的UID查找CLIENT_ID
+        $client_id = Gateway::getClientIdByUid($uid);
+		//获取用户分组
         $group_id = get_group_id($user_id);
-        Gateway::leaveGroup($client_id, $group_id);
-        $this->success('成功');
+		if($client_id && $group_id){
+			Gateway::leaveGroup($client_id, $group_id);
+			$this->success('退出成功');
+		}else{
+			$this->error('退出失败');
+		}
+        
     }
     
     /**

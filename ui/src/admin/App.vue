@@ -8,7 +8,7 @@
                         <div class="layout-logo-left">
                             <span>分销管理系统</span>
                         </div>
-                        <el-menu :router="true" theme="dark" :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
+                        <el-menu :router="true"  :unique-opened="false" :default-active="activeMenu" :default-openeds="activeMenuOpen">
                             <el-submenu :index="idx.toString()" v-for="(item,idx) in list" :key="item.id" v-if="item.status == 1">
                                 <template slot="title">
                                     <i class="el-icon-message"></i>{{item.menu_name}}</template>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" size="tiny" :close-on-click-modal="false">
+        <el-dialog title="警告" :visible.sync="$store.state.RoseDialogVisible" width="450px" :close-on-click-modal="false">
             <span>
                 <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您没有访问该页面的权限！</span>
             <span slot="footer" class="dialog-footer">
@@ -52,7 +52,7 @@
             </span>
         </el-dialog>
 
-        <el-dialog title="警告" :visible.sync="$store.state.LoginDialogVisible" size="tiny" :close-on-click-modal="false" :close="closeLogin">
+        <el-dialog title="警告" :visible.sync="$store.state.LoginDialogVisible" width="450px"  :close-on-click-modal="false" :close="closeLogin">
             <span>
                 <i class="el-icon-warning" style="color:#F7BA2A;font-size:40px;    vertical-align: middle;"></i> 您登录已超时，请重新登录！</span>
             <span slot="footer" class="dialog-footer">
@@ -62,7 +62,7 @@
 
 
         <!-- 客服对话 -->
-        <talk-box v-if="$store.state.talkBoxArray.length" :talkArray="$store.state.talkBoxArray"></talk-box>
+        <talk-box  :talkArray="$store.state.talkBoxArray"></talk-box>
 
     </div>
 </template>
@@ -197,7 +197,6 @@ export default {
       }
     });
 
-    this.bind_ws();
   }
 };
 </script>

@@ -25,7 +25,7 @@
             <el-table-column prop="login_time" label="最近登录时间" width="180"></el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="180"></el-table-column>
             <el-table-column prop="status" label="状态" width="150">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-radio-group v-model="scope.row.status" size="small" @change="changeStatus(scope.row)">
                         <el-radio-button :label="1">启用</el-radio-button>
                         <el-radio-button :label="2">禁用</el-radio-button>
@@ -33,7 +33,7 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button type="text" size="small" @click="viewCtrl(scope.row.role_id)">查看权限</el-button>
                     <el-button type="text" size="small" @click="open(true,scope.row)">修改</el-button>
                     <el-button type="text" size="small" @click="onRemove(scope.row)">删除</el-button>

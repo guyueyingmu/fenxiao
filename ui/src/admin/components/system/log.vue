@@ -28,7 +28,7 @@
             <el-table-column prop="log_time" label="操作时间" width="170"></el-table-column>
             <el-table-column prop="menu_name" label="操作菜单名称" width="150"></el-table-column>
             <el-table-column prop="content" label="操作内容">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <div>{{scope.row.content2.title}}</div>
                     <div>{{scope.row.content2.data}}</div>
 

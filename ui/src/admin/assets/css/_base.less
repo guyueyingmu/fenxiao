@@ -14,7 +14,18 @@ body {
     background: #eee;
     overflow: hidden;
     overflow-y: auto;
+    color: #1f2d3d;
  
+}
+.el-table,.el-table thead{
+    color: #1f2d3d
+}
+
+.el-table--small td, .el-table--small th{
+    padding: 0px 0;
+    &>.cell{
+        // padding: 2px 5px;
+    }
 }
 
 .page_heade {
@@ -296,30 +307,7 @@ body {
     .t-left{
         text-align: left;
     }
-    .thumb-list{
-        display: flex;
-        .pic{
-            margin-right: 10px;
-        }
-        .info{
-            flex: 1;
-            text-align: left;
-            .title{
-                margin-top: 5px;
-                .line(3);
-                font-size: 14px;
-                min-height: 55px;
-                word-break: break-all;
-             
-            }
-            .des{
-                color: #888;
-            }
-            .css3{
-                color: red;
-            }
-        }
-    }
+   
 
     em{
         font-style: normal;
@@ -344,4 +332,33 @@ body {
     text-align: center;
     line-height: 5;
     color: #888;
+}
+.thumb-list{
+    display: flex;
+    .pic{
+        margin-right: 10px;
+    }
+    .info{
+        flex: 1;
+        text-align: left;
+        
+        .title{
+            margin-top: 5px;
+            .line(3);
+            font-size: 14px;
+            min-height: 55px;
+            word-break: break-all;
+            &.one{
+                .line(1);
+                min-height: 23px;
+            }
+         
+        }
+        .des{
+            color: #888;
+        }
+        .css3{
+            color: red;
+        }
+    }
 }

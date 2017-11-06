@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div class="reply_list_main">
+      <div class="reply_list_main" v-if="$store.state.talkBoxArray.length">
       
           <div class="reply-min-box" v-if="minshow" v-autoPosition>
               <i class="el-icon-information"></i> 与 <b>{{userInfo.nickname}}</b> 对话中 <a href="javascript:;" @click="onMinDisable">[恢复窗口]</a> </div> 
@@ -18,7 +18,7 @@
                                              <div>{{item.nickname}}</div>
                                              <div class="des">{{lastMsg(k)}}</div>
                                          </div>
-                                      <i class="el-icon-circle-cross"  @click="close_reply(item.user_id)"></i>
+                                      <i class="el-icon-circle-close"  @click="close_reply(item.user_id)"></i>
                                     </li>
                                 </ul>
                             </div>
@@ -27,7 +27,7 @@
                                <div  class="loadmore-msg" v-show="loadmore_f">{{loadmore_f_txt}}</div>
                             <div class="header" id="move_head">
                                     与 <b>{{userInfo.nickname}}</b> 对话中
-                                    <div class="close_btn_right"><i class="el-icon-circle-cross"  @click="close_reply"></i></div>
+                                    <div class="close_btn_right"><i class="el-icon-circle-close"  @click="close_reply"></i></div>
                                     <a  class="close_btn_right" @click="onMin" href="javascript:;" title="最小化"> <i class="el-icon-minus"></i></a>
 
                                    
@@ -66,7 +66,7 @@
                             <div class="sendBox"  @keyup.enter="onSend">
                                 <div class="sendbox-tool">
                                     <el-upload class="upload-talkbox" action="/admin/Asset/upload?_ajax=1" name="image" :on-success="messageImgSuccess" :data="{img_type:`message_img`}" :show-file-list="false">
-                                        <i class="el-icon-picture"></i>
+                                        <i class="el-icon-picture-outline"></i>
                                         </el-upload>
                                 </div>
                                 <div class="inputarea">
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="sendbox-btn">
                                     <el-button size="small" @click="close_reply">关闭</el-button>
-                                    <el-button   size="small" type="info" @click="onSend()">发送</el-button>
+                                    <el-button   size="small" type="primary" @click="onSend()">发送</el-button>
                                 </div>
 
 
@@ -139,15 +139,15 @@ export default {
       }
       this.get_talk_list(_d.message_group_id);
       return _d;
-    },
-   
+    }
   },
 
   methods: {
-       lastMsg(idx) {
-    
+    lastMsg(idx) {
       if (this.content_list.length && this.content_list[idx]) {
-        let item = this.content_list[idx].list[this.content_list[idx].list.length - 1];
+        let item = this.content_list[idx].list[
+          this.content_list[idx].list.length - 1
+        ];
         if (item.type == 1) {
           return item.content;
         } else if (item.type == 2) {
@@ -182,22 +182,21 @@ export default {
       this.bind_ws(item.user_id);
       this.current_user_id = item.user_id;
     },
- 
-    pushContent(data){
-         console.log(data)
-          let vm = this;
-          let _list = vm.content_list,_d={};
-        for (let _k = 0; _k < _list.length; _k++) {
-          if (_list[_k].user_id == vm.actived) {
-             _d = _list[_k].list;
-             _d.push(data)
-             console.log(_d)
-            vm.scrollToEnd();
-            break;
-          }
+
+    pushContent(data) {
+      console.log(data);
+      let vm = this;
+      let _list = vm.content_list,
+        _d = {};
+      for (let _k = 0; _k < _list.length; _k++) {
+        if (_list[_k].user_id == vm.actived) {
+          _d = _list[_k].list;
+          _d.push(data);
+        //   console.log(_d);
+          vm.scrollToEnd();
+          break;
         }
-
-
+      }
     },
     scrollToEnd() {
       let vm = this;
@@ -292,22 +291,22 @@ export default {
       this.apiGet(url).then(res => {
         if (res.code) {
           vm.content_output(res.data);
-        //   if (res.data.pages.current_page < 2) {
-        //   } else {
-            // let _list = vm.content_list;
-            // vm.content_list = res.data.list.concat(_list);
-            // if (res.data.pages.current_page == res.data.pages.total_page) {
-            //   vm.loadmore_f_txt = "已经没有更多信息了...";
-            //   setTimeout(() => {
-            //     vm.loadmore_f = false;
-            //   }, 4000);
-            // } else {
-            //   vm.loadmore_f_txt = "加载更多信息了...";
-            //   setTimeout(() => {
-            //     vm.loadmore_f = false;
-            //   }, 1000);
-            // }
-        //   }
+          //   if (res.data.pages.current_page < 2) {
+          //   } else {
+          // let _list = vm.content_list;
+          // vm.content_list = res.data.list.concat(_list);
+          // if (res.data.pages.current_page == res.data.pages.total_page) {
+          //   vm.loadmore_f_txt = "已经没有更多信息了...";
+          //   setTimeout(() => {
+          //     vm.loadmore_f = false;
+          //   }, 4000);
+          // } else {
+          //   vm.loadmore_f_txt = "加载更多信息了...";
+          //   setTimeout(() => {
+          //     vm.loadmore_f = false;
+          //   }, 1000);
+          // }
+          //   }
           this.replyLoading = false;
         } else {
           vm.handleError(res);
@@ -315,7 +314,7 @@ export default {
       });
     },
     content_output(data) {
-        let vm = this;
+      let vm = this;
       if (data.pages.current_page < 2) {
         let _d = {
           user_id: vm.actived,
@@ -377,10 +376,41 @@ export default {
       //       this.get_talk_list(message_group_id, page);
       //     }
       //   }
+    },
+    bind_ws() {
+      let vm = this;
+      const ip = "mall.minbbo.com";
+      const ws = new WebSocket("ws://" + ip + ":8282");
+      ws.onmessage = function(e) {
+        // json数据转换成js对象
+        var data = eval("(" + e.data + ")");
+        var type = data.type || "";
+        switch (type) {
+          case "init":
+            console.log("run bind_ws");
+            let url = "/admin/Kefu/bind";
+            vm.current_client_id = data.client_id;
+            vm.apiPost(url, {
+                client_id: data.client_id
+              })
+              .then(res => {
+                console.log(res.msg);
+              });
+            break;
+          case "msg":
+            console.log("msg");
+            vm.pushContent(data.content);
+            break;
+          default:
+        }
+      };
+      
     }
   },
+
   created() {
     this.left = (window.innerWidth - 600) / 2 + "px";
+   this.bind_ws();
   }
 };
 </script>
