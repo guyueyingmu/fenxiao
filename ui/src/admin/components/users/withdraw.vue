@@ -4,7 +4,7 @@
         <div class="tabs_p">
             <el-tabs v-model="tabs" type="card" @tab-click="onSelectedTabs">
                 <el-tab-pane label="提现申请" name="1"></el-tab-pane>
-                <el-tab-pane label="已提现记录" name="2"></el-tab-pane>
+                <el-tab-pane label="提现记录" name="2"></el-tab-pane>
             </el-tabs>
         </div>
 
