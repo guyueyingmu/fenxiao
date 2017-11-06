@@ -412,6 +412,7 @@ export default {
     },
     bind_ws() {
       let vm = this;
+    //   const ip = "mall.minbbo.com";
       const ip = "mall.minbbo.com";
       const ws = new WebSocket("ws://" + ip + ":8282");
       ws.onmessage = function(e) {
