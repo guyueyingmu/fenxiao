@@ -259,7 +259,7 @@ class Kefu extends Base
                 $data['content'] = ['img_url' => getThumbUrl($data['content'], 1), 'thumb_img_url' => $data['content']];                            
             }
             $data['user_name'] = session('admin.nickname');
-            $data['head_img'] = '';
+            $data['img_url'] = '/static/img/avt2.jpg';
             
 			$kefu_client_id = session("admin.kefu_client_id");
 			Gateway::joinGroup($kefu_client_id, $group);
