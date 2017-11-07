@@ -60,10 +60,6 @@ export default {
     open_replyDialog(item) {
       if (item) {
         let _i = JSON.parse(JSON.stringify(item));
-        // for(let p of _i){
-        //     p.user_id
-        // }
-
         let vm = this;
         this.apiGet(
           "/admin/Kefu/join_group?user_id=" + _i.user_id
