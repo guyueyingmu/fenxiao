@@ -52,166 +52,167 @@
     </div>
 </template>
 <script>
-
-import http from '@/assets/js/http'
-import VueFileUpload from 'vue-file-upload'
+import http from "@/assets/js/http";
+import VueFileUpload from "vue-file-upload";
 export default {
-    name: 'class',
-    mixins: [http],
-    components: {
-        VueFileUpload
-        
-    },
-    mounted() {
-        this.setTitle('在线客服')
-        let vm = this;
-        setTimeout(function() {
-            var input = document.getElementById('input-key');
-            input.addEventListener('focus', function() {          
-                setTimeout(function() {
-                    document.body.scrollTop = 99999;
-                     vm.$refs['ss'].scrollTo(0, 99999, 0);
-                }, 380)
-                   
-            }, false)
-        }, 1000)
+  name: "class",
+  mixins: [http],
+  components: {
+    VueFileUpload
+  },
+  mounted() {
+    this.setTitle("在线客服");
+    let vm = this;
+    setTimeout(function() {
+      var input = document.getElementById("input-key");
+      input.addEventListener(
+        "focus",
+        function() {
+          setTimeout(function() {
+            document.body.scrollTop = 99999;
+            vm.$refs["ss"].scrollTo(0, 99999, 0);
+          }, 380);
+        },
+        false
+      );
+    }, 1000);
 
-        //新增商品消息
-        this.onSend(3, this.$route.params.good_id);
-        setTimeout(function() {
-            vm.get_list();
-        }, 500)
-
-    },
-    data() {
-        return {
-            serverInit: true,
-            reqopts: {
-                formData: {
-                    image_type: 'message_img'
-                },
-                responseType: 'json',
-                withCredentials: false
-            },
-            list: [],
-            list_pages: {},
-            info: {
-                content: ''
-            },
-            cbEvents: {
-                onCompleteUpload: (file, response, status, header) => {
-                    if (file.isSuccess) {
-                        this.success(response)
-
-                    }
-
-                }
-            },
+    //新增商品消息
+    this.onSend(3, this.$route.params.good_id);
+    setTimeout(function() {
+      vm.get_list();
+    }, 500);
+  },
+  data() {
+    return {
+      serverInit: true,
+      reqopts: {
+        formData: {
+          img_type: "message_img"
+        },
+        responseType: "json",
+        withCredentials: false
+      },
+      list: [],
+      list_pages: {},
+      info: {
+        content: ""
+      },
+      cbEvents: {
+        onCompleteUpload: (file, response, status, header) => {
+          if (file.isSuccess) {
+            this.success(response);
+          }
         }
+      }
+    };
+  },
+  methods: {
+    refresh(e) {
+      console.log("刷新");
+      let vm = this;
+      if (this.list_pages.total_page > this.list_pages.current_page) {
+        setTimeout(() => {
+          vm.$refs["ss"].finishPullToRefresh();
+          vm.get_list(parseInt(vm.list_pages.current_page, 10) + 1);
+        }, 1000);
+      } else {
+        vm.$refs["ss"].finishPullToRefresh();
+      }
     },
-    methods: {
-        refresh(e) {
-            console.log('刷新')
-            let vm = this;
-            if (this.list_pages.total_page > this.list_pages.current_page) {
-                setTimeout(() => {
-                    vm.$refs['ss'].finishPullToRefresh()
-                    vm.get_list(parseInt(vm.list_pages.current_page, 10) + 1)
-                }, 1000)
-            }else{
-                 vm.$refs['ss'].finishPullToRefresh()
-            }
+    onZoom(url) {
+      if (wx) {
+          url = window.location.origin + url;
+        wx.previewImage({
+          current:url,
+          urls: [url]
+        });
+      }
+    },
+    success(res) {
+      console.log(res);
 
-        },
-        onZoom(url) {
-            console.log(url)
-        },
-        success(res) {
-            if (res.code) {
-                this.onSend(2, res.data.img_path);
-            }
-        },
-        //发送消息
-        onSend(type, content) {
-            let url = '/mini/Message/send_msg', vm = this, data = { type: type, content: content };
-            this.apiPost(url, data).then(function(res) {
-                if (res.code) {
-                    if (type != 3) {
-                        // vm.$msg(res.msg);
-                    }
-                    vm.info.content = '';
-                } else {
-                    vm.handleError(res)
-                }
-            })
-        },
-        get_list(page) {
-            page = page || 1;
-            let url = '/mini/Message/chat_list?page=' + page,
-                vm = this;
-
-            this.apiGet(url, {}).then(function(res) {
-                if (res.code) {
-                    vm.list_pages = res.data.pages;
-                    if (page < 2) {
-                        vm.list = res.data.list;
-                        setTimeout(() => {
-                            vm.$refs['ss'].scrollTo(0, 999, 0);
-                        }, 200)
-                    } else {
-                        let _list = vm.list, _new_list = res.data.list;
-                        _list = _new_list.concat(_list);
-                        vm.list = _list;
-                    }
-
-                } else {
-                    vm.handleError(res)
-                }
-            })
+      if (res.code) {
+        this.onSend(2, res.data.img_path);
+      }
+    },
+    //发送消息
+    onSend(type, content) {
+      let url = "/mini/Message/send_msg",
+        vm = this,
+        data = { type: type, content: content };
+      this.apiPost(url, data).then(function(res) {
+        if (res.code) {
+          if (type != 3) {
+            // vm.$msg(res.msg);
+          }
+          vm.info.content = "";
+        } else {
+          vm.handleError(res);
         }
+      });
     },
-    created() {
-        const ip = 'mall.minbbo.com';//'mall.minbbo.com';//
-        const ws = new WebSocket("ws://" + ip + ":8282");
+    get_list(page) {
+      page = page || 1;
+      let url = "/mini/Message/chat_list?page=" + page,
+        vm = this;
 
-        let vm = this;
-        ws.onmessage = function(e) {
-
-            // json数据转换成js对象
-            var data = eval("(" + e.data + ")");
-            var type = data.type || '';
-            switch (type) {
-                // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
-                case 'init':
-                    // console.log(data);
-                    // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
-                    //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
-                    let url = '/mini/Message/bind'
-                    vm.apiPost(url, data).then(res => {
-
-                        if (res.code) {
-                            vm.serverInit = false
-                            window.bb = vm.$refs['ss'];
-                        }
-                    })
-                    break;
-                case 'msg':
-                    vm.list.push(data.content);
-                    setTimeout(() => {
-                        if (vm.$refs['ss']) {
-                            vm.$refs['ss'].scrollTo(0, 9999, 20);
-                        }
-
-                    }, 200)
-                    break;
-                // 当mvc框架调用GatewayClient发消息时直接alert出来
-                default:
-                //                alert(e.data);
-            }
-        };
+      this.apiGet(url, {}).then(function(res) {
+        if (res.code) {
+          vm.list_pages = res.data.pages;
+          if (page < 2) {
+            vm.list = res.data.list;
+            setTimeout(() => {
+              vm.$refs["ss"].scrollTo(0, 999, 0);
+            }, 200);
+          } else {
+            let _list = vm.list,
+              _new_list = res.data.list;
+            _list = _new_list.concat(_list);
+            vm.list = _list;
+          }
+        } else {
+          vm.handleError(res);
+        }
+      });
     }
+  },
+  created() {
+    const ip = "119.23.75.94"; //'mall.minbbo.com';//
+    const ws = new WebSocket("ws://" + ip + ":8282");
 
-
-}
-
+    let vm = this;
+    ws.onmessage = function(e) {
+      // json数据转换成js对象
+      var data = eval("(" + e.data + ")");
+      var type = data.type || "";
+      switch (type) {
+        // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
+        case "init":
+          // console.log(data);
+          // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
+          //                $.post('./bind.php', {client_id: data.client_id}, function(data){}, 'json');
+          let url = "/mini/Message/bind";
+          vm.apiPost(url, data).then(res => {
+            if (res.code) {
+              vm.serverInit = false;
+              window.bb = vm.$refs["ss"];
+            }
+          });
+          break;
+        case "msg":
+          vm.list.push(data.content);
+          setTimeout(() => {
+            if (vm.$refs["ss"]) {
+              vm.$refs["ss"].scrollTo(0, 9999, 20);
+            }
+          }, 200);
+          break;
+        // 当mvc框架调用GatewayClient发消息时直接alert出来
+        default:
+        //                alert(e.data);
+      }
+    };
+  }
+};
 </script>
