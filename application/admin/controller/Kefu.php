@@ -30,6 +30,7 @@ class Kefu extends Base
         $client_id = input("param.client_id", "", "trim");
 		session("admin.kefu_client_id", $client_id);
 		$admin_uid = session("admin.uid");
+		
         // 绑定客服client和uid
         $uid      = 'admin'. $admin_uid;
 		// client_id与uid绑定
