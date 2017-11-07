@@ -88,6 +88,17 @@
         <el-dialog :visible.sync="d_zoon" width="550px">
             <img width="100%" :src="d_z_url">
         </el-dialog>
+        <transition name="left">    
+            <div class="fiextoop" v-show="noreadArray.length > 0">
+                <div class="he">新消息</div>
+                <ul>
+                    <li  v-for="(item,idx) in noreadArray" @click="open_replyDialog(item,idx)" :key="item.user_id" class="clearfix">{{item.msg}}
+                        <el-badge :value="item.num" class="item"></el-badge>
+                    </li>
+                </ul>
+            
+            </div>
+        </transition>
   </div>
 </template>
 <script>
@@ -99,6 +110,7 @@ export default {
   props: ["talkArray"],
   data() {
     return {
+      noreadArray: [],
       loadmore_f_txt: "加载更多信息...",
       reply_id: "reply_list_content",
       minshow: false,
@@ -199,7 +211,7 @@ export default {
     },
 
     new_msg(data) {
-      let vm = this;
+      let vm = this,msg='';
 
       if (data.send_user == 1) {
         //用户发来的
@@ -211,28 +223,45 @@ export default {
           }
         }
         if (has == false) {
-          let msg = data.user_name + "：" + data.content;
-          const h = this.$createElement;
+           msg = data.user_name + "：" + data.content;
+    
           if (data.type == 2) {
             msg = data.user_name + ":[图片]";
           } else if (data.type == 3) {
             msg = data.user_name + ":[商品信息]";
           }
 
-          let _c = this.$notify({
-            title: "新消息 " +data.add_time.substr(11),
-            message: msg,
-            duration: 0,
-            customClass:'my_notify',
-            onClick: function() {
-                _c.close();
-              vm.open_replyDialog(data)
+          let noreadIdx = 0,
+            ishas;
+          data.num = 1;
+          data.msg = msg;
+          for (let k = 0; k < vm.noreadArray.length; k++) {
+            let item = vm.noreadArray[k];
+            if (item.send_user_id == data.send_user_id) {
+              data.num = item.num + 1;
+              noreadIdx = k;
+              ishas = true;
             }
-          });
+          }
+          if (ishas) {
+            vm.noreadArray.splice(noreadIdx, 1, data);
+          } else {
+            vm.noreadArray.push(data);
+          }
+
+        //   let _c = this.$notify({
+        //     title: "新消息 " + data.add_time.substr(11),
+        //     message: msg,
+        //     customClass: "my_notify",
+        //     onClick: function() {
+        //       _c.close();
+        //       vm.open_replyDialog(data);
+        //     }
+        //   });
         }
       }
     },
-      open_replyDialog(item) {
+    open_replyDialog(item,idx) {
       if (item) {
         let _i = JSON.parse(JSON.stringify(item));
         let vm = this;
@@ -240,9 +269,11 @@ export default {
           "/admin/Kefu/join_group?user_id=" + _i.send_user_id
         ).then(res => {
           if (res.code) {
-            _i.user_id =_i.send_user_id;
-            _i.nickname =_i.user_name;
-            this.addTalkBox(_i)
+            _i.user_id = _i.send_user_id;
+            _i.nickname = _i.user_name;
+            vm.addTalkBox(_i);
+            vm.noreadArray.splice(idx,1)
+            
           } else {
             vm.handleError(res);
           }
@@ -435,7 +466,7 @@ export default {
                 client_id: data.client_id
               })
               .then(res => {
-                console.info(res.msg);
+                console.info(res);
               });
             break;
           case "msg":

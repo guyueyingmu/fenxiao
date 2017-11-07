@@ -18,7 +18,8 @@
             <el-table-column prop="content" label="对话内容"></el-table-column>
             <el-table-column prop="read_status" label="是否已读">
                 <template slot-scope="scope">
-                    {{scope.row.read_status == 1?"未读":"已读"}}
+                    <span class="red" v-if="scope.row.read_status == 1">未读</span>
+                    <span class="" v-else>已读</span>
                 </template>
             </el-table-column>
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
@@ -66,13 +67,22 @@ export default {
         ).then(res => {
           if (res.code) {
             console.log(res.msg);
-            this.addTalkBox(_i)
+            vm.addTalkBox(_i)
+            vm.readStatus(_i.user_id,_i.message_group_id)
           } else {
             vm.handleError(res);
           }
         });
         //;
       }
+    },
+    readStatus(user_id,message_group_id){
+        this.apiPost('/admin/Kefu/update_message_status',{
+            user_id:user_id,
+            message_group_id:message_group_id
+        }).then(res=>{
+            this.get_list();
+        })
     },
     //清空
     onReset() {

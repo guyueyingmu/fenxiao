@@ -418,3 +418,47 @@
       color: #fff;
   }
 }
+.fiextoop{
+    position: fixed;
+    z-index: 88;
+    right: 0;
+    width: 250px;
+    top:10px;
+    background: #fff;
+
+    border: solid 1px #67C23A;
+    border-right: 0;
+    box-sizing: border-box;
+    border-radius: 4px 0 0 4px;
+    .he{
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        color: #fff;
+        background: #67C23A;
+        border-radius: 4px 0 0 0;
+    }
+    ul,li{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: block;
+
+    }
+    li{
+        padding: 8px 10px;
+        border-bottom: solid 1px #ddd;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        &:hover{
+            background: #eee;
+        }
+        &:last-child{
+            border: none;
+            border-radius: 0 0 0 4px;
+        }
+        
+    }
+}
