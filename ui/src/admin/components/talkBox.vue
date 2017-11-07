@@ -45,7 +45,7 @@
                                                 <span v-if="p.type == 2" class="imgs" @click="onZoom(p.content.img_url)"><img :src="p.content.thumb_img_url" width="60" height="60"></span>
 
                                                 <div class="pro_box" v-if="p.type == 3">
-                                                    <div class="pro_box_flex">
+                                                    <div class="pro_box_flex" @click="goto('/goods/goods_edit/id/'+p.content.good_id)">
                                                         <div class="pro_img"><img :src="p.content.good_img" width="40" height="40"></div>
                                                         <div class="info">
                                                             <div class="bl">{{p.content.good_title}}</div>
@@ -159,11 +159,9 @@ export default {
       }
     },
     lastMsg(idx) {
-        let _list = JSON.parse(JSON.stringify(this.content_list))
+      let _list = JSON.parse(JSON.stringify(this.content_list));
       if (_list.length && _list[idx]) {
-        let item = _list[idx].list[
-          _list[idx].list.length - 1
-        ];
+        let item = _list[idx].list[_list[idx].list.length - 1];
         if (item.type == 1) {
           return item.content;
         } else if (item.type == 2) {
@@ -196,17 +194,67 @@ export default {
       let item = this.userInfo;
       item.content = "";
 
-      this.bind_ws(item.user_id);
+      // this.bind_ws(item.user_id);
       this.current_user_id = item.user_id;
     },
 
+    new_msg(data) {
+      let vm = this;
+
+      if (data.send_user == 1) {
+        //用户发来的
+        let has = false;
+        for (let p of this.content_list) {
+          if (p.message_group_id == data.message_group_id) {
+            has = true;
+            break;
+          }
+        }
+        if (has == false) {
+          let msg = data.user_name + "：" + data.content;
+          const h = this.$createElement;
+          if (data.type == 2) {
+            msg = data.user_name + ":[图片]";
+          } else if (data.type == 3) {
+            msg = data.user_name + ":[商品信息]";
+          }
+
+          let _c = this.$notify({
+            title: "新消息 " +data.add_time.substr(11),
+            message: msg,
+            duration: 0,
+            customClass:'my_notify',
+            onClick: function() {
+                _c.close();
+              vm.open_replyDialog(data)
+            }
+          });
+        }
+      }
+    },
+      open_replyDialog(item) {
+      if (item) {
+        let _i = JSON.parse(JSON.stringify(item));
+        let vm = this;
+        this.apiGet(
+          "/admin/Kefu/join_group?user_id=" + _i.send_user_id
+        ).then(res => {
+          if (res.code) {
+            _i.user_id =_i.send_user_id;
+            _i.nickname =_i.user_name;
+            this.addTalkBox(_i)
+          } else {
+            vm.handleError(res);
+          }
+        });
+        //;
+      }
+    },
     pushContent(data) {
-      console.log(data);
       let vm = this;
       let _list = vm.content_list,
         _d = {};
       for (let _k = 0; _k < _list.length; _k++) {
-          console.log(_list[_k].message_group_id  == data.message_group_id,_list[_k].message_group_id ) 
         if (_list[_k].message_group_id == data.message_group_id) {
           _d = _list[_k].list;
           _d.push(data);
@@ -294,13 +342,13 @@ export default {
         vm = this;
       this.apiGet(url).then(res => {
         if (res.code) {
-          vm.content_output(res.data,message_group_id);
+          vm.content_output(res.data, message_group_id);
         } else {
           vm.handleError(res);
         }
       });
     },
-    content_output(res,message_group_id) {
+    content_output(res, message_group_id) {
       let vm = this,
         idx = 0;
 
@@ -309,7 +357,7 @@ export default {
           user_id: vm.actived,
           list: res.list,
           pages: res.pages,
-          message_group_id:message_group_id
+          message_group_id: message_group_id
         };
 
         let _list = vm.content_list,
@@ -331,12 +379,12 @@ export default {
         let oldH = el.scrollHeight;
 
         let _list = vm.content_list[idx];
-       
+
         _list.pages = res.pages;
         _list.list = res.list.concat(_list.list);
         setTimeout(() => {
           if (el) {
-           // el.scrollBy(0, el.scrollHeight  - oldH);
+            // el.scrollBy(0, el.scrollHeight  - oldH);
             vm.replyLoading = false;
           }
         }, 200);
@@ -370,7 +418,7 @@ export default {
     },
     bind_ws() {
       let vm = this;
-    //   const ip = "mall.minbbo.com";
+      //   const ip = "mall.minbbo.com";
       const ip = "mall.minbbo.com";
       const ws = new WebSocket("ws://" + ip + ":8282");
       ws.onmessage = function(e) {
@@ -393,7 +441,8 @@ export default {
           case "msg":
             console.info("WebSocket:msg");
             vm.pushContent(data.content);
-   
+            vm.new_msg(data.content);
+
             break;
           default:
         }
