@@ -58,11 +58,25 @@ export default {
   },
   methods: {
     open_replyDialog(item) {
-        if(item){
-            let _i = JSON.parse(JSON.stringify(item))
-            this.addTalkBox(_i );
-        }
-      
+      if (item) {
+        let _i = JSON.parse(JSON.stringify(item));
+        // for(let p of _i){
+        //     p.user_id
+        // }
+
+        let vm = this;
+        this.apiGet(
+          "/admin/Kefu/join_group?user_id=" + _i.user_id
+        ).then(res => {
+          if (res.code) {
+            console.log(res.msg);
+            this.addTalkBox(_i)
+          } else {
+            vm.handleError(res);
+          }
+        });
+        //;
+      }
     },
     //清空
     onReset() {

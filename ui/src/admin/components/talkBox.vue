@@ -196,7 +196,7 @@ export default {
       let item = this.userInfo;
       item.content = "";
 
-      this.bind_ws(item.user_id);
+     // this.bind_ws(item.user_id);
       this.current_user_id = item.user_id;
     },
 
