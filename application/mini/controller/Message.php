@@ -35,9 +35,9 @@ class Message extends Base
 			$rand_num = rand(0,$kefu_num-1);
 			$key_array = array_keys($data);
 			$kefu_client_id = $key_array[$rand_num];
-			$res3 = Gateway::joinGroup($kefu_client_id, $group_id);
+			Gateway::joinGroup($kefu_client_id, $group_id);
 		}
-		if($res && $res2 && $res3){
+		if($res && $res2){
 			$this->success('连接成功');
 		}else{
 			$this->error('连接失败');
