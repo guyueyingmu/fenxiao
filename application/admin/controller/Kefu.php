@@ -30,7 +30,7 @@ class Kefu extends Base
         $client_id = input("param.client_id", "", "trim");
 		session("admin.kefu_client_id", $client_id);
 		$admin_uid = session("admin.uid");
-        // 假设用户已经登录，用户uid和群组id在session中
+        // 绑定客服client和uid
         $uid      = 'admin'. $admin_uid;
 		// client_id与uid绑定
 		$res = Gateway::bindUid($client_id, $uid);
@@ -64,7 +64,7 @@ class Kefu extends Base
 	//转移用户给其他客服
     public function move_group(){
         $user_id = input("param.user_id", "", "intval");
-		$kefu_client_id = input("param.kefu_client_id", "", "intval");
+		$kefu_client_id = session("admin.kefu_client_id");
 		//获取用户分组
         $group_id = get_group_id($user_id);
 		$res = Gateway::joinGroup($kefu_client_id, $group_id);
@@ -72,6 +72,21 @@ class Kefu extends Base
 			$this->success('转移成功');
 		}else{
 			$this->error('转移失败');
+		}
+        
+    }
+	
+	//客服加入到用户组
+    public function join_group(){
+        $user_id = input("param.user_id", "", "intval");
+		$kefu_client_id = session("admin.kefu_client_id");
+		//获取用户分组
+        $group_id = get_group_id($user_id);
+		$res = Gateway::joinGroup($kefu_client_id, $group_id);
+		if($res){
+			$this->success('加入成功');
+		}else{
+			$this->error('加入失败');
 		}
         
     }
