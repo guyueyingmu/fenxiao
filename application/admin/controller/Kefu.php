@@ -106,6 +106,21 @@ class Kefu extends Base
         
     }
     
+	
+	//客服点击回复后，更新会员发送的消息的已读状态
+    public function update_message_status(){
+		
+        $user_id = input("param.user_id", "", "intval");
+		$message_group_id = input("param.message_group_id", "", "intval");
+		$res = db('message')->where('read_status=1 and message_group_id='.$message_group_id)->update(['read_status' => 2]);
+		if($res){
+			$this->success('更新成功');
+		}
+        
+    }
+	
+	
+	
     /**
      * 获取列表
      * @return string

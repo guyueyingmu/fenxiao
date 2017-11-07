@@ -19,7 +19,7 @@ class Asset extends Controller
         $img_type = input("param.img_type","default",'trim');
         $file_path = ROOT_PATH . 'public' . DS . 'uploads' . DS . $img_type;
         $url_path = DS . 'uploads' . DS . $img_type;
-        
+		
         // 移动到框架应用根目录/public/uploads/ 目录下
         //图片大小不能超过5mb
         $info = $file->validate(['size'=>5242880,'ext'=>'jpg,png,gif'])->move($file_path);
@@ -31,6 +31,7 @@ class Asset extends Controller
             $res_url = $url_path . DS . $save_name;
             
             $get_info = $this->upload_type($img_type);
+			
             if($get_info['max_w'] > 0){
                 //图片处理
                 $image = \think\Image::open($file_path . DS . $save_name);
@@ -46,7 +47,7 @@ class Asset extends Controller
                 $thumb_res_url = $url_path . DS . $thumb_save_name;
                 $this->success("上传成功","",["img_path" => $thumb_res_url, "big_img_path" => $res_url]);
             }else{                
-                $this->success("上传成功","",["img_path" => '', "big_img_path" => $res_url]);
+                $this->success("上传失败","",["img_path" => '', "big_img_path" => $res_url]);
             }
             
             
