@@ -53,8 +53,8 @@ class Withdraw extends Base
      * 申请提现
      */
     public function add_apply(){
-        $withdraw_amount = input('param.withdraw_amount', '', 'trim');
-        if(!$withdraw_amount){
+        $withdraw_amount = input('param.withdraw_amount', '', 'float');
+        if($withdraw_amount <= 0){
             $this->error('请输入提现金额');
         }
         $user_account = db('users')->where('id', session('mini.uid'))->value('account_balance');

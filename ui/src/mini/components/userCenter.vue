@@ -53,7 +53,7 @@
                 <li>
                     <a href="javascript:;" @click="goto('/tixian')">
                         <span class="num">￥{{info.account_balance||0}}</span>
-                        <span class="tit">佣金</span>
+                        <span class="tit">提现</span>
                     </a>
                 </li>
                 <li>

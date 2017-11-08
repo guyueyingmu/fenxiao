@@ -31,7 +31,7 @@
         </div>
 
         <div class="space"></div>
-        <div class="btn-wrap">
+        <div class="btn-wrap" v-if="d.account > 0">
             <div class="btn-fixed">
                 <button type="button" class="ui-btn ui-btn-block ui-btn-l2" @click="onTixian">申请提现</button>
             </div>
@@ -139,7 +139,6 @@
                         vm.dialog = false;
                         vm.list.unshift(res.data);
                     } else {
-                        vm.dialog = false;
                         vm.handleError(res)
                     }
                 })                
