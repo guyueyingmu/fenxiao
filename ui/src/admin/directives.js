@@ -83,7 +83,6 @@ const directives = {
         }, 200)
       }, false)
     }
-
-  }
+  },
 }
 export default directives

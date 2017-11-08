@@ -25,7 +25,7 @@
             <el-table-column prop="add_time" label="添加时间" width="200"></el-table-column>
             <el-table-column label="操作" width="120" align="center">
                 <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="open_replyDialog(scope.row)">回复</el-button>
+                    <el-button type="text" size="small" @click="open_replyDialog(scope.row)">发送</el-button>
                 </template>
             </el-table-column>
         </el-table>

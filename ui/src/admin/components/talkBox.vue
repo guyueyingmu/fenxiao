@@ -67,7 +67,7 @@
                                         </el-upload>
                                 </div>
                                 <div class="inputarea">
-                                <textarea   placeholder="请输入内容" v-model="userInfo.content"></textarea>
+                                <textarea  @focus="scrollToEnd()" @click="scrollToEnd()"  placeholder="请输入内容" v-model="userInfo.content"></textarea>
                                 </div>
                                 <div class="sendbox-btn">
                                     <el-button size="small" @click="close_reply()">关闭</el-button>
