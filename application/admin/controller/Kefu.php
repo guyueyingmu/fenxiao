@@ -134,25 +134,23 @@ class Kefu extends Base
         $keyword = input("param.keyword", "", 'trim');
                 
         $where = "1=1";
-        $where .= $keyword ? " AND m.user_id = $keyword" : "";
+        $where .= $keyword ? " AND mg.user_id = $keyword" : "";
         
-        $subQuery = db('message')->alias('m')
-                ->join('__MESSAGE_GROUP__ mg', 'mg.id=m.message_group_id', 'LEFT')
-                ->group("mg.id")
-                ->order("m.read_status ASC,m.add_time DESC")
-                ->field('m.*,mg.user_id')
-                ->buildSql();
+		$subQuery = '(SELECT * FROM (SELECT * FROM `mb_message` ORDER BY add_time DESC) a GROUP BY a.message_group_id) m';
         
-        $list = Db::table($subQuery." m")
-                ->join("__USERS__ u", "m.user_id=u.id", "LEFT")
+        $list = db('message_group')->alias('mg')
+				->join($subQuery, "mg.id=m.message_group_id", "LEFT")
+                ->join("__USERS__ u", "mg.user_id=u.id", "LEFT")
                 ->where($where)
-                ->field("m.user_id,u.nickname,u.img_url,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
+                ->field("mg.user_id,u.nickname,u.img_url,m.content,m.read_status,m.add_time,m.type,m.message_group_id")
                 ->page($page,$limit)
                 ->order('m.read_status ASC,m.add_time DESC')
                 ->select();
-        $total = Db::table($subQuery." m")
+	
+        $total = Db::table($subQuery)
                 ->where($where)
                 ->count();
+		
         if($list){
             foreach($list as $k=>$v){
                 if($v['type'] == 3){
